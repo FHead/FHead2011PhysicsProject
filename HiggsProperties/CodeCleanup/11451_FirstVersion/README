@@ -1,0 +1,139 @@
+Updating!  Coming soon!
+
+
+########################
+##### COMPILE CODE #####
+########################
+
+To use the code, first setup your preferred root version, then do
+
+> make
+
+which will compile everything for you.  There will be 3 executables
+in the bin directory.  Even though all expressions are in, this step
+should take about 1 minute to compile, as opposed to 20+ minutes
+from some other package.
+
+
+
+#######################
+##### Executables #####
+#######################
+
+There are two that generates the maps, and an additional one that
+takes maps and attach likelihoods to our tree(s).  Let's start with
+the map-generation ones
+
+
+##### ProduceBackgroundMap #####
+
+This program runs through bins and generates background map, as
+the name suggested.  The map I refer to is P(angles, M1, M2 | M4l),
+not normalized.  It takes in a few arguments:
+
+- HiggsMass: An number that indicates which value of M4l we want
+- Phi0:  Since it takes forever, I decided to split up the task,
+      each program only runs at a certain range of Phi0 and cos(Theta0).
+      Here (as you can see in the source file), Phi0 is split into
+      12 bins, and cos(Theta0) is split into 18 bins.  This specifies
+      the central value (bin center) of Phi0 this program should run
+      on.  During the actual map generation, for each sample we
+      randomize Phi0 within the bin around this value.
+- cos(Theta0):  Similar to Phi0.
+- Tag:  A string that distinguishes between different runs.  This
+      is only used in filenames.
+- SuppressHeader:  Either 'Y' or 'N'.  If the value is 'N', we
+      print out a header section in the output file documenting the
+      range and bin counts in different dimensions.  We should only
+      have one header in the very beginning (ie., first job).
+      The nice thing about having header is that it's more flexible
+      on map dimensionalities, we can use more bins on cos(theta0)
+      for background than for signal for example.
+
+
+The output will be 7 text files, each with different content:
+
+- EffMEE: final map (full ME) with detector effects folded in.
+- Eff: map with only detector effects and flat ME expressions.
+- EffMEA: detector effects with ME expression ZZ+ZA (no interference)
+- EffMEB: detector effects with ME expression ZZ+ZA
+- EffMEC: detector effects with ME expression ZZ
+- EffMED: detector effects with ME expression ZA
+- MEE: full ME expression without detector effects
+
+
+To make a map, we run 12x18 times this program, and concatenate the
+output file of same type to make our map for one 4l mass.  Then
+we repeat for different masses.  Usually I run over masses of 100, 110,
+120, 125, 130, 140, 160, 200, 300 and 400.  If in the future we want
+to do this for high masses too, we can also run more.
+
+
+
+##### ProduceSignalMap #####
+
+This program is very similar to the background one, except that it makes
+signal maps.  There are a few differences:
+
+1. Number of bins in Phi0 and cos(Theta0) are 10x12 only, since we expect
+      that signals are flat (ME) in these directions.  Instead, I made
+      more bins in other directions.
+2. Output files are different:
+   - Efficiency: Only detector effects
+   - PhaseSpace: only phase space of ZZ (other parts of ME is constant)
+      with detector effects
+   - Scalar: scalar expression with detector effects
+   - Pseudoscalar: pseudoscalar expression with detector effects
+3. Some difference in the spectrum
+
+Otherwise these are the same.
+
+
+
+##### AttachLikelihood #####
+
+As the name suggests, it takes in our step2/3 trees, and attach a new
+branch.  We need 4 arguments in this case:
+
+- Root file.  This is the step2/3 tree we have, for example hzzTree_id1125.root
+- MapFileBase.  This is the common part of file name for the maps.  I assume
+   that the maps are named as ("%s_%d.map7", MapFileBase, HiggsMass).  It can
+   contain directories.
+- Branch name.  Name of the new branch we want to add.
+- RobertoConversion.  Can be either 'Y' or 'N'.  This specifies which angle
+   to lepton 4-vector conversion scheme we are using.  Now by default we're
+   always using 'Y'.
+
+This overwrites current tree (at the last stage)!  Make backup of the trees
+before executing it.  Note that it only appends and modifies the tree at the
+very end of the program when you see the third progress bar coming up, so
+killing the program before that won't hurt our input file in any way.
+
+
+
+#################################
+##### Concatenation of maps #####
+#################################
+
+This is how we should concatenate the maps.  Take background maps for example.
+Suppose you run the jobs with tag "${iPhi0}_${iTheta0}", where iPhi0 runs from
+1 to 12 and iTheta0 runs from 1 to 18,
+
+>
+> #!/bin/sh
+>
+> rm -f FinalMap_125.map7
+> touch FinalMap_125.map7
+> 
+> for iPhi0 in `seq 1 12`
+> do
+>    for iTheta0 in `seq 1 18`
+>    do
+>       cat IndividualMap_${iPhi0}_${iTheta0}_FixAngle_EffMEE.map7 >> FinalMap_125.map7
+>    done
+> done
+>
+
+
+
+

@@ -1,0 +1,9 @@
+zz4lTree->cd()
+probe_tree_no_duplicate->SetMarkerStyle(20)
+probe_tree_no_duplicate->SetAlias("z1phi_original", "(atan((l1pt*sin(l1phi)+l2pt*sin(l2phi))/(l1pt*cos(l1phi)+l2pt*cos(l2phi))))")
+probe_tree_no_duplicate->SetAlias("z1phi_intermediate", "3.1415926535*(l1pt*cos(l1phi)+l2pt*cos(l2phi)<0)+z1phi_original+(-2)*(l1pt*cos(l1phi)+l2pt*cos(l2phi)<0)*z1phi_original")
+probe_tree_no_duplicate->SetAlias("z1phi", "z1phi_intermediate-2*3.1415926535*(z1phi_intermediate>3.1415926535)")
+probe_tree_no_duplicate->SetAlias("z2phi_original", "(atan((l3pt*sin(l3phi)+l4pt*sin(l4phi))/(l3pt*cos(l3phi)+l4pt*cos(l4phi))))")
+probe_tree_no_duplicate->SetAlias("z2phi_intermediate", "3.1415926535*(l3pt*cos(l3phi)+l4pt*cos(l4phi)<0)+z2phi_original+(-2)*(l3pt*cos(l3phi)+l4pt*cos(l4phi)<0)*z2phi_original")
+probe_tree_no_duplicate->SetAlias("z2phi", "z2phi_intermediate-2*3.1415926535*(z2phi_intermediate>3.1415926535)")
+

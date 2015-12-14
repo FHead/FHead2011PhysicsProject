@@ -1,0 +1,6 @@
+<lcgdict>
+   <class name = "ShowerCluster"/>
+   <class name = "edm::Wrapper<ShowerCluster>"/>
+   <class name = "std::vector<ShowerCluster>"/>
+   <class name = "edm::Wrapper<std::vector<ShowerCluster> >"/>
+</lcgdict>

@@ -1,0 +1,226 @@
+<html>
+   <head>
+      <title>Tool to overlay plots</title>
+      <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+      <link href="Style.css" rel="stylesheet" />
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+      <script src="PlotOverlay.js"></script>
+   </head>
+   <body>
+      <div class="Header" id="UpdateBox">
+         <h1 style="color: #E278A3;">Update is ready!  Please refresh your browser for newer version!</h1>
+      </div>
+      <div class="Header">
+         <h1>Plot overlaying tool: <div class="ModelSelector" id="ModelSelector" title="Click me to toggle model">SM</div></h1>
+      </div>
+      <div class="PlotBoxContainer">
+         <div class="PlotBox Left">
+            <div class="SearchBox">
+               Choose sample here
+            </div>
+            <div class="SearchBox ButtonBox" id="LeftSample">
+               <input type="radio" name="LeftSampleRadio" value="MG" disabled="true" id="LeftSampleMG" />
+               <label for="LeftSampleMG">MG</label>
+               <input type="radio" name="LeftSampleRadio" value="Gen" id="LeftSampleGen" />
+               <label for="LeftSampleGen">Gen</label>
+               <input type="radio" name="LeftSampleRadio" value="Reco" checked="checked" id="LeftSampleReco" />
+               <label for="LeftSampleReco">Reco</label>
+            </div>
+            <div class="SearchBox">
+               Choose what you want to float
+            </div>
+            <div class="SearchBox ButtonBox" id="LeftFloatAs">
+               <input type="checkbox" id="LeftA2ZZCheckBox" checked="checked" />
+               <label for="LeftA2ZZCheckBox">A<sub>2</sub><sup>ZZ</sup></label>
+               <input type="checkbox" id="LeftA3ZZCheckBox" />
+               <label for="LeftA3ZZCheckBox">A<sub>3</sub><sup>ZZ<sup></label>
+               <input type="checkbox" id="LeftA2ZACheckBox" />
+               <label for="LeftA2ZACheckBox">A<sub>2</sub><sup>ZA<sup></label>
+               <input type="checkbox" id="LeftA3ZACheckBox" />
+               <label for="LeftA3ZACheckBox">A<sub>3</sub><sup>ZA<sup></label>
+               <input type="checkbox" id="LeftA2AACheckBox" />
+               <label for="LeftA2AACheckBox">A<sub>2</sub><sup>AA<sup></label>
+               <input type="checkbox" id="LeftA3AACheckBox" />
+               <label for="LeftA3AACheckBox">A<sub>3</sub><sup>AA<sup></label>
+            </div>
+            <div class="SearchBox ButtonBox" id="LeftFloatOthers">
+               <input type="checkbox" id="LeftN1CheckBox" />
+               <label for="LeftN1CheckBox">N1</label>
+               <input type="checkbox" id="LeftN2CheckBox" />
+               <label for="LeftN2CheckBox">N2</label>
+               <input type="checkbox" id="LeftBackgroundCheckBox" />
+               <label for="LeftBackgroundCheckBox">Background</label>
+            </div>
+            <div class="SearchBox">
+               Choose signal sample size
+            </div>
+            <div class="SearchBox ButtonBox" id="LeftSampleSize">
+               <input type="radio" id="LeftSample1Radio" name="LeftSampleSizeRadio" value="1" />
+               <label for="LeftSample1Radio">25</label>
+               <input type="radio" id="LeftSample2Radio" name="LeftSampleSizeRadio" value="2" checked="checked" />
+               <label for="LeftSample2Radio">50</label>
+               <input type="radio" id="LeftSample3Radio" name="LeftSampleSizeRadio" value="3" />
+               <label for="LeftSample3Radio">100</label>
+               <input type="radio" id="LeftSample4Radio" name="LeftSampleSizeRadio" value="4" />
+               <label for="LeftSample4Radio">200</label>
+               <input type="radio" id="LeftSample5Radio" name="LeftSampleSizeRadio" value="5" />
+               <label for="LeftSample5Radio">400</label>
+               <input type="radio" id="LeftSample6Radio" name="LeftSampleSizeRadio" value="6" />
+               <label for="LeftSample6Radio">800</label>
+               <input type="radio" id="LeftSample7Radio" name="LeftSampleSizeRadio" value="7" />
+               <label for="LeftSample7Radio">1600</label>
+            </div>
+            <div class="SearchBox">
+               What to plot
+            </div>
+            <div class="SearchBox ButtonBox" id="LeftVariable">
+               <input type="radio" id="LeftA2ZZVariable" name="LeftVariableRadio" value="A2ZZ" checked="checked" />
+               <label for="LeftA2ZZVariable">A<sub>2</sub><sup>ZZ</sup></label>
+               <input type="radio" id="LeftA3ZZVariable" name="LeftVariableRadio" value="A3ZZ" />
+               <label for="LeftA3ZZVariable">A<sub>3</sub><sup>ZZ</sup></label>
+               <input type="radio" id="LeftA2ZAVariable" name="LeftVariableRadio" value="A2ZA" />
+               <label for="LeftA2ZAVariable">A<sub>2</sub><sup>ZA</sup></label>
+               <input type="radio" id="LeftA3ZAVariable" name="LeftVariableRadio" value="A3ZA" />
+               <label for="LeftA3ZAVariable">A<sub>3</sub><sup>ZA</sup></label>
+               <input type="radio" id="LeftA2AAVariable" name="LeftVariableRadio" value="A2AA" />
+               <label for="LeftA2AAVariable">A<sub>2</sub><sup>AA</sup></label>
+               <input type="radio" id="LeftA3AAVariable" name="LeftVariableRadio" value="A3AA" />
+               <label for="LeftA3AAVariable">A<sub>3</sub><sup>AA</sup></label>
+               <input type="radio" id="LeftFemVariable" name="LeftVariableRadio" value="Fraction" />
+               <label for="LeftFemVariable">F<sub>B</sub><sup>&nbsp;</sup></label>
+            </div>
+            <div class="Plot">
+               <a href="Plots/H_YNNNNN_NN_N_2_A2ZZ.pdf" target="_blank" id="LeftLink">
+                  <img src="Plots/H_YNNNNN_NN_N_2_A2ZZ.gif" id="LeftPlot" class="NoChange"
+                     title="Click me to download pdf!" />
+               </a>
+            </div>
+            <!--
+            <div class="SearchBox">
+               <span title="Select plot here, see explanations below">
+                  <input type="text" name="QueryLeft" value="H_YNNNNN_NN_N_2_A2ZZ" id="QueryLeft"/>
+               </span>
+            </div>
+            -->
+         </div>
+         <div class="PlotBox Right">
+            <div class="SearchBox">
+               Choose sample here
+            </div>
+            <div class="SearchBox ButtonBox" id="RightSample">
+               <input type="radio" name="RightSampleRadio" value="MG" disabled="true" id="RightSampleMG" />
+               <label for="RightSampleMG">MG</label>
+               <input type="radio" name="RightSampleRadio" value="Gen" id="RightSampleGen" />
+               <label for="RightSampleGen">Gen</label>
+               <input type="radio" name="RightSampleRadio" value="Reco" checked="checked" id="RightSampleReco" />
+               <label for="RightSampleReco">Reco</label>
+            </div>
+            <div class="SearchBox">
+               Choose what you want to float
+            </div>
+            <div class="SearchBox ButtonBox" id="RightFloatAs">
+               <input type="checkbox" id="RightA2ZZCheckBox" checked="checked" />
+               <label for="RightA2ZZCheckBox">A<sub>2</sub><sup>ZZ</sup></label>
+               <input type="checkbox" id="RightA3ZZCheckBox" />
+               <label for="RightA3ZZCheckBox">A<sub>3</sub><sup>ZZ<sup></label>
+               <input type="checkbox" id="RightA2ZACheckBox" checked="checked" />
+               <label for="RightA2ZACheckBox">A<sub>2</sub><sup>ZA<sup></label>
+               <input type="checkbox" id="RightA3ZACheckBox" checked="checked" />
+               <label for="RightA3ZACheckBox">A<sub>3</sub><sup>ZA<sup></label>
+               <input type="checkbox" id="RightA2AACheckBox" />
+               <label for="RightA2AACheckBox">A<sub>2</sub><sup>AA<sup></label>
+               <input type="checkbox" id="RightA3AACheckBox" />
+               <label for="RightA3AACheckBox">A<sub>3</sub><sup>AA<sup></label>
+            </div>
+            <div class="SearchBox ButtonBox" id="RightFloatOthers">
+               <input type="checkbox" id="RightN1CheckBox" />
+               <label for="RightN1CheckBox">N1</label>
+               <input type="checkbox" id="RightN2CheckBox" />
+               <label for="RightN2CheckBox">N2</label>
+               <input type="checkbox" id="RightBackgroundCheckBox" />
+               <label for="RightBackgroundCheckBox">Background</label>
+            </div>
+            <div class="SearchBox">
+               Choose signal sample size
+            </div>
+            <div class="SearchBox ButtonBox" id="RightSampleSize">
+               <input type="radio" id="RightSample1Radio" name="RightSampleSizeRadio" value="1" />
+               <label for="RightSample1Radio">25</label>
+               <input type="radio" id="RightSample2Radio" name="RightSampleSizeRadio" value="2" checked="checked" />
+               <label for="RightSample2Radio">50</label>
+               <input type="radio" id="RightSample3Radio" name="RightSampleSizeRadio" value="3" />
+               <label for="RightSample3Radio">100</label>
+               <input type="radio" id="RightSample4Radio" name="RightSampleSizeRadio" value="4" />
+               <label for="RightSample4Radio">200</label>
+               <input type="radio" id="RightSample5Radio" name="RightSampleSizeRadio" value="5" />
+               <label for="RightSample5Radio">400</label>
+               <input type="radio" id="RightSample6Radio" name="RightSampleSizeRadio" value="6" />
+               <label for="RightSample6Radio">800</label>
+               <input type="radio" id="RightSample7Radio" name="RightSampleSizeRadio" value="7" />
+               <label for="RightSample7Radio">1600</label>
+            </div>
+            <div class="SearchBox">
+               What to plot
+            </div>
+            <div class="SearchBox ButtonBox" id="RightVariable">
+               <input type="radio" id="RightA2ZZVariable" name="RightVariableRadio" value="A2ZZ" checked="checked" />
+               <label for="RightA2ZZVariable">A<sub>2</sub><sup>ZZ</sup></label>
+               <input type="radio" id="RightA3ZZVariable" name="RightVariableRadio" value="A3ZZ" />
+               <label for="RightA3ZZVariable">A<sub>3</sub><sup>ZZ</sup></label>
+               <input type="radio" id="RightA2ZAVariable" name="RightVariableRadio" value="A2ZA" />
+               <label for="RightA2ZAVariable">A<sub>2</sub><sup>ZA</sup></label>
+               <input type="radio" id="RightA3ZAVariable" name="RightVariableRadio" value="A3ZA" />
+               <label for="RightA3ZAVariable">A<sub>3</sub><sup>ZA</sup></label>
+               <input type="radio" id="RightA2AAVariable" name="RightVariableRadio" value="A2AA" />
+               <label for="RightA2AAVariable">A<sub>2</sub><sup>AA</sup></label>
+               <input type="radio" id="RightA3AAVariable" name="RightVariableRadio" value="A3AA" />
+               <label for="RightA3AAVariable">A<sub>3</sub><sup>AA</sup></label>
+               <input type="radio" id="RightFemVariable" name="RightVariableRadio" value="Fraction" />
+               <label for="RightFemVariable">F<sub>B</sub><sup>&nbsp;</sup></label>
+            </div>
+            <div class="Plot">
+               <a href="Plots/H_YNYNNN_NN_N_2_A2ZZ.pdf" target="_blank" id="RightLink">
+                  <img src="Plots/H_YNYNNN_NN_N_2_A2ZZ.gif" id="RightPlot" class="HueChange"
+                     title="Click me to download pdf!" />
+               </a>
+            </div>
+            <!--
+            <div class="SearchBox">
+               <span title="Select plot here, see explanations below">
+                  <input type="text" name="QueryRight" value="H_YNYNNN_NN_N_2_A2ZZ" id="QueryRight"/>
+               </span>
+            </div>
+            -->
+         </div>
+      </div>
+      <div class="OverlayPlotBoxContainer">
+         <div style="text-align: center;">
+            <p>Mouse over the big white area to overlay plots</p>
+         </div>
+         <div class="BigPlot">
+            <img src="Plots/H_YNNNNN_NN_N_4_A2ZZ.gif" id="Overlay1" class="NoChange" style="display: none;" />
+            <img src="Plots/H_YNYNNN_NN_N_4_A2ZZ.gif" id="Overlay2" class="HueChange" style="top: -339px; display: none;" />
+         </div>
+      </div>
+      <!--
+      <div class="Explanation">
+         <div style="margin-left: 40px">
+         <p>Plot name manual: H_ [YN]x6 _ [YN]x2 _ [YN]x1 _ [1-7] _ [Component]</p>
+            <ol>
+               <li>[YN]x6 - Whether we float A2ZZ, A3ZZ, A2ZA, A3ZA, A2AA, A3AA or not, respectively</li>
+               <li>[YN]x2 - Whether we float lepton systematics or not - not included yet in these plots</li>
+               <li>[YN]x1 - Whether we have background or not - not included yet in these plots</li>
+               <li>[1-7] - Number of events in each experiment: 25, 50, 100, ..., 1600</li>
+               <li>[Component] - Can be one of A2ZZ, A3ZZ, A2ZA, A3ZA, A2AA, A3AA</li>
+            </ol>
+         </div>
+      </div>
+      -->
+      <div class="Footer">
+         <p>Design and created by <a href="http://yichen.me">Yi Chen</a>, 2013 Nov. 25</p>
+      </div>
+   </body>
+</html>
+
+

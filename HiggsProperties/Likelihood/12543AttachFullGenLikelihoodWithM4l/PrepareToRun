@@ -1,0 +1,39 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+source ~/.bashrc
+
+for i in `ls CleanTrees/*root`
+do
+   echo $i
+
+   Start=0
+   End=200000
+   Base=`basename $i`
+   FileName=$CurrentFolder/BatchSubmit/${Base}_${Start}_${End}.sh
+
+   BatchPrefix > $FileName
+
+   echo "cd $CurrentFolder" >> $FileName
+   echo "mkdir -p /wntmp/yichen/" >> $FileName
+   echo "" >> $FileName
+
+   echo "mkdir -p Work/Work_$Base" >> $FileName
+   echo "cd Work/Work_$Base" >> $FileName
+   echo "ln -s ../../*cpp ." >> $FileName
+   echo "ln -s ../../*h ." >> $FileName
+   echo "sh ../../batchcompile.sh" >> $FileName
+   echo "time ./RunSignal ../../$i $Start $End > S_$Base" >> $FileName
+   # echo "mv S_$Base $CurrentFolder/BatchResultTemp/" >> $FileName 
+   echo "mv S_$Base $HOME/raid1/" >> $FileName 
+   echo "time ./RunBackground ../../$i $Start $End > B_$Base" >> $FileName
+   # echo "mv B_$Base $CurrentFolder/BatchResultTemp/" >> $FileName 
+   echo "mv B_$Base $HOME/raid1/" >> $FileName 
+   echo "rm RunSignal RunBackground *.o" >> $FileName
+done
+
+
+

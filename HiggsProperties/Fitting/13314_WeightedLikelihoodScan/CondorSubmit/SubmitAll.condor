@@ -1,0 +1,17 @@
+executable              = Scan1D.sh
+universe                = vanilla
+input                   =
+should_transfer_files   = YES
+transfer_output_files   = DummyFile
+when_to_transfer_output = ON_EXIT
+arguments               = $(Process)
+output                  = Log/Scan1D_$(Process).out
+error                   = Log/Scan1D_$(Process).err
+log                     = Log/Scan1D_$(Process).log
+
+requirements            = Memory >= 3500 && Disk >= 100000
+
+queue 25
+
+
+

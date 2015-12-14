@@ -1,0 +1,32 @@
+string SignalCount = "40"
+string BackgroundCount = "40"
+
+TFile F1("Likelihoods_All_1125.root");
+TFile F2("Likelihoods_All_8125.root");
+
+TH1D *H1 = (TH1D *)F1.Get(Form("HCenter1_%s_%s", SignalCount.c_str(), BackgroundCount.c_str()));
+TH1D *H2 = (TH1D *)F2.Get(Form("HCenter1_%s_%s", SignalCount.c_str(), BackgroundCount.c_str()));
+
+H1->SetStats(0);
+H1->SetLineColor(kBlue);
+H2->SetLineColor(kRed);
+H1->SetLineWidth(2);
+H2->SetLineWidth(2);
+H1->SetTitle(Form("Best fitted value for dataset with %s signal events and %s background events", SignalCount.c_str(), BackgroundCount.c_str()));
+H1->GetXaxis()->SetTitle("Best fitted atan(PS/SM) value");
+
+TH1D *H = (TH1D *)H1->DrawNormalized();
+H2->DrawNormalized("same");
+
+H->SetMaximum(0.05);
+
+TLegend Legend(0.6, 0.8, 0.8, 0.6);
+Legend.SetBorderSize(0);
+Legend.SetFillStyle(0);
+Legend.SetTextFont(42);
+Legend.AddEntry(H1, "ID 1125 (SM)", "l");
+Legend.AddEntry(H2, "ID 8125 (PS)", "l");
+Legend.Draw();
+
+
+

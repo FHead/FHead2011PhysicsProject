@@ -1,0 +1,27 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+for i in `ls DataSamples`
+do
+   BaseName=`echo $i | sed "s/.root//g"`
+
+   InputName="$CurrentFolder/DataSamples/$BaseName.root"
+   TempName="/wntmp/yichen/$BaseName.root"
+   OutputName="$CurrentFolder/DataDestination/$BaseName.root"
+
+   echo "#!/bin/sh" > $CurrentFolder/BatchSubmit/$i.sh
+   echo "#$ -S /bin/sh" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "#$ -V" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "#$ -q all.q@compute-0-0.local,all.q@compute-0-1.local,all.q@compute-0-2.local,all.q@compute-0-3.local,all.q@compute-0-4.local,all.q@compute-0-5.local,all.q@compute-1-5.local,all.q@compute-1-6.local,all.q@compute-1-7.local,all.q@compute-1-8.local,all.q@compute-1-9.local,all.q@compute-1-3.local,all.q@compute-1-2.local,all.q@compute-1-4.local" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "export CMS_PATH=/cms/sw; export SCRAM_ARCH=slc5_amd64_gcc434" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "cd ~/CMSSW/CMSSW_4_2_8/src; eval \`/cms/sw/bin/scramv1 runtime -sh\`;" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "cd $CurrentFolder" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "./MakeTree $InputName $TempName" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "mv $TempName $OutputName" >> $CurrentFolder/BatchSubmit/$i.sh
+   echo "rm $TempName" >> $CurrentFolder/BatchSubmit/$i.sh
+done
+
+
+

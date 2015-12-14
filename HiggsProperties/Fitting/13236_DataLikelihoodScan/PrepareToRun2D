@@ -1,0 +1,78 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/BatchResult
+
+BinCount=81
+BinMin=-0.9999
+BinMax=0.9999
+
+for i1 in `seq 1 $BinCount`
+do
+   for i2 in `seq 1 $BinCount`
+   do
+      WorkDir="/wntmp/yichen/Work/WorkArea_Fit_13236_${i1}_${i2}"
+      FileName="$CurrentFolder/BatchSubmit/Submit_${i1}_${i2}.sh"
+
+      F2=`echo $BinMin $BinMax $BinCount $i1 | awk '{print $1 + ($2-$1)/($3-1)*($4-1)}'`
+      F3=`echo $BinMin $BinMax $BinCount $i2 | awk '{print $1 + ($2-$1)/($3-1)*($4-1)}'`
+      AbsF2=`echo $F2 | awk '{if($1<0) {print -$1} else {print $1}}'`
+      AbsF3=`echo $F3 | awk '{if($1<0) {print -$1} else {print $1}}'`
+      F1=`echo $AbsF2 $AbsF3 | awk '{printf "%f", 1-$1-$2}'`
+      S2=`echo $F1 $F2 | awk '{print $2/$1}' | awk '{if($1 < 0) {print -$1} else {print $1}}'`
+      S3=`echo $F1 $F3 | awk '{print $2/$1}' | awk '{if($1 < 0) {print -$1} else {print $1}}'`
+      A2=`echo $F2 $S2 | awk '{if($1 > 0) {print sqrt($2)*(-3.276)} else {print -sqrt($2)*(-3.276)}}'`
+      A3=`echo $F3 $S3 | awk '{if($1 > 0) {print sqrt($2)*(-5.042)} else {print -sqrt($2)*(-5.042)}}'`
+
+      AL=0
+
+      if [[ `echo "$F1 > 0" | bc` == "1" ]];
+      then
+         BatchPrefix > $FileName
+         echo "" >> $FileName
+         echo "echo \$HOSTNAME" >> $FileName
+         echo "" >> $FileName
+         echo "mkdir -p $WorkDir" >> $FileName
+         echo "cd $WorkDir" >> $FileName
+         echo "" >> $FileName
+         echo "pwd" >> $FileName
+         echo "" >> $FileName
+         echo "cp -r $CurrentFolder/*cpp $WorkDir" >> $FileName
+         echo "cp -r $CurrentFolder/*h $WorkDir" >> $FileName
+         echo "cp -r $CurrentFolder/Trees $WorkDir" >> $FileName
+         echo "cp -r $CurrentFolder/OldTrees $WorkDir" >> $FileName
+         echo "cp -r $CurrentFolder/SyncTrees $WorkDir" >> $FileName
+         echo "ln -s $CurrentFolder/../../Likelihood/13156_SyncToySeedAttachResult/Destination/ $WorkDir/DataTrees" >> $FileName
+         echo "" >> $FileName
+         echo "rm $WorkDir/*.dh" >> $FileName
+         echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/CombinedNormalization.dh $WorkDir/" >> $FileName
+         echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/Normalization.dh $WorkDir/" >> $FileName
+         echo "" >> $FileName
+         echo "sh compile.sh" >> $FileName
+         echo "" >> $FileName
+         echo "ls -l" >> $FileName
+         echo "ls -l DataTrees" >> $FileName
+         echo "" >> $FileName
+         echo "S7=DataTrees/HZZEventFitFormatSeed_Data_7TeV.root" >> $FileName
+         echo "S8=DataTrees/HZZEventFitFormatSeed_Data_8TeV.root" >> $FileName
+         echo "B7=DUMMY" >> $FileName
+         echo "B8=DUMMY" >> $FileName
+         echo "Z7=DUMMY" >> $FileName
+         echo "Z8=DUMMY" >> $FileName
+         echo "G7=DUMMY" >> $FileName
+         echo "G8=DUMMY" >> $FileName
+         echo "" >> $FileName
+         echo "time ./PerformFits \$S7 \$B7 \$Z7 \$G7 \$S8 \$B8 \$Z8 \$G8 $A2 $A3 0 0 0 0 $AL -1" >> $FileName
+         echo "mv OutputFile.root $CurrentFolder/BatchResult/FA2FA3Result_${i1}_${i2}.root" >> $FileName
+         echo "" >> $FileName
+         echo "rm -r $WorkDir/*" >> $FileName
+      fi
+   done
+done
+
+
+

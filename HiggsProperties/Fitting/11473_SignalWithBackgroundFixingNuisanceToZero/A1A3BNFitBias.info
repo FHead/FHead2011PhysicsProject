@@ -1,0 +1,52 @@
+TFile File("1125.root")
+
+TCanvas c1
+OutputTree->Draw("BackgroundSize-0.5:SignalSize-0.5>>Z(100,0.5,100.5,50,0.5,50.5)",
+   "MedianFraction*(BackgroundSize+SignalSize)/BackgroundSize-1", "colz")
+Z.SetStats(0)
+Z.GetXaxis()->SetTitle("Input signal size")
+Z.GetYaxis()->SetTitle("Input background size")
+Z.SetTitle("Background bias study in the A1-A3-B-N fit")
+Z.SetMaximum(0.1)
+Z.SetMinimum(-1)
+c1.SaveAs("A1A3BNFit_BackgroundBias.png")
+c1.SaveAs("A1A3BNFit_BackgroundBias.C")
+c1.SaveAs("A1A3BNFit_BackgroundBias.eps")
+c1.SaveAs("A1A3BNFit_BackgroundBias.pdf")
+
+
+TCanvas c2
+OutputTree->Draw("BackgroundSize-0.5:SignalSize-0.5>>Y(100,0.5,100.5,50,0.5,50.5)",
+   "(BackgroundSize-MedianFraction*(BackgroundSize+SignalSize))/SignalSize", "colz")
+Y.SetStats(0)
+Y.GetXaxis()->SetTitle("Input signal size")
+Y.GetYaxis()->SetTitle("Input background size")
+Y.SetTitle("Underestimation of background in units in input signal size in the A1-A3-B-N fit")
+
+TH2F *X = Y.Clone("X")
+X.Smooth(5)
+double levels[] = {0.05, 0.1, 0.25, 0.5, 1}
+X.SetContour(5, levels)
+X.SetLineWidth(3)
+X.Draw("cont2 same")
+
+TLatex Latex
+Latex.SetTextFont(42)
+Latex.SetTextSize(0.025)
+Latex.DrawLatex(86, 51, "5%")
+Latex.DrawLatex(44, 51, "10%")
+Latex.DrawLatex(22, 51, "25%")
+Latex.DrawLatex(12, 51, "50%")
+Latex.DrawLatex(4, 51, "100%")
+
+c2.SetLogz()
+c2.SaveAs("A1A3BNFit_Underestimation.png")
+c2.SaveAs("A1A3BNFit_Underestimation.C")
+c2.SaveAs("A1A3BNFit_Underestimation.eps")
+c2.SaveAs("A1A3BNFit_Underestimation.pdf")
+
+
+TCanvas c3
+
+
+

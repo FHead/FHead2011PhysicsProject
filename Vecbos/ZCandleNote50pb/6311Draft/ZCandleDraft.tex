@@ -1,0 +1,254 @@
+\documentclass[10pt,a4paper,onecolumn]{	article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{textcomp}
+\usepackage{footnote}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    % citecolor=black,
+    % filecolor=black,
+    % linkcolor=black,
+    % urlcolor=black
+}
+
+\begin{document}
+
+\author{Yi Chen\\
+   California institute of technology\\
+   \texttt{chen.yi.first@gmail.com}}
+\title{50 $pb^{-1}$ Z Candle Note Draft\\ --- applied to 2.66 $pb^{-1}$ of data}
+\date{\today}
+\maketitle
+
+\tableofcontents
+\clearpage
+
+\section{Introduction}
+
+N/A.  I'll fill this in later.
+
+\section{Data \& MC samples}
+
+Woof.
+
+\section{Event cleaning}
+
+Meow.
+
+\section{Jet flavors}
+
+All the jets are clustered using the anti-Kt algorithm with cone radius 0.5.  A few different types of jeta are considered in
+this analysis.
+
+\begin{enumerate}
+\item Calorimetric jet (\emph{CaloJet}).  The jet constituents are taken from both hadronic calorimeter deposits and electomagnetic calorimeter deposits.
+   The calorimeters are first combined into \emph{calotowers} according the the geometrical locations of the cells.
+   Calotowers are then treated as four vector with zero norm to be included in the jet clustering algorithm.
+   The jets need to be corrected for energy.  To estimate the effect of the energy correction, we also perform the analysis in terms of uncorrected energies.
+   The threshold for counting CaloJets is 30 GeV/c, while the threshold for couting uncorrected CaloJets is 20 GeV/c.
+\item Track jet.  All tracks that pass some basic quality selection criteria are served as input to the jet clustering algorithm, again treating them as massless.
+   We require that the number of hits along the track is greater than 6, and the normalized $\chi^2$ is smaller than 20.
+   The track vertex, compared to the primary vertex, has to be within 0.1cm in z direction, 0.1 cm in magnitude, and 600 $\mu$m in the transverse direction.
+   Also, if there exists another reconstructed vertex that is closer to the best primary vertex, the track is not included in the jet clustering.
+   The pseudorapidity of the track is required to be $-2.4 < |\eta| < 2.4$, and the momentum is required to be within range 0.5-500 GeV/c.
+   The threshold for track jet counting is 20 GeV/c.
+\item Particle flow jet (\emph{PF jet}).  There is an elaborate set of algorithms that attempts to reconstruct particle candidates as good as possible,
+   and then to start physics analysis from there.  The jet algorithms take in the reconstructed candidates as input.
+   The threshold for PF jet counting is 20 GeV/c.  Compatibility with the primary vertex is not implemented yet.
+\end{enumerate}
+
+\section{Selections.  Muon, Z.  Isolation}
+
+In order to retain as much signal as possible, only a minimal selection is applied to data.
+For candidate muons, we require the following.
+
+\begin{enumerate}
+\item The muon is reconstructed both as global muon and tracker muon
+\item One valid pixel hit for the muon track is required to be present, and a total of 6 hits in the tracker system is required.
+\item We also require that there is one valid hit in the muon chambers that is consistent with the global track.
+\item The maximum allowed global muon track fitted $\chi^2$ is 10.
+\item The PT threshold in this analysis for the first leg (tighter) muon is set to be 15 GeV/c with pseudorapidity range $-2.1 < |\eta| < 2.1$.
+\item The limit on second leg muon is more relaxed for more statistics, and it is set on 10 GeV/c with range $-2.4 < |\eta| < 2.4$.
+\end{enumerate}
+
+An additional isolation requirement is required on both muons that make up the Z candidate.
+This is mainly due to the fact that in the standard particle-flow jet clustering algorithm, the muons are considered as part
+of the input collections to the clustering algorithm, and because of the high transverse momentum, the muons are clustered
+as jets, as shown in figure \ref{Figure_CandidateMuonVsClosestJetEtaPhi}.  Furthermore, the muon jets tend to take up additional soft particles
+in the vicinity of the muon (see figure \ref{Figure_CandidateMuonVsClosestJetPT}), causing extra systematics uncertainty in jet-counting.
+Therefore, a isolation cut is selected as 30\% of relative combined isolation with cone size 0.3.  This causes roughly 5\%
+efficiency drop for one-jet case, consistent with expectations, as shown in figure \ref{Figure_IsolationCutVsRejectionPercentage}.
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Candidate muon vs. closest jet, deta dphi plot (MC signal)}
+\label{Figure_CandidateMuonVsClosestJetEtaPhi}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Muon PT vs. closest jet PT (MC signal)}
+\label{Figure_CandidateMuonVsClosestJetPT}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Isolation cut vs. percentage that was cut out in MC signal events}
+\label{Figure_IsolationCutVsRejectionPercentage}
+\end{figure}
+
+For any event with at least two good muon candidates as defined in the previous section, the muon pair is formed as a Z candidate if
+the invariant mass of the two muons are with range 60-120 GeV/$c^2$.  An additional requirement to reject fake muon pairs is to require
+that the two muons are at least 0.01 units apart in $\Delta R \equiv \sqrt{\Delta\eta^2 + \Delta\phi^2}$.
+
+\section{MC sample efficiencies}
+
+Meow.
+
+\section{Signal extraction (fit strategy)}
+
+In order to extract signal yields from data, a fit is performed on the dimuon mass spectrum.
+The signal shape is taken as the Cruijff function, defined as
+
+\begin{equation}
+f(M_{ll}; m, \sigma_L, \sigma_R, \alpha_L, \alpha_R) = N_s e^{-\dfrac{(M_{ll} - m)^2}{2 \sigma^2 + \alpha^2 (M_{ll} - m)^2}},\nonumber
+\end{equation}
+
+where $\sigma = \sigma_L (\sigma_R)$ for $M_{ll} < m (M_{ll} > m)$ and $\alpha = \alpha_L (\alpha_R)$ for $M_{ll} < m (M_{ll} > m)$.
+The background shape is chosen as a falling exponential, as can be seen in the QCD sample which dominates the background in low
+jet multiplicity bin.  When the number of jets is larger, events with $t\bar{t}$ start to have a significant contribution, and those are
+also well-modeled by a falling exponential.
+Even though the exponent is not the same in different samples, the exponent is floated in the fit, and the difference in exponent will be taken account for.
+
+A minimum likelihood fit is performed simulatneously for all different jet counts, with the total likelihood written as
+
+\begin{eqnarray}
+L = (Prefactor) \times \displaystyle\sum_i \{ \displaystyle\sum_{n_{jet}=1}^{n_{max} - 1} \left( (N_{S, n_{jet}} - N_{S, n_{jet} + 1}) F_S(M_{ll}^i) + N_{B, n_{jet}} F_{B, n_{jet}}(M_{ll}^i) \right)
+\delta_{n_{jet}, n_{jet}^i}\nonumber\\
++ \left( N_{S, n_{max}} F_S(M_{ll}^i) + N_{B, n_{max}} F_{B, n_{max}}(M_{ll}^i) \right) \theta(n_{jet}^i - n_{max}) \},
+\nonumber
+\end{eqnarray}
+
+where $F_S$ is the signal PDF, constrained to be the same for all jet bins.  The background PDF, $F_{B, n_{jet}}$, is not constrained to
+be the same for different jet bins, and the exponents are left floating in the fit.  Each term (except the last) is constrained to be with the same exclusive jet bin
+through the Kronecker delta function $\delta_{n_{jet}, n_{jet}^i}$.
+The last jet bin is inclusive, including all number of jets greater or equal to $n_{max}$, constrained by the step function $\theta(n_{jet}^i - n_{max})$.
+
+All the parameters for signal PDF are floated except $\alpha_L$.  Since the $\alpha_L (\alpha_R)$ controls how large the tail is, if $\alpha_L$ is floated,
+in the presense of background events, which is approximated by an exponential function, the tail of the signal PDF will be larger then real signal shape.
+As a result, the signal yield will include significant contributions from background events, which does not serve our purpose of extracting the signal yield.
+Fortunately, the signal shape does not depend too much on isolation, as shown in figure \ref{Figure_SignalShapeVsIsolation} in MC studies.
+Therefore we can apply a very tight isolation cut to remove all backgrounds and some signal events, and fit to get $\alpha_L$ to be used to extract signal yield
+as a function of jet multiplicity.
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Isolation cut vs. percentage that was cut out in MC signal events}
+\label{Figure_SignalShapeVsIsolation}
+\end{figure}
+
+
+
+\section{Toy studies: shape, parameters}
+
+In order to demonstrate the dependence of each parameter in the signal fit, a toy study is performed.
+The fitted Z signal shape is taken as a template, and 1000 toy experiment samples are generated assuming 50/pb of integrated luminosity.
+Each toy experiment is then fitted with signal functional form with slightly different parameters compared to the input parameters.
+The pull distribution of the signal yield is plotted and compared to Gaussian of width 1.
+
+For each shape parameter, we vary it by -10\%, -5\%, -2.5\%, -1\%, 0\%, 1\%, 2.5\%, 5\% and 10\% while keeping other parameters fixed at the right (input) value.
+The signal yield relative to perfect case is plotted in figures \ref{Figure_RelativeYieldChangingAlphaLOnly}, \ref{Figure_RelativeYieldChangingAlphaROnly},
+\ref{Figure_RelativeYieldChangingSigmaLOnly} and \ref{Figure_RelativeYieldChangingSigmaROnly}.
+We can see that the signal yield is most sensitive to $\alpha_L$ and neglegible in other parameters.
+This is because of the radiation effects of the muons lower the mass, and naturally there will be a tail in the lower side of the peak.
+Biases arise in estimating the size of the tail.
+However, even in the case of $\alpha_L$, the bias in the signal yield is mild.
+
+Fit with wrong $\alpha_L$ value while floating others is also analyzed with toy experiments.
+This is an estimate of the bias in realistic conditions as in the fit to extract signal value.
+The result is shown in figure \ref{Figure_RelativeYieldChangingAlphaLFloatingOthers}.
+TODO: INSERT RESULT!
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Signal yields relative to the perfect case when $\alpha_L$ is varied while keeping others fixed.}
+\label{Figure_RelativeYieldChangingAlphaLOnly}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Signal yields relative to the perfect case when $\alpha_R$ is varied while keeping others fixed.}
+\label{Figure_RelativeYieldChangingAlphaROnly}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Signal yields relative to the perfect case when $\sigma_L$ is varied while keeping others fixed.}
+\label{Figure_RelativeYieldChangingSigmaLOnly}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Signal yields relative to the perfect case when $\sigma_L$ is varied while keeping others fixed.}
+\label{Figure_RelativeYieldChangingSigmaROnly}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Signal yields relative to the perfect case when $\sigma_L$ is varied and floating others.}
+\label{Figure_RelativeYieldChangingAlphaLFloatingOthers}
+\end{figure}
+
+
+\section{JES uncertainty}
+
+Since CaloJets and PF jets are corrected for energy, there will be systematic uncertainties associated with the corrections.
+The CMS-official numbers for the uncertainties is quoted as
+
+\begin{enumerate}
+\item 10\% overall scale for CaloJets
+\item 5\% overall scale for PF jets
+\item 2\% eta-dependent scale ($2\% \times |\eta|$) for both types of jets.
+\item The two types of errors (absolute and eta-dependent) are assumed to be independent to each other.
+\end{enumerate}
+
+Therefore the strategy to estimate the systematics of the uncertainties is to perform the fit and extract signal yields for different jet multiplicities 4 additional times with different thresholds:
+
+\begin{enumerate}
+\item Original threshold + $10\%$
+\item Original threshold - $10\%$
+\item Original threshold + $2\% \times |\eta|$
+\item Original threshold - $2\% \times |\eta|$
+\end{enumerate}
+
+The difference between different thresholds are taken as an estimate to the jet energy correction uncertainty.
+The result, when applied to data, is shown in figures \ref{Figure_CaloJetJES} and \ref{Figure_PFJetJES} for CaloJets and PF jets respectively.
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Jet energy scale uncertainty estimation for CaloJets}
+\label{Figure_CaloJetJES}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=110mm]{ToBeDrawn.pdf}
+\caption{Jet energy scale uncertainty estimation for PF jets}
+\label{Figure_PFJetJES}
+\end{figure}
+
+
+\section{Anti-muon control sample}
+
+To justify the choice of exponential PDF for background events, an anti-muon control sample check is performed.
+This is done by 
+
+\end{document}
+

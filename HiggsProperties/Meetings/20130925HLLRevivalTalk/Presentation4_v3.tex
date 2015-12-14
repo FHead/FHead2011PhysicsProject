@@ -1,0 +1,167 @@
+\documentclass[11pt,t]{beamer}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetheme{default}
+\setbeamertemplate{footline}[frame number]
+
+\title{Status Update on Measuring Higgs anomalous HVV couplings with 8D maximum likelihood fit}
+\subtitle{Status and plans}
+\author{Artur Apresyan\inst{1}, Yi Chen\inst{1}, Joseph Lykken\inst{3}, Emanuele Di Marco\inst{1}, Alex Mott\inst{1}, Vivek Sharma\inst{2}, Maria Spiropulu\inst{1}, Si Xie\inst{1}, Adish Vartak\inst{2}, Roberto Vega-Morales\inst{3}}
+\institute{\inst{1} Caltech, \inst{2} UCSD, \inst{3}FNAL}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}[plain]
+   \titlepage
+\end{frame}
+
+\begin{frame}{Table of contents}
+   \begin{itemize}
+   \item Status
+   \item Quick overview of strategy and convolution
+   \item Some words on bug fixes and improvements
+   \item Near-term plans
+   \item Summary
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Status}
+   \begin{itemize}
+   \item Many rounds of bug fixing in the past couple of months - all known bugs/features fixed.
+   More details in later slides.
+   \item Rethink many steps to make sure our result is robust and easier to obtain
+      \begin{itemize}
+      \item For example the normalization of one set of pdf can be achieved to O(0.1\%) in 10 minutes
+      as opposed to hours or even days
+      \end{itemize}
+   \item Once we are happy with the analysis, carry out the measurement on real data
+   will take half a day from beginning to end, reproducing all numbers from scratch.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Quick overview of strategy}
+   \begin{itemize}
+   \item Construct likelihood as a function of Lagrangian parameters
+      \begin{itemize}
+      \item Obtain differential cross sections at generator level
+      \item Perform an integral event by event convoluting generator level distribution
+      with parameterization of detector response for leptons
+      \item Perform a calculation of the pdf normalization
+      \end{itemize}
+   \item Perform maximization on data to extract parameters of interest
+   \item Current Lagrangians that we have differential cross sections calculated:
+   \begin{eqnarray}
+   L \simeq M_Z^{-2} A_1^{ZZ} X Z_\mu Z^\mu + A_2^{ZZ} X Z_{\mu\nu} Z^{\mu\nu} + A_3^{ZZ} X Z_{\mu\nu} \tilde{Z}^{\mu\nu} + ...\nonumber\\
+   + A_2^{ZA} X Z_{\mu\nu} F^{\mu\nu} + A_3^{ZA} X Z_{\mu\nu} \tilde{F}^{\mu\nu}\nonumber + ...\nonumber\\
+   + A_2^{AA} X F_{\mu\nu} F^{\mu\nu} + A_3^{AA} X F_{\mu\nu} \tilde{F}^{\mu\nu}\nonumber + ...\nonumber
+   \end{eqnarray}
+   \item $Z \rightarrow 4l$ coming soon.  Will be important cross check to measure Z spin.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Quick overview of convolution}
+   \begin{itemize}
+   \item Reconstructed level likelihood is the integral of all generator level configuration times the probability
+   that the generator level configuration is smeared into reconstructed level configuration
+   \begin{equation}
+      P^R(\vec{X} | \vec{A}) = \int P^G(\vec{X}' | \vec{A}) T(\vec{X} | \vec{X}') d \vec{X}'\nonumber
+   \end{equation}
+   \item $\vec{X}$ is the vector of all kinematic variables: $M_H, p_T^H, \phi_H, y_H, \phi_{offset}$, $\Phi$, $\Phi_1$, $\theta_1, \theta_2, \Theta$, $M_1, M_2$
+   \item $P^G(\vec{X}')$ is the generator level differential cross section
+   \item $T(\vec{X} | \vec{X}')$ is the probability density that configuration $\vec{X}$ appears given generator level configuration $\vec{X}'$
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Some discussions}
+   \begin{itemize}
+   \item There are a lot of Jacobian factors to be taken care of
+   \item Narrow width approximation inserts a delta function in $M_H^2$, which is non-trivial to take care of in the convolution integral
+   \item Considerable amount of time was spent making sure all the factors are correct and validated, which was buggy before...
+   \item There are near-cancellation of terms which won't show up easily in many places except in final fit biases.
+   Projections will look fine, but bias show up in the fits.
+   A stronger test with likelihood distribution is successful in catching potential bugs.
+   \item Dimensionality isn't the point as long as consistent likelihood is used in a correct way.
+   \item If we choose generator likelihood ratio as the variable to use, it's certainly less optimal
+   compared to the exact same analysis using reconstructed level likelihood ratio.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Some discussion on strategy}
+   \begin{itemize}
+   \item Production variables enter through detector acceptance effects.  To reduce dependence on
+   production variables, we average out the 4 dimensions irrelevant to $HVV$ vertex ($\phi_H, p_T^H, \phi_{offset}, y_H$)
+   \item Systematics can be easily incorporated with nuisance parameters
+   \item This approach is the simplest conceptually
+   \item We fit for ratios/fractions and not worry about absolute rates
+   \item Can fit simultaneously for all possible parameters as long as we have enough events
+   \item Deal with fake background by making a big template + large systematics to cover possible variations.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Validation of convolution}
+   \begin{itemize}
+   \item An example projection comparison plots are shown here; more (and more stats!) will be shown when we
+   present details on the convolution integral.
+   \item This is the reconstructed Higgs mass distribution for standard model signal.
+   At generator level this is a delta function, all the non-trivial distribution comes from smearing.
+   \begin{figure}
+   \includegraphics[width=0.5\textwidth]{SignalZZMass}
+   \end{figure}
+   \item A stronger test on likelihood distribution is presented in the next slide.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Validation of convolution}
+   \begin{itemize}
+   \item Distribution of likelihoods must match between events generated by the pdf (RECO level)
+   and Madgraph samples after detector effects
+   \item This is a stronger check than individual projections
+   \end{itemize}
+   \begin{figure}
+   \includegraphics[width=0.5\textwidth]{BackgroundLikelihoodAfterEFix.pdf}
+   \includegraphics[width=0.5\textwidth]{SignalLikelihoodAfterEFix.pdf}
+   \caption{Likelihood comparison between generated samples and Madgraph samples at RECO level.
+   Left: Background, Right: SM signal}
+   \end{figure}
+\end{frame}
+
+\begin{frame}{Timeline and plans}
+   Statistics on toy events are accumulating right now...  Plan to finish these basic analysis parts as soon as possible.
+   Result with lower stats look reasonable.
+   \begin{itemize}
+   \item Bias studies - whether we can extract things correctly (with pull distributions to show that errors are reasonable)
+   \item Projection to different amount of statistics
+   \end{itemize}
+   Present details bit by bit for scrutiny in this group from now on, hopefully we can open the box in a few months.
+
+   Example pull distributions on some of the ratios of Lagrangian parameters is shown: better plots will come in later presentations
+   \begin{figure}
+   \includegraphics[width=0.3\textwidth]{FirstRecoResult_100+25_10_10.pdf}
+   \includegraphics[width=0.3\textwidth]{FirstRecoResult_100+25_12_12.pdf}
+   \includegraphics[width=0.3\textwidth]{FirstRecoResult_100+25_14_14.pdf}
+   \end{figure}
+\end{frame}
+
+\begin{frame}{Summary}
+   \begin{itemize}
+   \item Rounds of bug fixes done.  Finally ready to move on again.
+   \item Various improvements have been implemented that speed things up and make things more robust
+   \item Toy results will appear soon; and in the meantime the analysis will be presented in pieces for scrutiny.
+   \item We are preparing a document on all the details of calculation.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Backup slides ahead}
+\end{frame}
+
+
+\end{document}
+
+
+
+

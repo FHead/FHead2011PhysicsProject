@@ -1,0 +1,9 @@
+digraph graphname
+{
+   a [label = "Foo, P = 5\nPT = 3"];
+   a -> b -> c;
+   b -> e;
+   b -> e;
+}
+
+

@@ -1,0 +1,62 @@
+TFile File1("OutputFile_WithSmear.root")
+TCanvas C1("C1", "C1", 1536, 1024)
+C1.Divide(3, 2)
+ResultTree->SetMarkerStyle(6)
+C1.cd(1)
+ResultTree->Draw("A2A1*sin(A2Phase):A2A1*cos(A2Phase)>>HA", "Status == 3 && abs(A2A1) < 20", "colz")
+C1.cd(4)
+ResultTree->Draw("A3A1*sin(A3Phase):A3A1*cos(A3Phase)>>HB", "Status == 3 && abs(A3A1) < 20", "colz")
+
+TFile File2("OutputFile_NoSmear.root")
+ResultTree->SetMarkerStyle(6)
+C1.cd(2)
+ResultTree->Draw("A2A1*sin(A2Phase):A2A1*cos(A2Phase)>>HC", "Status == 3 && abs(A2A1) < 20", "colz")
+C1.cd(5)
+ResultTree->Draw("A3A1*sin(A3Phase):A3A1*cos(A3Phase)>>HD", "Status == 3 && abs(A3A1) < 20", "colz")
+
+TFile File3("OutputFile_BigSmear.root")
+ResultTree->SetMarkerStyle(6)
+C1.cd(3)
+ResultTree->Draw("A2A1*sin(A2Phase):A2A1*cos(A2Phase)>>HE", "Status == 3 && abs(A2A1) < 20", "colz")
+C1.cd(6)
+ResultTree->Draw("A3A1*sin(A3Phase):A3A1*cos(A3Phase)>>HF", "Status == 3 && abs(A3A1) < 20", "colz")
+
+
+HA.SetStats(0)
+HB.SetStats(0)
+HC.SetStats(0)
+HD.SetStats(0)
+HE.SetStats(0)
+HF.SetStats(0)
+HA.SetTitle("No extra smear, A2/A1 result");
+HB.SetTitle("No extra smear, A3/A1 result");
+HC.SetTitle("3% extra smear, A2/A1 result");
+HD.SetTitle("3% extra smear, A3/A1 result");
+HE.SetTitle("20% extra smear, A2/A1 result");
+HF.SetTitle("20% extra smear, A3/A1 result");
+HA.GetXaxis()->SetTitle("real(A2/A1)");
+HB.GetXaxis()->SetTitle("real(A3/A1)");
+HC.GetXaxis()->SetTitle("real(A2/A1)");
+HD.GetXaxis()->SetTitle("real(A3/A1)");
+HE.GetXaxis()->SetTitle("real(A2/A1)");
+HF.GetXaxis()->SetTitle("real(A3/A1)");
+HA.GetYaxis()->SetTitle("imag(A2/A1)");
+HB.GetYaxis()->SetTitle("imag(A3/A1)");
+HC.GetYaxis()->SetTitle("imag(A2/A1)");
+HD.GetYaxis()->SetTitle("imag(A3/A1)");
+HE.GetYaxis()->SetTitle("imag(A2/A1)");
+HF.GetYaxis()->SetTitle("imag(A3/A1)");
+C1.cd(1).Update();
+C1.cd(2).Update();
+C1.cd(3).Update();
+C1.cd(4).Update();
+C1.cd(5).Update();
+C1.cd(6).Update();
+
+C1.SaveAs("Plot.png")
+C1.SaveAs("Plot.C")
+C1.SaveAs("Plot.eps")
+C1.SaveAs("Plot.pdf")
+
+
+

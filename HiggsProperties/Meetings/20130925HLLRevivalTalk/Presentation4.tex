@@ -1,0 +1,194 @@
+\documentclass[11pt,t]{beamer}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetheme{default}
+\setbeamertemplate{footline}[frame number]
+
+\title{Measuring Higgs anomalous HVV couplings with maximum likelihood fit}
+\subtitle{Status and plans - draft(v1) for Wednesday}
+\author{Yi Chen}
+\institute{California Institute of Technology\\~\\Caltech group meeting}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}[plain]
+   \titlepage
+\end{frame}
+
+\begin{frame}{Table of contents}
+   \begin{itemize}
+   \item Status
+   \item Quick overview of strategy and convolution
+   \item Some words on bug fixes and improvements
+   \item Near-term plans
+   \item Summary
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Status}
+   \begin{itemize}
+   \item Many rounds of bug fixing in the past couple of months - all known bugs/features fixed.
+   More details in later slides.
+   \item Rethink many steps to make sure our result is robust
+      \begin{itemize}
+      \item For example the normalization of one set of pdf can be achieved to O(0.1\%) in 10 minutes
+      as opposed to hours or even days
+      \end{itemize}
+   \item Once we are happy with the analysis, carry out the measurement on real data
+   will take half a day from beginning to end, reproducing all numbers from scratch.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Quick overview of strategy}
+   \begin{itemize}
+   \item Construct likelihood as a function of Lagrangian parameters
+      \begin{itemize}
+      \item Obtain differential cross sections at generator level
+      \item Perform an integral event by event convoluting generator level distribution
+      with parameterization of detector response for leptons
+      \item Perform a calculation of the pdf normalization
+      \end{itemize}
+   \item Perform maximization on data to extract parameters of interest
+   \item Current Lagrangians that we have differential cross sections calculated:
+   \begin{eqnarray}
+   L \simeq M_Z^{-2} A_1^{ZZ} X Z_\mu Z^\mu + A_2^{ZZ} X Z_{\mu\nu} Z^{\mu\nu} + A_3^{ZZ} X Z_{\mu\nu} \tilde{Z}^{\mu\nu} + ...\nonumber\\
+   + A_2^{ZA} X Z_{\mu\nu} F^{\mu\nu} + A_3^{ZA} X Z_{\mu\nu} \tilde{F}^{\mu\nu}\nonumber + ...\nonumber\\
+   + A_2^{AA} X F_{\mu\nu} F^{\mu\nu} + A_3^{AA} X F_{\mu\nu} \tilde{F}^{\mu\nu}\nonumber + ...\nonumber
+   \end{eqnarray}
+   \item $Z \rightarrow 4l$ coming soon.  Will be important cross check to measure Z spin.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Quick overview of convolution}
+   \begin{itemize}
+   \item Start from a consistent equation:
+   \begin{equation}
+      P^R(\vec{X} | \vec{A}) = \int P^G(\vec{X}' | \vec{A}) T(\vec{X} | \vec{X}') d \vec{X}'\nonumber
+   \end{equation}
+   \item Change of variables to our convenience:
+   \begin{eqnarray}
+      P^R(\vec{X} | \vec{A}) &=& \int P^G(\vec{X}' | \vec{A}) T(\vec{P}^G_\parallel | \vec{X}') \dfrac{|J_M^G|}{|J_M^R|} d \vec{P}^G_\perp d \vec{P}^G_\parallel\nonumber\\
+         &=& \int P^G(\vec{X}' | \vec{A}) T(\vec{c}^G | \vec{X}') \dfrac{|J_M^G J_c^G|}{|J_M^R J_c^R|} d \vec{c}^G\nonumber\\
+         &=& \int P^G(\vec{X}' | \vec{A}) T(\vec{c}^G | \vec{X}') \dfrac{|J_M^G J_c^G|}{|J_M^R J_c^R|} |J_B| d M_1^2 d M_2^2 d c_1 d c_3.\nonumber\\
+        (signal)  &=& \int P^G(\vec{X}' | \vec{A}) T(\vec{c}^G | \vec{X}') \dfrac{|J_M^G J_c^G|}{|J_M^R J_c^R|} |J_S| d M_1^2 d M_2^2 d c_1 d M_H^2.\nonumber
+   \end{eqnarray}
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Quick overview of convolution}
+   \begin{itemize}
+   \item $|J_M^G|$ and $|J_M^R|$ changes from center-of-mass variables with production variables to lepton vector basis.
+   Each of them are 12x12 Jacobians.
+   \item $|J_c^G|$ and $|J_c^R|$ takes us from lepton vector basis to smearing basis, which is what the detector responses are defined in
+   \item $|J_B|$ changes from the smearings to di-lepton masses, which is for convenience (better book-keeping).
+   \item In terms of signal things are slightly different, we change to $d M_1^2 d M_2^2 d M_H^2 d c_1$ to take care of the
+   narrow width approximation (ie., factor of $\delta(M_H^2 - 126^2)$ in the differential cross section).
+   \item Once the narrow width approximation is imposed, in $c_1 c_3$ (smearing of two of the leptons)
+   plane allowed phase space reduces to
+   1 dimension (which happens to form an ellipse).
+   \item All these factors were wrong or missing couple months ago...
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Some discussion on strategy}
+   \begin{itemize}
+   \item There are near-cancellation of terms which won't show up easily in many places except in final fit biases.
+   Projections will look fine, but bias on the parameters.  This is why things look reasonable before.
+   A stronger test with likelihood distribution is successful in catching these bugs.
+   \item Dimensionality isn't the point as long as correct likelihood is used in a correct way.
+   For example generator level likelihood is the same as calculated differential cross sections,
+   which is why in generator level, test from different framework checks out.
+   The analogy would be using reco-level likelihood for different analysis frameworks, which
+   is not the same as using combination of gen-level differential cross section as test statistics in
+   reco-level analysis. \textbf{Need to find out a way to say this so as not to annoy some people}
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Some discussion on strategy}
+   \begin{itemize}
+   \item Production variables enter through detector acceptance effects.  To reduce dependence on
+   production variables, we average out the 4 dimensions irrelevant to $HVV$ vertex ($12 \rightarrow 8$)
+   \item Systematics can be easily incorporated with nuisance parameters
+   \item This approach is the simplest conceptually
+   \item We fit for ratios/fractions and not worry about absolute rates
+   \item Can fit simultaneously for all possible parameters as long as we have enough events
+   \item Deal with fake background by making a big template + large systematics to cover possible variations.
+   \item \textbf{Whatever else we want to talk about here...}
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Validation of convolution}
+   \textbf{Let's add some projection plots here}
+\end{frame}
+
+\begin{frame}{Validation of convolution}
+   \begin{itemize}
+   \item Distribution of likelihoods must match between events generated by the pdf (RECO level)
+   and Madgraph samples after detector effects
+   \item This is a stronger check than individual projections
+   \end{itemize}
+   \begin{figure}
+   \includegraphics[width=0.5\textwidth]{BackgroundLikelihoodAfterEFix.pdf}
+   \includegraphics[width=0.5\textwidth]{SignalLikelihoodAfterEFix.pdf}
+   \caption{Likelihood comparison between generated samples and Madgraph samples at RECO level.
+   Left: Background, Right: SM signal}
+   \end{figure}
+\end{frame}
+
+\begin{frame}{Non-exhaustive list of bug fixes and improvements}
+   \begin{enumerate}
+   \item Fixing of the signal ellipse
+   \item Inclusion of ``tip'' region
+   \item Rework 12x12 Jacobians, with validations
+   \item Fixing Jacobian pairs
+   \item Jacobian factor from mass scan directions
+   \item Fit parameterization 
+   \item Removed unnecessary approximations
+   \item Rethink normalization with huge speedup
+   \item Mass attractors
+   \item Reboot mechanism for added robustness
+   \item Scan directions to decorrelate grid directions
+   \item Adaptive mass scans
+   \item[14.] ...
+   \end{enumerate}
+\end{frame}
+
+\begin{frame}{Timeline and plans}
+   Statistics on toy events are accumulating right now...  Plan to finish these basic analysis parts as soon as possible.
+   Result with lower stats look reasonable.
+   \begin{itemize}
+   \item Bias studies - whether we can extract things correctly (with pull distributions to show that errors are reasonable)
+   \item Projection to different amount of statistics
+   \item etc.
+   \end{itemize}
+   Present details bit by bit for scrutiny in this group from now on, hopefully we can open the box in a few months.
+
+   \textbf{Show some 100-dataset pull plots here}
+\end{frame}
+
+\begin{frame}{Summary}
+   \begin{itemize}
+   \item Rounds of bug fixes done.  Finally ready to move on again.
+   \item Various improvements have been implemented that speed things up and make things more robust
+   \item Toy results will appear soon; and in the meantime the analysis will be presented in pieces for scrutiny.
+   \item We are preparing a document on all the details of calculation.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}{Backup slides ahead}
+\end{frame}
+
+\begin{frame}{Blank page}
+\end{frame}
+
+
+\end{document}
+
+
+
+

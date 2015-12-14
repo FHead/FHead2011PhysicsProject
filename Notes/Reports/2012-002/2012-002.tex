@@ -1,0 +1,120 @@
+\documentclass{fheadnote}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{textcomp}
+\usepackage{footnote}
+\usepackage{hyperref}
+
+\begin{document}
+
+\begin{titlepage}
+
+   \fheadreport{2012/001}
+   \date{\today}
+
+   \title{CMS VBF Mini Workshop}
+
+   \begin{Authlist}
+      Yi Chen
+      \Instfoot{Institute}{California Institute of Technology}
+   \end{Authlist}
+
+   % \collaboration{FHead collaboration}
+
+   \begin{abstract}
+      CMS VBF mini workshop notes on Aug. 30, 2012.
+   \end{abstract}
+
+\end{titlepage}
+
+\setcounter{page}{2}
+
+\section{Notes from talks}
+
+\subsection{P. Harris, VBF overview}
+
+\begin{enumerate}
+\item 30 fb$^{-1}$ expect roughly 72/36 events.
+\item Important variables: $\Delta \eta_{jj}$, $m_{jj}$
+\item $\Delta \phi$ between jets tells us about CP-even vs. SM vs. CP-odd
+\item ggH + 2 jets: jets are mostly gluon-jets
+\item ggH + 2 jets looks like background in the important variables.
+\item Treatment of uncertainty on central jet veto is divergent.
+\item Maybe we can look at Madgraph-generated H+jj H+jjj samples to get an idea
+\item Si pointed out that $p_T$ cut is important.  20 GeV is too low for example.
+   If too low we start to be sensitive to various things
+\item Si: Madgraph didn't include loop diagrams, so systematics studies might not be covering.
+   Maybe use MC@NLO.
+   Emanuele: The reason that we didn't use MC@NLO in the past two years is that the DY is not well-described.
+\item PU jet rejection, forward jet JES
+\end{enumerate}
+
+\subsection{P. Musella, $H^0 \rightarrow \gamma\gamma$}
+
+\begin{enumerate}
+\item For pileup rejection, MVA trained on Z+jet is sub-optimal.  Under investigation.
+\item No central jet veto.
+\item Showed efficiency curve for variables alone.  In reality they used two variables (RMX, beta star),
+   but combined curve not shown.   Christoph don't understand.
+\item Different approaches to improve VBF tagging:  MVA, $M_{jj}$ + $M_{\gamma\gamma}$ fit, di-photon MVA + $M_{\gamma\gamma}$ fit.  Typical improvement is 10-20\%.
+\item MVA VBF tag.  They used 2 jets above 20 GeV.  Quoted improvement is 20\%.
+   Markus argued that this will affect result.
+   Pasquale argued that it doesn't matter much.
+\item Expected gain in coupling measurement sensitivity is about 10\%.
+\item 2D fit.  Caveat: measuring mass distribution and extrapolate from low MVA to large MVA.
+\item gg contamination uncertainty large.  Estimated by comparing different {\sc pythia} tunes.
+   Markus questions whether this is a good idea to do it this way.
+   Emanuele: we can't really justify the coverage of this method.
+   Someone over evo: we did this 20 years ago.
+   Christoph: we need to use the one that makes more sense, even if it's still not ideal.  We need to have some conherence too.
+\item Ideas to reduce gg uncertainty.  Improve simulation, reduce contamination, data-driven (from $M_{jj}$ shape for example).
+\end{enumerate}
+
+\subsection{L. Quertenmont, $H^0 \rightarrow Z^0Z^0$}
+
+\begin{enumerate}
+\item Sorry, I was distracted...
+\end{enumerate}
+
+\subsection{A. Massironi, $H^0 \rightarrow W^+W^-$}
+
+\begin{enumerate}
+\item In the lvjj, require 4 jets.  2 with largest delta eta are the tag jets.  Then cut on delta eta and
+   Mjj of the tagged jets.  Markus questioned that the Mjj cut might kill everything.
+\item Large uncertainty on gg contamination again.  gg contamination level is about 15\% here
+\item Top background (di-lepton channel) estimated using b-tag efficiency
+\end{enumerate}
+
+\subsection{M. Chan, $H^0 \rightarrow \tau\tau$}
+
+\begin{enumerate}
+\item For the semi-hadronic channels, train BDT using muon channel.  For e-mu channel, train separately.
+\item For BDT input, included variables like delta phi jj ==> CP measurement will be more complicated.
+\item Showering uncertainty is taken from WW directly.
+\end{enumerate}
+
+\subsection{S. Bansal, $H^0 \rightarrow bb$}
+
+\begin{enumerate}
+\item Using q-g separation.  Collect variables and throw into TMVA
+\item Jet PT regression to improve resolution
+\end{enumerate}
+
+\subsection{Final remarks}
+
+\begin{enumerate}
+\item We rely heavily on MC.  Maybe we can try different generators, etc.
+\item Everyone is tired and doesn't talk too much.
+\item Showering uncertainty is a sticky point.  Christoph pointed out that there's a note from Phil.
+\end{enumerate}
+
+
+\pagebreak
+
+\end{document}

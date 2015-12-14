@@ -1,0 +1,34 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+source ~/.bashrc
+
+for i in `ls Source/*root`
+do
+   echo $i
+
+   Start=0
+   End=200000
+   Base=`basename $i`
+   FileName=$CurrentFolder/BatchSubmit/${Base}_${Start}_${End}.sh
+
+   BatchPrefix > $FileName
+
+   echo "cd $CurrentFolder" >> $FileName
+   echo "mkdir -p /wntmp/yichen/Work_$Base" >> $FileName
+   echo "" >> $FileName
+
+   echo "cd /wntmp/yichen/Work_$Base" >> $FileName
+   echo "sh $CurrentFolder/batchcompile.sh $CurrentFolder" >> $FileName
+   echo "time ./RunSignal $CurrentFolder/$i $Start $End > S_$Base" >> $FileName
+   echo "time ./RunBackground $CurrentFolder/$i $Start $End > B_$Base" >> $FileName
+   echo "mv S_$Base $CurrentFolder/BatchResult/" >> $FileName 
+   echo "mv B_$Base $CurrentFolder/BatchResult/" >> $FileName 
+   echo "rm RunSignal RunBackground *.o" >> $FileName
+done
+
+
+

@@ -1,0 +1,34 @@
+   const double Pi = CONST_PI;
+   
+   double M1 = (leptons.Lepton11 + leptons.Lepton12).GetMass();
+   double M2 = (leptons.Lepton21 + leptons.Lepton22).GetMass();
+
+   const double s = (leptons.Lepton11 + leptons.Lepton12 + leptons.Lepton21 + leptons.Lepton22).GetMass2();
+   const double MZ = CONST_MZ;
+   const double wZ = CONST_WZ;
+   
+   const double vh = CONST_VH;
+   const double gL = CONST_GL;
+   const double gR = CONST_GR;
+   const double EE = CONST_EE;
+   const double el = -EE;
+
+   FourVector P3 = leptons.Lepton11;
+   FourVector P4 = leptons.Lepton12;
+   FourVector P5 = leptons.Lepton21;
+   FourVector P6 = leptons.Lepton22;
+
+   if(M1 < M2)
+   {
+      swap(M1, M2);
+      swap(P3, P5);
+      swap(P4, P6);
+   }
+
+   double C34 = P3 * P4;
+   double C35 = P3 * P5;
+   double C36 = P3 * P6;
+   double C45 = P4 * P5;
+   double C46 = P4 * P6;
+   double C56 = P5 * P6;
+   double E3456 = EPS(P3, P4, P5, P6);

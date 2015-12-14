@@ -1,0 +1,34 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/Work
+
+for i in Converted*root
+do
+   echo $i
+
+   Script=$CurrentFolder/BatchSubmit/$i.sh
+   Work=$CurrentFolder/Work/$i
+   TruthString=`echo $i | tr '_' ' ' | cut --delim=' ' --field=3-8`
+
+   mkdir -p $Work
+
+   BatchPrefix > $Script
+
+   echo "cd $Work" >> $Script
+   echo "ln -s $CurrentFolder/$i ." >> $Script
+   echo "ln -s $CurrentFolder/HZZ*105*root ." >> $Script
+   echo "ln -s $CurrentFolder/PerformFits ." >> $Script
+   echo "ln -s $CurrentFolder/Normalization.dh ." >> $Script
+   echo "time ./PerformFits $i 20 HZZ*105*root 20 $TruthString" >> $Script
+   echo "mv OutputFile.root OutputFile20.root" >> $Script
+   echo "time ./PerformFits $i 100 HZZ*105*root 100 $TruthString" >> $Script
+   echo "mv OutputFile.root OutputFile100.root" >> $Script
+done
+
+
+

@@ -1,0 +1,51 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+for i in Data/*root
+do
+   i=`basename $i`
+
+   TruthString="-0.66666666 -0.63723762380188209 -0.8608113137327875 -1.286937104577596 -0.4458580244917939"
+
+   SignalEventCount=25
+   SignalSample="$CurrentFolder/Data/$i"
+
+   for j in `seq 1 12`
+   do
+      FileName="BatchSubmit/Run_${i}_${j}.sh"
+      WorkDir="Work/WorkArea_${i}_${j}"
+
+      BatchPrefix > $FileName
+      echo "" >> $FileName
+      echo "cd $CurrentFolder" >> $FileName
+      echo "mkdir -p /wntmp/yichen/" >> $FileName
+      echo "" >> $FileName
+      echo "mkdir -p $WorkDir" >> $FileName
+      echo "cd $WorkDir" >> $FileName
+      echo "ln -s ../../Normalization.dh ." >> $FileName
+
+      echo "pwd" >> $FileName
+
+      echo "ln -s ../../DoFit.cpp ." >> $FileName
+      echo "ln -s ../../FitClass.cpp ." >> $FileName
+      echo "ln -s ../../FitClass.h ." >> $FileName
+      echo "ln -s ../../compile.sh ." >> $FileName
+
+      echo "sh compile.sh" >> $FileName
+      echo "echo \$HOSTNAME" >> $FileName
+
+      echo "time ./PerformFits $SignalSample $SignalEventCount $TruthString" >> $FileName
+      echo "mv OutputFile.root OutputFile_S_$SignalEventCount.root" >> $FileName
+      echo "rm PerformFits *.o" >> $FileName
+
+      SignalEventCount=`echo $SignalEventCount | MultiplyConst 2`
+   done
+done
+
+
+

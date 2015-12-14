@@ -1,0 +1,15 @@
+TFile F("OutputFile.root")
+TCanvas C("C", "C", 1024, 1024)
+ResultTree->Draw("A3A1*sin(A3Phase):A3A1*cos(A3Phase)>>HMeow", "Status == 3 && abs(A3A1*cos(A3Phase)) < 10 && abs(A3A1*sin(A3Phase)) < 10", "colz")
+HMeow->SetStats(1)
+HMeow->SetTitle("Fit result for dataset containing 30 signal events")
+HMeow->GetXaxis()->SetTitle("real(A3/A1)")
+HMeow->GetYaxis()->SetTitle("imag(A3/A1)")
+C.SaveAs("HybridA3Fit.png")
+C.SaveAs("HybridA3Fit.C")
+C.SaveAs("HybridA3Fit.eps")
+C.SaveAs("HybridA3Fit.pdf")
+
+
+
+

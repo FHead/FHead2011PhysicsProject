@@ -1,0 +1,16 @@
+A1ZZR = 2*(1 + delcz)
+A2ZZR = -4*aEM*Pi*pow(cW,-2)*pow(sW,-2)*(-cWW + pow(sW,2)*(cWW + (-4*cWB + cWW)*pow(cW,2) - cBB*pow(sW,2)))
+A3ZZR = -4*aEM*Pi*pow(cW,-2)*pow(sW,-2)*(-cWWd + pow(sW,2)*(cWWd + (-4*cWBd + cWWd)*pow(cW,2) - cBBd*pow(sW,2)))
+A4ZZR = -(pow(sW,-2)*(16*aEM*cWB*Pi + (delcw - delcz - 4*delm)*(-1 + 2*pow(sW,2))))/2.
+A1ZAR = 0
+A2ZAR = 4*aEM*Pi*pow(cW,-1)*pow(sW,-1)*(-2*cWB + cWW - (cBB - 4*cWB + cWW)*pow(sW,2))
+A3ZAR = 4*aEM*Pi*pow(cW,-1)*pow(sW,-1)*(-2*cWBd + cWWd - (cBBd - 4*cWBd + cWWd)*pow(sW,2))
+A4ZAR = -(pow(cW,-1)*(8*aEM*cWB*Pi - (delcw - delcz - 4*delm)*pow(cW,2))*pow(sW,-1))
+A1AZR = 0
+A2AZR = 4*aEM*Pi*pow(cW,-1)*pow(sW,-1)*(-2*cWB + cWW - (cBB - 4*cWB + cWW)*pow(sW,2))
+A3AZR = 4*aEM*Pi*pow(cW,-1)*pow(sW,-1)*(-2*cWBd + cWWd - (cBBd - 4*cWBd + cWWd)*pow(sW,2))
+A4AZR = -(pow(cW,-1)*(8*aEM*cWB*Pi - (delcw - delcz - 4*delm)*pow(cW,2))*pow(sW,-1))
+A1AAR = 0
+A2AAR = 4*aEM*(cBB - 4*cWB + cWW)*Pi
+A3AAR = 4*aEM*(cBBd - 4*cWBd + cWWd)*Pi
+A4AAR = 0

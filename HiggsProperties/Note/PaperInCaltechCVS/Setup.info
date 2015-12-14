@@ -1,0 +1,4 @@
+export CVSROOT=:ext:yichen@cms.hep.caltech.edu:/cvs/user
+export CVS_RSH=ssh
+cvs co -d HLLPaperDraft yichen/PaperDraft
+

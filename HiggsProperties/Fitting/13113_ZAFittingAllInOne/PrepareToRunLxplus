@@ -1,0 +1,31 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/Work
+
+for COUNT in 25 50 100 200 400 800 1600 3200 6400 12800 25600 51200 102400 204800 409600 919200
+do
+   for RUN in `seq 1 20`
+   do
+      echo $COUNT
+
+      Script=$CurrentFolder/BatchSubmit/${COUNT}_${RUN}.sh
+      Work=$CurrentFolder/Work/${COUNT}_${RUN}
+
+      mkdir -p $Work
+
+      BatchPrefix > $Script
+
+      echo "cd $Work" >> $Script
+      echo "ln -s $CurrentFolder/PerformFits ." >> $Script
+      echo "ln -s $CurrentFolder/ZANormalization.dh ." >> $Script
+      echo "time ./PerformFits ${COUNT} 0.007 0 -0.008 0 $RUN" >> $Script
+   done
+done
+
+
+

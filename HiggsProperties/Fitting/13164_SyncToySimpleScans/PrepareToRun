@@ -1,0 +1,58 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/BatchResult
+
+BinCount=80
+BinMin=0
+BinMax=1
+
+for i2 in `seq 1 $BinCount`
+do
+   for i3 in `seq 1 $BinCount`
+   do
+      WorkDir="/wntmp/yichen/Work/WorkArea_Fit_13162_${i2}_${i3}"
+      FileName="$CurrentFolder/BatchSubmit/Submit_$i.sh"
+
+      F2=`echo $BinMin $BinMax $BinCount $i2 | awk '{print $1 + ($2-$1)/$3*($4-0.5)}'`
+      F3=`echo $BinMin $BinMax $BinCount $i3 | awk '{print $1 + ($2-$1)/$3*($4-0.5)}'`
+      F1=`echo $F2 $F3 | awk '{print 1-$1-$2}'`
+      S2=`echo $F1 $F2 | awk '{print $2/$1}'`
+      S3=`echo $F1 $F3 | awk '{print $2/$1}'`
+      A2=`echo $F2 | awk '{print sqrt(S2)*(-3.276)}'`
+      A3=`echo $F3 | awk '{print sqrt(S2)*(-5.042)}'`
+      echo $i2 $A2 $F2
+      echo $i3 $A3 $F3
+
+      BatchPrefix > $FileName
+      echo "" >> $FileName
+      echo "mkdir -p $WorkDir" >> $FileName
+      echo "cd $WorkDir" >> $FileName
+      echo "" >> $FileName
+      echo "pwd" >> $FileName
+      echo "" >> $FileName
+      echo "cp -r $CurrentFolder/*cpp $WorkDir" >> $FileName
+      echo "cp -r $CurrentFolder/*h $WorkDir" >> $FileName
+      echo "cp -r $CurrentFolder/Trees $WorkDir" >> $FileName
+      echo "" >> $FileName
+      echo "rm $WorkDir/*.dh" >> $FileName
+      echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/CombinedNormalization.dh $WorkDir/" >> $FileName
+      echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/Normalization.dh $WorkDir/" >> $FileName
+      echo "" >> $FileName
+      echo "sh compile.sh" >> $FileName
+      echo "" >> $FileName
+      echo "time ./RunLikelihood Trees/SyncToys_7TeV_SMSignal.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root \\" >> $FileName
+      echo "   Trees/SyncToys_8TeV_SMSignal.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root \\" >> $FileName
+      echo "   $A2 $A3 0 0 0 0 0 10 NNNNNNNN NNNNNNNN" >> $FileName
+      echo "mv LikelihoodFile.root $CurrentFolder/BatchResult/SMLikelihoodFile_$i.root" >> $FileName
+      echo "" >> $FileName
+      echo "rm -r $WorkDir/*" >> $FileName
+   done
+done
+
+
+

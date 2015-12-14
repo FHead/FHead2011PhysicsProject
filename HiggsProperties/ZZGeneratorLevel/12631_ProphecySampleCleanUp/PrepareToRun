@@ -1,0 +1,35 @@
+#!/bin/bash
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/BatchResult
+
+DataLocation=~/Tier2/Prophecy4f/12631_BigRun
+
+for i in `ls $DataLocation | grep Meow`
+do
+   RunNumber=`echo $i | cut --delim='_' --field=2`
+   FileName=$CurrentFolder/BatchSubmit/ProcessProphecyOutput_${RunNumber}.sh
+   TempDirectory=/wntmp/$USER/TEMP_$RunNumber/
+
+   BatchPrefix > $FileName
+
+   echo "" >> $FileName
+   echo "mkdir -p $TempDirectory" >> $FileName
+   echo "cd $TempDirectory" >> $FileName
+   echo "cp $DataLocation/$i Data.tar.gz" >> $FileName
+   echo "tar zxvf Data.tar.gz" >> $FileName
+   echo "cp $CurrentFolder/*cpp $CurrentFolder/*h ." >> $FileName
+   echo "sh compile.sh" >> $FileName
+   echo "grep \"^ [ ]*[- ]1[13]  \" UNWEIGHTEDEVENTS/ProphecyEvents3_unweighted.lhe > Leptons" >> $FileName
+   echo "./ProcessLHE Leptons ProphecyData_$RunNumber.root" >> $FileName
+   echo "ls -l" >> $FileName
+   echo "mv ProphecyData_$RunNumber.root $CurrentFolder/BatchResult" >> $FileName
+   echo "cd; rm -rf $TempDirectory" >> $FileName
+done
+
+
+

@@ -1,0 +1,218 @@
+\documentclass{fheadnote}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{textcomp}
+\usepackage{footnote}
+\usepackage{hyperref}
+
+\begin{document}
+
+\begin{titlepage}
+
+   \fheadreport{2012/001}
+   \date{\today}
+
+   \title{SUSY 2012 report}
+
+   \begin{Authlist}
+      Yi Chen
+      \Instfoot{Institute}{California Institute of Technology}
+   \end{Authlist}
+
+   % \collaboration{FHead collaboration}
+
+   \begin{abstract}
+      Report of the SUSY 2012 conference.
+   \end{abstract}
+
+\end{titlepage}
+
+\setcounter{page}{2}
+
+\section{Introduction}
+
+I participated in SUSY 2012 conference in Beijing, Aug. 13-19 2012.
+This short report is a summary of the interesting points I've noticed.
+
+\section{Interesting points}
+
+\subsection{DM experiments}
+
+XENON 100 collaboration has a new result in 2012.
+Experimentally with Xenon target, they'll have two signals, one from ionized + drifted electron,
+one from prompt photon.
+3D spatial reconstruction is also possible, and is important in background rejection.
+XENON 1T hope to start soon.
+
+LUX experiment is under construction.  It's also Xenon target.  100 kg fiducial volume.
+1.5 km underground + immersed in water for better background rejection.
+
+KIMS experiment is a small experiment in Korea aim to measure annual modulation.
+Target is CsI crystal (solid), and they have collected 75.53 ton-days of data.
+For the result, fit with exponential (internal radiation source) + constant (external) + modulation.
+No significant modulation found, in contradiction with previous experiment.
+
+In China, they are launching several experiments.
+TANSUO experiment is space-based (like AMS), expected to have very good performance.
+CJPL underground detector.  PandaX, Xenon detector similar to XENON and LUX.
+CDEX: Ge solid detector.
+
+AMS presentation shows a lot of good performance plots, but no physics results yet.
+
+\subsection{Models for DM}
+
+One topic that comes out is the dynamical dark matter.
+Instead of stability of some new paritcle, imagine an ensemble of new particles.
+For example the di-jet mass distribution will have weird shapes.
+It's still very far from mature, so we'll have to wait before we can start searching for this.
+
+Maybe Higgs is a psuedo Nambu-Goldstone boson due to breaking of larger symmetry.
+In this model (+some other assumptions), we can put in a dark matter candidate
+which has contact interactions to higgs and fermions.
+
+Maybe DM violated iso-spin (couples to up and down quark differently).
+We can measure this via interference in $q\bar{q} \rightarrow q\bar{q}$ diagrams,
+where DM pair production can come from initial quark or final quarks.
+The experimental signature to look for is mono-photon and mono-jet and compare.
+Needs huge amount of data, even without systematic errors.
+Not practical at the moment.
+
+Axion-like particles (hidden-photons, etc.).
+The universe is a bit too transparent to high energy photons.
+See also D. Horns, M. Meyer (2012) for this opacity anomaly.
+Maybe photons got converted to axion-like particles, travel a bit, and convert back.
+Toy model studied, where space is split into different regimes of uniform magnetic field
+of random directions.  If this is true we should see the spectrum getting very noisy.
+As a result if we look at the variance around the smoothed spectrum line,
+there should be a sign.
+
+Millicharged atomic DM.  There exists a hidden sector where the only coupling to real world
+is through photons of term like $FF + F'F' + \epsilon FF'$.
+Particles there will appear to have weird charge in our world.
+They also fit to CoGeNT anomaly, arXiv 1207.3039.
+
+Sterile neutrino....don't understand at all, but it's worth reading further.
+
+Classically conformal B-L model.  The gauge group here is SM $\times U(1)_{B-L}$,
+which will give us right-handed neutrino, a new SM singlet ($\phi$), and the $U(1)_{B-L}$ guy.
+New field acquire mass through Yukawa coupling (+ symmetry breaking).
+Assign a new $Z_2$ quantum number to right-handed neutrinos (even to first one, odd to others).
+The first one is then DM candidate, and the other two are responsible for neutrino oscillation.
+
+\subsection{PDFs, programs, calculations}
+
+A group in DESY is developing relic density calculation at the NLO.
+Currently annihilation diagrams are included, but not yet co-annihiliation ones.
+See more at their website http://dmnlo.hepforge.org .
+
+NLO calculation is now way better than before.
+So...the NLO wish list has been closed recently.
+Now, we have NNLO wish list.
+
+In the CTEQ talk difference between several recent CTEQ PDFs are summarized.
+CT10 NNLO used pre-LHC data.  Difference between CT10 and CT10w is the inclusion of D0 run-2 Al measurement.
+CT12 NLO/NNLO which includes LHC data is coming soon.
+One important point he points out is that there is no ``real'' NNLO fit.
+Only partial NNLO fit exists so far.
+
+
+\subsection{Phase transition vs. inflation}
+
+The interesting lesson for me here is the idea of inflaton and waterfall field.
+On top of the traditional potential there are a number of different explorations in different directions.
+Some explores the (rough) effect of different types of potentials.
+This is the first time I heard about this field, so I jotted down some keywords for further reading:
+non-gaussianity, tribrid inflation, hybrid inflation, inflaton, waterfall field, Kahler potential,
+DBI inflation, tensor to scalar ratio, shift hybrid, smooth hybrid, $\eta$ problem.
+
+\subsection{Variables}
+
+\begin{enumerate}
+\item Thrust
+
+\begin{equation}
+T = max_{\vec{n}_T} \dfrac{\Sigma |\vec{q}_{T,i} \cdot \vec{n}_T|}{\Sigma |\vec{q}_{T,i}|}  \nonumber
+\end{equation}
+
+\item $R_T$, ratio of scalar sum of interesting jets to all jets.
+
+\item Transverse mass calculated using two jets
+
+\item N-jet mass endpoints
+
+\item M3: invariant mass of the three jets that gives maximum total $p_T$, including 1 b-tag and 2 non-tagged
+jets.  Useful in top candidates.
+
+\end{enumerate}
+
+\subsection{Standard model}
+
+There's a weird talk of pair of heavy chiral quark annihilating into a lot of longitudinally-polarized
+vector bosons.
+
+Precision SM measurement at Jefferson Lab.  From 1994 to 2012, they have completed the 6 GeV run.
+They measured electron, proton weak charges (and others).  This might open up window for new physics.
+Starting from 2013 (hopefully) they'll move to 11/12 GeV run.
+
+NuTeV collaboration measures the weak angle by first measure charge current to neutral current ratio
+of neutrino and anti-neutrino separately, and then infer $sin \theta_W$.
+However earlier last decade their preliminary result is weird with 3 $\sigma$ deviation.
+The speaker listed few effects that might explain the anomaly: contribution from strange quark,
+QED splitting, charge symmetry violation correction, ``EMC effect''.
+EMC effect is something no one understands (or so it appears to me), which might be related to
+the momentum carried by valence quark compared to momentum carried by nucleon quarks.
+
+\subsection{Higgs-related}
+
+Random points:
+\begin{enumerate}
+\item Tevatron also see slight excess in photon channel.
+\item There's a talk fitting for Higgs coupling.
+\item MSSM can accomodate 125 GeV Higgs easily.
+\item Higgs in warped extra dimensions might produce modified coupling to W/Z, and maybe photons.
+\item One speaker scanned phase spaces for alternate models, and plot out allowed regions for
+rate ratio to SM.  The plots are worth checking again.  ``If excess in di-photon exceeds 60\%,
+MSSM will be in trouble''
+\end{enumerate}
+
+\section{More thought on the milli-charged particle}
+
+First of all, if $\epsilon$ is too small, there's no chance we can see them in colliders.
+Sky is the way to go in that case.
+In colliders, they will be pair-produced.
+
+Since charge appears to be small, momentum will appear to be large (TeV muons?).
+Therefore missing energy will point opposite to the two tracks.
+Furthermore dE/dx will appear at weird places with large dE/dx and large momentum.
+This could be an interesting quick thing to check.
+
+Depending on DM density around us, the milli-charged particles will have a chance
+of interacting with them.  So in colliders we might see such tracks bending for
+no good reason.
+
+
+\section{Summary}
+
+Since I mostly followed the cosmology sessions, I missed most of the SUSY talks.
+It's a good overview of the current status of different experiments and what the ``hot''
+topics in DM are.
+On the Higgs side there's a lot of discussion on the possible excess in the di-photon channel,
+but the common conclusion is that we need more data to say for certain what is what.
+
+
+
+% \begin{thebibliography}{9}
+%    \bibitem{Yay} {\bf Yay Yay Yay},
+%       Y. Yayayaya,
+%       {\em "Yayayayay study using 2010 data"}
+% \end{thebibliography}
+ 
+\pagebreak
+
+\end{document}

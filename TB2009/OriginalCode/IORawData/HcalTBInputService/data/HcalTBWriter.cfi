@@ -1,0 +1,18 @@
+module hcalTBWriter = HcalTBWriter {
+  /// Pattern for output filenames (%d will be replaced by run number)
+  untracked string FilenamePattern = "/data/spool/HTB_%06d.root"
+  /// Map of FED-ids to Branch names for the writer
+  untracked VPSet ChunkNames = {
+    {
+      /// FED id
+      untracked int32 Number=1
+      /// Branch name
+      untracked string Name='HCAL_Trigger'
+    },{
+      /// FED id
+      untracked int32 Number=20
+      /// Branch name
+      untracked string Name='HCAL_DCC020'
+    }
+  }
+}

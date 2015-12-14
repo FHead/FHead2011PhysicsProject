@@ -1,0 +1,15 @@
+executable              = RunToys.sh
+universe                = vanilla
+arguments               = $(Process)
+input                   =
+output                  = Log/RunToys_$(Process).out
+error                   = Log/RunToys_$(Process).err
+log                     = Log/RunToys_$(Process).log
+should_transfer_files   = YES
+transfer_output_files   = DummyFile
+when_to_transfer_output = ON_EXIT
+
+queue 1000
+
+
+

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+source ~/.bashrc
+
+for i in `seq 7001 7500`
+do
+   FileName="BatchSubmit/Run_ZA0$i.sh"
+
+   BatchPrefix > $FileName
+
+   echo "" >> $FileName
+   echo "cd $CurrentFolder" >> $FileName
+   echo "mkdir -p /wntmp/yichen/WorkArea_$i" >> $FileName
+   echo "" >> $FileName
+
+   echo "cd /wntmp/yichen/WorkArea_$i" >> $FileName
+   echo "sh $CurrentFolder/batchcompile.sh $CurrentFolder" >> $FileName
+   echo "time ./Run $i | tac | ./Synthesize | ./ConvertToTree" >> $FileName
+   echo "mv ResultTree.root $CurrentFolder/Samples/Events_ZA0$i.root" >> $FileName
+   echo "rm Run Synthesize ConvertToTree" >> $FileName
+done
+
+
+

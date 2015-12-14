@@ -1,0 +1,37 @@
+TFile File("FitResults_30.root")
+TCanvas c1("c1", "", 1024, 1024)
+OutputTreeComplex->Draw("atan(tan(ATanA3A1)*cos(A3Phase)):atan(tan(ATanA3A1)*sin(A3Phase))>>A(50,-1.57,1.57,50,-1.57,1.57)", "", "colz")
+A.SetStats(0)
+A.GetXaxis()->SetTitle("tan^{-1}(Re(A_{3}^{ZZ})/(5.1 A_{1}^{ZZ}))")
+A.GetYaxis()->SetTitle("tan^{-1}(Im(A_{3}^{ZZ})/(5.1 A_{1}^{ZZ}))")
+A.SetTitle("Best fit location for pseudo-dataset with size 30")
+A.GetXaxis()->SetTitleOffset(1.2)
+A.GetYaxis()->SetTitleOffset(1.2)
+A.Draw("colz")
+c1.SetLogz(true)
+
+TGraph HalfHalf;
+PI = atan(1) * 4
+for(int i = 0; i <= 1000; i++) {HalfHalf.SetPoint(i, atan(cos(2*PI*i/1000)), atan(sin(2*PI*i/1000)));}
+HalfHalf.SetLineColor(kBlack)
+HalfHalf.SetLineWidth(3)
+HalfHalf.SetLineStyle(kDashed)
+HalfHalf.SetFillStyle(0)
+HalfHalf.Draw("l")
+
+TGraph OneOne;
+PI = atan(1) * 4
+for(int i = 0; i <= 1000; i++) {OneOne.SetPoint(i, atan(cos(2*PI*i/1000)/5.1), atan(sin(2*PI*i/1000)/5.1));}
+OneOne.SetLineColor(kBlue)
+OneOne.SetLineWidth(3)
+OneOne.SetLineStyle(kDashed)
+OneOne.SetFillStyle(0)
+OneOne.Draw("l")
+
+c1.SaveAs("A3A1ResultWith30Events.png")
+c1.SaveAs("A3A1ResultWith30Events.C")
+c1.SaveAs("A3A1ResultWith30Events.eps")
+c1.SaveAs("A3A1ResultWith30Events.pdf")
+
+
+

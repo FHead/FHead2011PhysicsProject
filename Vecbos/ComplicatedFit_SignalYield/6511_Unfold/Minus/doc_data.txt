@@ -1,0 +1,9 @@
+InfoKey: Producer
+InfoValue: ESP Ghostscript 815.02
+InfoKey: ModDate
+InfoValue: D:20110118004916
+InfoKey: CreationDate
+InfoValue: D:20110118004916
+PdfID0: 3fa72d2cdb33058831287b94b343655
+PdfID1: 3fa72d2cdb33058831287b94b343655
+NumberOfPages: 13

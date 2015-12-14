@@ -1,0 +1,46 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+for i in `seq 210001 210100`
+do
+   FileName="BatchSubmit/Run_$i.sh"
+
+   echo "#!/bin/sh" > $FileName
+   echo "#$ -S /bin/sh" >> $FileName
+   echo "#$ -V" >> $FileName
+
+   # echo -n "#$ -q all.q@compute-30-1.local" >> $FileName
+   # for j in compute-3-10 compute-3-11 compute-3-12 compute-3-4  compute-3-5  compute-3-6  compute-3-7  compute-3-8  compute-3-9 compute-3-2 compute-3-3
+   # do
+   #    echo -n ",all.q@$j.local" >> $FileName
+   # done
+   # echo >> $FileName
+
+   # 0-0, 0-1, 0-14, 0-2, 0-3, 0-4, 0-5, 0-6, 1-0, 1-2, 1-3, 1-4, 1-5, 1-6, 1-7, 1-8, 1-0, t3-susy
+   # T3-susy
+   echo -n "#$ -q all.q@t3-susy.local" >> $FileName
+   for j in 0-0 0-1 0-2 0-3 0-4 0-5 0-6 1-0 1-2 1-3 1-4 1-5 1-6 1-7 1-8 1-9
+   do
+      echo -n ",all.q@compute-$j.local" >> $FileName
+   done
+   echo >> $FileName
+
+   echo "" >> $FileName
+   echo "export CMS_PATH=/cms/sw; export SCRAM_ARCH=slc5_amd64_gcc462" >> $FileName
+   echo "cd ~/CMSSW/CMSSW_5_2_3/src; eval \`/cms/sw/bin/scramv1 runtime -sh\`;" >> $FileName
+   echo "" >> $FileName
+   echo "cd $CurrentFolder" >> $FileName
+   echo "mkdir -p /wntmp/yichen/" >> $FileName
+   echo "" >> $FileName
+
+   echo "mkdir -p Work/WorkArea_$i" >> $FileName
+   echo "cd Work/WorkArea_$i" >> $FileName
+   echo "time ../../Run $i | tac | ../../Synthesize | ../../ConvertToTree" >> $FileName
+   echo "mv ResultTree.root Events_$i.root" >> $FileName
+done
+
+
+

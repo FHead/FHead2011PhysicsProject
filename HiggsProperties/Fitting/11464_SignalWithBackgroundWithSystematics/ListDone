@@ -1,0 +1,27 @@
+#!/bin/sh
+
+rm -f CopyAll
+touch CopyAll
+HasSomething=0
+
+for i in `ls FitResults* | cut --delim='.' --field=1 | sort | uniq -c | awk '{if($1 == 1) print $2}'`
+do
+   echo mv $i.root BatchResult/
+   echo mv $i.root BatchResult/ >> CopyAll
+   HasSomething=1
+done
+
+if [[ "$HasSomething" == "1" ]]
+then
+   LineCount=`wc -l CopyAll | awk '{print $1}'`
+
+   echo ""
+   echo "Above command(s) are copied to file named \"CopyAll\""
+   echo "$LineCount lines in total."
+else
+   echo "No new jobs are finished...let's wait"
+   rm -f CopyAll
+fi
+
+
+

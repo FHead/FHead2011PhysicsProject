@@ -1,0 +1,5 @@
+time ./PerformFits \
+   Trees/SyncToys_7TeV_SMSignal.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root \
+   Trees/SyncToys_8TeV_SMSignal.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root \
+   0 0 0 0 0 0 0 \
+   20

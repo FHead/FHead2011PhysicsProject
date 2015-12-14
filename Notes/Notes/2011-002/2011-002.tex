@@ -1,0 +1,98 @@
+\documentclass{fheadnote}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{textcomp}
+\usepackage{footnote}
+\usepackage{hyperref}
+\usepackage{lscape}
+
+\begin{document}
+
+\begin{titlepage}
+
+   \fheadnote{2011/002}
+   \date{\today}
+
+   \title{A measurement on b-tagging efficiency in simulation}
+
+   \begin{Authlist}
+      Yi Chen
+      \Instfoot{Institute}{California Institute of Technology}
+   \end{Authlist}
+
+   % \collaboration{FHead}
+
+  \begin{abstract}
+  This is a short note documenting how the MC b-tagging efficiency is estimated, gearing towards designing of leptoquark analysis.
+  \end{abstract}
+
+\end{titlepage}
+
+\setcounter{page}{2}
+
+\tableofcontents
+\clearpage
+
+\section{Background}
+
+In order to use an analysis with b-tagging, we need to know at least qualitatively how the behavior is.
+One thing of importance is the b-tagging efficiency as a function of kinematic variables (PT, eta, phi, etc.)
+since MR and R rely a lot on the kinematics.
+
+
+\section{Samples and b-tag thresholds, and technicalities}
+
+The samples we used are the spring11 madgraph TTbar sample.  Statistics/cross section are not important - let's skip it.
+
+B-tags alooked so far and the corresponding thresholds are listed in table \ref{Table_BTagList}.
+
+\begin{table}[htbp]
+   \centering
+   \begin{tabular}{|c|c|c|c|}
+   \hline
+   Tag name & Variation & Threshold & Alias \\\hline
+   Track counting high efficiency (3D) & Loose & 1.7 & TCHEL \\\hline
+   Track counting high efficiency (3D) & Medium & 3.3 & TCHEM \\\hline
+   Track counting high efficiency (3D) & Tight & 10.2 & TCHET \\\hline
+   Track counting high purity (3D) & Loose & 1.19 & TCHPL \\\hline
+   Track counting high purity (3D) & Medium & 1.93 & TCHPM \\\hline
+   Track counting high purity (3D) & Tight & 3.41 & TCHPT \\\hline
+   Simple secondary vertex high efficiency & Medium & 1.74 & SSVHEL \\\hline
+   Simple secondary vertex high efficiency & Tight & 3.05 & SSVHET \\\hline
+   Simple secondary vertex high purity & Tight & 2.0 & SSVHPT \\\hline
+   \end{tabular}
+   \caption{List of tags used in this report}
+   \label{Table_BTagList}
+\end{table}
+
+\section{Particle-level b hadron tracing and matching}
+
+Since the b quark produced in the hard interaction will undergo different effects (in hadronization step for example) while traversing through the decay chain, final b-jet is sometimes far from the final jet direction.
+I have traced the b hadron (or b quark) downstream until the point where it decays weakly, and use this ``final b-hadron'' to do the matching.
+
+
+
+\section{Feel of systematics}
+
+\section{Dependence on pileup conditions}
+
+\section{Effects on MR/R shape}
+
+\section{Summary}
+
+% \begin{thebibliography}{9}
+%    \bibitem{Yay} {\bf Yay Yay Yay},
+%       Y. Yayayaya,
+%       {\em "Yayayayay study using 2010 data"}
+% \end{thebibliography}
+ 
+\pagebreak
+
+\end{document}
+

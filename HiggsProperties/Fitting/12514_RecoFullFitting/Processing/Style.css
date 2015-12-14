@@ -1,0 +1,312 @@
+body
+{
+   background-color: #374542;
+   font-family: arial,helvetica;
+   color: #7DB8B8;
+   overflow-y: scroll;
+}
+
+div.Header
+{
+   min-width: 800px;
+   max-width: 960px;
+   border: #677572 2px solid;
+   color: #81EEEE;
+   font-size: 150%;
+   border-radius: 10px;
+   margin-bottom: 10px;
+   margin-left: auto;
+   margin-right: auto;
+   text-align: center;
+}
+
+div.ModelSelector
+{
+   padding: 5px;
+   display: inline;
+   border: #677572 1px solid;
+   border-radius: 10px;
+   color: #F5E787;
+   transition: color 0.5s;
+}
+
+div.ModelSelector:hover
+{
+   color: #E278A3;
+}
+
+div.Footer
+{
+   min-width: 800px;
+   max-width: 960px;
+   border: #677572 2px solid;
+   border-radius: 10px;
+   margin-bottom: 10px;
+   margin-left: auto;
+   margin-right: auto;
+   text-align: center;
+}
+
+div.PlotBoxContainer
+{
+   min-width: 800px;
+   max-width: 960px;
+   margin-bottom: 10px;
+   margin-left: auto;
+   margin-right: auto;
+   overflow: auto;
+   display: -webkit-box;
+   display: -moz-box;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   justify-content: space-between;
+}
+
+div.PlotBox
+{
+   width: 49%;
+   border-radius: 10px;
+   /* display: inline-block; */
+   border: #677572 2px solid;
+}
+
+/*
+div.Left
+{
+   float: left;
+}
+
+div.Right
+{
+   float: right;
+}
+*/
+
+div.Plot
+{
+   margin-left: auto;
+   margin-right: auto;
+   height: 237px;
+   width: 350px;
+   border-radius: 10px;
+   border: #677572 1px solid;
+   background-color: #FFF;
+   margin-top: 10px;
+   margin-bottom: 10px;
+   overflow: hidden;
+}
+
+div.Plot img
+{
+   width: 350px;
+   height: 237px;
+}
+
+div.BigPlot
+{
+   margin-left: auto;
+   margin-right: auto;
+   height: 339px;
+   width: 500px;
+   border-radius: 10px;
+   border: #677572 1px solid;
+   background-color: #FFF;
+   margin-top: 10px;
+   margin-bottom: 10px;
+   overflow: hidden;
+}
+
+div.BigPlot img
+{
+   width: 500px;
+   height: 339px;
+}
+
+div.OverlayPlotBoxContainer
+{
+   min-width: 800px;
+   max-width: 960px;
+   margin-bottom: 10px;
+   margin-left: auto;
+   margin-right: auto;
+   border: #677572 2px solid;
+   border-radius: 10px;
+}
+
+div.OverlayPlotBoxContainer img
+{
+   width: 500px;
+   height: 339px;
+   position: relative;
+}
+
+img.NoChange
+{
+   -o-filter: hue-rotate(0deg);
+   -ms-filter: hue-rotate(0deg);
+   -moz-filter: hue-rotate(0deg);
+   -webkit-filter: hue-rotate(0deg);
+   filter: hue-rotate(0deg);
+}
+
+img.HueChange
+{
+   -o-filter: hue-rotate(120deg);
+   -ms-filter: hue-rotate(120deg);
+   -moz-filter: hue-rotate(120deg);
+   -webkit-filter: hue-rotate(120deg);
+   filter: hue-rotate(120deg);
+}
+
+div.SearchBox
+{
+   width: auto;
+   padding: 10px;
+   margin-left: 10px;
+   margin-right: 10px;
+}
+
+div.SearchBox span
+{
+   display: block;
+   overflow: hidden;
+   padding-right: 5px;
+}
+
+div.SearchBox span input
+{
+   width: 100%;
+   font-size: 150%;
+   border: 0px;
+   border-bottom: 2px solid #CFF;
+   background-color: #374542;
+   color: #81EEEE;
+   text-align: center;
+}
+
+div.Explanation
+{
+   min-width: 800px;
+   max-width: 960px;
+   border: #677572 2px solid;
+   border-radius: 10px;
+   padding-bottom: 5px;
+   padding-top: 5px;
+   margin-bottom: 10px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+/*
+form.SampleSelector
+{
+   text-align: center;
+   margin-top: 10px;
+   margin-bottom: 0px;
+}
+*/
+
+a, a:link, a:visited
+{
+   color: #F5E787;
+   text-decoration: none;
+   -webkit-transition: color 0.3s;
+   -moz-transition: color 0.3s;
+   -ms-transition: color 0.3s;
+   -o-transition: color 0.3s;
+   transition: color 0.3s;
+}
+
+a:active, a:focus, a:hover
+{
+   color: #E278A3;
+   outline-style: none;
+}
+
+div.ui-tooltip, .arrow:after
+{
+   background: #172522;
+   border: 2px solid #677572;
+}
+
+div.ui-tooltip
+{
+   width: 250px;
+   padding: 10px 20px;
+   color: white;
+   border-radius: 10px;
+   text-transform: uppercase;
+   box-shadow: 0 0 7px black;
+   position: absolute;
+}
+
+.arrow
+{
+   width: 70px;
+   height: 16px;
+   overflow: hidden;
+   position: absolute;
+   left: 50%;
+   margin-left: -35px;
+   bottom: -16px;
+}
+
+.arrow.top
+{
+   top: -16px;
+   bottom: auto;
+}
+
+.arrow.left
+{
+   left: 20%;
+}
+
+.arrow:after
+{
+   content: "";
+   position: absolute;
+   left: 20px;
+   top: -20px;
+   width: 25px;
+   height: 25px;
+   box-shadow: 6px 5px 9px -9px black;
+   -webkit-transform: rotate(45deg);
+   -moz-transform: rotate(45deg);
+   -ms-transform: rotate(45deg);
+   -o-transform: rotate(45deg);
+   tranform: rotate(45deg);
+}
+
+.arrow.top:after
+{
+   bottom: -20px;
+   top: auto;
+}
+
+div.ButtonBox
+{
+   text-align: center;
+}
+
+div.ui-buttonset label
+{
+   font-size: 70%;
+   text-decoration: none;
+}
+
+div.ui-buttonset label.ui-state-default
+{
+   background: #374542;
+   color: #7DB8B8;
+}
+
+div.ui-buttonset label.ui-state-active
+{
+   background: #677572;
+   color: #81EEEE;
+}
+
+
+

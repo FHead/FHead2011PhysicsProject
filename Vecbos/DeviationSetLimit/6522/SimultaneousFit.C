@@ -1,0 +1,475 @@
+#include <string>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TCut.h"
+#include "TCanvas.h"
+#include "TGraphErrors.h"
+#include "TLegend.h"
+
+#include "RooRealVar.h"
+#include "RooDataSet.h"
+#include "RooCruijff.h"
+#include "RooArgSet.h"
+#include "RooProdPdf.h"
+#include "RooSameAs.h"
+#include "RooAtLeast.h"
+#include "RooFormulaVar.h"
+#include "RooExponential.h"
+#include "RooPolynomial.h"
+#include "RooAddPdf.h"
+#include "RooPlot.h"
+#include "RooFitResult.h"
+using namespace RooFit;
+
+#include "PlotHelper.h"
+#include "DataHelper.h"
+
+void SimultaneousFit(string RootFile = "Samples/DataAll.root", int LastJetBin = 4, string JetFlavor = "Track",
+   int EnergyThreshold = 30, string DataHelperFile = "Samples/DataAll.dh", double ExtraTerm = 0);
+double GetSignalInclusiveCount(int jet, double SignalInclusiveYield, double Alpha, double Beta);
+double GetSignalInclusiveError(int jet, double SignalInclusiveYield, double Alpha, double Beta,
+   double SignalInclusiveYieldError, double AlphaError, double BetaError);
+string GetSignalYieldString(int jet, bool Inclusive = false);
+
+void SimultaneousFit(string RootFile, int LastJetBin, string JetFlavor, int EnergyThreshold,
+   string DataHelperFile, double ExtraTerm)
+{
+   // Get AlphaL value
+   char StateString[1000];
+   sprintf(StateString, "%s Jet, %d, Eta range all, Isolation 0.05", JetFlavor.c_str(), EnergyThreshold);
+
+   DataHelper DHFile(DataHelperFile);
+
+   cout << DHFile.GetListOfKeys().size() << endl;
+
+   if(DHFile.Exist(StateString) == false)
+   {
+      cout << "Error!  State not found.  Run the tight isolation fit first." << endl;
+      return;
+   }
+   if(DHFile[StateString].Exist("AlphaL") == false)
+   {
+      cout << "Error!  Field not found.  Run the tight isolation fit first." << endl;
+      return;
+   }
+
+   double AlphaLValue = DHFile[StateString]["AlphaL"].GetDouble();
+
+   cout << "Extracted alphaL = " << AlphaLValue << endl;
+
+   // Dependent variables
+   RooRealVar ZMass("ZMass", "Invariant mass of dimuon pair", 60, 120, "GeV/c^2");
+   RooRealVar NJet(Form("N%sJet%d", JetFlavor.c_str(), EnergyThreshold), "Count of jets", 0, 20);
+   RooRealVar Muon1CombinedIsolation("Muon1CombinedIsolation", "isolation 1", 0, 100000);
+   RooRealVar Muon2CombinedIsolation("Muon2CombinedIsolation", "isolation 2", 0, 100000);
+   RooRealVar Muon1PT("Muon1PT", "PT 1", 0, 100000);
+   RooRealVar Muon2PT("Muon2PT", "PT 2", 0, 100000);
+   RooArgSet TreeVarSet(ZMass, NJet, Muon1CombinedIsolation, Muon2CombinedIsolation, Muon1PT, Muon2PT);
+
+   // Import data
+   TFile F1(RootFile.c_str());
+   TTree *ZTree1 = (TTree *)F1.Get("outTree");
+   RooDataSet DataSet("ZCandidates", "ZCandidates", ZTree1, TreeVarSet);
+
+   RooDataSet *ReducedDataSet = (RooDataSet *)DataSet.reduce(Form("N%sJet%d >= 1 && ZMass < 120 && ZMass > 60 && Muon1CombinedIsolation < 0.3 * Muon1PT && Muon2CombinedIsolation < 0.3 * Muon2PT", JetFlavor.c_str(), EnergyThreshold));
+   double DataSetTotalEntry = ReducedDataSet->sumEntries();
+
+   cout << "Number of entries = " << DataSetTotalEntry << endl;
+
+   ReducedDataSet->Print();
+
+   // Shape variable and top-level yield variables
+   RooRealVar PeakPosition("PeakPosition", "Z peak position", 90.11, 80, 100, "GeV/c^2");
+   RooRealVar AlphaR("AlphaR", "AlphaR", 0.438, 0.01, 1000000);
+   RooRealVar AlphaL("AlphaL", "AlphaL", AlphaLValue);
+   RooRealVar SigmaR("SigmaR", "SigmaR", 2.30, 0.01, 1000000);
+   RooRealVar SigmaL("SigmaL", "SigmaL", 2.30, 0.01, 1000000);
+
+   RooArgSet TopLevelModels;
+   RooArgSet TopLevelYields;
+
+   RooRealVar SignalInclusiveYield("SignalInclusiveYield", "Signal yield for >= 1 jet",
+      DataSetTotalEntry, 1000, 10000000);
+   RooRealVar BackgroundInclusiveYield("BackgroundInclusiveYield", "BackgroundInclusiveYield", 1.0, 0.0, 10000.0);
+   RooFormulaVar TotalYield("TotalYield", "Total Yield", "@0+@1",
+      RooArgList(SignalInclusiveYield, BackgroundInclusiveYield));
+   
+   RooRealVar Alpha("Alpha", "Alpha parameter in signal yield", 2.9, 1, 10);
+   RooRealVar Beta("Beta", "Beta parameter in signal yield", 0.4, -3, 3);
+   
+   // Build signal pdf
+   vector<RooAbsPdf *> SignalShapes;
+   vector<RooAbsPdf *> Constrains;
+   vector<RooAbsPdf *> SignalJets;
+   vector<RooFormulaVar *> SignalJetYields;
+
+   RooArgSet SignalJetInclusiveYieldSet;
+   SignalJetInclusiveYieldSet.add(SignalInclusiveYield);
+   
+   for(int N = 1; N <= LastJetBin; N++)
+   {
+      // cruijff for each jet bin
+      SignalShapes.push_back(new RooCruijff(Form("Signal%dJetShape", N), Form("Signal, %d jet", N),
+         ZMass, PeakPosition, SigmaR, AlphaR, SigmaL, AlphaL));
+
+      // constrain each jet bin shape to the righ number of jets
+      if(N != LastJetBin)
+         Constrains.push_back(new RooSameAs(Form("Constrain%dJet", N),
+            Form("Delta function at %d jet", N), NJet, N, 0.5));
+      else
+         Constrains.push_back(new RooAtLeast(Form("Constrain%dJet", LastJetBin), Form("At least %d jets", LastJetBin),
+            NJet, LastJetBin - 0.001));
+
+      // final pdf for each jet bin
+      SignalJets.push_back(new RooProdPdf(Form("Signal%dJet", N), Form("Signal, %d jet", N),
+         RooArgSet(*SignalShapes[N-1], *Constrains[N-1])));
+
+      // relative yields
+      if(N != LastJetBin)
+         SignalJetYields.push_back(new RooFormulaVar(Form("Signal%dJetYield", N), Form("N = %d", N),
+            GetSignalYieldString(N, false).c_str(), RooArgList(Alpha, Beta, SignalInclusiveYield)));
+      else
+      {
+         char ExtraTermString[100] = "";
+         sprintf(ExtraTermString, "%f", ExtraTerm);
+         SignalJetYields.push_back(new RooFormulaVar(Form("Signal%dJetYield", LastJetBin), Form("N = %d", LastJetBin),
+            (GetSignalYieldString(LastJetBin, true) + " + " + ExtraTermString).c_str(),
+            RooArgList(Alpha, Beta, SignalInclusiveYield)));
+      }
+
+      // argument sets for adding
+      TopLevelModels.add(*SignalJets[N-1]);
+      TopLevelYields.add(*SignalJetYields[N-1]);
+      SignalJetInclusiveYieldSet.add(*SignalJetYields[N-1]);
+   }
+
+   // Build background pdf
+   vector<RooRealVar *> BackgroundExpJet;
+   vector<RooAbsPdf *> BackgroundJetShape;
+   vector<RooAbsPdf *> BackgroundJets;
+   vector<RooRealVar *> BackgroundJetYields;
+   RooArgSet BackgroundModels;
+   RooArgSet BackgroundYields;
+   RooArgSet BackgroundExps;
+
+   for(int N = 1; N <= LastJetBin; N++)
+   {
+      // one exp. for each jet bin: parameter and pdf
+      BackgroundExpJet.push_back(new RooRealVar(Form("BackgroundExp%dJet", N),
+         Form("Background exp, %d jet", N), -0.009, -1.0, -0.001));
+      BackgroundJetShape.push_back(new RooExponential(Form("Background%dJetShape", N),
+         Form("Background%dJetShape", N), ZMass, *BackgroundExpJet[N-1]));
+
+      // constrain each one to the right number of bins
+      BackgroundJets.push_back(new RooProdPdf(Form("Background%dJet", N), Form("Background, %d jet", N),
+         RooArgSet(*BackgroundJetShape[N-1], *Constrains[N-1])));
+
+      // background yields
+      double UpperBound = 1000;
+      if(N == 1)
+         UpperBound = 100;
+      BackgroundJetYields.push_back(new RooRealVar(Form("Background%dJetYield", N),
+         Form("Background yield, %d jet", N), 1, 0, UpperBound));
+
+      // argument sets for adding
+      TopLevelModels.add(*BackgroundJets[N-1]);
+      TopLevelYields.add(*BackgroundJetYields[N-1]);
+      BackgroundExps.add(*BackgroundExpJet[N-1]);
+      BackgroundYields.add(*BackgroundJetYields[N-1]);
+   }
+
+   // Add pdfs together
+   RooAddPdf FinalModel("FinalModel", "Final model", TopLevelModels, TopLevelYields);
+
+   // Fit!
+   RooFitResult *FitResult = FinalModel.fitTo(*ReducedDataSet, Verbose(false), Save(true));
+   
+   // Plotting various stuff
+   char EnergyThresholdString[1000] = "";
+   sprintf(EnergyThresholdString, "%d_%.02f", EnergyThreshold, ExtraTerm);
+   PsFileHelper PsFile("ResultPlots" + JetFlavor + "_" + EnergyThresholdString + ".ps");
+   PsFile.AddTextPage("Fit results, on data");
+
+   // shape parameters and alpha/beta   
+   RooPlot *ParametersPlot1 = ZMass.frame(Bins(50), Name("ZMassParameters1"), Title("Fit results"));
+   FinalModel.paramOn(ParametersPlot1, Format("NELU", AutoPrecision(2)), Layout(0.1, 0.9, 0.9),
+      Parameters(RooArgSet(PeakPosition, AlphaL, AlphaR, SigmaL, SigmaR, Alpha, Beta, SignalInclusiveYield,
+      BackgroundInclusiveYield)));
+   PsFile.AddPlot(ParametersPlot1, "", false);
+   
+   // background-related parameters
+   RooPlot *ParametersPlot2 = ZMass.frame(Bins(50), Name("ZMassParameters2"), Title("Fit results"));
+   FinalModel.paramOn(ParametersPlot2, Format("NELU", AutoPrecision(2)), Layout(0.1, 0.9, 0.9),
+      Parameters(RooArgSet(BackgroundYields, BackgroundExps)));
+   PsFile.AddPlot(ParametersPlot2, "", false);
+
+   // signal yields
+   RooPlot *ParametersPlot3 = ZMass.frame(Bins(50), Name("ZMassParameters3"), Title("Fit results"));
+   FinalModel.paramOn(ParametersPlot3, Format("NELU", AutoPrecision(2)), Layout(0.1, 0.9, 0.9),
+      Parameters(SignalJetInclusiveYieldSet));
+   PsFile.AddPlot(ParametersPlot3, "", false);
+
+   // all signal curves plotted together
+   RooPlot *FinalResultPlot = ZMass.frame(Bins(50), Name("ZMassAllResults"), Title("Mass of lepton pair"));
+   ReducedDataSet->plotOn(FinalResultPlot);
+   FinalModel.plotOn(FinalResultPlot, LineColor(1));
+   for(int N = 1; N <= LastJetBin; N++)
+      FinalModel.plotOn(FinalResultPlot, Components(*SignalJets[N-1]), LineColor(N + 1));
+   PsFile.AddPlot(FinalResultPlot, "", true);
+
+   TCanvas FourPanelCanvas("FourPanelCanvas", "FourPanelCanvas", 0, 0, 1024, 768);
+   FourPanelCanvas.Divide(2, 2);
+
+   // each jet bin plotted separately   
+   for(int N = 1; N <= LastJetBin; N++)
+   {
+      RooPlot *SeparateResultJetPlot;
+
+      if(N != LastJetBin)
+         SeparateResultJetPlot = ZMass.frame(Bins(25), Name(Form("SeparateResult%dJetPlot", N)),
+            Title(Form("Exclusive %d jet", N)));
+      else
+         SeparateResultJetPlot = ZMass.frame(Bins(25), Name(Form("SeparateResult%dJetPlot", N)),
+            Title(Form("Inclusive %d jet", N)));
+
+      FinalModel.plotOn(SeparateResultJetPlot, Components(RooArgSet(*BackgroundJets[N-1], *SignalJets[N-1])),
+         LineColor(N + 1), Normalization(TotalYield.getVal()));
+      FinalModel.plotOn(SeparateResultJetPlot, Components(*BackgroundJets[N-1]), LineColor(N + 1),
+         Normalization(TotalYield.getVal()));
+
+      RooDataSet *ReducedJetDataSet;
+     
+      if(N != LastJetBin)
+         ReducedJetDataSet = (RooDataSet *)ReducedDataSet->reduce(Form("N%sJet%d == %d", JetFlavor.c_str(), EnergyThreshold, N));
+      else
+         ReducedJetDataSet = (RooDataSet *)ReducedDataSet->reduce(Form("N%sJet%d >= %d", JetFlavor.c_str(), EnergyThreshold, N));
+
+      ReducedJetDataSet->plotOn(SeparateResultJetPlot);
+
+      PsFile.AddPlot(SeparateResultJetPlot, "", false);
+
+      // TCanvas TempCanvas("TempCanvas", "TempCanvas", 0, 0, 1024, 768);
+      // SeparateResultJetPlot->Draw();
+      // TempCanvas.SaveAs(Form("ComplicatedFit_%dJet.png", N));
+      // TempCanvas.SaveAs(Form("ComplicatedFit_%dJet.eps", N));
+      // TempCanvas.SaveAs(Form("ComplicatedFit_%dJet.C", N));
+
+      if(N <= 4)
+      {
+         FourPanelCanvas.cd(N);
+         SeparateResultJetPlot->Draw();
+      }
+   }
+
+   FourPanelCanvas.SaveAs(Form("ComplicatedFit_%s_%d_AllJets.png", JetFlavor.c_str(), EnergyThreshold));
+   FourPanelCanvas.SaveAs(Form("ComplicatedFit_%s_%d_AllJets.C", JetFlavor.c_str(), EnergyThreshold));
+   FourPanelCanvas.SaveAs(Form("ComplicatedFit_%s_%d_AllJets.eps", JetFlavor.c_str(), EnergyThreshold));
+
+   // plots with x axis = NJets
+   TGraphErrors SignalYieldGraph;
+   SignalYieldGraph.SetNameTitle("SignalYieldGraph", "Fitted signal yields");
+   for(int N = 1; N <= LastJetBin; N++)
+   {
+      SignalYieldGraph.SetPoint(N - 1, N,
+         GetSignalInclusiveCount(N, SignalInclusiveYield.getVal(), Alpha.getVal(), Beta.getVal()));
+      SignalYieldGraph.SetPointError(N - 1, 0, GetSignalInclusiveError(N,
+         SignalInclusiveYield.getVal(), Alpha.getVal(), Beta.getVal(),
+         SignalInclusiveYield.getError(), Alpha.getError(), Beta.getError()));
+   }
+
+   TGraphErrors BackgroundYieldGraph;
+   BackgroundYieldGraph.SetNameTitle("BackgroundYieldGraph", "Fitted Background yields");
+   double BackgroundYieldSoFar = 0;
+   for(int N = LastJetBin; N >= 1; N--)
+   {
+      BackgroundYieldSoFar = BackgroundYieldSoFar + BackgroundJetYields[N-1]->getVal();
+      BackgroundYieldGraph.SetPoint(N - 1, N, BackgroundYieldSoFar);
+   }
+
+   TH1D InputCountHistogram("InputCountHistogram", "Data vs. fit output;Inclusive Jet;Count",
+      LastJetBin, 0.5, LastJetBin + 0.5);
+   for(int N = 1; N <= LastJetBin; N++)
+   {
+      RooDataSet *ReducedInclusiveDataSet = (RooDataSet *)ReducedDataSet->reduce(Form("N%sJet%d >= %d", JetFlavor.c_str(), EnergyThreshold, N));
+      InputCountHistogram.Fill(N, ReducedInclusiveDataSet->sumEntries());
+   }
+
+   TCanvas YieldCanvas("YieldCanvas", "YieldCanvas", 0, 0, 1024, 768);
+
+   InputCountHistogram.SetMarkerSize(2);
+   InputCountHistogram.SetStats(0);
+   InputCountHistogram.Draw("hist text0 error");
+
+   SignalYieldGraph.SetLineColor(kBlue);
+   SignalYieldGraph.Draw("pl");
+
+   BackgroundYieldGraph.SetLineColor(kRed);
+   BackgroundYieldGraph.Draw("pl");
+
+   TLegend legend(0.5, 0.8, 0.8, 0.6);
+   legend.SetFillColor(0);
+   legend.AddEntry(&InputCountHistogram, "Data", "l");
+   legend.AddEntry(&SignalYieldGraph, "Signal yield", "l");
+   legend.AddEntry(&BackgroundYieldGraph, "Background yield", "l");
+   legend.Draw();
+
+   YieldCanvas.SetLogy();
+   YieldCanvas.SaveAs(Form("FitYieldsData.png"));
+   YieldCanvas.SaveAs(Form("FitYieldsData.C"));
+   YieldCanvas.SaveAs(Form("FitYieldsData.eps"));
+
+   PsFile.AddCanvas(YieldCanvas);
+
+   cout << "Correlation between alpha and beta = " << FitResult->correlation(Alpha, Beta) << endl;
+
+   vector<string> SummaryValueTexts;
+   char ch[1024] = "";
+   sprintf(ch, "Alpha = %f +- %f", Alpha.getVal(), Alpha.getError());
+   SummaryValueTexts.push_back(ch);
+   sprintf(ch, "Beta = %f +- %f", Beta.getVal(), Beta.getError());
+   SummaryValueTexts.push_back(ch);
+   sprintf(ch, "Correlation between alpha and beta = %f", FitResult->correlation(Alpha, Beta));
+   SummaryValueTexts.push_back(ch);
+   PsFile.AddTextPage(SummaryValueTexts);
+
+   vector<string> ExtraTermSummary;
+   sprintf(ch, "Extra term = %f", ExtraTerm);
+   ExtraTermSummary.push_back(ch);
+   sprintf(ch, "Log likelihood = %f", FitResult->minNll());
+   ExtraTermSummary.push_back(ch);
+   sprintf(ch, "Fit covariance matrix status = %d", FitResult->covQual());
+   ExtraTermSummary.push_back(ch);
+   PsFile.AddTextPage(ExtraTermSummary);
+
+   // done!
+   PsFile.AddTimeStampPage();
+   PsFile.Close();
+
+   // write out fit result
+   TFile ResultFile(("ResultPlots" + JetFlavor + "_" + EnergyThresholdString + ".root").c_str(),
+      "RECREATE");
+
+   FitResult->Clone("ConstrainedResult")->Write();
+
+   ResultFile.Close();
+
+   // write to database
+   DataHelper DatabaseFile("Database.dh");
+
+   char State[1000] = "";
+   sprintf(State, "%.06f", ExtraTerm);
+
+   DatabaseFile[State]["Alpha"] = Alpha.getVal();
+   DatabaseFile[State]["AlphaError"] = Alpha.getError();
+   DatabaseFile[State]["Beta"] = Beta.getVal();
+   DatabaseFile[State]["BetaError"] = Beta.getError();
+   DatabaseFile[State]["AlphaBetaCorrelation"] = FitResult->correlation("Alpha", "Beta");
+
+   DatabaseFile[State]["MinNLL"] = FitResult->minNll();
+   DatabaseFile[State]["CovQual"] = FitResult->covQual();
+   DatabaseFile[State]["ExtraTerm"] = ExtraTerm;
+
+   DatabaseFile.SaveToFile("Database.dh");
+
+   // delete transient stuff
+   for(int N = 1; N <= LastJetBin; N++)
+   {
+      delete BackgroundJetYields[N-1];
+      delete BackgroundJets[N-1];
+      delete BackgroundJetShape[N-1];
+      delete BackgroundExpJet[N-1];
+      delete SignalJetYields[N-1];
+      delete SignalJets[N-1];
+      delete Constrains[N-1];
+      delete SignalShapes[N-1];
+   }
+}
+
+double GetSignalInclusiveCount(int jet, double SignalInclusiveYield, double Alpha, double Beta)
+{
+   if(jet == 0)
+      return 0;
+   if(jet == 1)
+      return SignalInclusiveYield;
+
+   double Yield = SignalInclusiveYield;
+   for(int i = 1; i < jet; i++)
+      Yield = Yield / (Alpha + i * Beta);
+
+   return Yield;
+}
+
+double GetSignalInclusiveError(int jet, double SignalInclusiveYield, double Alpha, double Beta,
+   double SignalInclusiveYieldError, double AlphaError, double BetaError)
+{
+   return 0;   // later....
+
+   /*
+   if(jet == 0)
+      return 0;
+   if(jet == 1)
+      return SignalInclusiveYieldError;
+
+   double Yield = GetSignalInclusiveCount(jet, SignalInclusiveYield, Alpha, Beta);
+
+   double dfdS = Yield / SignalInclusiveYield;
+   double dfdA = 0;
+   double dfdB = 0;
+
+   for(int i = 2; i <= jet; i++)
+   {
+      dfdA = dfdA + 1 / (Alpha + Beta * i);
+      dfdB = dfdB + i / (Alpha + Beta * i);
+   }
+
+   dfdA = dfdA * Yield;
+   dfdB = dfdB * Yield;
+
+   double SigmaF2 = dfdS * dfdS * SignalInclusiveYieldError * SignalInclusiveYieldError
+      + dfdA * dfdA * AlphaError * AlphaError
+      + dfdB * dfdB * BetaError * BetaError;
+
+   return sqrt(SigmaF2);
+   */
+}
+
+string GetSignalYieldString(int jet, bool Inclusive)
+{
+   if(jet <= 0)
+      return "";
+
+   if(jet == 1 && Inclusive == false)
+   {
+      cout << 1 << " @2*(@0+@1-1)/(@0+@1)" << endl;
+      return "@2*(@0+@1-1)/(@0+@1)";
+   }
+   if(jet == 1 && Inclusive == true)
+      return "@2";
+
+   string Result = "@2";
+   for(int i = 1; i < jet; i++)
+   {
+      char ch[1024];
+      sprintf(ch, "(@0+%d*@1)", i);
+
+      Result = Result + "/" + ch;
+   }
+
+   if(Inclusive == false)
+   {
+      char ch[1024];
+      sprintf(ch, "(@0+%d*@1-1)/(@0+%d*@1)", jet, jet);
+
+      Result = Result + "*" + ch;
+   }
+
+   cout << jet << " " << Result << endl;
+
+   return Result;
+}
+
+

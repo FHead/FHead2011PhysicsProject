@@ -1,0 +1,51 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+# for i in EventB.root EventC.root EventD.root EventE.root EventF.root \
+#    EventGa.root EventGb.root EventGc.root EventGd.root EventGe.root EventGf.root \
+#    EventXi1N1.root EventXi1N2.root EventXi1N3.root EventXi1N4.root \
+#    EventXi1P1.root EventXi1P2.root EventXi1P3.root EventXi1P4.root EventXi1P5.root \
+#    EventXi2N1.root EventXi2N2.root EventXi2N3.root EventXi2N4.root \
+#    EventXi2P1.root EventXi2P2.root EventXi2P3.root EventXi2P4.root EventXi2P5.root \
+#    EventXi3N1.root EventXi3N2.root EventXi3N3.root EventXi3N4.root \
+#    EventXi3P1.root EventXi3P2.root EventXi3P3.root EventXi3P4.root EventXi3P5.root \
+#    Madgraph2e2mu_part1.root Madgraph2e2mu_part2.root Madgraph2e2mu_part3.root \
+#    Madgraph2e2mu_part4.root Madgraph2e2mu_part5.root Madgraph2e2mu_part6.root \
+#    Madgraph4e_part1.root Madgraph4e_part2.root Madgraph4e_part3.root \
+#    Madgraph4e_part4.root Madgraph4e_part5.root Madgraph4e_part6.root
+for i in EventBBig*.root
+do
+   for Start in `seq 0 100 99900`
+   do
+      End=`echo $Start | AddConst 99`
+      FileName=$CurrentFolder/BatchSubmit/${i}_${Start}_${End}.sh
+
+      echo "#!/bin/sh" > $FileName
+      echo "#$ -S /bin/sh" >> $FileName
+      echo "#$ -V" >> $FileName
+      
+      echo -n "#$ -q all.q@t3-susy.local" >> $FileName
+      for j in 0-0 0-1 0-2 0-3 0-4 0-5 0-6 1-0 1-2 1-3 1-4 1-5 1-6 1-7 1-8 1-9
+      do
+         echo -n ",all.q@compute-$j.local" >> $FileName
+      done
+      echo >> $FileName
+
+      echo "" >> $FileName
+      echo "export CMS_PATH=/cms/sw; export SCRAM_ARCH=slc5_amd64_gcc462" >> $FileName
+      echo "cd ~/CMSSW/CMSSW_5_2_3/src; eval \`/cms/sw/bin/scramv1 runtime -sh\`;" >> $FileName
+      echo "" >> $FileName
+      echo "cd $CurrentFolder" >> $FileName
+      echo "mkdir -p /wntmp/yichen/" >> $FileName
+      echo "" >> $FileName
+
+      echo "time ./RunSignal CleanTrees/$i $Start $End" >> $FileName
+      # echo "time ./RunBackground CleanTrees/$i $Start $End" >> $FileName
+   done
+done
+
+
+

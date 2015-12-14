@@ -1,0 +1,36 @@
+Final particles inside b-jets: (PDGID, Count)
+-3334 227            Omega+                     Baryon
+-3322 7669           Cascade0                   Baryon
+-3312 7651           Cascade+                   Baryon
+-3222 21737          Sigma                      Baryon
+-3122 94810          Lambda bar                 Baryon
+-3112 21114          Sigma                      Baryon
+-2212 290826         Anti-proton                Nucleon
+-2112 286456         Anti-neutron               Nucleon
+-321 547401          Kaon-                      Meson
+-211 4170786         Pion                       Meson
+-16 8627             Tau-neutrino               Lepton
+-14 23059            Muon-neutrino              Lepton
+-13 23100            Muon                       Lepton
+-12 22762            Positron-neutrino          Lepton
+-11 83338            Positron                   Lepton
+11 83379             Electron                   Lepton
+12 22721             Electron-neutrino          Lepton
+13 23411             Muon                       Lepton
+14 22748             Muon-neutrino              Lepton
+16 8627              Tau-neutrino               Lepton
+22 10325908          Photon                     Photon
+130 528619           Kaon0 Long                 Meson
+211 4201708          Pion                       Meson
+310 530376           Kaon0 Short                Meson
+321 553187           Kaon+                      Meson
+2112 314586          Neutron                    Nucleon
+2212 329503          Proton                     Nucleon
+3112 21668           Sigma-                     Baryon
+3122 101000          Lambda                     Baryon
+3222 23251           Sigma+                     Baryon
+3312 7651            Cascade-                   Baryon
+3322 7628            Cascade0                   Baryon
+3334 179             Omega-                     Baryon
+
+

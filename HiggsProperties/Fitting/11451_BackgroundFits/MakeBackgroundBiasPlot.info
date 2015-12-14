@@ -1,0 +1,8 @@
+TFile F("AllResults.root")
+OutputTree->Draw("Background:Signal>>X(100,1,101,50,1,51)", "(Signal+Background)*Middle/Background-1", "colz")
+X->SetStats(0)
+X->GetXaxis()->SetTitle("Signal Count")
+X->GetYaxis()->SetTitle("Background Count")
+X->SetTitle("(Median fitted background count / Real background count) - 1")
+c1->SaveAs("BackgroundBias.pdf")
+

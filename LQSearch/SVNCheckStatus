@@ -1,0 +1,69 @@
+#!/bin/sh 
+
+svnstatus=`echo 'svn status | grep -v root$ | grep -v pdf$ | grep -v png$ | grep -v eps$ | grep -v C$ | \
+   grep -v [abc].out | grep -v nohup | grep -v dh$ | grep -v "/Samples$" | grep -v "/MakeSample$" | \
+   grep -v "/DotFiles$" | grep -v ps$ | grep -v "/RunToy$" | grep -v "/PerformFit$" | grep -v "/Run$" | \
+   grep -v "/RunPlots$" | grep -v "/RunReduction$" | grep -v "_C.d$" | grep -v "/MakePresentationPlots$" | \
+   grep -v "/MakePlots$" | grep -v ".tar.gz$" | \
+   grep -v "/MakeRecoReferencePlots$" | grep -v ".json$" | grep -v ".list$" | grep -v ".lumisummary$" | \
+   grep -v "/DataSamples$" | grep -v "/log$" | grep -v "/OutputFiles$" | grep -v "/CollectResult$" | \
+   grep -v "/Sample[12]$" | grep -v "/CheckMR$" | grep -v "/SamplesNew$" | grep -v "/SamplesSuperNew$" | \
+   grep -v ".backup$" | grep -v "/Source$" | grep -v "/Destination$" | grep -v "/CheckShape$" | \
+   grep -v "/ReduceTree$" | grep -v "/QCDFitting$" | grep -v "/ProducePlots$" | grep -v "/PileupSamples" | \
+   grep -v "/BQCDSamples$" | grep -v "/BackgroundSamples$" | grep -v "/MakeComparisonPlots" | \
+   grep -v "/MakeSeparatePlots$" | grep -v "/Overlay$" | grep -v "/Comparison$" | grep -v "/MakeComparison$" | \
+   grep -v "/MakeSinglePlot$" | grep -v "/DoFit$" | grep -v "/ProduceSamples$" | grep -v "/[A-Za-z]*PerformFit$" | \
+   grep -v "/Samples[12]$" | grep -v "/ProduceMRTree$" | grep -v "/ProduceTree$" | grep -v "/NewSamples$" | \
+   grep -v "/CheckJetCut$" | grep -v "/MakeTables$" | grep -v "/HalfReducedTree$" | grep -v ".aux$" | \
+   grep -v ".log$" | grep -v ".dvi$" | grep -v "/MakeTable$" | grep -v "/Backup$" | grep -v "/QCDSamples$" | \
+   grep -v "XD$" | grep -v "/CurvePlotting$" | grep -v "/comparison$" | grep -v "/BSamples$" | \
+   grep -v "/RunCheck$" | grep -v "   Samples$" | grep -v "   Samples[234]$" | grep -v "/SamplesNewW$" | \
+   grep -v "/MakeBTaggingEfficiencyPlots$" | grep -v "/HugeSamples$" | grep -v "/MakeBTaggingKinematicsPlots$" | \
+   grep -v "SimpleCutTableFromLQ3Tree/7114/TCHET1$" | grep -v "SimpleCutTableFromLQ3Tree/6771/TCHET1" | \
+   grep -v "SimpleCutTableFromLQ3Tree/6761/MRvsMRStarComparison" | grep -v "/PerformSimpleFit$" | \
+   grep -v "/TreeCleaning$" | grep -v "\.lumicalc$" | grep -v "/NewWJetSamples$" | grep -v "/WSamples$" | \
+   grep -v "/DYSamples$" | grep -v "/ZnunuSamples$" | grep -v "/ZbbSamples$" | grep -v "/HalfReducedSample$" | \
+   grep -v "/NotReducedSample$" | grep -v "PruneLQ3Tree/7244SuperReduction/HalfReduced" | \
+   grep -v "/MCSamples$" | grep -v "/OldSamples" | grep -v "SignalEfficiency/7264JES/CodeFromChris" | \
+   grep -v "PruneLQ3Tree/7265MakeEventList/EventList" | grep -v "PruneLQ3Tree/7265MakeEventList/PretagEventList" | \
+   grep -v "SignalEfficiency/[0-9A-Za-z]*/TextFiles$" | grep -v "SignalEfficiency/[0-9A-Za-z]*/LQSamples$" | \
+   grep -v "BatchSubmit"'`
+
+echo "Scanning for all not-in-svn files...."
+eval $svnstatus | grep ^?
+echo
+
+echo "Removing potentially non-svn-intended files from the above lists...."
+eval $svnstatus | grep ^? | grep -v "   Meetings/" | grep -v "   FitCodeFromWill/" | grep -v ".tar.gz$" | \
+   grep -v "Json$" | grep -v "JSON$" | grep -v ".zip$"
+echo
+
+echo "Checking if there is any sub-directory not added...."
+eval $svnstatus | grep "    [0-9A-Za-z._]*/[0-9A-Za-z._]*$"
+echo
+
+echo "Checking if there is any source code not in the svn system...."
+eval $svnstatus | grep ^? | grep "\.cpp$"
+eval $svnstatus | grep ^? | grep "\.cc$"
+eval $svnstatus | grep ^? | grep "\.h$"
+eval $svnstatus | grep ^? | grep "\.hpp$"
+eval $svnstatus | grep ^? | grep "\.hh$"
+eval $svnstatus | grep ^? | grep "\.sh$"
+echo
+
+echo "Checking if there is any source code not checked in...."
+eval $svnstatus | grep ^[MA] | grep "\.cpp$"
+eval $svnstatus | grep ^[MA] | grep "\.cc$"
+eval $svnstatus | grep ^[MA] | grep "\.h$"
+eval $svnstatus | grep ^[MA] | grep "\.hpp$"
+eval $svnstatus | grep ^[MA] | grep "\.hh$"
+eval $svnstatus | grep ^[MA] | grep "\.sh$"
+echo
+
+echo "Checking if there's anything else not checked in...."
+eval $svnstatus | grep ^[MA] | grep -v "\.cpp$" | grep -v "\.h$"
+echo
+
+
+
+

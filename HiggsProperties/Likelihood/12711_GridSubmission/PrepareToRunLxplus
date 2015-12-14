@@ -1,0 +1,33 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+for i in `ls ToySource/ | grep _1_0_0_0_0_0_0_`
+do
+   echo $i
+   mkdir -p $CurrentFolder/BatchSubmit/$i
+
+   for Start in `seq 0 100 150000`
+   do
+      for j in 0 #`seq 0 8`
+      do
+         End=`echo $Start | AddConst 99`
+         FileName=$CurrentFolder/BatchSubmit/$i/${i}_${Start}0_${End}9_${j}.sh
+
+         BatchPrefix > $FileName
+
+         echo "cd $CurrentFolder" >> $FileName
+         echo "" >> $FileName
+
+         # echo "time ./RunSignal Source/$i $Start $End $j" >> $FileName
+         echo "time ./RunBackgroundCapital ToySource/$i ${Start}0 ${End}9 $j" >> $FileName
+      done
+   done
+done
+
+
+

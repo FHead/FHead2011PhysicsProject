@@ -1,0 +1,145 @@
+ahI^2 (2 X^2 + 2 C36 C45 X^2) + ahR^2 (2 X^2 + 2 C36 C45 X^2) + 
+ aAdI^2 (-2 X^2 + 7 C34 C56 X^2 - X^3) + 
+ aAdR^2 (-2 X^2 + 7 C34 C56 X^2 - X^3) + 
+ aAI^2 (2 X^2 - C34 C56 X^2 + X^3) + 
+ aAR^2 (2 X^2 - C34 C56 X^2 + X^3) + 
+ aZdI^2 (-5 X^2 + 2 C36 C45 X^2 + 2 C35 C36 C45 X^2 + 
+    4 C34 C35 C56 X^2 + C34 C45 C56 X^2 + X^3 + 4 C34 C56 X^3) + 
+ aZdR^2 (-5 X^2 + 2 C36 C45 X^2 + 2 C35 C36 C45 X^2 + 
+    4 C34 C35 C56 X^2 + C34 C45 C56 X^2 + X^3 + 4 C34 C56 X^3) + 
+ aZI^2 (5 X^2 - 2 C36 C45 X^2 - 2 C35 C36 C45 X^2 - 
+    4 C34 C35 C56 X^2 + C34 C45 C56 X^2 + 3 X^3 + 4 C34 C56 X^3) + 
+ aZR^2 (5 X^2 - 2 C36 C45 X^2 - 2 C35 C36 C45 X^2 - 
+    4 C34 C35 C56 X^2 + C34 C45 C56 X^2 + 3 X^3 + 4 C34 C56 X^3) + 
+ ahI aZdI (3 E3456 X^3 - 2 C35 E3456 X^3 - 2 C46 E3456 X^3) + 
+ ahR aZdR (3 E3456 X^3 - 2 C35 E3456 X^3 - 2 C46 E3456 X^3) + 
+ aZAdI^2 (-12 X^2 + 2 C34 C56 X^2 - 3 X^3 + 5 C34 C56 X^3 + X^4) + 
+ aZAdR^2 (-12 X^2 + 2 C34 C56 X^2 - 3 X^3 + 5 C34 C56 X^3 + X^4) + 
+ aZAI^2 (12 X^2 - 2 C34 C56 X^2 + 3 X^3 + 5 C34 C56 X^3 + X^4) + 
+ aZAR^2 (12 X^2 - 2 C34 C56 X^2 + 3 X^3 + 5 C34 C56 X^3 + X^4) + 
+ aZI (ahI (2 X^2 + 4 C36 X^2 + 2 X^3 - 2 C36 C45 X^3 - 
+       2 C35 C36 C45 X^3 + 3 C34 C56 X^3 + 2 C34 C35 C56 X^3) + 
+    aZdI (-2 E3456 X^2 - 2 C35 E3456 X^2 + E3456 X^3)) + 
+ aZR (ahR (2 X^2 + 4 C36 X^2 + 2 X^3 - 2 C36 C45 X^3 - 
+       2 C35 C36 C45 X^3 + 3 C34 C56 X^3 + 2 C34 C35 C56 X^3) + 
+    aZdR (-2 E3456 X^2 - 2 C35 E3456 X^2 + E3456 X^3)) + 
+ aZAI (4 aZAdI X^2 + aZAdR (-2 C34 C56 X^3 + 2 X^4) + 
+    aZdR (-C36 C45 E3456 X^3 + C35 C46 E3456 X^3 + E3456 X^4) + 
+    aZdI (C36 C45 E3456 X^3 - C35 C46 E3456 X^3 - E3456 X^4 - 
+       2 C34 C56 MZ wZ X^4) + 
+    aZI (-C35 C36 C45 C46 X^3 - C34 C36 C45 C56 X^3 - 
+       C34 C35 C46 C56 X^3 + 4 C34 C46^2 C56 X^3 + X^4 + 5 X^5) + 
+    ahR (-4 X^2 - 4 C35 X^2 + C36 E3456 MZ X^3 + C35 C36 C45 X^4 + 
+       C35 C36 C46 X^4 - C34 C35 C56 X^4 - C34 C36 C56 X^4 - 
+       C34 C45 C56 X^4 - C34 C46 C56 X^4 + C35 X^5 - C46 X^5) + 
+    ahI (-C36 E3456 wZ X^3 - C35 C36 C45 X^4 - C35 C36 C46 X^4 + 
+       C34 C35 C56 X^4 + C34 C36 C56 X^4 + C34 C45 C56 X^4 + 
+       C34 C46 C56 X^4 - C35 X^5 + C46 X^5) + 
+    aZR (-16 X^2 + C35 C36 C45 C46 X^3 + C34 C36 C45 C56 X^3 + 
+       C34 C35 C46 C56 X^3 - X^4 - 4 C34 C46^2 C56 X^4 - 
+       2 C34 C56 MZ wZ X^4 - X^5 - 4 X^6)) + 
+ aAdI (ahR (-E3456 X^4 + C35 E3456 X^4) + 
+    aZR (C35 C46 E3456 X^3 + E3456 X^4 - C45 E3456 X^4) + 
+    aZAR (2 C34 C56 X^3 + C34 C56 MZ X^3 - 2 X^4 - MZ X^4) + 
+    aZAI (C34 C56 MZ wZ X^3 + X^4 - 2 C34 C56 X^4 - MZ wZ X^4) + 
+    aZdI (8 X^2 - 4 C34 C46^2 C56 X^3 - 4 X^5) + 
+    aZAdI (3 C34 C56 X^3 + X^4 + C34 C56 X^4 - X^5) + 
+    aZAdR (8 X^2 - C34 C56 MZ wZ X^3 - 4 C34 C56 X^4 - MZ wZ X^4 + 
+       2 X^5) + 
+    aZdR (-C35 C36 C45 C46 X^3 - C34 C35 C46 C56 X^3 + X^4 - 
+       2 C34 C56 X^4 - C34 C45 C56 X^4 - 4 C34 C46^2 C56 X^4 + X^5 - 
+       4 X^6)) + 
+ aZAdI (aZI (C36 C45 E3456 X^3 - C35 C46 E3456 X^3 - E3456 X^4) + 
+    aZR (-C36 C45 E3456 X^3 + C35 C46 E3456 X^3 + E3456 X^4) + 
+    ahR (-C35 C36 C46 MZ X^3 + C34 C36 C56 MZ X^3 + 
+       C34 C45 C56 MZ X^3 + C35 E3456 X^4 - C36 E3456 X^4 - 
+       C35 MZ X^4) + 
+    ahI (C35 C36 C46 wZ X^3 - C34 C36 C56 wZ X^3 - 
+       C34 C45 C56 wZ X^3 - C35 E3456 X^4 + C36 E3456 X^4 + 
+       C35 wZ X^4) + 
+    aZdI (C35 C36 C45 C46 X^3 + C34 C36 C45 C56 X^3 + 
+       C34 C35 C46 C56 X^3 - X^4 - X^5) + 
+    aZdR (16 X^2 - C35 C36 C45 C46 X^3 - C34 C36 C45 C56 X^3 - 
+       C34 C35 C46 C56 X^3 + X^4 - 4 C34 C46^2 C56 X^4 + X^5 - 
+       4 C34 C56 gL X^5 - 4 C34 C56 gR X^5 - 4 X^6)) + 
+ aAR (2 aAdR E3456 X^2 + ahR (-2 X^2 - 2 C35 X^2 + C35 E3456 X^4) + 
+    aZdI (-C35 C46 E3456 X^3 - E3456 X^4 + C45 E3456 X^4) + 
+    aZR (-8 X^2 - 4 C34 C46^2 C56 X^3 - 4 X^5) + 
+    aZAdR (X^4 - C34 C56 X^4 + X^5) + 
+    ahI (-C35 C36 C46 X^3 + C34 C45 C56 X^3 - C35 X^4 - 
+       2 C35 C36 C45 X^4 + C34 C56 X^4 + 2 C34 C35 C56 X^4 + 
+       2 C34 C46 C56 X^4 + 2 C46 X^5) + 
+    aZAI (8 X^2 + 4 C34 C56 gL X^3 + 4 C34 C56 gR X^3 - C34 C56 X^4 + 
+       2 C34 C56 gL X^4 + 2 C34 C56 gR X^4 + 3 X^5 + 2 gL X^5 + 
+       2 gR X^5) + 
+    aZAdI (C34 C56 gL X^3 - C34 C56 gR X^3 + 2 X^4 + C34 C56 X^4 - 
+       C34 C56 X^5 + X^6) + 
+    aZAR (-C34 C56 gL X^3 - C34 C56 gR X^3 + X^5 + C34 C56 X^5 + 
+       X^6) + aZI (-C35 C36 C45 C46 X^3 - C34 C35 C46 C56 X^3 + X^4 + 
+       2 C34 C56 X^4 - C34 C45 C56 X^4 + 4 C34 C46^2 C56 X^4 + X^5 + 
+       4 X^6)) + 
+ aZAdR (aZI (C36 C45 E3456 X^3 - C35 C46 E3456 X^3 - E3456 X^4) + 
+    aZR (C36 C45 E3456 X^3 - C35 C46 E3456 X^3 - E3456 X^4) + 
+    aZdR (C35 C36 C45 C46 X^3 + C34 C36 C45 C56 X^3 + 
+       C34 C35 C46 C56 X^3 + 4 C34 C46^2 C56 X^3 - X^4 + 3 X^5) + 
+    ahI (C35 C36 C46 MZ X^3 - C34 C36 C56 MZ X^3 - 
+       C34 C45 C56 MZ X^3 + C35 C36 C45 X^4 - C34 C35 C56 X^4 + 
+       C34 C46 C56 X^4 - 2 C35 E3456 X^4 + C36 E3456 X^4 + 
+       C35 MZ X^4 - C46 X^5) + 
+    ahR (C35 C36 C46 wZ X^3 - C34 C36 C56 wZ X^3 - 
+       C34 C45 C56 wZ X^3 - C35 C36 C45 X^4 + C34 C35 C56 X^4 - 
+       C34 C46 C56 X^4 - 2 C35 E3456 X^4 + C36 E3456 X^4 + 
+       C35 wZ X^4 + C46 X^5) + 
+    aZdI (-16 X^2 + C35 C36 C45 C46 X^3 + C34 C36 C45 C56 X^3 + 
+       C34 C35 C46 C56 X^3 - X^4 + 4 C34 C46^2 C56 X^4 - X^5 + 
+       4 C34 C56 gL X^5 + 4 C34 C56 gR X^5 + 4 X^6)) + 
+ aZAR (4 aZAdR X^2 + aZAdI (2 C34 C56 X^3 - 2 X^4) + 
+    aZdI (C36 C45 E3456 X^3 - C35 C46 E3456 X^3 - E3456 X^4) + 
+    aZdR (C36 C45 E3456 X^3 - C35 C46 E3456 X^3 - E3456 X^4) + 
+    aZR (-C35 C36 C45 C46 X^3 - C34 C36 C45 C56 X^3 - 
+       C34 C35 C46 C56 X^3 + X^4 + X^5) + 
+    ahI (4 X^2 + 4 C35 X^2 - C36 E3456 MZ X^3 - 2 C35 C36 C45 X^4 - 
+       C35 C36 C46 X^4 + 2 C34 C35 C56 X^4 + C34 C36 C56 X^4 + 
+       C34 C45 C56 X^4 + 2 C34 C46 C56 X^4 - C35 E3456 X^4 - 
+       C35 X^5 + 2 C46 X^5) + 
+    ahR (-C36 E3456 wZ X^3 - 2 C35 C36 C45 X^4 - C35 C36 C46 X^4 + 
+       2 C34 C35 C56 X^4 + C34 C36 C56 X^4 + C34 C45 C56 X^4 + 
+       2 C34 C46 C56 X^4 + C35 E3456 X^4 - C35 X^5 + 2 C46 X^5) + 
+    aZI (16 X^2 - C35 C36 C45 C46 X^3 - C34 C36 C45 C56 X^3 - 
+       C34 C35 C46 C56 X^3 + X^4 + 4 C34 C46^2 C56 X^4 + X^5 + 
+       4 C34 C56 gL X^5 + 4 C34 C56 gR X^5 + 4 X^6)) + 
+ aAdR (aZAI (-2 C34 C56 gL X^3 + 2 C34 C56 gR X^3 + 2 X^4) + 
+    aZdR (8 X^2 - 4 C34 C46^2 C56 X^3 - 4 C34 C46^2 C56 X^4) + 
+    ahI (E3456 X^4 - 2 C35 E3456 X^4) + 
+    aZI (-C35 C46 E3456 X^3 - E3456 X^4 + C45 E3456 X^4) + 
+    aZAR (X^4 + C34 C56 X^4 + X^5) + 
+    ahR (-C35 C36 C45 X^4 + C34 C35 C56 X^4 - C34 C46 C56 X^4 + 
+       C46 X^5) + 
+    aZAdI (-8 X^2 + 4 C34 C56 gL X^3 + 4 C34 C56 gR X^3 + 
+       3 C34 C56 X^4 + 2 C34 C56 gL X^4 + 2 C34 C56 gR X^4 - X^5 + 
+       2 gL X^5 + 2 gR X^5) + 
+    aZdI (C35 C36 C45 C46 X^3 + C34 C35 C46 C56 X^3 - X^4 + 
+       2 C34 C56 X^4 + C34 C45 C56 X^4 + 4 C34 C46^2 C56 X^4 - X^5 + 
+       4 X^6) + 
+    aZAdR (C34 C56 X^4 - X^5 + 4 C34 C56 X^5 + 4 X^6 - 
+       2 C34 C56 gL X^6 - 2 C34 C56 gR X^6 - 2 gL X^7 - 2 gR X^7)) + 
+ aAI (2 aAdI E3456 X^2 + 
+    aZAdR (-2 C34 C56 gL X^3 + 2 C34 C56 gR X^3 - 2 X^4) + 
+    aZdR (C35 C46 E3456 X^3 + E3456 X^4 - C45 E3456 X^4) + 
+    aZAdI (X^4 - C34 C56 X^4 + X^5) + 
+    ahI (-2 X^2 - 2 C35 X^2 + 2 C35 C36 C45 X^4 - 2 C34 C35 C56 X^4 - 
+       2 C34 C46 C56 X^4 - 2 C46 X^5) + 
+    ahR (C35 C36 C46 X^3 - C34 C45 C56 X^3 + C35 X^4 + 
+       C35 C36 C45 X^4 - C34 C56 X^4 - C34 C35 C56 X^4 - 
+       C34 C46 C56 X^4 - C46 X^5) + 
+    aZAR (-8 X^2 - 4 C34 C56 gL X^3 - 4 C34 C56 gR X^3 + 
+       C34 C56 X^4 - 2 C34 C56 gL X^4 - 2 C34 C56 gR X^4 - 3 X^5 - 
+       2 gL X^5 - 2 gR X^5) + 
+    aZI (-8 X^2 - 4 C34 C46^2 C56 X^3 - 4 C34 C46^2 C56 X^4 - 4 X^5 - 
+       4 X^6) + 
+    aZR (C35 C36 C45 C46 X^3 + C34 C35 C46 C56 X^3 - X^4 - 
+       2 C34 C56 X^4 + C34 C45 C56 X^4 - 4 C34 C46^2 C56 X^4 - X^5 - 
+       4 X^6) + 
+    aZAI (-C34 C56 X^4 + X^5 + 4 C34 C56 X^5 + 4 X^6 - 
+       2 C34 C56 gL X^6 - 2 C34 C56 gR X^6 - 2 gL X^7 - 2 gR X^7))
+

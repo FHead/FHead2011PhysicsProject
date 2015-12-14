@@ -1,0 +1,6 @@
+<use name=DataFormats/Common>
+<use name=rootrflx>
+<export>
+   <use name=DataFormats/Common>
+   <lib name=TBAnalysisShowerCluster>
+</export>

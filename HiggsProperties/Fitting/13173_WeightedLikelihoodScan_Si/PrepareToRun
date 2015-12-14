@@ -1,0 +1,45 @@
+#!/bin/bash
+
+inputfile=$1
+process=$2
+energy=$3
+neventsPerJob=$4
+jobnumber=$5
+outputname=$6
+outputdir=$7
+
+CurrentDir=`pwd`
+WorkDir=/wntmp/yichen/Work/Work_13173_Si/Work_${outputname}_${jobnumber}/
+Script=$CurrentDir/BatchSubmit/Run_${outputname}_${jobnumber}.sh
+
+source ~/.bashrc
+
+BatchPrefix > $Script
+
+echo "" >> $Script
+echo "mkdir -p $WorkDir" >> $Script
+echo "" >> $Script
+echo "ln -s $CurrentDir/*cpp $WorkDir" >> $Script
+echo "ln -s $CurrentDir/*h $WorkDir" >> $Script
+echo "ln -s $CurrentDir/*Trees $WorkDir" >> $Script
+echo "" >> $Script
+echo "cd $WorkDir" >> $Script
+echo "" >> $Script
+echo "sh compile.sh" >> $Script
+echo "" >> $Script
+echo "" >> $Script
+echo "mkdir -p $outputdir/" >> $Script
+echo "" >> $Script
+echo "time ./RunLikelihoodBatch ${inputfile} ${neventsPerJob} ${jobnumber} ${energy} ${process} 0 0 0 0 0 0 0 0 -1" >> $Script
+echo "mv LikelihoodFile.root $outputdir/${outputname}_${energy}TeV_channel0_Job${jobnumber}.root" >> $Script
+echo "time ./RunLikelihoodBatch ${inputfile} ${neventsPerJob} ${jobnumber} ${energy} ${process} 1 0 0 0 0 0 0 0 -1 " >> $Script
+echo "mv LikelihoodFile.root $outputdir/${outputname}_${energy}TeV_channel1_Job${jobnumber}.root" >> $Script
+echo "time ./RunLikelihoodBatch ${inputfile} ${neventsPerJob} ${jobnumber} ${energy} ${process} 2 0 0 0 0 0 0 0 -1 " >> $Script
+echo "mv LikelihoodFile.root $outputdir/${outputname}_${energy}TeV_channel2_Job${jobnumber}.root" >> $Script
+echo "time ./RunLikelihoodBatch ${inputfile} ${neventsPerJob} ${jobnumber} ${energy} ${process} 3 0 0 0 0 0 0 0 -1 " >> $Script
+echo "mv LikelihoodFile.root $outputdir/${outputname}_${energy}TeV_channel3_Job${jobnumber}.root" >> $Script
+echo "" >> $Script
+echo "rm $WorkDir/*" >> $Script
+
+
+

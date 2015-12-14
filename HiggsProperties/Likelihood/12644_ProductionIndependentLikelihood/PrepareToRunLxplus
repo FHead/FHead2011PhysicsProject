@@ -1,0 +1,30 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+for i in `ls Source/ | grep root$`
+do
+   echo $i
+   mkdir -p $CurrentFolder/BatchSubmit/$i
+
+   for Start in `seq 0 100 150000`
+   do
+      End=`echo $Start | AddConst 99`
+      FileName=$CurrentFolder/BatchSubmit/$i/${i}_${Start}_${End}.sh
+
+      BatchPrefix > $FileName
+
+      echo "cd $CurrentFolder" >> $FileName
+      echo "" >> $FileName
+
+      echo "time ./RunSignal Source/$i $Start $End" >> $FileName
+      echo "time ./RunBackground Source/$i $Start $End" >> $FileName
+   done
+done
+
+
+

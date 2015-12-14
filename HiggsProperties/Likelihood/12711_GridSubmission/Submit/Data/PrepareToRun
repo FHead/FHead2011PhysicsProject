@@ -1,0 +1,25 @@
+#!/bin/sh
+
+for i in Signal Background
+do
+   [[ "$i" == "Signal" ]] && Max=12 || Max=8
+   
+   for j in `seq 0 $Max`
+   do
+      for k in `ls Source/ | grep HZZ`
+      do
+         mkdir -p ${k}_${i}_${j}
+         cat script_template.sh | sed "s/__TYPE__/$i/g" \
+            | sed "s/__ROOTFILE__/$k/g" \
+            | sed "s/__BRANCH__/$j/g" > ${k}_${i}_${j}/script.sh
+         cd ${k}_${i}_${j}
+         tar zcvf 12711_GridSubmission_${k}_${i}_${j}.tar.gz script.sh
+         cd ..
+
+         cat cmssw_template.py | sed "s/__DATA__/12711_GridSubmission_${k}_${i}_${j}.tar.gz/" \
+            > ${k}_${i}_${j}/cmssw.py
+
+         cat crab_template.cfg | sed "s/__SUBDIR__/${k}_${i}_${j}/" > ${k}_${i}_${j}/crab.cfg
+      done
+   done
+done

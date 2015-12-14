@@ -1,0 +1,97 @@
+TFile File("Likelihoods_All_1125.root")
+ResultTree->Draw("BackgroundSize-0.5:SignalSize-0.5>>Z(100,0.5,100.5,50,0.5,50.5)", "MedianFraction*(BackgroundSize+SignalSize)/BackgroundSize-1", "colz")
+Z.SetStats(0)
+Z.GetXaxis()->SetTitle("Input signal size")
+Z.GetYaxis()->SetTitle("Input background size")
+Z.SetTitle("Background bias study in the A1-A3-B fit")
+Z.SetMaximum(0.1)
+Z.SetMinimum(-1)
+c1.SaveAs("A1A3BFit_BackgroundBias.png")
+c1.SaveAs("A1A3BFit_BackgroundBias.C")
+c1.SaveAs("A1A3BFit_BackgroundBias.eps")
+c1.SaveAs("A1A3BFit_BackgroundBias.pdf")
+
+
+// ResultTree->Scan("SignalSize:BackgroundSize:MedianFraction*(BackgroundSize+SignalSize)/BackgroundSize-1", "BackgroundSize == 40")
+
+
+ResultTree->Draw("BackgroundSize-0.5:SignalSize-0.5>>Z(100,0.5,100.5,50,0.5,50.5)", "abs(MedianFraction*(BackgroundSize+SignalSize)-BackgroundSize)/SignalSize", "colz")
+Z.SetStats(0)
+Z.GetXaxis()->SetTitle("Input signal size")
+Z.GetYaxis()->SetTitle("Input background size")
+Z.SetTitle("Amount of background underestimation divided by input signal")
+
+TH2F *Y = Z.Clone("Y")
+Y.Smooth(5)
+double levels[] = {0.05, 0.1, 0.25, 0.5, 1}
+Y.SetContour(5, levels)
+Y.SetLineWidth(3)
+Y.Draw("cont2 same")
+
+TLatex Latex
+Latex.SetTextFont(42)
+Latex.SetTextSize(0.025)
+Latex.DrawLatex(86, 51, "5%")
+Latex.DrawLatex(44, 51, "10%")
+Latex.DrawLatex(22, 51, "25%")
+Latex.DrawLatex(12, 51, "50%")
+Latex.DrawLatex(4, 51, "100%")
+
+c1.SetLogz()
+c1.SaveAs("A1A3BFit_Underestimation.png")
+c1.SaveAs("A1A3BFit_Underestimation.C")
+c1.SaveAs("A1A3BFit_Underestimation.eps")
+c1.SaveAs("A1A3BFit_Underestimation.pdf")
+
+
+
+TGraph GRatio1, GRatio2, GRatio4, GRatio10
+for(int i = 1; i <= 50; i++)   {int S = i * 1; int B = i; GRatio1.SetPoint(i - 1, S, ((TH1D *)File.Get(Form("HCenter1_%d_%d", S, B))).GetRMS());}
+for(int i = 1; i <= 50; i++)   {int S = i * 2; int B = i; GRatio2.SetPoint(i - 1, S, ((TH1D *)File.Get(Form("HCenter1_%d_%d", S, B))).GetRMS());}
+for(int i = 1; i <= 25; i++)   {int S = i * 4; int B = i; GRatio4.SetPoint(i - 1, S, ((TH1D *)File.Get(Form("HCenter1_%d_%d", S, B))).GetRMS());}
+for(int i = 1; i <= 10; i++)   {int S = i * 10; int B = i; GRatio10.SetPoint(i - 1, S, ((TH1D *)File.Get(Form("HCenter1_%d_%d", S, B))).GetRMS());}
+
+TH1D HWorld("HWorld", "Expected spread in units of \"atan(A3/5A1)\" for different S/B ratios", 100, 0, 100)
+HWorld.GetXaxis()->SetTitle("Signal Size")
+HWorld.GetYaxis()->SetTitle("Spread (RMS)")
+HWorld.SetStats(0)
+HWorld.SetMaximum(1)
+HWorld.SetMinimum(0.12)
+HWorld.Draw()
+c1.SetLogy(true)
+
+GRatio1.SetLineColor(kBlack)
+GRatio2.SetLineColor(kRed)
+GRatio4.SetLineColor(kBlue)
+GRatio10.SetLineColor(kGreen)
+
+GRatio1.SetLineWidth(2)
+GRatio2.SetLineWidth(2)
+GRatio4.SetLineWidth(2)
+GRatio10.SetLineWidth(2)
+
+GRatio2.Draw("l")
+GRatio1.Draw("l")
+GRatio4.Draw("l")
+GRatio10.Draw("l")
+
+TLegend Legend(0.65, 0.8, 0.8, 0.6)
+Legend.SetFillStyle(0)
+Legend.SetBorderSize(0)
+Legend.SetTextFont(42)
+Legend.AddEntry(&GRatio1, "1:1", "l")
+Legend.AddEntry(&GRatio2, "2:1", "l")
+Legend.AddEntry(&GRatio4, "4:1", "l")
+Legend.AddEntry(&GRatio10, "10:1", "l")
+Legend.Draw()
+
+c1.SaveAs("A1A3BFit_SignalSpread.png")
+c1.SaveAs("A1A3BFit_SignalSpread.C")
+c1.SaveAs("A1A3BFit_SignalSpread.eps")
+c1.SaveAs("A1A3BFit_SignalSpread.pdf")
+
+
+
+
+
+

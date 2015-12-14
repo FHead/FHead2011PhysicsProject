@@ -1,0 +1,71 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/BatchResult
+
+# BackgroundSamplesList=(`ls Samples | grep Events_21`)
+# echo ${#BackgroundSamplesList[*]}
+# BackgroundSampleIndex=0
+# echo ${BackgroundSamplesList[$BackgroundSampleIndex]}
+
+for i in Samples/*.root
+do
+   i=`basename $i`
+
+   [[ "$i" == *ZA01* ]] && TruthString="0 0 0 0 0 0"
+   [[ "$i" == *ZA02* ]] && TruthString="0 0 0 0 0.004 0"
+   [[ "$i" == *ZA03* ]] && TruthString="0 0 0 0 -0.004 0"
+   [[ "$i" == *ZA04* ]] && TruthString="0 0 0 0 0 0"
+   [[ "$i" == *ZA05* ]] && TruthString="0 0 0 0 0.004 0"
+   [[ "$i" == *ZA06* ]] && TruthString="0 0 0 0 -0.004 0"
+
+   SignalEventCount=25
+   # BackgroundEventCount=15
+
+   SignalSample="$CurrentFolder/Samples/$i"
+   # BackgroundSample="$CurrentFolder/Samples/${BackgroundSamplesList[$BackgroundSampleIndex]}"
+   BackgroundSample=$SignalSample
+
+   for j in `seq 1 12`
+   do
+      ID="${i}_${j}"
+      FileName="BatchSubmit/Run_${ID}.sh"
+      WorkDir="/wntmp/yichen/Work/WorkArea_${ID}"
+
+      BatchPrefix > $FileName
+      echo "" >> $FileName
+      echo "cd $CurrentFolder" >> $FileName
+      echo "mkdir -p /wntmp/yichen/" >> $FileName
+      echo "" >> $FileName
+      echo "mkdir -p $WorkDir" >> $FileName
+      echo "cd $WorkDir" >> $FileName
+      echo "ln -s $CurrentFolder/Normalization.dh ." >> $FileName
+
+      echo "pwd" >> $FileName
+
+      echo "sh $CurrentFolder/batchcompile.sh $CurrentFolder" >> $FileName
+
+      echo "time ./PerformFits $SignalSample $SignalEventCount \\" >> $FileName
+      echo "   $BackgroundSample 0 $TruthString" >> $FileName
+      echo "mv OutputFile.root $CurrentFolder/BatchResult/OutputFile_S_${ID}.root" >> $FileName
+      echo "rm *" >> $FileName
+
+      SignalEventCount=`echo $SignalEventCount | MultiplyConst 2`
+      # BackgroundEventCount=`echo $BackgroundEventCount | MultiplyConst 2`
+   done
+
+   BackgroundSampleIndex=`echo $BackgroundSampleIndex | AddConst 1`
+   if [[ "$BackgroundSampleIndex" -ge "${#BackgroundSamplesList[*]}" ]];
+   then
+      BackgroundSampleIndex=0
+   fi
+
+   # echo $BackgroundSampleIndex, ${BackgroundSamplesList[$BackgroundSampleIndex]}
+done
+
+
+

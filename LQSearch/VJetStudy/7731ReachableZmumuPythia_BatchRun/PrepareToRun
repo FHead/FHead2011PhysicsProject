@@ -1,0 +1,23 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+for i in `seq 1 1000`
+do
+   RunNumber=`printf "%06d" $i`
+   TempName="/wntmp/yichen/Run$RunNumber.root"
+   OutputName="$CurrentFolder/BatchResult/Run$RunNumber.root"
+
+   echo "#!/bin/sh" > $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "#$ -S /bin/sh" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "#$ -V" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "#$ -q all.q@compute-0-0.local,all.q@compute-0-1.local,all.q@compute-0-2.local,all.q@compute-0-3.local,all.q@compute-0-4.local,all.q@compute-0-5.local,all.q@compute-1-5.local,all.q@compute-1-6.local,all.q@compute-1-7.local,all.q@compute-1-8.local,all.q@compute-1-9.local,all.q@compute-1-3.local,all.q@compute-1-2.local,all.q@compute-1-4.local" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "export CMS_PATH=/cms/sw; export SCRAM_ARCH=slc5_amd64_gcc434" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "cd ~/CMSSW/CMSSW_4_2_8/src; eval \`/cms/sw/bin/scramv1 runtime -sh\`;" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "cd $CurrentFolder" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "mkdir /wntmp/yichen/" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "./RunMillion $TempName $i" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "mv $TempName $OutputName" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+   echo "rm $TempName" >> $CurrentFolder/BatchSubmit/Run$RunNumber.sh
+done

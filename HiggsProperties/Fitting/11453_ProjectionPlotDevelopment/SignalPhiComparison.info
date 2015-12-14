@@ -1,0 +1,51 @@
+double A3A1Ratio = 5.1
+
+TFile F("Projections_All.root")
+
+HPhi_ExtSig13_Clone_C3 = (TH1D *)HPhi_ExtSig13_C3->Clone("Clone");
+
+HPhi_ExtSig3_C3->Scale(A3A1Ratio * A3A1Ratio)
+HPhi_ExtSig13_C3->Scale(A3A1Ratio)
+HPhi_ExtSig13_Clone_C3->Scale(-A3A1Ratio)
+
+double Integral = HPhi_ExtSig1_C3->Integral()
+HPhi_ExtSig1_C3->Scale(1.0 / Integral);
+HPhi_ExtSig3_C3->Scale(1.0 / Integral);
+HPhi_ExtSig13_C3->Scale(1.0 / Integral);
+
+HPhi_ExtSig1_C3->SetMaximum(4e-9 / Integral);
+HPhi_ExtSig1_C3->SetMinimum(-1.2e-9 / Integral);
+
+HPhi_ExtSig1_C3->SetTitle(Form("A1, A3 and interference term (A1 = 1, A3 = %.1f)", A3A1Ratio))
+HPhi_ExtSig1_C3->GetXaxis()->SetTitle("#phi")
+
+HPhi_ExtSig1_C3->SetLineWidth(2)
+HPhi_ExtSig3_C3->SetLineWidth(2)
+HPhi_ExtSig13_C3->SetLineWidth(2)
+HPhi_ExtSig13_Clone_C3->SetLineWidth(2)
+
+HPhi_ExtSig1_C3->SetLineColor(kGreen)
+HPhi_ExtSig3_C3->SetLineColor(kBlue)
+HPhi_ExtSig13_C3->SetLineColor(kRed)
+HPhi_ExtSig13_Clone_C3->SetLineColor(kRed)
+HPhi_ExtSig13_Clone_C3->SetLineStyle(kDashed)
+
+HPhi_ExtSig1_C3->Draw()
+HPhi_ExtSig3_C3->Draw("same")
+HPhi_ExtSig13_C3->Draw("same")
+
+TLatex Latex
+Latex.SetTextFont(42)
+Latex.SetTextColor(kGreen)
+Latex.DrawLatex(1.5, 1.8e-9, "A_{1}^{ZZ}")
+Latex.SetTextColor(kBlue)
+Latex.DrawLatex(-0.2, 1.7e-9, "A_{3}^{ZZ}")
+Latex.SetTextColor(kRed)
+Latex.DrawLatex(-1.4, 1e-9, "Interference")
+
+TGraph Zero
+Zero.SetPoint(0, -9999, 0)
+Zero.SetPoint(1, +9999, 0)
+Zero.Draw("l")
+
+

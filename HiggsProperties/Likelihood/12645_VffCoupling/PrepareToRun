@@ -1,0 +1,41 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+source ~/.bashrc
+
+for i in `ls CleanTrees/`
+do
+   echo $i
+   mkdir -p $CurrentFolder/BatchSubmit/$i
+
+   for Start in `seq 0 1000 100900`
+   do
+      End=`echo $Start | AddConst 999`
+      FileName=$CurrentFolder/BatchSubmit/$i/${i}_${Start}_${End}.sh
+      Base=`basename $i`
+      Base=`echo "${Base}_${Start}_${End}"`
+
+      BatchPrefix > $FileName
+
+      echo "cd $CurrentFolder" >> $FileName
+      echo "mkdir -p /wntmp/yichen/" >> $FileName
+      echo "" >> $FileName
+
+      echo "mkdir -p Work/Work_$Base" >> $FileName
+      echo "cd Work/Work_$Base" >> $FileName
+      echo "ln -s ../../*cpp ." >> $FileName
+      echo "ln -s ../../*h ." >> $FileName
+      echo "sh ../../compile.sh" >> $FileName
+      echo "mv RunLikelihood /wntmp/yichen/RunLikelihood_$Base" >> $FileName
+      echo "ln -s /wntmp/yichen/RunLikelihood_$Base RunLikelihood" >> $FileName
+      echo "time ./RunLikelihood ../../CleanTrees/$i $Start $End > /wntmp/yichen/S_$Base" >> $FileName
+      echo "mv /wntmp/yichen/S_$Base $CurrentFolder/BatchResultTemp" >> $FileName
+      echo "rm RunLikelihood *.o" >> $FileName
+   done
+done
+
+
+

@@ -1,0 +1,70 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/BatchResult
+
+SignalBSamplesList=(`ls Samples | grep ZA06`)
+echo ${#SignalBSamplesList[*]}
+SignalBSampleIndex=0
+echo ${SignalBSamplesList[$SignalBSampleIndex]}
+
+for i in Samples/*ZA03*.root
+do
+   i=`basename $i`
+
+   [[ "$i" == *ZA01* ]] && TruthString="0 0 0 0 0 0"
+   [[ "$i" == *ZA02* ]] && TruthString="0 0 0 0 0.004 0"
+   [[ "$i" == *ZA03* ]] && TruthString="0 0 0 0 -0.004 0"
+   [[ "$i" == *ZA04* ]] && TruthString="0 0 0 0 0 0"
+   [[ "$i" == *ZA05* ]] && TruthString="0 0 0 0 0.004 0"
+   [[ "$i" == *ZA06* ]] && TruthString="0 0 0 0 -0.004 0"
+
+   SignalEventCount=25
+   SignalBEventCount=25
+
+   SignalSample="$CurrentFolder/Samples/$i"
+   SignalBSample="$CurrentFolder/Samples/${SignalBSamplesList[$SignalBSampleIndex]}"
+
+   for j in `seq 1 12`
+   do
+      ID="${i}_${j}"
+      FileName="BatchSubmit/Run_${ID}.sh"
+      WorkDir="/wntmp/yichen/Work/WorkArea_${ID}"
+
+      BatchPrefix > $FileName
+      echo "" >> $FileName
+      echo "cd $CurrentFolder" >> $FileName
+      echo "mkdir -p /wntmp/yichen/" >> $FileName
+      echo "" >> $FileName
+      echo "mkdir -p $WorkDir" >> $FileName
+      echo "cd $WorkDir" >> $FileName
+      echo "ln -s $CurrentFolder/Normalization.dh ." >> $FileName
+
+      echo "pwd" >> $FileName
+
+      echo "sh $CurrentFolder/batchcompile.sh $CurrentFolder" >> $FileName
+
+      echo "time ./PerformFits $SignalSample $SignalEventCount \\" >> $FileName
+      echo "   $SignalBSample $SignalBEventCount $TruthString" >> $FileName
+      echo "mv OutputFile.root $CurrentFolder/BatchResult/OutputFile_S_${ID}.root" >> $FileName
+      echo "rm *" >> $FileName
+
+      SignalEventCount=`echo $SignalEventCount | MultiplyConst 2`
+      SignalBEventCount=`echo $SignalBEventCount | MultiplyConst 2`
+   done
+
+   SignalBSampleIndex=`echo $SignalBSampleIndex | AddConst 1`
+   if [[ "$SignalBSampleIndex" -ge "${#SignalBSamplesList[*]}" ]];
+   then
+      SignalBSampleIndex=0
+   fi
+
+   # echo $SignalBSampleIndex, ${SignalBSamplesList[$SignalBSampleIndex]}
+done
+
+
+

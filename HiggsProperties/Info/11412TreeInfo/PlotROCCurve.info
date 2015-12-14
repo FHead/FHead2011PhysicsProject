@@ -1,0 +1,31 @@
+TFile F1("Samples/hzzTree_id1125.root")
+zz4lTree->cd()
+TTree *T1 = probe_tree
+TFile F2("Samples/hzzTree_id103.root")
+zz4lTree->cd()
+TTree *T2 = probe_tree
+T2->Draw("melaLD>>C(500,0,1)", "(mass > 110 && mass < 140)", "")
+T1->Draw("melaLD>>D(500,0,1)", "(mass > 110 && mass < 140)", "same")
+TGraph G2;
+for(int i = 1; i <= 500; i++)  {double A1 = C->Integral(1,i)/C->Integral(1,500); double B1 = D->Integral(1,i)/D->Integral(1,500);  G2.SetPoint(i, 1-A1, 1-B1);}
+T2->Draw("logLikelihood_background_A-logLikelihood_scalar>>A(500,-50,50)", "(mass > 110 && mass < 140)", "")
+T1->Draw("logLikelihood_background_A-logLikelihood_scalar>>B(500,-50,50)", "(mass > 110 && mass < 140)", "same")
+TGraph G1;
+for(int i = 1; i <= 500; i++)  {double A1 = A->Integral(1,i)/A->Integral(1,500); double B1 = B->Integral(1,i)/B->Integral(1,500);  G1.SetPoint(i, A1, B1);}
+TCanvas C1
+A->DrawNormalized()
+B->SetLineColor(kRed)
+B->DrawNormalized("same")
+TCanvas C2
+C->DrawNormalized()
+D->SetLineColor(kRed)
+D->DrawNormalized("same")
+TCanvas C3
+G1.SetLineColor(kBlue)
+G2.SetLineColor(kRed)
+G1.SetLineWidth(2)
+G2.SetLineWidth(2)
+G1.Draw("apl")
+G2.Draw("pl")
+
+

@@ -1,0 +1,13 @@
+/// This version is intended for unpacking source calibration runs.
+/// To exclude any one of the data types from unpacking,
+/// omit the associated parameter or set it to -1.
+///
+module tbunpack = HcalTBObjectUnpacker {
+    /// Set the following FED to 1 to unpack HcalTBTriggerData
+    untracked int32 HcalTriggerFED  = 1
+    /// Set the following FED to 3 to unpack HcalTBRunData &
+    /// HcalTBEventPosition
+    untracked int32 HcalSlowDataFED = -1
+    /// Include the following FED to unpack HcalSourcePositionData
+    untracked int32 HcalSourcePositionFED  = 6
+}

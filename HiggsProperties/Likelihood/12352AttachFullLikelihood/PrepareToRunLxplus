@@ -1,0 +1,33 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+for i in `ls Source | grep Event | grep root$`
+do
+   echo $i
+   mkdir -p $CurrentFolder/BatchSubmit/$i
+
+   for Start in `seq 0 100 100900`
+   do
+      End=`echo $Start | AddConst 99`
+      FileName=$CurrentFolder/BatchSubmit/$i/${i}_${Start}_${End}.sh
+
+      echo "#!/bin/sh" > $FileName
+      echo >> $FileName
+
+      echo "" >> $FileName
+      echo "export SCRAM_ARCH=slc5_amd64_gcc462" >> $FileName
+      echo "cd /afs/cern.ch/work/c/chenyi/CMSSW/CMSSW_6_1_1/src; eval \`scramv1 runtime -sh\`;" >> $FileName
+      echo "" >> $FileName
+      echo "cd $CurrentFolder" >> $FileName
+      echo "" >> $FileName
+
+      echo "time ./RunSignal Source/$i $Start $End" >> $FileName
+      echo "time ./RunBackground Source/$i $Start $End" >> $FileName
+   done
+done
+
+
+

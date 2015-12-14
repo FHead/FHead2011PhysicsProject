@@ -1,0 +1,38 @@
+#!/bin/sh
+
+for i in Signal Background
+do
+   [[ "$i" == "Signal" ]] && Max=12 || Max=8
+   
+   for j in `seq 0 $Max`
+   do
+      for k in `ls Source/ | grep Data`
+      do
+         [[ "$k" =~ "8TeV" ]] && Energy=8TeV || Energy=7TeV
+
+         for l in 0 #`seq 1 4`
+         do
+            Tag=${k}_${i}_${j}_${l}
+            mkdir -p $Tag
+            cat script_template.sh | sed "s/__TYPE__/$i/g" \
+               | sed "s/__ENERGY__/$Energy/g" \
+               | sed "s/__ROOTFILE__/$k/g" \
+               | sed "s/__BRANCH__/$j/g" \
+               | sed "s/__FLAVOR__/$l/g" > $Tag/script.sh
+
+            cat cmssw_template.py | sed "s/__DATA__/13151_SeedCalculation_$Tag.tar.gz/" \
+               > $Tag/cmssw.py
+
+            cat crab_template.cfg | sed "s/__SUBDIR__/$Tag/" > $Tag/crab.cfg
+            
+            cd $Tag
+            tar zcvf 13151_SeedCalculation_$Tag.tar.gz script.sh cmssw.py crab.cfg
+            mv 13151_SeedCalculation_$Tag.tar.gz ..
+            cd ..
+         done
+      done
+   done
+done
+
+
+

@@ -1,0 +1,15 @@
+#!/bash/sh
+
+RunNumber=0
+
+for i in `cat Datasets`
+do
+   RunNumber=`echo $RunNumber | AddConst 1`
+   Formatted=`printf %03d $RunNumber`
+
+   cat config_crab.template | sed "s#__DATASET__#$i#g" > crab_$Formatted.cfg
+done
+
+
+
+

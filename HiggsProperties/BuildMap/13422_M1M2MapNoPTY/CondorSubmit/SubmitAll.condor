@@ -1,0 +1,13 @@
+executable              = RunM1M2.sh
+universe                = vanilla
+input                   =
+should_transfer_files   = YES
+transfer_output_files   = DummyFile
+when_to_transfer_output = ON_EXIT
+arguments               = $(PROCESS)
+output                  = Log/Run_$(PROCESS).out
+error                   = Log/Run_$(PROCESS).err
+log                     = Log/Run_$(PROCESS).log
+
+queue 2500
+

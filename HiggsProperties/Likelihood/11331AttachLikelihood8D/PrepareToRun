@@ -1,0 +1,30 @@
+#!/bin/sh
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+for i in `ls OriginalSamples | grep root`
+do
+   FileName=$CurrentFolder/BatchSubmit/$i.sh
+
+   echo "#!/bin/sh" > $FileName
+   echo "#$ -S /bin/sh" >> $FileName
+   echo "#$ -V" >> $FileName
+   # echo "#$ -q all.q@compute-0-0.local,all.q@compute-0-1.local,all.q@compute-0-2.local,all.q@compute-0-3.local,all.q@compute-0-4.local,all.q@compute-0-6.local,all.q@compute-1-0.local,all.q@compute-1-4.local,all.q@compute-1-7.local,all.q@compute-1-8.local,all.q@compute-1-9.local,all.q@compute-1-3.local" >> $FileName
+   echo "" >> $FileName
+   echo "export CMS_PATH=/cms/sw; export SCRAM_ARCH=slc5_amd64_gcc462" >> $FileName
+   echo "cd ~/CMSSW/CMSSW_5_2_3/src; eval \`/cms/sw/bin/scramv1 runtime -sh\`;" >> $FileName
+   echo "" >> $FileName
+   echo "cd $CurrentFolder" >> $FileName
+   echo "mkdir /wntmp/yichen/" >> $FileName
+   echo "cp $CurrentFolder/OriginalSamples/$i /wntmp/yichen/" >> $FileName
+   echo "" >> $FileName
+   echo "time ./a.out /wntmp/yichen/$i SignalMaps/All_Scalar logLikelihood_scalar" >> $FileName
+   echo "time ./a.out /wntmp/yichen/$i SignalMaps/All_PseudoScalar logLikelihood_pseudoscalar" >> $FileName
+   # echo "time ./a.out /wntmp/yichen/$i BackgroundMaps/All_EffME logLikelihood_background" >> $FileName
+   echo "" >> $FileName
+   echo "cp /wntmp/yichen/$i $CurrentFolder/Samples/$i" >> $FileName
+done
+
+

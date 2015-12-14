@@ -1,0 +1,78 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/BatchResult
+
+BinCount=80
+BinMin=-1
+BinMax=1
+
+for i2 in `seq 1 $BinCount`
+do
+   for i3 in `seq 1 $BinCount`
+   do
+      WorkDir="/wntmp/yichen/Work/WorkArea_Fit_13173_${i2}_${i3}"
+      FileName="$CurrentFolder/BatchSubmit/Submit_${i2}_${i3}.sh"
+
+      S7="HAddedTrees/SignalAll7TeV.root"
+      S8="HAddedTrees/SignalAll8TeV.root"
+      B7="HAddedTrees/BackgroundAll7TeV.root"
+      B8="HAddedTrees/BackgroundAll8TeV.root"
+      Z7="OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_MC_ZJets_8TeV.root"
+      Z8="OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_MC_ZJets_8TeV.root"
+      G7="OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_ggZZAll.root"
+      G8="OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_ggZZAll.root"
+
+      # F2=`echo $BinMin $BinMax $BinCount $i2 | awk '{print $1 + ($2-$1)/$3*($4-1)}'`
+      F2=0
+      F3=`echo $BinMin $BinMax $BinCount $i3 | awk '{print $1 + ($2-$1)/$3*($4-1)}'`
+      AbsF2=`echo $F2 | awk '{if($1<0) {print -$1} else {print $1}}'`
+      AbsF3=`echo $F3 | awk '{if($1<0) {print -$1} else {print $1}}'`
+      F1=`echo $AbsF2 $AbsF3 | awk '{print 1-$1-$2}'`
+      S2=`echo $F1 $AbsF2 | awk '{print $2/$1}'`
+      S3=`echo $F1 $AbsF3 | awk '{print $2/$1}'`
+      A2=`echo $S2 $F2 | awk '{print sqrt($1)*(-3.276),$2}' | awk '{if($2<0) {print -$1} else {print $1}}'`
+      A3=`echo $S3 $F3 | awk '{print sqrt($1)*(-5.042),$2}' | awk '{if($2<0) {print -$1} else {print $1}}'`
+      echo $i2 $A2 $F2
+      echo $i3 $A3 $F3
+
+      BatchPrefix > $FileName
+      echo "" >> $FileName
+      echo "mkdir -p $WorkDir" >> $FileName
+      echo "cd $WorkDir" >> $FileName
+      echo "" >> $FileName
+      echo "pwd" >> $FileName
+      echo "" >> $FileName
+      echo "cp -r $CurrentFolder/*cpp $WorkDir" >> $FileName
+      echo "cp -r $CurrentFolder/*h $WorkDir" >> $FileName
+      echo "cp -r $CurrentFolder/Trees $WorkDir" >> $FileName
+      echo "cp -r $CurrentFolder/ReducedTrees $WorkDir" >> $FileName
+      echo "cp -r $CurrentFolder/OldTrees $WorkDir" >> $FileName
+      echo "cp -r $CurrentFolder/HAddedTrees $WorkDir" >> $FileName
+      echo "" >> $FileName
+      echo "rm $WorkDir/*.dh" >> $FileName
+      echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/CombinedNormalization.dh $WorkDir/" >> $FileName
+      echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/Normalization.dh $WorkDir/" >> $FileName
+      echo "ln -s $CurrentFolder/../../BuildMap/13136_SmallBackgroundNormalization/Normalization.dh $WorkDir/OldNormalization.dh" >> $FileName
+      echo "" >> $FileName
+      echo "sh compile.sh" >> $FileName
+      echo "" >> $FileName
+      echo "./RunLikelihood $S7 $B7 $Z7 $G7 $S8 $B8 $Z8 $G8 $A2 $A3 0 0 0 0 0 -1 NNNNNNNN NNNNNNNN" >> $FileName
+      echo "mv LikelihoodFile.root $CurrentFolder/BatchResult/SMLikelihoodFile_${i2}_${i3}.root" >> $FileName
+      echo "" >> $FileName
+      # echo "time ./PerformFits Trees/SyncToys_7TeV_ExoticSignal.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root \\" >> $FileName
+      # echo "   Trees/SyncToys_8TeV_ExoticSignal.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root \\" >> $FileName
+      # echo "   0 -5.042 0 0 0 0 0 $i" >> $FileName
+      # echo "mv OutputFile.root $CurrentFolder/BatchResult/ExoticLikelihoodFile_$i.root" >> $FileName
+      echo "" >> $FileName
+      echo "rm -r $WorkDir/*" >> $FileName
+   done
+
+   exit
+done
+
+

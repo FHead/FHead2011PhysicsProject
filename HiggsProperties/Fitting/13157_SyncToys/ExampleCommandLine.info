@@ -1,0 +1,4 @@
+time ./PerformFits \
+   Trees/Toys_7TeV_SMSignal.root Trees/Toys_7TeV_Bkg.root Trees/Toys_7TeV_Bkg.root Trees/Toys_7TeV_Bkg.root \
+   Trees/Toys_8TeV_SMSignal.root Trees/Toys_8TeV_Bkg.root Trees/Toys_8TeV_Bkg.root Trees/Toys_8TeV_Bkg.root \
+   0 0 0 0 0 0

@@ -1,0 +1,36 @@
+.x ExpectedSpread.C
+TGraph *G2 = GRAPH2
+.x ../11444_Scans/ExpectedSpread.C
+TGraph *G1 = GRAPH1
+TCanvas C
+G2->Draw("ap")
+G1->Draw("p")
+G1->SetMarkerColor(kRed)
+G2->SetMarkerStyle(20)
+G1->SetMarkerStyle(20)
+TLegend Legend(0.5, 0.8, 0.8, 0.6)
+Legend.SetFillColor(kWhite)
+Legend.SetTextFont(42)
+Legend.AddEntry(G1, "Without nuissance", "p")
+Legend.AddEntry(G2, "With nuissance", "p")
+Legend.Draw()
+C.SetLogx(true)
+C.SetLogy(true)
+C.SetGridx(true)
+C.SetGridy(true)
+C.SaveAs("ComparisonOfExpectedSpread.png")
+C.SaveAs("ComparisonOfExpectedSpread.C")
+C.SaveAs("ComparisonOfExpectedSpread.eps")
+C.SaveAs("ComparisonOfExpectedSpread.pdf")
+C.SetLogx(true)
+C.SetLogy(false)
+C.SetGridx(true)
+C.SetGridy(true)
+C.SaveAs("ComparisonOfExpectedSpread_YNormal.png")
+C.SaveAs("ComparisonOfExpectedSpread_YNormal.C")
+C.SaveAs("ComparisonOfExpectedSpread_YNormal.eps")
+C.SaveAs("ComparisonOfExpectedSpread_YNormal.pdf")
+
+
+
+

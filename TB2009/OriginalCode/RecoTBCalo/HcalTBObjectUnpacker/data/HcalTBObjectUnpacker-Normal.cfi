@@ -1,0 +1,16 @@
+/// This version is intended for unpacking normal (non-source calibration)
+/// testbeam runs. To exclude any one of the data types from unpacking,
+/// omit the associated parameter or set it to -1.
+///
+module tbunpack = HcalTBObjectUnpacker {
+    /// Include the following FED to unpack HcalTBTriggerData
+    untracked int32 HcalTriggerFED  = 1
+    /// Include the following FED to unpack HcalTBRunData &
+    /// HcalTBEventPosition
+    untracked int32 HcalSlowDataFED = 3
+    /// Include the following FED to unpack HcalTBTiming
+    untracked int32 HcalTDCFED = 5
+    /// Following parameter determines whether hits in one wire chamber
+    /// that are unmatched with hits in other wire chambers get filtered.
+    untracked bool  IncludeUnmatchedHits = false
+}

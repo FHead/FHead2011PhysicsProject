@@ -1,0 +1,70 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+mkdir -p $CurrentFolder/BatchResult
+
+BinCount=41
+BinMin=-1
+BinMax=1
+
+for i2 in `seq 1 $BinCount`
+do
+   for i3 in `seq 1 $BinCount`
+   do
+      WorkDir="/wntmp/yichen/Work/WorkArea_Fit_13162_${i2}_${i3}"
+      FileName="$CurrentFolder/BatchSubmit/Submit_${i2}_${i3}.sh"
+
+      F2=`echo $BinMin $BinMax $BinCount $i2 | awk '{print $1 + ($2-$1)/$3*($4-0.5)}'`
+      F3=`echo $BinMin $BinMax $BinCount $i3 | awk '{print $1 + ($2-$1)/$3*($4-0.5)}'`
+      AbsF2=`echo $F2 | awk '{if($1<0) {print -$1} else {print $1}}'`
+      AbsF3=`echo $F3 | awk '{if($1<0) {print -$1} else {print $1}}'`
+      F1=`echo $AbsF2 $AbsF3 | awk '{print 1-$1-$2}'`
+      S2=`echo $F1 $F2 | awk '{print $2/$1}' | awk '{if($1 < 0) {print -$1} else {print $1}}'`
+      S3=`echo $F1 $F3 | awk '{print $2/$1}' | awk '{if($1 < 0) {print -$1} else {print $1}}'`
+      A2=`echo $F2 $S2 | awk '{if($1 > 0) {print sqrt($2)*(-3.276)} else {print -sqrt($2)*(-3.276)}}'`
+      A3=`echo $F3 $S3 | awk '{if($1 > 0) {print sqrt($2)*(-5.042)} else {print -sqrt($2)*(-5.042)}}'`
+      echo $i2 $A3 $F3
+      echo $i3 $A2 $F2
+
+      if [[ `echo "$F1 > 0" | bc` == "1" ]];
+      then
+         BatchPrefix > $FileName
+         echo "" >> $FileName
+         echo "echo \$HOSTNAME" >> $FileName
+         echo "" >> $FileName
+         echo "mkdir -p $WorkDir" >> $FileName
+         echo "cd $WorkDir" >> $FileName
+         echo "" >> $FileName
+         echo "pwd" >> $FileName
+         echo "" >> $FileName
+         echo "cp -r $CurrentFolder/*cpp $WorkDir" >> $FileName
+         echo "cp -r $CurrentFolder/*h $WorkDir" >> $FileName
+         echo "cp -r $CurrentFolder/Trees $WorkDir" >> $FileName
+         echo "" >> $FileName
+         echo "rm $WorkDir/*.dh" >> $FileName
+         echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/CombinedNormalization.dh $WorkDir/" >> $FileName
+         echo "ln -s $CurrentFolder/../../BuildMap/13156_CollectNormalization/Normalization.dh $WorkDir/" >> $FileName
+         echo "" >> $FileName
+         echo "sh compile.sh" >> $FileName
+         echo "" >> $FileName
+         echo "time ./PerformFits Trees/SyncToys_7TeV_SMSignal.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root \\" >> $FileName
+         echo "   Trees/SyncToys_8TeV_SMSignal.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root \\" >> $FileName
+         echo "   $A2 $A3 0 0 0 0 0 -1" >> $FileName
+         echo "mv OutputFile.root $CurrentFolder/BatchResult/SMResult_${i2}_${i3}.root" >> $FileName
+         echo "" >> $FileName
+         # echo "time ./PerformFits Trees/SyncToys_7TeV_ExoticSignal.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root \\" >> $FileName
+         # echo "   Trees/SyncToys_8TeV_ExoticSignal.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root \\" >> $FileName
+         # echo "   $A2 $A3 0 0 0 0 0 -1" >> $FileName
+         # echo "mv OutputFile.root $CurrentFolder/BatchResult/ExoticLikelihoodFile_$i.root" >> $FileName
+         echo "" >> $FileName
+         echo "rm -r $WorkDir/*" >> $FileName
+      fi
+   done
+done
+
+
+

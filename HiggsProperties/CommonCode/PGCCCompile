@@ -1,0 +1,2 @@
+pgCC source/AngleConversion.cpp -c -o library/AngleConversion.o  -I./include -I$HOME/RootMacros/ -I$HOME/RootMacros/Code/
+pgCC source/CalculateME.cpp -c -o library/CalculateME.o  -I./include -I$HOME/RootMacros/ -I$HOME/RootMacros/Code/

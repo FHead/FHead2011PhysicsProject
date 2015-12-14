@@ -1,0 +1,2 @@
+ grep -B7 A3ZZA1ZZ ~/Submit_193.sh.o2613944 | grep -B9 "NOGRAD" | less
+

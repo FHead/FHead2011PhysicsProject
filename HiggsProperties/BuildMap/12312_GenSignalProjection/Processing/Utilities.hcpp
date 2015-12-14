@@ -1,0 +1,334 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+#include "TH2D.h"
+#include "TFile.h"
+#include "TTree.h"
+#include "TAxis.h"
+#include "TStyle.h"
+
+#include "PlotHelper2.h"
+
+#include "AngleConversion.h"
+
+bool VeryLooseCut2e2mu(LeptonVectors &Leptons);
+bool LooseCut2e2mu(LeptonVectors &Leptons);
+bool TightCut2e2mu(LeptonVectors &Leptons);
+bool OptCut2e2mu(LeptonVectors &Leptons);
+bool LooseCut4e(LeptonVectors &Leptons);
+bool TightCut4e(LeptonVectors &Leptons);
+bool OptCut4e(LeptonVectors &Leptons);
+int GetIndex(int X, int Y);
+void PrepareHistogram(TH2D &H);
+void PrepareHistogramReal(TH2D &H);
+void SetBinLabels(TAxis *Axis);
+void SetBinLabelsReal(TAxis *Axis);
+void FillNormalizedHistogram(TH2D &Source, TH2D &Target);
+void DrawComparisonPlots(PsFileHelper &PsFile, TH1D &H1, TH1D &H2, TH1D &HI, bool Flip, string Title, bool IsPhi = false);
+string GiveMeComponentLabel(int Index);
+
+bool VeryLooseCut2e2mu(LeptonVectors &Leptons)
+{
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)    return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)    return false;
+
+   return true;
+}
+
+bool LooseCut2e2mu(LeptonVectors &Leptons)
+{
+   if(fabs(Leptons.Lepton11.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton12.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton21.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton22.GetEta()) > 2.4)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)    return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)    return false;
+
+   if(Leptons.Lepton11.GetPT() < 2)   return false;
+   if(Leptons.Lepton12.GetPT() < 2)   return false;
+   if(Leptons.Lepton21.GetPT() < 2)   return false;
+   if(Leptons.Lepton22.GetPT() < 2)   return false;
+
+   return true;
+}
+
+bool TightCut2e2mu(LeptonVectors &Leptons)
+{
+   if(fabs(Leptons.Lepton11.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton12.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton21.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton22.GetEta()) > 2.4)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 40)    return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 12)    return false;
+
+   vector<double> LPTs;
+   LPTs.push_back(Leptons.Lepton11.GetPT());
+   LPTs.push_back(Leptons.Lepton12.GetPT());
+   LPTs.push_back(Leptons.Lepton21.GetPT());
+   LPTs.push_back(Leptons.Lepton22.GetPT());
+   sort(LPTs.begin(), LPTs.end());
+   if(LPTs[3] < 20)   return false;
+   if(LPTs[2] < 10)   return false;
+   if(LPTs[1] < 7)    return false;
+   if(LPTs[0] < 7)    return false;
+
+   return true;
+}
+
+bool OptCut2e2mu(LeptonVectors &Leptons)
+{
+   if(fabs(Leptons.Lepton11.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton12.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton21.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton22.GetEta()) > 2.4)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)    return false;
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() > 70)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)    return false;
+
+   if(Leptons.Lepton11.GetPT() < 2)   return false;
+   if(Leptons.Lepton12.GetPT() < 2)   return false;
+   if(Leptons.Lepton21.GetPT() < 2)   return false;
+   if(Leptons.Lepton22.GetPT() < 2)   return false;
+
+   return true;
+}
+
+bool LooseCut4e(LeptonVectors &Leptons)
+{
+   if(fabs(Leptons.Lepton11.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton12.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton21.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton22.GetEta()) > 2.4)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)    return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)    return false;
+
+   if(Leptons.Lepton11.GetPT() < 2)   return false;
+   if(Leptons.Lepton12.GetPT() < 2)   return false;
+   if(Leptons.Lepton21.GetPT() < 2)   return false;
+   if(Leptons.Lepton22.GetPT() < 2)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)   return false;
+   if((Leptons.Lepton11 + Leptons.Lepton22).GetMass() < 4)   return false;
+   if((Leptons.Lepton12 + Leptons.Lepton21).GetMass() < 4)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)   return false;
+
+   return true;
+}
+
+bool TightCut4e(LeptonVectors &Leptons)
+{
+   if(fabs(Leptons.Lepton11.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton12.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton21.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton22.GetEta()) > 2.4)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 40)    return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 12)    return false;
+
+   vector<double> LPTs;
+   LPTs.push_back(Leptons.Lepton11.GetPT());
+   LPTs.push_back(Leptons.Lepton12.GetPT());
+   LPTs.push_back(Leptons.Lepton21.GetPT());
+   LPTs.push_back(Leptons.Lepton22.GetPT());
+   sort(LPTs.begin(), LPTs.end());
+   if(LPTs[3] < 20)   return false;
+   if(LPTs[2] < 10)   return false;
+   if(LPTs[1] < 7)    return false;
+   if(LPTs[0] < 7)    return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)   return false;
+   if((Leptons.Lepton11 + Leptons.Lepton22).GetMass() < 4)   return false;
+   if((Leptons.Lepton12 + Leptons.Lepton21).GetMass() < 4)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)   return false;
+
+   return true;
+}
+
+bool OptCut4e(LeptonVectors &Leptons)
+{
+   if(fabs(Leptons.Lepton11.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton12.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton21.GetEta()) > 2.4)   return false;
+   if(fabs(Leptons.Lepton22.GetEta()) > 2.4)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)    return false;
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() > 70)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)    return false;
+
+   if(Leptons.Lepton11.GetPT() < 2)   return false;
+   if(Leptons.Lepton12.GetPT() < 2)   return false;
+   if(Leptons.Lepton21.GetPT() < 2)   return false;
+   if(Leptons.Lepton22.GetPT() < 2)   return false;
+
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 4)   return false;
+   if((Leptons.Lepton11 + Leptons.Lepton22).GetMass() < 4)   return false;
+   if((Leptons.Lepton12 + Leptons.Lepton21).GetMass() < 4)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 4)   return false;
+
+   return true;
+}
+
+int GetIndex(int X, int Y)
+{
+   if(X < 0 || Y < 0 || X >= 14 || Y >= 14)
+      return -1;
+
+   int Indices[14][14] =
+      {{1,   0,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25},
+      {0,    1, -15,  14, -17,  16, -19,  18, -21,  20, -23,  22, -25,  24},
+      {14, -15,   2,  26,  27,  28,  29,  30,  31,  32,  33,  34,  35,  36},
+      {15,  14,  26,   3,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46},
+      {16, -17,  27,  37,   4,  47,  48,  49,  50,  51,  52,  53,  54,  55},
+      {17,  16,  28,  38,  47,   5,  56,  57,  58,  59,  60,  61,  62,  63},
+      {18, -19,  29,  39,  48,  56,   6,  64,  65,  66,  67,  68,  69,  70},
+      {19,  18,  30,  40,  49,  57,  64,   7,  71,  72,  73,  74,  75,  76},
+      {20, -21,  31,  41,  50,  58,  65,  71,   8,  77,  78,  79,  80,  81},
+      {21,  20,  32,  42,  51,  59,  66,  72,  77,   9,  82,  83,  84,  85},
+      {22, -23,  33,  43,  52,  60,  67,  73,  78,  82,  10,  86,  87,  88},
+      {23,  22,  34,  44,  53,  61,  68,  74,  79,  83,  86,  11,  89,  90},
+      {24, -25,  35,  45,  54,  62,  69,  75,  80,  84,  87,  89,  12,  91},
+      {25,  24,  36,  46,  55,  63,  70,  76,  81,  85,  88,  90,  91,  13}};
+
+   return Indices[X][Y];
+}
+
+void PrepareHistogram(TH2D &H)
+{
+   SetBinLabels(H.GetXaxis());
+   SetBinLabels(H.GetYaxis());
+
+   H.SetStats(0);
+}
+
+void PrepareHistogramReal(TH2D &H)
+{
+   SetBinLabelsReal(H.GetXaxis());
+   SetBinLabelsReal(H.GetYaxis());
+
+   H.SetStats(0);
+}
+
+void SetBinLabels(TAxis *Axis)
+{
+   if(Axis == NULL)
+      return;
+
+   for(int i = 0; i < 14; i++)
+      Axis->SetBinLabel(i + 1, GiveMeComponentLabel(i).c_str());
+}
+
+void SetBinLabelsReal(TAxis *Axis)
+{
+   if(Axis == NULL)
+      return;
+
+   for(int i = 0; i < 7; i++)
+      Axis->SetBinLabel(i + 1, GiveMeComponentLabel(i*2).substr(0, 4).c_str());
+}
+
+void FillNormalizedHistogram(TH2D &Source, TH2D &Target)
+{
+   for(int iX = 1; iX <= Target.GetNbinsX(); iX++)
+   {
+      for(int iY = 1; iY <= Target.GetNbinsY(); iY++)
+      {
+         double D1 = Source.GetBinContent(iX, iX);
+         double D2 = Source.GetBinContent(iY, iY);
+         double V = Source.GetBinContent(iX, iY);
+
+         Target.SetBinContent(iX, iY, V / sqrt(D1 * D2));
+      }
+   }
+}
+
+void DrawComparisonPlots(PsFileHelper &PsFile, TH1D &H1, TH1D &H2, TH1D &HI, bool Flip, string Title, bool IsPhi)
+{
+   double Min = 0, Max = 65;
+   if(IsPhi == true)
+   {
+      Min = -3.14159;
+      Max = 3.14159;
+   }
+
+   TH1D HWorld("HWorld", Title.c_str(), 100, Min, Max);
+   HWorld.SetStats(0);
+   
+   if(IsPhi == false)
+      HWorld.GetXaxis()->SetTitle("M2");
+   else
+      HWorld.GetXaxis()->SetTitle("Phi");
+
+   if(Flip == true)
+      HI.Scale(-1);
+
+   TH1D *HClone = (TH1D *)HI.Clone("IAmAClone");
+   HClone->Scale(-1);
+
+   H1.SetLineWidth(2);
+   H1.SetLineColor(kBlack);
+   H2.SetLineWidth(2);
+   H2.SetLineColor(kBlue);
+   HI.SetLineWidth(2);
+   HI.SetLineColor(kRed);
+   HClone->SetLineWidth(1);
+   HClone->SetLineColor(kRed);
+
+   TCanvas C;
+
+   HWorld.SetMaximum(max(H1.GetMaximum(), H2.GetMaximum()) * 1.2);
+   HWorld.SetMinimum(0.0);
+   HWorld.Draw();
+   H1.Draw("same");
+   H2.Draw("same");
+   HI.Draw("same");
+   HClone->Draw("same");
+
+   C.SetLogy(false);
+   PsFile.AddCanvas(C);
+
+   HWorld.SetMaximum(max(H1.GetMaximum(), H2.GetMaximum()) * 2);
+   HWorld.SetMinimum(HWorld.GetMaximum() / 1e6);
+   HWorld.Draw();
+   H1.Draw("same");
+   H2.Draw("same");
+   HI.Draw("same");
+   HClone->Draw("same");
+   
+   C.SetLogy(true);
+   PsFile.AddCanvas(C);
+   
+   if(Flip == true)
+      HI.Scale(-1);
+}
+
+string GiveMeComponentLabel(int Index)
+{
+   switch(Index)
+   {
+   case 0:    return "A1ZZR";
+   case 1:    return "A1ZZI";
+   case 2:    return "A2ZZR";
+   case 3:    return "A2ZZI";
+   case 4:    return "A3ZZR";
+   case 5:    return "A3ZZI";
+   case 6:    return "A2ZAR";
+   case 7:    return "A2ZAI";
+   case 8:    return "A3ZAR";
+   case 9:    return "A3ZAI";
+   case 10:   return "A2AAR";
+   case 11:   return "A2AAI";
+   case 12:   return "A3AAR";
+   case 13:   return "A3AAI";
+   }
+
+   return "N/A";
+}
+
+
+
+

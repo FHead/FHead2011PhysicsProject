@@ -1,0 +1,145 @@
+ahI^2 (2 X + 2 X) + ahR^2 (2 X + 2 X) + 
+ aAdI^2 (-2 X + 7 X - X) + 
+ aAdR^2 (-2 X + 7 X - X) + 
+ aAI^2 (2 X - X + X) + 
+ aAR^2 (2 X - X + X) + 
+ aZdI^2 (-5 X + 2 X + 2 X + 
+    4 X + X + X + 4 X) + 
+ aZdR^2 (-5 X + 2 X + 2 X + 
+    4 X + X + X + 4 X) + 
+ aZI^2 (5 X - 2 X - 2 X - 
+    4 X + X + 3 X + 4 X) + 
+ aZR^2 (5 X - 2 X - 2 X - 
+    4 X + X + 3 X + 4 X) + 
+ ahI*aZdI (3 X - 2 X - 2 X) + 
+ ahR*aZdR (3 X - 2 X - 2 X) + 
+ aZAdI^2 (-12 X + 2 X - 3 X + 5 X + X) + 
+ aZAdR^2 (-12 X + 2 X - 3 X + 5 X + X) + 
+ aZAI^2 (12 X - 2 X + 3 X + 5 X + X) + 
+ aZAR^2 (12 X - 2 X + 3 X + 5 X + X) + 
+ aZI (ahI (2 X + 4 X + 2 X - 2 X - 
+       2 X + 3 X + 2 X) + 
+    aZdI (-2 X - 2 X + X)) + 
+ aZR (ahR (2 X + 4 X + 2 X - 2 X - 
+       2 X + 3 X + 2 X) + 
+    aZdR (-2 X - 2 X + X)) + 
+ aZAI (4 aZAdI X + aZAdR (-2 X + 2 X) + 
+    aZdR (-X + X + X) + 
+    aZdI (X - X - X - 
+       2 X wZ X) + 
+    aZI (-X - X - 
+       X + 4 X X + X + 5 X) + 
+    ahR (-4 X - 4 X + X + X + 
+       X - X - X - 
+       X - X + X - X) + 
+    ahI (-X wZ X - X - X + 
+       X + X + X + 
+       X - X + X) + 
+    aZR (-16 X + X + X + 
+       X - X - 4 X X - 
+       2 X wZ X - X - 4 X)) + 
+ aAdI (ahR (-X + X) + 
+    aZR (X + X - X) + 
+    aZAR (2 X + X - 2 X - X) + 
+    aZAI (X wZ X + X - 2 X - X wZ X) + 
+    aZdI (8 X - 4 X X - 4 X) + 
+    aZAdI (3 X + X + X - X) + 
+    aZAdR (8 X - X wZ X - 4 X - X wZ X + 
+       2 X) + 
+    aZdR (-X - X + X - 
+       2 X - X - 4 X X + X - 
+       4 X)) + 
+ aZAdI (aZI (X - X - X) + 
+    aZR (-X + X + X) + 
+    ahR (-X + X + 
+       X + X - X - 
+       X) + 
+    ahI (X wZ X - X wZ X - 
+       X wZ X - X + X + 
+       X wZ X) + 
+    aZdI (X + X + 
+       X - X - X) + 
+    aZdR (16 X - X - X - 
+       X + X - 4 X X + X - 
+       4 X - 4 X - 4 X)) + 
+ aAR (2 aAdR X + ahR (-2 X - 2 X + X) + 
+    aZdI (-X - X + X) + 
+    aZR (-8 X - 4 X X - 4 X) + 
+    aZAdR (X - X + X) + 
+    ahI (-X + X - X - 
+       2 X + X + 2 X + 
+       2 X + 2 X) + 
+    aZAI (8 X + 4 X + 4 X - X + 
+       2 X + 2 X + 3 X + 2 X + 
+       2 X) + 
+    aZAdI (X - X + 2 X + X - 
+       X + X) + 
+    aZAR (-X - X + X + X + 
+       X) + aZI (-X - X + X + 
+       2 X - X + 4 X X + X + 
+       4 X)) + 
+ aZAdR (aZI (X - X - X) + 
+    aZR (X - X - X) + 
+    aZdR (X + X + 
+       X + 4 X X - X + 3 X) + 
+    ahI (X - X - 
+       X + X - X + 
+       X - 2 X + X + 
+       X - X) + 
+    ahR (X wZ X - X wZ X - 
+       X wZ X - X + X - 
+       X - 2 X + X + 
+       X wZ X + X) + 
+    aZdI (-16 X + X + X + 
+       X - X + 4 X X - X + 
+       4 X + 4 X + 4 X)) + 
+ aZAR (4 aZAdR X + aZAdI (2 X - 2 X) + 
+    aZdI (X - X - X) + 
+    aZdR (X - X - X) + 
+    aZR (-X - X - 
+       X + X + X) + 
+    ahI (4 X + 4 X - X - 2 X - 
+       X + 2 X + X + 
+       X + 2 X - X - 
+       X + 2 X) + 
+    ahR (-X wZ X - 2 X - X + 
+       2 X + X + X + 
+       2 X + X - X + 2 X) + 
+    aZI (16 X - X - X - 
+       X + X + 4 X X + X + 
+       4 X + 4 X + 4 X)) + 
+ aAdR (aZAI (-2 X + 2 X + 2 X) + 
+    aZdR (8 X - 4 X X - 4 X X) + 
+    ahI (X - 2 X) + 
+    aZI (-X - X + X) + 
+    aZAR (X + X + X) + 
+    ahR (-X + X - X + 
+       X) + 
+    aZAdI (-8 X + 4 X + 4 X + 
+       3 X + 2 X + 2 X - X + 
+       2 X + 2 X) + 
+    aZdI (X + X - X + 
+       2 X + X + 4 X X - X + 
+       4 X) + 
+    aZAdR (X - X + 4 X + 4 X - 
+       2 X - 2 X - 2 X - 2 X)) + 
+ aAI (2 aAdI X + 
+    aZAdR (-2 X + 2 X - 2 X) + 
+    aZdR (X + X - X) + 
+    aZAdI (X - X + X) + 
+    ahI (-2 X - 2 X + 2 X - 2 X - 
+       2 X - 2 X) + 
+    ahR (X - X + X + 
+       X - X - X - 
+       X - X) + 
+    aZAR (-8 X - 4 X - 4 X + 
+       X - 2 X - 2 X - 3 X - 
+       2 X - 2 X) + 
+    aZI (-8 X - 4 X X - 4 X X - 4 X - 
+       4 X) + 
+    aZR (X + X - X - 
+       2 X + X - 4 X X - X - 
+       4 X) + 
+    aZAI (-X + X + 4 X + 4 X - 
+       2 X - 2 X - 2 X - 2 X))
+

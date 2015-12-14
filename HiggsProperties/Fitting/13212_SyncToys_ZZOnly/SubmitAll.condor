@@ -1,0 +1,13 @@
+executable = Submit_1.sh
+universe   = vanilla
+arguments  = 
+input      =
+output     = Log_1.out
+error      = Log_1.err
+log        = Log_1.log
+
+queue
+
+
+
+

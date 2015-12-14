@@ -1,0 +1,3 @@
+grep "^      [- ]1[13]" unweighted_events_run1*.lhe | awk '{print $2,$8,$9,$10}' | ~/PhysicsWorkspace/HiggsProperties/Utilities/bin/ConvertXYZToVectors | ~/PhysicsWorkspace/HiggsProperties/Utilities/bin/ConvertVectorsToAnglesRoberto | TextToTree Tree.root 12 "MH:M1:M2:Phi0:Theta0:Phi:Theta1:Theta2:YH:PTH:PhiH:PhiOffset"
+# grep "^      [- ]1[13]" unweighted_events_run14.lhe | awk '{print $1,$7,$8,$9}' | ~/PhysicsWorkspace/HiggsProperties/Utilities/bin/ConvertXYZToVectors | ~/PhysicsWorkspace/HiggsProperties/Utilities/bin/ConvertVectorsToAnglesRoberto | TextToTree Tree12.root 12 "MH:M1:M2:Phi0:Theta0:Phi:Theta1:Theta2:YH:PTH:PhiH:PhiOffset"
+

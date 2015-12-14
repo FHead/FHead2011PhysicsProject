@@ -1,0 +1,16 @@
+time ./RunLikelihood \
+   Trees/SyncToys_7TeV_SMSignal.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root Trees/SyncToys_7TeV_Bkg.root \
+   Trees/SyncToys_8TeV_SMSignal.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root Trees/SyncToys_8TeV_Bkg.root \
+   0 0 0 0 0 0 0 \
+   14 NNNNNNNN YYNNNNNN
+
+time ./RunLikelihood \
+   Trees/SignalAll7TeV.root Trees/BackgroundAll7TeV.root \
+   OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_MC_ZJets_8TeV.root \
+   OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_ggZZAll.root \
+   Trees/SignalAll8TeV.root Trees/BackgroundAll8TeV.root \
+   OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_MC_ZJets_8TeV.root OldTrees/CMSSamplesWithCentralBranches13136/HZZEventFitFormat_ggZZAll.root \
+   0 0 0 0 0 0 0 \
+   -1 \
+   NNNNNNNN NNNNNNNN
+

@@ -1,0 +1,75 @@
+#!/bin/sh
+
+source ~/.bashrc
+
+CurrentFolder=`pwd`
+
+mkdir -p $CurrentFolder/BatchSubmit
+
+BackgroundSamplesList=(`ls BGSamples | grep BG`)
+BackgroundSampleIndex=0
+echo ${BackgroundSamplesList[$BackgroundSampleIndex]}
+
+for i in ProphecyEvents/*root
+do
+   i=`basename $i`
+
+   TruthString="0 0 0 0 0 0"
+   if [[ "$i" == *_16* ]]
+   then
+      TruthString="3.85 5.05 0 0 0 0"
+   fi
+
+   SignalEventCount=25
+   BackgroundEventCount=15
+
+   SignalSample="../../ProphecyEvents/$i"
+   BackgroundSample="../../BGSamples/${BackgroundSamplesList[$BackgroundSampleIndex]}"
+
+   for j in `seq 1 12`
+   do
+      FileName="BatchSubmit/Run_${i}_${j}.sh"
+      WorkDir="Work/WorkArea_${i}_${j}"
+
+      BatchPrefix > $FileName
+      echo "" >> $FileName
+      echo "cd $CurrentFolder" >> $FileName
+      echo "mkdir -p /wntmp/yichen/" >> $FileName
+      echo "" >> $FileName
+      echo "mkdir -p $WorkDir" >> $FileName
+      echo "cd $WorkDir" >> $FileName
+      echo "ln -s ../../Normalization.dh ." >> $FileName
+
+      echo "pwd" >> $FileName
+
+      echo "ln -s ../../DoFit.cpp ." >> $FileName
+      echo "ln -s ../../FitClass.cpp ." >> $FileName
+      echo "ln -s ../../FitClass.h ." >> $FileName
+      echo "ln -s ../../batchcompile.sh ." >> $FileName
+
+      echo "sh batchcompile.sh" >> $FileName
+      echo "echo \$HOSTNAME" >> $FileName
+
+      echo "time ./PerformFits $SignalSample $SignalEventCount \\" >> $FileName
+      echo "   $BackgroundSample 0 $TruthString" >> $FileName
+      echo "mv OutputFile.root OutputFile_S_$SignalEventCount.root" >> $FileName
+      # echo "time ./PerformFits $SignalSample $SignalEventCount \\" >> $FileName
+      # echo "   $BackgroundSample $BackgroundEventCount $TruthString" >> $FileName
+      # echo "mv OutputFile.root OutputFile_SB_$SignalEventCount.root" >> $FileName
+      echo "rm PerformFits *.o" >> $FileName
+
+      SignalEventCount=`echo $SignalEventCount | MultiplyConst 2`
+      BackgroundEventCount=`echo $BackgroundEventCount | MultiplyConst 2`
+   done
+
+   BackgroundSampleIndex=`echo $BackgroundSampleIndex | AddConst 1`
+   if [[ "$BackgroundSampleIndex" -ge "${#BackgroundSamplesList[*]}" ]];
+   then
+      BackgroundSampleIndex=0
+   fi
+
+   echo $BackgroundSampleIndex, ${BackgroundSamplesList[$BackgroundSampleIndex]}
+done
+
+
+

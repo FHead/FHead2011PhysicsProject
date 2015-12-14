@@ -433,6 +433,12 @@ double FitClass::CalculateLogLikelihoodAll(const double *Parameters) const
       LogTotal = LogTotal + Chi2;
    }
 
+   cout << FitID;
+   for(int i = 0; i < 12; i++)
+      cout << " " << Parameters[i];
+   cout << " " << -LogTotal * 2;
+   cout << endl;
+
    return -LogTotal * 2;
 }
 
@@ -493,6 +499,8 @@ void FitClass::ClearPoints()
 
 FitResultSummary FitClass::DoFit(FitConfiguration configuration)
 {
+   FitID = FitID + 1;
+
    for(int i = 0; i < 16; i++)
    {
       for(int j = 0; j < 16; j++)

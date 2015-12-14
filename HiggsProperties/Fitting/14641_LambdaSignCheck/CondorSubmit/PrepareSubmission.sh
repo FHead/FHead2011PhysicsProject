@@ -138,6 +138,7 @@ do
    done
 done
 
-
+mkdir -p Log
+mkdir -p Result
 
 

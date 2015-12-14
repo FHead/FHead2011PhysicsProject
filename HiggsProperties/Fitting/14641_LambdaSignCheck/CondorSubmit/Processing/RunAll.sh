@@ -1,3 +1,6 @@
+mkdir -p Calculated
+mkdir -p Processed
+
 for i in Log/*
 do
    ./a.out $i > Calculated/`basename $i`

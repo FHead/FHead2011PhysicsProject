@@ -1,5 +1,6 @@
 *root
 a.out
+a.out.dSYM
 *.condor
 *.o
 *.dh

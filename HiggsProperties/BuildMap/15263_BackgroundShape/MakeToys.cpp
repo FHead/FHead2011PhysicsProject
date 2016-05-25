@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
       srand(time(NULL));
 
    // Setup calculator
-   HybridCalculator CalculatorSEM, CalculatorSEE, CalculatorBEM, CalculatorBEE;
+   HybridCalculator CalculatorSEM, CalculatorSEE, CalculatorBEMuubar, CalculatorBEMddbar,
+      CalculatorBEEuubar, CalculatorBEEddbar;
 
    CalculatorSEM.SetEfficiency12(GetElectronEfficiencyPtEta);
    CalculatorSEM.SetEfficiency34(GetMuonEfficiencyPtEta);
@@ -85,30 +86,52 @@ int main(int argc, char *argv[])
       cerr << "ERROR" << endl;
 
    CalculatorSEE = CalculatorSEM;
-   CalculatorBEM = CalculatorSEM;
-   CalculatorBEM.SetDoDeltaMH(false);
-   CalculatorBEE = CalculatorBEM;
+   CalculatorBEMuubar = CalculatorSEM;
+   CalculatorBEMuubar.SetDoDeltaMH(false);
+   CalculatorBEEuubar = CalculatorBEMuubar;
+   CalculatorBEMddbar = CalculatorBEMuubar;
+   CalculatorBEEddbar = CalculatorBEMuubar;
 
    if(Energy == "14")
-      CalculatorBEM.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_14TeV_13432);
+      CalculatorBEMddbar.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_14TeV_13432);
    else if(Energy == "13")
-      CalculatorBEM.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_13TeV_13432);
+      CalculatorBEMddbar.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_13TeV_13432);
    else if(Energy == "0")
-      CalculatorBEM.SetPTYDensity(JustFlatPTYDensity);
+      CalculatorBEMddbar.SetPTYDensity(JustFlatPTYDensity);
    else   // wut
       cerr << "ERROR" << endl;
 
    if(Energy == "14")
-      CalculatorBEE.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_14TeV_13432);
+      CalculatorBEMuubar.SetPTYDensity(GetPTYDensityUUbar_MZ_CTEQ6l1_14TeV_13432);
    else if(Energy == "13")
-      CalculatorBEE.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_13TeV_13432);
+      CalculatorBEMuubar.SetPTYDensity(GetPTYDensityUUbar_MZ_CTEQ6l1_13TeV_13432);
    else if(Energy == "0")
-      CalculatorBEE.SetPTYDensity(JustFlatPTYDensity);
+      CalculatorBEMuubar.SetPTYDensity(JustFlatPTYDensity);
    else   // wut
       cerr << "ERROR" << endl;
 
-   CalculatorBEM.SetMECalculator(CalculateDDbarBackground2e2muDirectional);
-   CalculatorBEE.SetMECalculator(CalculateDDbarBackground4eDirectional);
+   if(Energy == "14")
+      CalculatorBEEddbar.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_14TeV_13432);
+   else if(Energy == "13")
+      CalculatorBEEddbar.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_13TeV_13432);
+   else if(Energy == "0")
+      CalculatorBEEddbar.SetPTYDensity(JustFlatPTYDensity);
+   else   // wut
+      cerr << "ERROR" << endl;
+
+   if(Energy == "14")
+      CalculatorBEEuubar.SetPTYDensity(GetPTYDensityUUbar_MZ_CTEQ6l1_14TeV_13432);
+   else if(Energy == "13")
+      CalculatorBEEuubar.SetPTYDensity(GetPTYDensityUUbar_MZ_CTEQ6l1_13TeV_13432);
+   else if(Energy == "0")
+      CalculatorBEEuubar.SetPTYDensity(JustFlatPTYDensity);
+   else   // wut
+      cerr << "ERROR" << endl;
+
+   CalculatorBEMuubar.SetMECalculator(CalculateUbarUBackground2e2muDirectional);
+   CalculatorBEEuubar.SetMECalculator(CalculateUbarUBackground4eDirectional);
+   CalculatorBEMddbar.SetMECalculator(CalculateDbarDBackground2e2muDirectional);
+   CalculatorBEEddbar.SetMECalculator(CalculateDbarDBackground4eDirectional);
 
    // vectors to hold totals
    vector<double> TotalSEM[13], TotalSEE[13];
@@ -168,7 +191,8 @@ int main(int argc, char *argv[])
       Weight = Weight * Angles.ZMass * Angles.HMass * Angles.Z2Mass;
 
       vector<double> IntegralSEM, IntegralSEE;
-      vector<double> IntegralBEM, IntegralBEE;
+      vector<double> IntegralBEMuubar, IntegralBEEuubar;
+      vector<double> IntegralBEMddbar, IntegralBEEddbar;
 
       LeptonVectors LeptonsEM = ConvertAnglesToVectorsRoberto(Angles).ReorderLeptons2e2mu();
       LeptonVectors LeptonsEE = LeptonsEM.ReorderLeptons4e();
@@ -178,32 +202,34 @@ int main(int argc, char *argv[])
 
       // IntegralSEM = CalculatorSEM.PassThroughMode(Angles);
       // IntegralSEE = CalculatorSEE.PassThroughMode(Angles);
-      IntegralBEM = CalculatorBEM.PassThroughMode(Angles);
-      IntegralBEE = CalculatorBEE.PassThroughMode(Angles);
+      IntegralBEMuubar = CalculatorBEMuubar.PassThroughMode(Angles);
+      IntegralBEEuubar = CalculatorBEEuubar.PassThroughMode(Angles);
+      IntegralBEMddbar = CalculatorBEMddbar.PassThroughMode(Angles);
+      IntegralBEEddbar = CalculatorBEEddbar.PassThroughMode(Angles);
+
+      vector<double> IntegralBEM, IntegralBEE;
+
+      IntegralBEM = IntegralBEMuubar;
+      IntegralBEM.insert(IntegralBEM.end(), IntegralBEMddbar.begin(), IntegralBEMddbar.end());
+      IntegralBEE = IntegralBEEuubar;
+      IntegralBEE.insert(IntegralBEE.end(), IntegralBEEddbar.begin(), IntegralBEEddbar.end());
 
       ActualEventCount = ActualEventCount + Weight;
 
-      // for(int i = 0; i < 10; i++)
-      //    AddToVector(TotalSEM[i], IntegralSEM, Weight * PassEM[i]);
-      // for(int i = 0; i < 10; i++)
-      //    AddToVector(TotalSEE[i], IntegralSEE, Weight * PassEE[i]);
+      cout << "EVENT";
+      cout << " " << LeptonsEM.Lepton11[1] << " " << LeptonsEM.Lepton11[2] << " " << LeptonsEM.Lepton11[3];
+      cout << " " << LeptonsEM.Lepton12[1] << " " << LeptonsEM.Lepton12[2] << " " << LeptonsEM.Lepton12[3];
+      cout << " " << LeptonsEM.Lepton21[1] << " " << LeptonsEM.Lepton21[2] << " " << LeptonsEM.Lepton21[3];
+      cout << " " << LeptonsEM.Lepton22[1] << " " << LeptonsEM.Lepton22[2] << " " << LeptonsEM.Lepton22[3];
+      for(int i = 0; i < 2; i++)
+         cout << " " << IntegralBEM[i] * Weight;
+      for(int i = 0; i < 2; i++)
+         cout << " " << IntegralBEE[i] * Weight;
       for(int i = 0; i < 13; i++)
-         AddToVector(TotalBEM[i], IntegralBEM, Weight * PassEM[i]);
+         cout << " " << PassEM[i];
       for(int i = 0; i < 13; i++)
-         AddToVector(TotalBEE[i], IntegralBEE, Weight * PassEE[i]);
-   }
-
-   for(int i = 0; i < 13; i++)
-   {
-      // string SEMString = "TA1";   SEMString[1] = 'A' + i;
-      // string SEEString = "VA1";   SEEString[1] = 'A' + i;
-      string BEMString = "TA2";   BEMString[1] = 'A' + i;
-      string BEEString = "VA2";   BEEString[1] = 'A' + i;
-
-      // PrintResult(SEMString, TotalSEM[i], ActualEventCount);
-      // PrintResult(SEEString, TotalSEE[i], ActualEventCount);
-      PrintResult(BEMString, TotalBEM[i], ActualEventCount);
-      PrintResult(BEEString, TotalBEE[i], ActualEventCount);
+         cout << " " << PassEE[i];
+      cout << endl;
    }
 
    Bar.Update(EventCount);

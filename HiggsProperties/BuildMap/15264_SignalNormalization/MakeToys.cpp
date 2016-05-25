@@ -19,6 +19,7 @@ using namespace std;
 #include "HybridCalculator.h"
 #include "PTYFunctions.h"
 #include "Cuts.h"
+#include "Lists.h"
 
 int main(int argc, char *argv[]);
 double GiveMeZMass();
@@ -50,6 +51,8 @@ int main(int argc, char *argv[])
    }
    else
       srand(time(NULL));
+
+   cerr << "Energy is \"" << Energy << "\"" << endl;
 
    // Setup calculator
    HybridCalculator CalculatorSEM, CalculatorSEE, CalculatorBEM, CalculatorBEE;
@@ -85,30 +88,22 @@ int main(int argc, char *argv[])
       cerr << "ERROR" << endl;
 
    CalculatorSEE = CalculatorSEM;
-   CalculatorBEM = CalculatorSEM;
-   CalculatorBEM.SetDoDeltaMH(false);
-   CalculatorBEE = CalculatorBEM;
+   // CalculatorBEM = CalculatorSEM;
+   // CalculatorBEM.SetDoDeltaMH(false);
+   // CalculatorBEE = CalculatorBEM;
 
-   if(Energy == "14")
-      CalculatorBEM.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_14TeV_13432);
-   else if(Energy == "13")
-      CalculatorBEM.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_13TeV_13432);
-   else if(Energy == "0")
-      CalculatorBEM.SetPTYDensity(JustFlatPTYDensity);
-   else   // wut
-      cerr << "ERROR" << endl;
+   MEArray MEEM = GetHEFTFunctionListEM_ZAAZSeparate();   // ME, 2e2mu = ME,EM = MEEM
+   MEArray MEEE = GetHEFTFunctionListEE_ZAAZSeparate();   // ME, 4e = ME,EE = MEEE
 
-   if(Energy == "14")
-      CalculatorBEE.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_14TeV_13432);
-   else if(Energy == "13")
-      CalculatorBEE.SetPTYDensity(GetPTYDensityDDbar_MZ_CTEQ6l1_13TeV_13432);
-   else if(Energy == "0")
-      CalculatorBEE.SetPTYDensity(JustFlatPTYDensity);
-   else   // wut
-      cerr << "ERROR" << endl;
-
-   CalculatorBEM.SetMECalculator(CalculateDDbarBackground2e2muDirectional);
-   CalculatorBEE.SetMECalculator(CalculateDDbarBackground4eDirectional);
+   for(int i = 0; i < 32; i++)
+      for(int j = 0; j < 32; j++)
+         CalculatorSEM.SetMECalculator(MEEM[i][j]);
+   for(int i = 0; i < 32; i++)
+      for(int j = 0; j < 32; j++)
+         CalculatorSEE.SetMECalculator(MEEE[i][j]);
+ 
+   // CalculatorBEM.SetMECalculator(CalculateBackground2e2mu);
+   // CalculatorBEE.SetMECalculator(CalculateBackground4e);
 
    // vectors to hold totals
    vector<double> TotalSEM[13], TotalSEE[13];
@@ -117,7 +112,7 @@ int main(int argc, char *argv[])
 
    // Start looping
    double MaxEstimate = 1;
-   int EventCount = 1000000;
+   int EventCount = 500000;
    EventParameters Angles;
 
    ProgressBar Bar(cerr, EventCount);
@@ -144,11 +139,13 @@ int main(int argc, char *argv[])
          Angles.PhiOffset = DrawRandom(-PI, PI);
          Angles.PhiH = DrawRandom(-PI, PI);
          Angles.PTH = 0;
-         Angles.YH = DrawRandom(-4, 4);
+         if(Energy != "0")
+            Angles.YH = DrawRandom(-4, 4);
+         else
+            Angles.YH = 0;
 
          do
          {
-            Angles.HMass = DrawRandom(115, 135);
             Angles.ZMass = GiveMeZMass();
             Angles.Z2Mass = GiveMeZ2Mass();
          } while(Angles.ZMass + Angles.Z2Mass > Angles.HMass);
@@ -167,43 +164,54 @@ int main(int argc, char *argv[])
       double Weight = 1 / MaxEstimate / GiveMeZWeight(Angles.ZMass) / GiveMeZ2Weight(Angles.Z2Mass) / PTYWeight;
       Weight = Weight * Angles.ZMass * Angles.HMass * Angles.Z2Mass;
 
+      // double m4l = DrawGaussian(125, 2);
+      double m4l = DrawRandom(115, 135);
+      Weight = Weight * exp(-(m4l - 125) * (m4l - 125) / (2 * 2 * 2)) / m4l;
+
+      // This is empirical hack
+      Weight = Weight * m4l / 125;
+
       vector<double> IntegralSEM, IntegralSEE;
       vector<double> IntegralBEM, IntegralBEE;
-
-      LeptonVectors LeptonsEM = ConvertAnglesToVectorsRoberto(Angles).ReorderLeptons2e2mu();
+      
+      EventParameters RealAngles = Angles;
+      RealAngles.HMass = m4l;
+      RealAngles.ZMass = Angles.ZMass / Angles.HMass * m4l;
+      RealAngles.Z2Mass = Angles.Z2Mass / Angles.HMass * m4l;
+      LeptonVectors LeptonsEM = ConvertAnglesToVectorsRoberto(RealAngles).ReorderLeptons2e2mu();
       LeptonVectors LeptonsEE = LeptonsEM.ReorderLeptons4e();
 
       vector<bool> PassEM = PassPairingCuts(LeptonsEM);
       vector<bool> PassEE = PassPairingCuts(LeptonsEE);
 
-      // IntegralSEM = CalculatorSEM.PassThroughMode(Angles);
-      // IntegralSEE = CalculatorSEE.PassThroughMode(Angles);
-      IntegralBEM = CalculatorBEM.PassThroughMode(Angles);
-      IntegralBEE = CalculatorBEE.PassThroughMode(Angles);
+      IntegralSEM = CalculatorSEM.PassThroughMode(Angles);
+      IntegralSEE = CalculatorSEE.PassThroughMode(Angles);
+      // IntegralBEM = CalculatorBEM.PassThroughMode(Angles);
+      // IntegralBEE = CalculatorBEE.PassThroughMode(Angles);
 
       ActualEventCount = ActualEventCount + Weight;
 
-      // for(int i = 0; i < 10; i++)
-      //    AddToVector(TotalSEM[i], IntegralSEM, Weight * PassEM[i]);
-      // for(int i = 0; i < 10; i++)
-      //    AddToVector(TotalSEE[i], IntegralSEE, Weight * PassEE[i]);
       for(int i = 0; i < 13; i++)
-         AddToVector(TotalBEM[i], IntegralBEM, Weight * PassEM[i]);
+         AddToVector(TotalSEM[i], IntegralSEM, Weight * PassEM[i]);
       for(int i = 0; i < 13; i++)
-         AddToVector(TotalBEE[i], IntegralBEE, Weight * PassEE[i]);
+         AddToVector(TotalSEE[i], IntegralSEE, Weight * PassEE[i]);
+      // for(int i = 0; i < 10; i++)
+      //    AddToVector(TotalBEM[i], IntegralBEM, Weight * PassEM[i]);
+      // for(int i = 0; i < 10; i++)
+      //    AddToVector(TotalBEE[i], IntegralBEE, Weight * PassEE[i]);
    }
 
    for(int i = 0; i < 13; i++)
    {
-      // string SEMString = "TA1";   SEMString[1] = 'A' + i;
-      // string SEEString = "VA1";   SEEString[1] = 'A' + i;
-      string BEMString = "TA2";   BEMString[1] = 'A' + i;
-      string BEEString = "VA2";   BEEString[1] = 'A' + i;
+      string SEMString = "TA1";   SEMString[1] = 'A' + i;
+      string SEEString = "VA1";   SEEString[1] = 'A' + i;
+      // string BEMString = "TA2";   BEMString[1] = 'A' + i;
+      // string BEEString = "VA2";   BEEString[1] = 'A' + i;
 
-      // PrintResult(SEMString, TotalSEM[i], ActualEventCount);
-      // PrintResult(SEEString, TotalSEE[i], ActualEventCount);
-      PrintResult(BEMString, TotalBEM[i], ActualEventCount);
-      PrintResult(BEEString, TotalBEE[i], ActualEventCount);
+      PrintResult(SEMString, TotalSEM[i], ActualEventCount);
+      PrintResult(SEEString, TotalSEE[i], ActualEventCount);
+      // PrintResult(BEMString, TotalBEM[i], ActualEventCount);
+      // PrintResult(BEEString, TotalBEE[i], ActualEventCount);
    }
 
    Bar.Update(EventCount);
@@ -220,7 +228,7 @@ double GiveMeZMass()
 
    while(Accepted == false)
    {
-      Value = DrawRandom(4, 120);
+      Value = DrawRandom(0.1, 120);
       if(DrawRandom(0, 1) < GiveMeZWeight(Value))
          Accepted = true;
    }
@@ -240,7 +248,7 @@ double GiveMeZ2Mass()
 
    while(Accepted == false)
    {
-      Value = DrawRandom(4, 120);
+      Value = DrawRandom(0.1, 120);
       if(DrawRandom(0, 1) < GiveMeZ2Weight(Value))
          Accepted = true;
    }
@@ -279,8 +287,6 @@ void PrintResult(string Identifier, vector<double> Total, double Count)
       cout << setprecision(20) << " " << Total[i] / Count;
    cout << endl;
 }
-
-   
 
 
 

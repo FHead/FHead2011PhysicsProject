@@ -300,5 +300,10 @@ double GetChi2_HiggsPlusLEP2WW_Warsaw_14252(const WarsawBasis &W)
    return Chi2;
 }
 
+double GetChi2_TopYukawaMagnitude_15243(const LoopBasis &L)
+{
+   // TODO!  Here comes constraints from Htt search
+   return 1;
+}
 
 

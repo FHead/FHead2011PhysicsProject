@@ -3,13 +3,17 @@
 
 #include <iostream>
 
+#include "InterpretCoefficient.h"
+
 class AVVBasis;
 class HiggsBasis;
 class WarsawBasis;
+class LoopBasis;
 
 std::ostream &operator <<(std::ostream &out, AVVBasis &A);
 std::ostream &operator <<(std::ostream &out, HiggsBasis &H);
 std::ostream &operator <<(std::ostream &out, WarsawBasis &W);
+std::ostream &operator <<(std::ostream &out, LoopBasis &L);
 
 class AVVBasis
 {
@@ -31,6 +35,7 @@ public:
    AVVBasis(double A[12]);
    AVVBasis(const HiggsBasis &H);
    AVVBasis(const WarsawBasis &W);
+   AVVBasis(const LoopBasis &L);
    void Print(std::ostream &out);
 };
 
@@ -69,6 +74,24 @@ public:
    WarsawBasis(double W[8]);
    WarsawBasis(const AVVBasis &A);
    WarsawBasis(const HiggsBasis &H);
+   void Print(std::ostream &out);
+};
+
+class LoopBasis
+{
+public:
+   double A2ZZ;
+   double A3ZZ;
+   double A4ZZ;
+   double YT;
+   double YTA;
+   double MT;
+   double GWW;
+   double MW;
+public:
+   LoopBasis();
+   LoopBasis(double L[8]);
+   LoopBasis(const InterpretationCoefficients &C);
    void Print(std::ostream &out);
 };
 

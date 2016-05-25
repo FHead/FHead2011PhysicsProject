@@ -23,5 +23,6 @@ double GetChi2_LEP2WW_Higgs_14252(const HiggsBasis &H);
 double GetChi2_LEP2WW_Warsaw_14252(const WarsawBasis &W);
 double GetChi2_HiggsPlusLEP2WW_Higgs_14252(const HiggsBasis &H);
 double GetChi2_HiggsPlusLEP2WW_Warsaw_14252(const WarsawBasis &W);
+double GetChi2_TopYukawaMagnitude_15243(const LoopBasis &L);
 
 #endif

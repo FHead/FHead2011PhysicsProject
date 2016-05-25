@@ -119,6 +119,29 @@ AVVBasis::AVVBasis(const WarsawBasis &W)
    A4AA = 0;
 }
 
+AVVBasis::AVVBasis(const LoopBasis &L)
+{
+   InterpretationCoefficients C;
+   C.yt = L.YT;
+   C.yta = L.YTA;
+   C.mt = L.MT;
+   C.gww = L.GWW;
+   C.mw = L.MW;
+
+   A1ZZ = 2;
+   A2ZZ = L.A2ZZ;
+   A3ZZ = L.A3ZZ;
+   A4ZZ = L.A4ZZ;
+   A1ZA = 0;
+   A2ZA = InterpretedA2ZA_Roberto14167(C);
+   A3ZA = InterpretedA3ZA_Roberto14167(C);
+   A4ZA = 0;
+   A1AA = 0;
+   A2AA = InterpretedA2AA_Roberto14167(C);
+   A3AA = InterpretedA3AA_Roberto14167(C);
+   A4AA = 0;
+}
+
 void AVVBasis::Print(ostream &out)
 {
    out << "(" << A1ZZ << ", " << A2ZZ << ", " << A3ZZ << ", " << A4ZZ << "; "
@@ -291,6 +314,47 @@ void WarsawBasis::Print(ostream &out)
    out << "(" << CT << ", " << CH << ", " << CWW << ", " << CWWD << ", " << CWB << ", " << CWBD << ", " << CBB << ", " << CBBD << ")";
 }
 
+LoopBasis::LoopBasis()
+{
+   A2ZZ = 0;
+   A3ZZ = 0;
+   A4ZZ = 0;
+   YT = 0;
+   YTA = 0;
+   MT = 0;
+   GWW = 0;
+   MW = 0;
+}
+
+LoopBasis::LoopBasis(double L[8])
+{
+   A2ZZ = L[0];
+   A3ZZ = L[1];
+   A4ZZ = L[2];
+   YT = L[3];
+   YTA = L[4];
+   MT = L[5];
+   GWW = L[6];
+   MW = L[7];
+}
+
+LoopBasis::LoopBasis(const InterpretationCoefficients &C)
+{
+   A2ZZ = 0;
+   A3ZZ = 0;
+   A4ZZ = 0;
+   YT = C.yt;
+   YTA = C.yta;
+   MT = C.mt;
+   GWW = C.gww;
+   MW = C.mw;
+}
+
+void LoopBasis::Print(std::ostream &out)
+{
+   out << "(" << A2ZZ << ", " << A3ZZ << ", " << A4ZZ << ", " << YT << ", " << YTA << ", " << MT << ", " << GWW << ", " << MW << ")";
+}
+
 std::ostream &operator <<(std::ostream &out, AVVBasis &A)
 {
    A.Print(out);
@@ -309,3 +373,8 @@ std::ostream &operator <<(std::ostream &out, WarsawBasis &W)
    return out;
 }
 
+std::ostream &operator <<(std::ostream &out, LoopBasis &L)
+{
+   L.Print(out);
+   return out;
+}

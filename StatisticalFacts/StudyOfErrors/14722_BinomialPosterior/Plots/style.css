@@ -1,0 +1,69 @@
+body
+{
+   font-family: 'open-sans', sans-serif;
+}
+
+div.TextHolder
+{
+   border: 1px solid #000;
+   border-radius: 10px;
+   text-align: center;
+   width: 600px;
+   padding-top: 20px;
+   padding-bottom: 20px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-bottom: 40px;
+   background-color: #FEE;
+}
+
+div.TextHolder h1
+{
+   margin-left: 40px;
+   margin-right: 40px;
+   text-align: center;
+   font-size: 1em;
+   font-weight: bold;
+}
+
+div.TextHolder p
+{
+   margin-left: 40px;
+   margin-right: 40px;
+   text-align: justify;
+   font-size: 1em;
+}
+
+div.TextHolder input
+{
+   text-align: center;
+}
+
+div.PlotHolder
+{
+   border: 1px solid #000;
+   border-radius: 10px;
+   text-align: center;
+   width: 600px;
+   padding-top: 40px;
+   padding-bottom: 20px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-bottom: 40px;
+   background-color: #FEE;
+}
+
+div.PlotHolder img
+{
+   max-height: 500px;
+   max-width: 500px;
+   border: 1px solid #000;
+   border-radius: 10px;
+   background-color: #FFF;
+}
+
+div.PlotHolder p
+{
+   text-align: center;
+   font-size: 1em;
+}

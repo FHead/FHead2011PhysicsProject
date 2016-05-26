@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]);
-double NegativeProbability(const vector<double> &x, const vector<double> &y, double &Sigma, double &a, double &b, double &c);
+double NegativeProbability(const vector<double> &x, const vector<double> &y, double &Sigma, double &a, double &b, double &c, double &Residue);
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 
    map<int, vector<double> > X;
    map<int, vector<double> > Y;
+   map<int, bool> Bad;
 
    while(in)
    {
@@ -38,10 +39,21 @@ int main(int argc, char *argv[])
       {
          X.insert(pair<int, vector<double> >(temp[0], vector<double>()));
          Y.insert(pair<int, vector<double> >(temp[0], vector<double>()));
+         Bad.insert(pair<int, bool>(temp[0], false));
       }
 
-      X[temp[0]].push_back(temp[7]);
-      Y[temp[0]].push_back(temp[13]);
+      bool ThisOneBad = true;
+      for(int i = 1; i < 14; i++)
+         if(temp[i] > 0)
+            ThisOneBad = false;
+      
+      if(ThisOneBad == true)
+         Bad[temp[0]] = true;
+      else
+      {
+         X[temp[0]].push_back(temp[7]);
+         Y[temp[0]].push_back(temp[13]);
+      }
    }
 
    in.close();
@@ -50,18 +62,25 @@ int main(int argc, char *argv[])
    {
       int ID = iter->first;
 
+      if(Bad[ID] == true)
+         continue;
+
       double Sigma = 0;
       double a = 0, b = 0, c = 0;
-      double P = NegativeProbability(X[ID], Y[ID], Sigma, a, b, c);
+      double Residue = 0;
+      double P = NegativeProbability(X[ID], Y[ID], Sigma, a, b, c, Residue);
 
-      cout << ID << " " << P << " " << Sigma << endl;
+      cout << ID << " " << P << " " << Sigma << " " << Residue << endl;
+
+      if(Sigma < -10)
+         cerr << argv[1] << " " << ID << " " << P << " " << Sigma << endl;
    }
 
    return 0;
 }
 
 double NegativeProbability(const vector<double> &x, const vector<double> &y, double &Sigma,
-   double &a, double &b, double &c)
+   double &a, double &b, double &c, double &Residue)
 {
    double SumX0 = 0;
    double SumX1 = 0;
@@ -109,6 +128,11 @@ double NegativeProbability(const vector<double> &x, const vector<double> &y, dou
    Sigma = minlocation * sqrt(2 * a);
 
    double p = (1 - erf(Sigma / sqrt(2))) / 2;
+
+   Residue = 0;
+   for(int i = 0; i < (int)x.size(); i++)
+      Residue = Residue + (y[i] - a * x[i] * x[i] - b * x[i] - c) * (y[i] - a * x[i] * x[i] - b * x[i] - c);
+   Residue = Residue / x.size();
 
    return p;
 }

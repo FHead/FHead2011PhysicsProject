@@ -36,6 +36,7 @@ public:
    DataHelper DHFile;
    TFile *File;
    TTree *Tree;
+   string Energy;
 public:
    double l1id, l3id;
    double VS[16][16];
@@ -45,7 +46,7 @@ public:
    double l1pt, l1eta, l1phi, l2pt, l2eta, l2phi;
    double l3pt, l3eta, l3phi, l4pt, l4eta, l4phi;
 public:
-   FileHandle(string filename, string cutlabel, bool usestockm4l);
+   FileHandle(string filename, string cutlabel, string energy, bool usestockm4l);
    ~FileHandle();
    bool GiveNextEvent(SingleEvent &Event, bool Recycle = false);
 };
@@ -60,13 +61,14 @@ int main(int argc, char *argv[])
 
    string SEMFileName, SEEFileName, BEMFileName, BEEFileName;
    double SEMSize, SEESize, BEMSize, BEESize;
+   string Energy = "0TeV";
    string CutLabel = "A";
 
-   if(argc <= 22)
+   if(argc <= 23)
    {
       cerr << "Usage: " << argv[0]
          << " SignalEMFile SignalEMSize BackgroundEMFile BackgroundEMSize"
-         << " SignalEEFile SignalEESize BackgroundEEFile BackgroundEESize CutLabel"
+         << " SignalEEFile SignalEESize BackgroundEEFile BackgroundEESize Energy CutLabel"
          << " A2ZZ A3ZZ A4ZZ A2ZA A3ZA A4ZA A2AA A3AA"
          << " YT YTA MT GWW MW"
          << endl;
@@ -77,22 +79,23 @@ int main(int argc, char *argv[])
    BEMFileName = argv[3];   BEMSize = atof(argv[4]);
    SEEFileName = argv[5];   SEESize = atof(argv[6]);
    BEEFileName = argv[7];   BEESize = atof(argv[8]);
-   CutLabel = argv[9];
+   Energy = argv[9];
+   CutLabel = argv[10];
 
-   double A2ZZ = atof(argv[10]);
-   double A3ZZ = atof(argv[11]);
-   double A4ZZ = atof(argv[12]);
-   double A2ZA = atof(argv[13]);
-   double A3ZA = atof(argv[14]);
-   double A4ZA = atof(argv[15]);
-   double A2AA = atof(argv[16]);
-   double A3AA = atof(argv[17]);
+   double A2ZZ = atof(argv[11]);
+   double A3ZZ = atof(argv[12]);
+   double A4ZZ = atof(argv[13]);
+   double A2ZA = atof(argv[14]);
+   double A3ZA = atof(argv[15]);
+   double A4ZA = atof(argv[16]);
+   double A2AA = atof(argv[17]);
+   double A3AA = atof(argv[18]);
 
-   double TrueYT  = atof(argv[18]);
-   double TrueYTA = atof(argv[19]);
-   double TrueMT  = atof(argv[20]);
-   double TrueGWW = atof(argv[21]);
-   double TrueMW  = atof(argv[22]);
+   double TrueYT  = atof(argv[19]);
+   double TrueYTA = atof(argv[20]);
+   double TrueMT  = atof(argv[21]);
+   double TrueGWW = atof(argv[22]);
+   double TrueMW  = atof(argv[23]);
 
    AVVBasis TrueA;
    TrueA.A1ZZ = 2;   TrueA.A2ZZ = A2ZZ;   TrueA.A3ZZ = A3ZZ;   TrueA.A4ZZ = A4ZZ;
@@ -106,19 +109,117 @@ int main(int argc, char *argv[])
    Fits.ClearPoints();
    int FitCount = 0;
 
-   FileHandle SEM(SEMFileName, CutLabel, true);
-   FileHandle BEM(BEMFileName, CutLabel, false);
-   FileHandle SEE(SEEFileName, CutLabel, true);
-   FileHandle BEE(BEEFileName, CutLabel, false);
+   FileHandle SEM(SEMFileName, CutLabel, Energy, true);
+   FileHandle BEM(BEMFileName, CutLabel, Energy, false);
+   FileHandle SEE(SEEFileName, CutLabel, Energy, true);
+   FileHandle BEE(BEEFileName, CutLabel, Energy, false);
 
    vector<FitResultSummary> Results;
 
    vector<string> AVVConfigurations, AVVPriors;
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNN");
+   AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNY");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNY");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNY");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNY");
+
    vector<string> HiggsConfigurations, HiggsPriors;
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNY");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNY");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNY");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNY");
+
    vector<string> WarsawConfigurations, WarsawPriors;
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNYNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNYNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNYNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNYNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNYNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNYNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YYYYNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YYYYNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YYYYNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNYNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNYNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNYNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNYN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNYN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNYN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNY");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNY");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNY");
 
    vector<string> LoopConfigurations, LoopPriors;
+   LoopConfigurations.push_back("NNNYYNNN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("NNNYYNYN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("YYYNNNYN");   LoopPriors.push_back("NNNNNNNN");
    LoopConfigurations.push_back("NNNNNNYN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("NNNNYNYN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("YYYYYNNN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("YYYYYNYN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("YYYNYNYN");   LoopPriors.push_back("NNNNNNNN");
 
    string Fs = "NNNN";
    if(BEMSize >= 0)         Fs[0] = 'Y';
@@ -243,35 +344,6 @@ int main(int argc, char *argv[])
          FitConfiguration Temp = Configurations[iC];
 
          FitResultSummary ResultTemp = Fits.DoFit(Temp);
-
-         double TempE[4] = {0}, TempB[4] = {0};
-         TempE[0] = ResultTemp.Sem + ResultTemp.Bem;
-         TempE[1] = ResultTemp.Sme + ResultTemp.Bme;
-         TempE[2] = ResultTemp.See + ResultTemp.Bee;
-         TempE[3] = ResultTemp.Smm + ResultTemp.Bmm;
-         TempB[0] = ResultTemp.Bem;
-         TempB[1] = ResultTemp.Bme;
-         TempB[2] = ResultTemp.Bee;
-         TempB[3] = ResultTemp.Bmm;
-
-         double X = ResultTemp.Parameter7;
-         for(double iX = -2; iX <= 2; iX = iX + 0.2)
-         {
-            double Parameters[12] = {0};
-            Parameters[0] = Temp.Parameter1InitialValue;
-            Parameters[1] = Temp.Parameter2InitialValue;
-            Parameters[2] = Temp.Parameter3InitialValue;
-            Parameters[3] = Temp.Parameter4InitialValue;
-            Parameters[4] = Temp.Parameter5InitialValue;
-            Parameters[5] = Temp.Parameter6InitialValue;
-            Parameters[6] = X * iX;
-            Parameters[7] = Temp.Parameter8InitialValue;
-            Parameters[8] = ((TempE[0] > 0) ? (TempB[0] / TempE[0]) : 0);
-            Parameters[9] = ((TempE[1] > 0) ? (TempB[1] / TempE[1]) : 0);
-            Parameters[10] = ((TempE[2] > 0) ? (TempB[2] / TempE[2]) : 0);
-            Parameters[11] = ((TempE[3] > 0) ? (TempB[3] / TempE[3]) : 0);
-            Fits.CalculateLogLikelihoodAll(Parameters);
-         }
 
          Results.push_back(ResultTemp);
       }
@@ -410,6 +482,8 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
       return GiveNextEvent(NewEvent);
 
    int CutIndex = CutLabel[0] - 'A';
+   // cout << "CutLabel = " << CutLabel << endl;
+   // cout << "Cut index = " << CutIndex << endl;
    if(PassPairingCuts(Leptons)[CutIndex] == false)
       return GiveNextEvent(NewEvent);
 
@@ -417,7 +491,8 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
    if(l1id == l3id)   State = "ee";
    if(l1id != l3id)   State = "em";
 
-   string DHState = "Cut" + CutLabel;
+   // string DHState = "Cut" + CutLabel;
+   string DHState = Energy;
 
    if(State == "em")
       SignalBranch[0] = 'T', BackgroundBranch[0] = 'T';
@@ -478,11 +553,12 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
    return true;
 }
 
-FileHandle::FileHandle(string filename, string cutlabel, bool usestockm4l)
+FileHandle::FileHandle(string filename, string cutlabel, string energy, bool usestockm4l)
    : M4l(31426, 100000), DHFile("Normalization.dh")
 {
    FileName = filename;
    CutLabel = cutlabel;
+   Energy = energy;
    UseStockM4l = usestockm4l;
    CurrentIndex = 0;
 

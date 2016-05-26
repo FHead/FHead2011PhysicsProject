@@ -36,16 +36,17 @@ public:
    DataHelper DHFile;
    TFile *File;
    TTree *Tree;
+   string Energy;
 public:
    double l1id, l3id;
    double VS[16][16];
    double IS[16][16];
-   double VB;
-   double IB;
+   double VB[2];
+   double IB[2];
    double l1pt, l1eta, l1phi, l2pt, l2eta, l2phi;
    double l3pt, l3eta, l3phi, l4pt, l4eta, l4phi;
 public:
-   FileHandle(string filename, string cutlabel, bool usestockm4l);
+   FileHandle(string filename, string cutlabel, string energy, bool usestockm4l);
    ~FileHandle();
    bool GiveNextEvent(SingleEvent &Event, bool Recycle = false);
 };
@@ -58,41 +59,56 @@ int main(int argc, char *argv[])
 
    srand(time(NULL));
 
-   string SEMFileName, SEEFileName, BEMFileName, BEEFileName;
-   double SEMSize, SEESize, BEMSize, BEESize;
+   string SEMFileName, SEEFileName, BEMFileName1, BEEFileName1, BEMFileName2, BEEFileName2;
+   double SEMSize, SEESize, BEMSize1, BEESize1, BEMSize2, BEESize2;
+   string Energy = "0TeV";
    string CutLabel = "A";
 
-   if(argc <= 22)
+   if(argc <= 27)
    {
-      cerr << "Usage: " << argv[0]
-         << " SignalEMFile SignalEMSize BackgroundEMFile BackgroundEMSize"
-         << " SignalEEFile SignalEESize BackgroundEEFile BackgroundEESize CutLabel"
-         << " A2ZZ A3ZZ A4ZZ A2ZA A3ZA A4ZA A2AA A3AA"
-         << " YT YTA MT GWW MW"
+      cerr << "Usage: " << argv[0] << endl
+         << " SignalEMFile SignalEMSize BackgroundEMFile1 BackgroundEMSize1 BackgroundEMFile2 BackgroundEMSize2" << endl
+         << " SignalEEFile SignalEESize BackgroundEEFile1 BackgroundEESize1 BackgroundEEFile2 BackgroundEESize2" << endl
+         << " Energy CutLabel" << endl
+         << " A2ZZ A3ZZ A4ZZ A2ZA A3ZA A4ZA A2AA A3AA" << endl
+         << " YT YTA MT GWW MW" << endl
          << endl;
       return -1;
    }
 
-   SEMFileName = argv[1];   SEMSize = atof(argv[2]);
-   BEMFileName = argv[3];   BEMSize = atof(argv[4]);
-   SEEFileName = argv[5];   SEESize = atof(argv[6]);
-   BEEFileName = argv[7];   BEESize = atof(argv[8]);
-   CutLabel = argv[9];
+   SEMFileName = argv[1];     SEMSize = atof(argv[2]);
+   BEMFileName1 = argv[3];    BEMSize1 = atof(argv[4]);
+   BEMFileName2 = argv[5];    BEMSize2 = atof(argv[6]);
+   SEEFileName = argv[7];     SEESize = atof(argv[8]);
+   BEEFileName1 = argv[9];    BEESize1 = atof(argv[10]);
+   BEEFileName2 = argv[11];   BEESize2 = atof(argv[12]);
+   Energy = argv[13];
+   CutLabel = argv[14];
 
-   double A2ZZ = atof(argv[10]);
-   double A3ZZ = atof(argv[11]);
-   double A4ZZ = atof(argv[12]);
-   double A2ZA = atof(argv[13]);
-   double A3ZA = atof(argv[14]);
-   double A4ZA = atof(argv[15]);
-   double A2AA = atof(argv[16]);
-   double A3AA = atof(argv[17]);
+   double A2ZZ = atof(argv[15]);
+   double A3ZZ = atof(argv[16]);
+   double A4ZZ = atof(argv[17]);
+   double A2ZA = atof(argv[18]);
+   double A3ZA = atof(argv[19]);
+   double A4ZA = atof(argv[20]);
+   double A2AA = atof(argv[21]);
+   double A3AA = atof(argv[22]);
 
-   double TrueYT  = atof(argv[18]);
-   double TrueYTA = atof(argv[19]);
-   double TrueMT  = atof(argv[20]);
-   double TrueGWW = atof(argv[21]);
-   double TrueMW  = atof(argv[22]);
+   double TrueYT  = atof(argv[23]);
+   double TrueYTA = atof(argv[24]);
+   double TrueMT  = atof(argv[25]);
+   double TrueGWW = atof(argv[26]);
+   double TrueMW  = atof(argv[27]);
+
+   double BEMSize = BEMSize1 + BEMSize2;
+   double BEESize = BEESize1 + BEESize2;
+
+   if(BEMSize1 < 0 && BEMSize2 >= 0)   BEMSize = BEMSize2;
+   if(BEMSize2 < 0 && BEMSize1 >= 0)   BEMSize = BEMSize1;
+   if(BEMSize1 < 0 && BEMSize2 < 0)    BEMSize = -1;
+   if(BEESize1 < 0 && BEESize2 >= 0)   BEESize = BEESize2;
+   if(BEESize2 < 0 && BEESize1 >= 0)   BEESize = BEESize1;
+   if(BEESize1 < 0 && BEESize2 < 0)    BEESize = -1;
 
    AVVBasis TrueA;
    TrueA.A1ZZ = 2;   TrueA.A2ZZ = A2ZZ;   TrueA.A3ZZ = A3ZZ;   TrueA.A4ZZ = A4ZZ;
@@ -106,19 +122,120 @@ int main(int argc, char *argv[])
    Fits.ClearPoints();
    int FitCount = 0;
 
-   FileHandle SEM(SEMFileName, CutLabel, true);
-   FileHandle BEM(BEMFileName, CutLabel, false);
-   FileHandle SEE(SEEFileName, CutLabel, true);
-   FileHandle BEE(BEEFileName, CutLabel, false);
+   FileHandle SEM(SEMFileName, CutLabel, Energy, true);
+   FileHandle BEM1(BEMFileName1, CutLabel, Energy, false);
+   FileHandle BEM2(BEMFileName2, CutLabel, Energy, false);
+   FileHandle SEE(SEEFileName, CutLabel, Energy, true);
+   FileHandle BEE1(BEEFileName1, CutLabel, Energy, false);
+   FileHandle BEE2(BEEFileName2, CutLabel, Energy, false);
 
    vector<FitResultSummary> Results;
 
    vector<string> AVVConfigurations, AVVPriors;
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNN");
+   AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNN");
+   // AVVConfigurations.push_back("YNNYNNYN");   AVVPriors.push_back("NNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNYNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YYYYNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNYNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNYN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNY");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNY");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNY");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNY");
+
    vector<string> HiggsConfigurations, HiggsPriors;
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNYNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNYNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YYYYNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNYNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNYN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNY");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNY");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNY");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNY");
+
    vector<string> WarsawConfigurations, WarsawPriors;
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNYNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNYNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNYNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNYNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNYNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNYNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YYYYNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YYYYNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YYYYNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNYNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNYNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNYNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNYN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNYN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNYN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNY");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNY");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNY");
 
    vector<string> LoopConfigurations, LoopPriors;
+   /*LoopConfigurations.push_back("NNNYYNNN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("NNNYYNYN");   LoopPriors.push_back("NNNNNNNN");
+   // LoopConfigurations.push_back("YYYNNNYN");   LoopPriors.push_back("NNNNNNNN");
    LoopConfigurations.push_back("NNNNNNYN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("NNNNYNYN");   LoopPriors.push_back("NNNNNNNN");
+   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNNNNNNN");*/
+   // LoopConfigurations.push_back("YYYYYNNN");   LoopPriors.push_back("NNNNNNNN");
+   // LoopConfigurations.push_back("YYYYYNYN");   LoopPriors.push_back("NNNNNNNN");
+   // LoopConfigurations.push_back("YYYNYNYN");   LoopPriors.push_back("NNNNNNNN");
 
    string Fs = "NNNN";
    if(BEMSize >= 0)         Fs[0] = 'Y';
@@ -141,7 +258,7 @@ int main(int argc, char *argv[])
       AValues[6] = TrueA.A2AA;   AValues[7] = TrueA.A3AA;
 
       Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), false, BASIS_AVV, AVVPriors[i]));
-      Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), true, BASIS_AVV, AVVPriors[i]));
+      // Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), true, BASIS_AVV, AVVPriors[i]));
    }
    for(int i = 0; i < HiggsConfigurations.size(); i++)
    {
@@ -189,8 +306,10 @@ int main(int argc, char *argv[])
    {
       int SEMCount = (SEMSize >= 0 ? DrawPoisson(SEMSize) : 0);
       int SEECount = (SEESize >= 0 ? DrawPoisson(SEESize) : 0);
-      int BEMCount = (BEMSize >= 0 ? DrawPoisson(BEMSize) : 0);
-      int BEECount = (BEESize >= 0 ? DrawPoisson(BEESize) : 0);
+      int BEMCount1 = (BEMSize1 >= 0 ? DrawPoisson(BEMSize1) : 0);
+      int BEECount1 = (BEESize1 >= 0 ? DrawPoisson(BEESize1) : 0);
+      int BEMCount2 = (BEMSize2 >= 0 ? DrawPoisson(BEMSize2) : 0);
+      int BEECount2 = (BEESize2 >= 0 ? DrawPoisson(BEESize2) : 0);
 
       SingleEvent NewEvent;
       bool Good = true;
@@ -208,16 +327,30 @@ int main(int argc, char *argv[])
          else
             Good = false;
       }
-      for(int i = 0; i < BEMCount; i++)
+      for(int i = 0; i < BEMCount1; i++)
       {
-         if(BEM.GiveNextEvent(NewEvent, true) == true)
+         if(BEM1.GiveNextEvent(NewEvent, true) == true)
             Fits.AddPoint(NewEvent);
          else
             Good = false;
       }
-      for(int i = 0; i < BEECount; i++)
+      for(int i = 0; i < BEECount1; i++)
       {
-         if(BEE.GiveNextEvent(NewEvent, true) == true)
+         if(BEE1.GiveNextEvent(NewEvent, true) == true)
+            Fits.AddPoint(NewEvent);
+         else
+            Good = false;
+      }
+      for(int i = 0; i < BEMCount2; i++)
+      {
+         if(BEM2.GiveNextEvent(NewEvent, true) == true)
+            Fits.AddPoint(NewEvent);
+         else
+            Good = false;
+      }
+      for(int i = 0; i < BEECount2; i++)
+      {
+         if(BEE2.GiveNextEvent(NewEvent, true) == true)
             Fits.AddPoint(NewEvent);
          else
             Good = false;
@@ -231,9 +364,9 @@ int main(int argc, char *argv[])
       Fits.SignalStateCount[2] = SEECount;
       Fits.SignalStateCount[3] = 0;
       
-      Fits.BackgroundStateCount[0] = BEMCount;
+      Fits.BackgroundStateCount[0] = BEMCount1 + BEMCount2;
       Fits.BackgroundStateCount[1] = 0;
-      Fits.BackgroundStateCount[2] = BEECount;
+      Fits.BackgroundStateCount[2] = BEECount1 + BEECount2;
       Fits.BackgroundStateCount[3] = 0;
 
       for(int iC = 0; iC < (int)Configurations.size(); iC++)
@@ -243,35 +376,6 @@ int main(int argc, char *argv[])
          FitConfiguration Temp = Configurations[iC];
 
          FitResultSummary ResultTemp = Fits.DoFit(Temp);
-
-         double TempE[4] = {0}, TempB[4] = {0};
-         TempE[0] = ResultTemp.Sem + ResultTemp.Bem;
-         TempE[1] = ResultTemp.Sme + ResultTemp.Bme;
-         TempE[2] = ResultTemp.See + ResultTemp.Bee;
-         TempE[3] = ResultTemp.Smm + ResultTemp.Bmm;
-         TempB[0] = ResultTemp.Bem;
-         TempB[1] = ResultTemp.Bme;
-         TempB[2] = ResultTemp.Bee;
-         TempB[3] = ResultTemp.Bmm;
-
-         double X = ResultTemp.Parameter7;
-         for(double iX = -2; iX <= 2; iX = iX + 0.2)
-         {
-            double Parameters[12] = {0};
-            Parameters[0] = Temp.Parameter1InitialValue;
-            Parameters[1] = Temp.Parameter2InitialValue;
-            Parameters[2] = Temp.Parameter3InitialValue;
-            Parameters[3] = Temp.Parameter4InitialValue;
-            Parameters[4] = Temp.Parameter5InitialValue;
-            Parameters[5] = Temp.Parameter6InitialValue;
-            Parameters[6] = X * iX;
-            Parameters[7] = Temp.Parameter8InitialValue;
-            Parameters[8] = ((TempE[0] > 0) ? (TempB[0] / TempE[0]) : 0);
-            Parameters[9] = ((TempE[1] > 0) ? (TempB[1] / TempE[1]) : 0);
-            Parameters[10] = ((TempE[2] > 0) ? (TempB[2] / TempE[2]) : 0);
-            Parameters[11] = ((TempE[3] > 0) ? (TempB[3] / TempE[3]) : 0);
-            Fits.CalculateLogLikelihoodAll(Parameters);
-         }
 
          Results.push_back(ResultTemp);
       }
@@ -406,10 +510,14 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
       Leptons = ConvertAnglesToVectorsRoberto(Event);
    }
 
+   // double HACK = Event.HMass / 125;
+
    if(Event.HMass > 135 || Event.HMass < 115)
       return GiveNextEvent(NewEvent);
 
    int CutIndex = CutLabel[0] - 'A';
+   // cout << "CutLabel = " << CutLabel << endl;
+   // cout << "Cut index = " << CutIndex << endl;
    if(PassPairingCuts(Leptons)[CutIndex] == false)
       return GiveNextEvent(NewEvent);
 
@@ -417,7 +525,8 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
    if(l1id == l3id)   State = "ee";
    if(l1id != l3id)   State = "em";
 
-   string DHState = "Cut" + CutLabel;
+   // string DHState = "Cut" + CutLabel;
+   string DHState = Energy;
 
    if(State == "em")
       SignalBranch[0] = 'T', BackgroundBranch[0] = 'T';
@@ -454,7 +563,9 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
             IS[i][j] = DHFile[DHState][Branch].GetDouble();
          }
       }
-      IB = DHFile[DHState][BackgroundBranch].GetDouble();
+
+      IB[0] = DHFile[DHState][BackgroundBranch+"_UUbar"].GetDouble();
+      IB[1] = DHFile[DHState][BackgroundBranch+"_DDbar"].GetDouble();
    }
 
    // bool Good = true;
@@ -470,19 +581,22 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
    for(int i = 0; i < 16; i++)
       for(int j = 0; j < 16; j++)
          NewEvent.IS[i][j] = IS[i][j];
-   NewEvent.VB = VB;
-   NewEvent.IB = IB;
+   for(int i = 0; i < 2; i++)
+      NewEvent.VB[i] = VB[i];
+   for(int i = 0; i < 2; i++)
+      NewEvent.IB[i] = IB[i];
    NewEvent.event = Event;
    NewEvent.state = State;
 
    return true;
 }
 
-FileHandle::FileHandle(string filename, string cutlabel, bool usestockm4l)
+FileHandle::FileHandle(string filename, string cutlabel, string energy, bool usestockm4l)
    : M4l(31426, 100000), DHFile("Normalization.dh")
 {
    FileName = filename;
    CutLabel = cutlabel;
+   Energy = energy;
    UseStockM4l = usestockm4l;
    CurrentIndex = 0;
 
@@ -520,7 +634,8 @@ FileHandle::FileHandle(string filename, string cutlabel, bool usestockm4l)
    for(int i = 0; i < 16; i++)
       for(int j = 0; j < 16; j++)
          Tree->SetBranchAddress(Form("B1_%s_%s", Suffix[i].c_str(), Suffix[j].c_str()), &VS[i][j]);
-   Tree->SetBranchAddress("B2", &VB);
+   Tree->SetBranchAddress("B2_UUbar", &VB[0]);
+   Tree->SetBranchAddress("B2_DDbar", &VB[1]);
 
    Tree->SetBranchAddress("L1PT",  &l1pt);
    Tree->SetBranchAddress("L1Eta", &l1eta);

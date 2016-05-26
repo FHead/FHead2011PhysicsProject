@@ -6,6 +6,9 @@
 #include <map>
 using namespace std;
 
+#include "TGraph.h"
+#include "TF1.h"
+
 int main(int argc, char *argv[]);
 double NegativeProbability(const vector<double> &x, const vector<double> &y, double &Sigma, double &a, double &b, double &c);
 
@@ -63,48 +66,23 @@ int main(int argc, char *argv[])
 double NegativeProbability(const vector<double> &x, const vector<double> &y, double &Sigma,
    double &a, double &b, double &c)
 {
-   double SumX0 = 0;
-   double SumX1 = 0;
-   double SumX2 = 0;
-   double SumX3 = 0;
-   double SumX4 = 0;
-   double SumX0Y = 0;
-   double SumX1Y = 0;
-   double SumX2Y = 0;
-
+   TGraph G;
    for(int i = 0; i < (int)x.size(); i++)
-   {
-      SumX0 = SumX0 + 1;
-      SumX1 = SumX1 + x[i];
-      SumX2 = SumX2 + x[i] * x[i];
-      SumX3 = SumX3 + x[i] * x[i] * x[i];
-      SumX4 = SumX4 + x[i] * x[i] * x[i] * x[i];
-      SumX0Y = SumX0Y + y[i];
-      SumX1Y = SumX1Y + x[i] * y[i];
-      SumX2Y = SumX2Y + x[i] * x[i] * y[i];
-   }
+      G.SetPoint(i, x[i], y[i]);
 
-   double D = SumX4 * SumX2 * SumX0 - SumX4 * SumX1 * SumX1
-      + SumX3 * SumX1 * SumX2 - SumX3 * SumX3 * SumX0
-      + SumX2 * SumX3 * SumX1 - SumX2 * SumX2 * SumX2;
-   double Da = SumX2Y * SumX2 * SumX0 - SumX2Y * SumX1 * SumX1
-      + SumX1Y * SumX1 * SumX2 - SumX1Y * SumX3 * SumX0
-      + SumX0Y * SumX3 * SumX1 - SumX0Y * SumX2 * SumX2;
-   double Db = SumX4 * SumX1Y * SumX0 - SumX4 * SumX0Y * SumX1
-      + SumX3 * SumX0Y * SumX2 - SumX3 * SumX2Y * SumX0
-      + SumX2 * SumX2Y * SumX1 - SumX2 * SumX1Y * SumX2;
-   double Dc = SumX4 * SumX2 * SumX0Y - SumX4 * SumX1 * SumX1Y
-      + SumX3 * SumX1 * SumX2Y - SumX3 * SumX3 * SumX0Y
-      + SumX2 * SumX3 * SumX1Y - SumX2 * SumX2 * SumX2Y;
+   TF1 F("F", "pol2");
+   G.Fit(&F);
 
-   a = Da / D;
-   b = Db / D;
-   c = Dc / D;
+   a = F.GetParameter(2);
+   b = F.GetParameter(1);
+   c = F.GetParameter(0);
+
+   cerr << a << " " << b << " " << c << " " << -b / sqrt(2 * a) << endl;
 
    double min = (4 * a * c - b * b) / (4 * a);
    double minlocation = -b / (2 * a);
 
-   // cout << minlocation << endl;
+   cout << minlocation << endl;
 
    Sigma = minlocation * sqrt(2 * a);
 

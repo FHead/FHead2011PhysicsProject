@@ -36,6 +36,7 @@ public:
    DataHelper DHFile;
    TFile *File;
    TTree *Tree;
+   string Energy;
 public:
    double l1id, l3id;
    double VS[16][16];
@@ -45,7 +46,7 @@ public:
    double l1pt, l1eta, l1phi, l2pt, l2eta, l2phi;
    double l3pt, l3eta, l3phi, l4pt, l4eta, l4phi;
 public:
-   FileHandle(string filename, string cutlabel, bool usestockm4l);
+   FileHandle(string filename, string cutlabel, string energy, bool usestockm4l);
    ~FileHandle();
    bool GiveNextEvent(SingleEvent &Event, bool Recycle = false);
 };
@@ -60,13 +61,14 @@ int main(int argc, char *argv[])
 
    string SEMFileName, SEEFileName, BEMFileName, BEEFileName;
    double SEMSize, SEESize, BEMSize, BEESize;
+   string Energy = "0TeV";
    string CutLabel = "A";
 
-   if(argc <= 22)
+   if(argc <= 23)
    {
       cerr << "Usage: " << argv[0]
          << " SignalEMFile SignalEMSize BackgroundEMFile BackgroundEMSize"
-         << " SignalEEFile SignalEESize BackgroundEEFile BackgroundEESize CutLabel"
+         << " SignalEEFile SignalEESize BackgroundEEFile BackgroundEESize Energy CutLabel"
          << " A2ZZ A3ZZ A4ZZ A2ZA A3ZA A4ZA A2AA A3AA"
          << " YT YTA MT GWW MW"
          << endl;
@@ -77,22 +79,23 @@ int main(int argc, char *argv[])
    BEMFileName = argv[3];   BEMSize = atof(argv[4]);
    SEEFileName = argv[5];   SEESize = atof(argv[6]);
    BEEFileName = argv[7];   BEESize = atof(argv[8]);
-   CutLabel = argv[9];
+   Energy = argv[9];
+   CutLabel = argv[10];
 
-   double A2ZZ = atof(argv[10]);
-   double A3ZZ = atof(argv[11]);
-   double A4ZZ = atof(argv[12]);
-   double A2ZA = atof(argv[13]);
-   double A3ZA = atof(argv[14]);
-   double A4ZA = atof(argv[15]);
-   double A2AA = atof(argv[16]);
-   double A3AA = atof(argv[17]);
+   double A2ZZ = atof(argv[11]);
+   double A3ZZ = atof(argv[12]);
+   double A4ZZ = atof(argv[13]);
+   double A2ZA = atof(argv[14]);
+   double A3ZA = atof(argv[15]);
+   double A4ZA = atof(argv[16]);
+   double A2AA = atof(argv[17]);
+   double A3AA = atof(argv[18]);
 
-   double TrueYT  = atof(argv[18]);
-   double TrueYTA = atof(argv[19]);
-   double TrueMT  = atof(argv[20]);
-   double TrueGWW = atof(argv[21]);
-   double TrueMW  = atof(argv[22]);
+   double TrueYT  = atof(argv[19]);
+   double TrueYTA = atof(argv[20]);
+   double TrueMT  = atof(argv[21]);
+   double TrueGWW = atof(argv[22]);
+   double TrueMW  = atof(argv[23]);
 
    AVVBasis TrueA;
    TrueA.A1ZZ = 2;   TrueA.A2ZZ = A2ZZ;   TrueA.A3ZZ = A3ZZ;   TrueA.A4ZZ = A4ZZ;
@@ -106,19 +109,20 @@ int main(int argc, char *argv[])
    Fits.ClearPoints();
    int FitCount = 0;
 
-   FileHandle SEM(SEMFileName, CutLabel, true);
-   FileHandle BEM(BEMFileName, CutLabel, false);
-   FileHandle SEE(SEEFileName, CutLabel, true);
-   FileHandle BEE(BEEFileName, CutLabel, false);
+   FileHandle SEM(SEMFileName, CutLabel, Energy, true);
+   FileHandle BEM(BEMFileName, CutLabel, Energy, false);
+   FileHandle SEE(SEEFileName, CutLabel, Energy, true);
+   FileHandle BEE(BEEFileName, CutLabel, Energy, false);
 
    vector<FitResultSummary> Results;
 
    vector<string> AVVConfigurations, AVVPriors;
    vector<string> HiggsConfigurations, HiggsPriors;
    vector<string> WarsawConfigurations, WarsawPriors;
-
    vector<string> LoopConfigurations, LoopPriors;
-   LoopConfigurations.push_back("NNNNNNYN");   LoopPriors.push_back("NNNNNNNN");
+
+   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNNNNNNNN");
+   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNYNNNNNN");
 
    string Fs = "NNNN";
    if(BEMSize >= 0)         Fs[0] = 'Y';
@@ -238,39 +242,30 @@ int main(int argc, char *argv[])
 
       for(int iC = 0; iC < (int)Configurations.size(); iC++)
       {
-         // cout << iC << "/" << (int)Configurations.size() << endl;
-
+         // Step 1 - find minimum as a function of yt and gww
          FitConfiguration Temp = Configurations[iC];
-
          FitResultSummary ResultTemp = Fits.DoFit(Temp);
 
-         double TempE[4] = {0}, TempB[4] = {0};
-         TempE[0] = ResultTemp.Sem + ResultTemp.Bem;
-         TempE[1] = ResultTemp.Sme + ResultTemp.Bme;
-         TempE[2] = ResultTemp.See + ResultTemp.Bee;
-         TempE[3] = ResultTemp.Smm + ResultTemp.Bmm;
-         TempB[0] = ResultTemp.Bem;
-         TempB[1] = ResultTemp.Bme;
-         TempB[2] = ResultTemp.Bee;
-         TempB[3] = ResultTemp.Bmm;
+         char Flag = 'N';
+         if(Temp.UsePriors[2] == true)
+            Flag = 'Y';
 
-         double X = ResultTemp.Parameter7;
-         for(double iX = -2; iX <= 2; iX = iX + 0.2)
+         cout << FitCount << " " << Flag << " " << ResultTemp.Parameter4 << " " << ResultTemp.Parameter7 << " " << ResultTemp.BestNLL << endl;
+
+         // Step 2 - scan around gww minimizing yt in the process
+         double Unit = ResultTemp.Parameter7;
+         if(fabs(Unit) < 2)
+            Unit = 2;
+         for(double iX = -10; iX <= 10; iX = iX + 0.2)
          {
-            double Parameters[12] = {0};
-            Parameters[0] = Temp.Parameter1InitialValue;
-            Parameters[1] = Temp.Parameter2InitialValue;
-            Parameters[2] = Temp.Parameter3InitialValue;
-            Parameters[3] = Temp.Parameter4InitialValue;
-            Parameters[4] = Temp.Parameter5InitialValue;
-            Parameters[5] = Temp.Parameter6InitialValue;
-            Parameters[6] = X * iX;
-            Parameters[7] = Temp.Parameter8InitialValue;
-            Parameters[8] = ((TempE[0] > 0) ? (TempB[0] / TempE[0]) : 0);
-            Parameters[9] = ((TempE[1] > 0) ? (TempB[1] / TempE[1]) : 0);
-            Parameters[10] = ((TempE[2] > 0) ? (TempB[2] / TempE[2]) : 0);
-            Parameters[11] = ((TempE[3] > 0) ? (TempB[3] / TempE[3]) : 0);
-            Fits.CalculateLogLikelihoodAll(Parameters);
+            Temp = Configurations[iC];
+            Temp.SetFloatAs("NNNYNNNN");   // Float only yt
+            Temp.Parameter4InitialValue = ResultTemp.Parameter4;
+            Temp.Parameter7InitialValue = iX * Unit;
+
+            FitResultSummary FitTemp = Fits.DoFit(Temp);
+
+            cout << FitCount << " " << Flag << " " << FitTemp.Parameter4 << " " << FitTemp.Parameter7 << " " << FitTemp.BestNLL << endl;
          }
 
          Results.push_back(ResultTemp);
@@ -410,6 +405,8 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
       return GiveNextEvent(NewEvent);
 
    int CutIndex = CutLabel[0] - 'A';
+   // cout << "CutLabel = " << CutLabel << endl;
+   // cout << "Cut index = " << CutIndex << endl;
    if(PassPairingCuts(Leptons)[CutIndex] == false)
       return GiveNextEvent(NewEvent);
 
@@ -417,7 +414,8 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
    if(l1id == l3id)   State = "ee";
    if(l1id != l3id)   State = "em";
 
-   string DHState = "Cut" + CutLabel;
+   // string DHState = "Cut" + CutLabel;
+   string DHState = Energy;
 
    if(State == "em")
       SignalBranch[0] = 'T', BackgroundBranch[0] = 'T';
@@ -478,11 +476,12 @@ bool FileHandle::GiveNextEvent(SingleEvent &NewEvent, bool Recycle)
    return true;
 }
 
-FileHandle::FileHandle(string filename, string cutlabel, bool usestockm4l)
+FileHandle::FileHandle(string filename, string cutlabel, string energy, bool usestockm4l)
    : M4l(31426, 100000), DHFile("Normalization.dh")
 {
    FileName = filename;
    CutLabel = cutlabel;
+   Energy = energy;
    UseStockM4l = usestockm4l;
    CurrentIndex = 0;
 

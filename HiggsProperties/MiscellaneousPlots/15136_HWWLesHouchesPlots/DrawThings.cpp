@@ -24,48 +24,60 @@ int main()
    SetThesisStyle();
 
    vector<string> FileNames;
-   FileNames.push_back("ggtohto2l2nu_SM_115to135GeV_ggPDF_Full.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA2WW_115to135GeV_ggPDF_Full_0d1.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA3WW_115to135GeV_ggPDF_Full_0d5.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA4WW_115to135GeV_ggPDF_Full_1.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA2WW_115to135GeV_ggPDF_Full_0d1.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA3WW_115to135GeV_ggPDF_Full_0d5.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA4WW_115to135GeV_ggPDF_Full_1.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA2WW_115to135GeV_ggPDF_Full_0d1.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA3WW_115to135GeV_ggPDF_Full_0d5.root");
-   FileNames.push_back("ggtohto2l2nu_SMpA4WW_115to135GeV_ggPDF_Full_1.root");
-   FileNames.push_back("hto2l2nu_SM_125GeV_noPDF_Full.root");
-   FileNames.push_back("hto2l2nu_SMpA2WW_125GeV_noPDF_Full_0d1.root");
-   FileNames.push_back("hto2l2nu_SMpA3WW_125GeV_noPDF_Full_0d5.root");
-   FileNames.push_back("hto2l2nu_SMpA4WW_125GeV_noPDF_Full_1.root");
-   FileNames.push_back("hto2l2nu_SMpA2WW_125GeV_noPDF_Full_0d1.root");
-   FileNames.push_back("hto2l2nu_SMpA3WW_125GeV_noPDF_Full_0d5.root");
-   FileNames.push_back("hto2l2nu_SMpA4WW_125GeV_noPDF_Full_1.root");
-   FileNames.push_back("hto2l2nu_SMpA2WW_125GeV_noPDF_Full_0d1.root");
-   FileNames.push_back("hto2l2nu_SMpA3WW_125GeV_noPDF_Full_0d5.root");
-   FileNames.push_back("hto2l2nu_SMpA4WW_125GeV_noPDF_Full_1.root");
+   FileNames.push_back("ggtohtoEpMm_SM_115to135GeV_ggPDF_NoCuts_All.root");
+   FileNames.push_back("ggtohtoEpMm_SMpMcwwt_1_115to125GeV_ggPDF_NoCuts_All.root");
+   FileNames.push_back("ggtohtoEpMm_SMpcwwt_1_115to135GeV_ggPDF_NoCuts_All.root");
+   FileNames.push_back("ggtohtoEpMm_SMpMcww_1_115to135GeV_ggPDF_NoCuts_All.root");
+   FileNames.push_back("ggtohtoEpMm_SMpcww_1_115to135GeV_ggPDF_NoCuts_All.root");
+   FileNames.push_back("htoEpMm_SM_125GeV_noPDF_NoCuts_All.root");
+   // FileNames.push_back("ggtohto2l2nu_SM_115to135GeV_ggPDF_Full.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA2WW_115to135GeV_ggPDF_Full_0d1.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA3WW_115to135GeV_ggPDF_Full_0d5.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA4WW_115to135GeV_ggPDF_Full_1.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA2WW_115to135GeV_ggPDF_Full_0d1.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA3WW_115to135GeV_ggPDF_Full_0d5.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA4WW_115to135GeV_ggPDF_Full_1.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA2WW_115to135GeV_ggPDF_Full_0d1.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA3WW_115to135GeV_ggPDF_Full_0d5.root");
+   // FileNames.push_back("ggtohto2l2nu_SMpA4WW_115to135GeV_ggPDF_Full_1.root");
+   // FileNames.push_back("hto2l2nu_SM_125GeV_noPDF_Full.root");
+   // FileNames.push_back("hto2l2nu_SMpA2WW_125GeV_noPDF_Full_0d1.root");
+   // FileNames.push_back("hto2l2nu_SMpA3WW_125GeV_noPDF_Full_0d5.root");
+   // FileNames.push_back("hto2l2nu_SMpA4WW_125GeV_noPDF_Full_1.root");
+   // FileNames.push_back("hto2l2nu_SMpA2WW_125GeV_noPDF_Full_0d1.root");
+   // FileNames.push_back("hto2l2nu_SMpA3WW_125GeV_noPDF_Full_0d5.root");
+   // FileNames.push_back("hto2l2nu_SMpA4WW_125GeV_noPDF_Full_1.root");
+   // FileNames.push_back("hto2l2nu_SMpA2WW_125GeV_noPDF_Full_0d1.root");
+   // FileNames.push_back("hto2l2nu_SMpA3WW_125GeV_noPDF_Full_0d5.root");
+   // FileNames.push_back("hto2l2nu_SMpA4WW_125GeV_noPDF_Full_1.root");
 
    vector<string> Tags;
-   Tags.push_back("SM (gg)");
-   Tags.push_back("A2WW 0.1 (gg)");
-   Tags.push_back("A2WW 0.5 (gg)");
-   Tags.push_back("A2WW 1.0 (gg)");
-   Tags.push_back("A3WW 0.1 (gg)");
-   Tags.push_back("A3WW 0.5 (gg)");
-   Tags.push_back("A3WW 1.0 (gg)");
-   Tags.push_back("A4WW 0.1 (gg)");
-   Tags.push_back("A4WW 0.5 (gg)");
-   Tags.push_back("A4WW 1.0 (gg)");
-   Tags.push_back("SM");
-   Tags.push_back("A2WW 0.1");
-   Tags.push_back("A2WW 0.5");
-   Tags.push_back("A2WW 1.0");
-   Tags.push_back("A3WW 0.1");
-   Tags.push_back("A3WW 0.5");
-   Tags.push_back("A3WW 1.0");
-   Tags.push_back("A4WW 0.1");
-   Tags.push_back("A4WW 0.5");
-   Tags.push_back("A4WW 1.0");
+   Tags.push_back("gg_SM");
+   Tags.push_back("gg_SMpMcwwt");
+   Tags.push_back("gg_SMpcwwt");
+   Tags.push_back("gg_SMpMcww");
+   Tags.push_back("gg_SMpcww");
+   Tags.push_back("h");
+   // Tags.push_back("SM (gg)");
+   // Tags.push_back("A2WW 0.1 (gg)");
+   // Tags.push_back("A2WW 0.5 (gg)");
+   // Tags.push_back("A2WW 1.0 (gg)");
+   // Tags.push_back("A3WW 0.1 (gg)");
+   // Tags.push_back("A3WW 0.5 (gg)");
+   // Tags.push_back("A3WW 1.0 (gg)");
+   // Tags.push_back("A4WW 0.1 (gg)");
+   // Tags.push_back("A4WW 0.5 (gg)");
+   // Tags.push_back("A4WW 1.0 (gg)");
+   // Tags.push_back("SM");
+   // Tags.push_back("A2WW 0.1");
+   // Tags.push_back("A2WW 0.5");
+   // Tags.push_back("A2WW 1.0");
+   // Tags.push_back("A3WW 0.1");
+   // Tags.push_back("A3WW 0.5");
+   // Tags.push_back("A3WW 1.0");
+   // Tags.push_back("A4WW 0.1");
+   // Tags.push_back("A4WW 0.5");
+   // Tags.push_back("A4WW 1.0");
 
    vector<TFile *> Files(FileNames.size());
    for(int i = 0; i < (int)Files.size(); i++)
@@ -78,24 +90,32 @@ int main()
       SetAlias(Trees[i]);
    }
 
+   // string CutString = "L1PT > 10 && L4PT > 10 && abs(L1Eta) < 2.5 && abs(L4Eta) < 2.5 && MLL > 4";
+   string CutString = "";
+
    vector<TH1D *> HMll(Files.size());
    vector<TH1D *> HCosPhill(Files.size());
    vector<TH1D *> HDPhill(Files.size());
+   vector<TH1D *> HMT(Files.size());
    for(int i = 0; i < (int)Files.size(); i++)
    {
       HMll[i] = new TH1D(Form("HMll%d", i + 1), Form("Mll, %s", Tags[i].c_str()), 100, 0, 100);
-      Trees[i]->Draw(Form("MLL>>HMll%d", i + 1), "");
+      Trees[i]->Draw(Form("MLL>>HMll%d", i + 1), CutString.c_str());
 
       HCosPhill[i] = new TH1D(Form("HCosPhill%d", i + 1), Form("cos(Phill), %s", Tags[i].c_str()), 100, -1, 1);
-      Trees[i]->Draw(Form("CosPhiLL>>HCosPhill%d", i + 1), "");
+      Trees[i]->Draw(Form("CosPhiLL>>HCosPhill%d", i + 1), CutString.c_str());
       // Symmetrize(HCosPhill[i]);
       
       HDPhill[i] = new TH1D(Form("HDPhill%d", i + 1), Form("delta phill, %s", Tags[i].c_str()), 100, -PI, PI);
-      Trees[i]->Draw(Form("DPhiLL>>HDPhill%d", i + 1), "");
+      Trees[i]->Draw(Form("DPhiLL>>HDPhill%d", i + 1), CutString.c_str());
+     
+      HMT[i] = new TH1D(Form("HMT%d", i + 1), Form("MT, %s", Tags[i].c_str()), 100, 0, 150);
+      Trees[i]->Draw(Form("MT>>HMT%d", i + 1), CutString.c_str());
    }
    SetColor(HMll);
    SetColor(HCosPhill);
    SetColor(HDPhill);
+   SetColor(HMT);
 
    TLegend AllLegend(0.60, 0.85, 0.85, 0.40);
    AllLegend.SetBorderSize(0);
@@ -133,7 +153,7 @@ int main()
    }
    
    TCanvas CMll;
-   TH2D HMllWorld("HMllWorld", ";M_{ll};a.u.", 100, 0, 100, 100, 0, 3000);
+   TH2D HMllWorld("HMllWorld", ";M_{ll};a.u.", 100, 0, 100, 100, 0, 12000);
    HMllWorld.SetStats(0);
    HMllWorld.Draw();
    for(int i = 0; i < (int)Files.size(); i++)
@@ -149,7 +169,7 @@ int main()
    outMll.close();
 
    TCanvas CCosPhill;
-   TH2D HCosPhillWorld("HCosPhillWorld", ";cos(Opening Angle);a.u.", 100, -1, 1, 100, 0, 5000);
+   TH2D HCosPhillWorld("HCosPhillWorld", ";cos(Opening Angle);a.u.", 100, -1, 1, 100, 0, 20000);
    HCosPhillWorld.SetStats(0);
    HCosPhillWorld.Draw();
    for(int i = 0; i < (int)Files.size(); i++)
@@ -168,7 +188,7 @@ int main()
    outCosPhill.close();
    
    TCanvas CDPhill;
-   TH2D HDPhillWorld("HDPhillWorld", ";2D lepton phi difference;a.u.", 100, -PI, PI, 100, 0, 3000);
+   TH2D HDPhillWorld("HDPhillWorld", ";2D lepton phi difference;a.u.", 100, -PI, PI, 100, 0, 12000);
    HDPhillWorld.SetStats(0);
    HDPhillWorld.Draw();
    for(int i = 0; i < (int)Files.size(); i++)
@@ -185,6 +205,22 @@ int main()
    ofstream outDPhill("outDPhill.txt");
    PrintBin(outDPhill, HDPhill);
    outDPhill.close();
+   
+   TCanvas CMT;
+   TH2D HMTWorld("HMTWorld", ";MT;a.u.", 100, 0, 150, 100, 0, 25000);
+   HMTWorld.SetStats(0);
+   HMTWorld.Draw();
+   for(int i = 0; i < (int)Files.size(); i++)
+      HMT[i]->Draw("same");
+   AllLegend.Draw();
+   CMT.SaveAs("MT.png");
+   CMT.SaveAs("MT.C");
+   CMT.SaveAs("MT.eps");
+   CMT.SaveAs("MT.pdf");
+
+   ofstream outMT("outMT.txt");
+   PrintBin(outMT, HMT);
+   outMT.close();
 
    for(int i = 0; i < (int)Files.size(); i++)
    {
@@ -236,6 +272,8 @@ void SetAlias(TTree *Tree)
 
    Tree->SetAlias("RawDPhiLL", "(L1Phi - L4Phi)");
    Tree->SetAlias("DPhiLL", "(RawDPhiLL + 3.1415926535 * 2 * (RawDPhiLL < -3.1415926535) - 3.1415926535 * 2 * (RawDPhiLL > 3.1415926535))");
+
+   Tree->SetAlias("MT", "sqrt(2*(L1PT*L4PT-L1Px*L4Px-L1Py*L4Py))");
 }
 
 void SetColor(vector<TH1D *> &H)

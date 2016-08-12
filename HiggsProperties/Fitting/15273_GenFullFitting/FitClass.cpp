@@ -29,13 +29,14 @@ FitConfiguration::FitConfiguration()
 {
    SetFloatAs("YYYYYYYY");
    SetFloatFractions("NNNN");
-   SetUsePriors("NNNNNNNN");
+   SetUsePriors("NNNNNNNNNN");
 
    SetInitialRatios(ListToVector(8, 0, 0, 0, 0, 0, 0, 0, 0));
    SetInitialFractions(ListToVector(4, 0, 0, 0, 0));
    SetNoSquareMode(false);
    SetBasis(BASIS_AVV);
    SetUUbarDDbarRatio(ListToVector(4, 2, 2, 2, 2));
+   SetVerbose(false);
 }
 
 FitConfiguration::FitConfiguration(string FloatAs, string FloatFractions, string Priors, vector<double> UUbarDDbarRateRatio)
@@ -49,6 +50,7 @@ FitConfiguration::FitConfiguration(string FloatAs, string FloatFractions, string
    SetNoSquareMode(false);
    SetBasis(BASIS_AVV);
    SetUUbarDDbarRatio(UUbarDDbarRateRatio);
+   SetVerbose(false);
 }
    
 FitConfiguration::FitConfiguration(string FloatAs, string FloatFractions,
@@ -64,6 +66,7 @@ FitConfiguration::FitConfiguration(string FloatAs, string FloatFractions,
    SetNoSquareMode(Mode);
    SetBasis(BasisDecision);
    SetUUbarDDbarRatio(UUbarDDbarRateRatio);
+   SetVerbose(false);
 }
 
 FitConfiguration::~FitConfiguration()
@@ -92,6 +95,7 @@ FitConfiguration &FitConfiguration::operator =(const FitConfiguration &other)
    NoSquareMode = other.NoSquareMode;
 
    UUbarDDbarRatio = other.UUbarDDbarRatio;
+   Verbose = other.Verbose;
 }
 
 void FitConfiguration::SetFloats(string FloatAs, string FloatFractions)
@@ -177,6 +181,11 @@ void FitConfiguration::SetUUbarDDbarRatio(vector<double> Ratio)
    while(Ratio.size() < 4)
       Ratio.push_back(2);
    UUbarDDbarRatio = Ratio;
+}
+
+void FitConfiguration::SetVerbose(bool Decision)
+{
+   Verbose = Decision;
 }
 
 int FitConfiguration::TotalNumberOfFloats()
@@ -316,8 +325,8 @@ double FitClass::CalculateLogLikelihoodAll(const double *Parameters) const
             if(NoSquareMode == true && (i != 0 && j != 0))
                continue;
 
-            Value = Value + As[i] * As[j] * VSCopy[i][j][iS];
-            Integral = Integral + As[i] * As[j] * ISCopy[i][j][iS];
+            Value = Value + As[i] * As[j] * VS[i][j][iS];
+            Integral = Integral + As[i] * As[j] * IS[i][j][iS];
          }
       }
 
@@ -359,6 +368,22 @@ double FitClass::CalculateLogLikelihoodAll(const double *Parameters) const
 
    HiggsBasis H(A);
    WarsawBasis W(A);
+
+   LoopBasis L;
+   if(Basis == BASIS_LOOP)
+   {
+      InterpretationCoefficients C;
+      C.yt = Parameters[3];
+      C.yta = Parameters[4];
+      C.mt = Parameters[5];
+      C.gww = Parameters[6];
+      C.mw = Parameters[7];
+
+      L = LoopBasis(C);
+      L.A2ZZ = As[1];
+      L.A3ZZ = As[2];
+      L.A4ZZ = As[3];
+   }
 
    if(UsePriors[0] == true)   // RWWZZ
    {
@@ -451,6 +476,31 @@ double FitClass::CalculateLogLikelihoodAll(const double *Parameters) const
 
       LogTotal = LogTotal + Chi2;
    }
+   if(UsePriors[8] == true)   // Loop basis, flat |yt| up to 2 and falls off afterwards
+   {
+      if(Basis == BASIS_LOOP)
+      {
+         double LL = GetLLFlatYTSoftEdge(L);
+         LogTotal = LogTotal + LL;
+      }
+   }
+   if(UsePriors[9] == true)   // Loop basis, flat |yt| up to 2.5 and falls off afterwards
+   {
+      if(Basis == BASIS_LOOP)
+      {
+         double LL = GetLLFlatYTSoftEdgeLoose(L);
+         LogTotal = LogTotal + LL;
+      }
+   }
+
+   if(Verbose == true)
+   {
+      cout << "[LikelihoodLog] " << FitID << " " << Basis;
+      for(int i = 0; i < 12; i++)
+         cout << " " << Parameters[i];
+      cout << " " << -LogTotal * 2;
+      cout << endl;
+   }
 
    return -LogTotal * 2;
 }
@@ -524,25 +574,14 @@ void FitClass::ClearPoints()
 
 FitResultSummary FitClass::DoFit(FitConfiguration configuration)
 {
-   for(int i = 0; i < 16; i++)
-   {
-      for(int j = 0; j < 16; j++)
-      {
-         VSCopy[i][j] = new double[VS[i][j].size()];
-         ISCopy[i][j] = new double[IS[i][j].size()];
-
-         for(int k = 0; k < (int)VS[i][j].size(); k++)
-            VSCopy[i][j][k] = VS[i][j][k];
-         for(int k = 0; k < (int)IS[i][j].size(); k++)
-            ISCopy[i][j][k] = IS[i][j][k];
-      }
-   }
+   FitID = FitID + 1;
 
    NoSquareMode = configuration.NoSquareMode;
    Basis = configuration.Basis;
    UUbarDDbarRatio = configuration.UUbarDDbarRatio;
    while(UUbarDDbarRatio.size() < 4)
       UUbarDDbarRatio.push_back(2);
+   Verbose = configuration.Verbose;
 
    if(Basis == BASIS_AVV && configuration.FloatParameter6 == false)   // don't float A4ZA
       AVVEFTMode = true;
@@ -662,6 +701,7 @@ FitResultSummary FitClass::DoFit(FitConfiguration configuration)
    Result.Bee = BackgroundStateCount[2];
    Result.Bmm = BackgroundStateCount[3];
 
+   Verbose = false;
    Result.TruthNLL = CalculateLogLikelihoodAll(TrueParameters);
    Result.BestNLL = CalculateLogLikelihoodAll(Parameters);
    Result.NoSquareMode = NoSquareMode;
@@ -670,15 +710,6 @@ FitResultSummary FitClass::DoFit(FitConfiguration configuration)
 
    for(int i = 0; i < 20; i++)
       Result.UsedPriors[i] = UsePriors[i];
-
-   for(int i = 0; i < 16; i++)
-   {
-      for(int j = 0; j < 16; j++)
-      {
-         delete[] VSCopy[i][j];
-         delete[] ISCopy[i][j];
-      }
-   }
 
    delete Worker;
 

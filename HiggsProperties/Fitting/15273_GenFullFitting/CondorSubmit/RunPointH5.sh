@@ -53,14 +53,14 @@ echo    $SEMFile $SEMSize $BEMFile1 $BEMSize1 $BEMFile2 $BEMSize2 \\
 echo    $SEEFile $SEESize $BEEFile1 $BEESize1 $BEEFile2 $BEESize2 \\
 echo    $Energy $CutLabel $UUbarDDbarRatio \\
 echo     0 0 0 -0.00607756127 0 0 0.004429 0 \\
-echo    1 0 173.21 2 79.95 \\
+echo    1 0 173.21 2 79.95 N N \\
 echo
 time ./PerformFits \
    $SEMFile $SEMSize $BEMFile1 $BEMSize1 $BEMFile2 $BEMSize2 \
    $SEEFile $SEESize $BEEFile1 $BEESize1 $BEEFile2 $BEESize2 \
    $Energy $CutLabel $UUbarDDbarRatio2e2mu $UUbarDDbarRatio4e \
    0 0 0 -0.00607756127 0 0 0.004429 0 \
-   0 0 173.21 -1 79.95
+   0 0 173.21 -1 79.95 N N
 
 mv OutputFile.root $BaseDir/CondorSubmit/Result/FitResult_$JobLabel.root
 

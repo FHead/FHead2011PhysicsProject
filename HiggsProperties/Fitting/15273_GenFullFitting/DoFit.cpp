@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
    string Energy = "0TeV";
    string CutLabel = "A";
 
-   if(argc <= 29)
+   if(argc != 32)
    {
       cerr << "Usage: " << argv[0] << endl
          << " SignalEMFile SignalEMSize BackgroundEMFile1 BackgroundEMSize1 BackgroundEMFile2 BackgroundEMSize2" << endl
@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
          << " Energy CutLabel UUbarDDbarRatio_2e2mu UUbarDDbarRatio_4e" << endl
          << " A2ZZ A3ZZ A4ZZ A2ZA A3ZA A4ZA A2AA A3AA" << endl
          << " YT YTA MT GWW MW" << endl
+         << " DoMinYT DoIntYT" << endl
          << endl;
       return -1;
    }
@@ -102,6 +103,9 @@ int main(int argc, char *argv[])
    double TrueMT  = atof(argv[27]);
    double TrueGWW = atof(argv[28]);
    double TrueMW  = atof(argv[29]);
+
+   bool DoMinYT = ((argv[30][0] == 'Y') ? true : false);
+   bool DoIntYT = ((argv[31][0] == 'Y') ? true : false);
 
    double BEMSize = BEMSize1 + BEMSize2;
    double BEESize = BEESize1 + BEESize2;
@@ -135,110 +139,120 @@ int main(int argc, char *argv[])
    vector<FitResultSummary> Results;
 
    vector<string> AVVConfigurations, AVVPriors;
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNN");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNN");
-   AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNN");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNN");
-   // AVVConfigurations.push_back("YNNYNNYN");   AVVPriors.push_back("NNNNNNNN");
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNYNNNN");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNYNNNN");
-   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNYNNNN");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNYNNNN");
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNNNNNN");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNNNNNN");
-   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNNNNNN");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNNNNNN");
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNYNNNN");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNYNNNN");
-   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNYNNNN");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNYNNNN");
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YYYYNNNN");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YYYYNNNN");
-   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YYYYNNNN");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YYYYNNNN");
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNYNN");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNYNN");
-   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNYNN");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNYNN");
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNYN");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNYN");
-   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNYN");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNYN");
-   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNY");
-   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNY");
-   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNY");
-   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNY");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YNNYNNYN");   AVVPriors.push_back("NNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YNNNNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("YYYYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("YYYYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("YYYYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("YYYYNNNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNYNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNYNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNYNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNYNN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNYN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNYN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNYN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNYN.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYYYY");   AVVPriors.push_back("NNNNNNNY.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYYYYNYY");   AVVPriors.push_back("NNNNNNNY.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("YYNYYNYY");   AVVPriors.push_back("NNNNNNNY.push_back("NNNNNNNNN");
+   // AVVConfigurations.push_back("NYNNYNNY");   AVVPriors.push_back("NNNNNNNY.push_back("NNNNNNNNN");
 
    vector<string> HiggsConfigurations, HiggsPriors;
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNN");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNN");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNN");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNN");
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNYNNNN");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNYNNNN");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNYNNNN");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNYNNNN");
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNNNNNN");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNNNNNN");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNNNNNN");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNNNNNN");
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNYNNNN");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNYNNNN");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNYNNNN");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNYNNNN");
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YYYYNNNN");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YYYYNNNN");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YYYYNNNN");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YYYYNNNN");
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNYNN");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNYNN");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNYNN");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNYNN");
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNYN");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNYN");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNYN");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNYN");
-   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNY");
-   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNY");
-   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNY");
-   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNY");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNYNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNYNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNYNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNYNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YNNNNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YNNNNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YNNNNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YNNNNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNYNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNYNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNYNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNYNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("YYYYNNNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("YYYYNNNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("YYYYNNNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("YYYYNNNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNYNNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNYNNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNYNNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNYNNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNYNN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNYNN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNYNN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNYNN");
+   // HiggsConfigurations.push_back("NNYYYYYY");   HiggsPriors.push_back("NNNNNNNYN");
+   // HiggsConfigurations.push_back("NNNYNYNY");   HiggsPriors.push_back("NNNNNNNYN");
+   // HiggsConfigurations.push_back("NYNNNNNN");   HiggsPriors.push_back("NNNNNNNYN");
+   // HiggsConfigurations.push_back("NYYYYYYY");   HiggsPriors.push_back("NNNNNNNYN");
 
    vector<string> WarsawConfigurations, WarsawPriors;
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNN");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNN");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNN");
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNYNNNN");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNYNNNN");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNYNNNN");
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNNNNNN");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNNNNNN");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNNNNNN");
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNYNNNN");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNYNNNN");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNYNNNN");
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YYYYNNNN");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YYYYNNNN");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YYYYNNNN");
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNYNN");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNYNN");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNYNN");
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNYN");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNYN");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNYN");
-   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNY");
-   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNY");
-   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNY");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNYNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNYNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNYNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YNNNNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YNNNNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YNNNNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNYNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNYNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNYNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("YYYYNNNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("YYYYNNNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("YYYYNNNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNYNNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNYNNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNYNNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNYNN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNYNN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNYNN");
+   // WarsawConfigurations.push_back("NNYYYYYY");   WarsawPriors.push_back("NNNNNNNYN");
+   // WarsawConfigurations.push_back("YNYYYYYY");   WarsawPriors.push_back("NNNNNNNYN");
+   // WarsawConfigurations.push_back("NNNYNYNY");   WarsawPriors.push_back("NNNNNNNYN");
 
    vector<string> LoopConfigurations, LoopPriors;
-   /*LoopConfigurations.push_back("NNNYYNNN");   LoopPriors.push_back("NNNNNNNN");
-   LoopConfigurations.push_back("NNNYYNYN");   LoopPriors.push_back("NNNNNNNN");
-   // LoopConfigurations.push_back("YYYNNNYN");   LoopPriors.push_back("NNNNNNNN");
-   LoopConfigurations.push_back("NNNNNNYN");   LoopPriors.push_back("NNNNNNNN");
-   LoopConfigurations.push_back("NNNNYNYN");   LoopPriors.push_back("NNNNNNNN");
-   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNNNNNNN");*/
-   // LoopConfigurations.push_back("YYYYYNNN");   LoopPriors.push_back("NNNNNNNN");
-   // LoopConfigurations.push_back("YYYYYNYN");   LoopPriors.push_back("NNNNNNNN");
-   // LoopConfigurations.push_back("YYYNYNYN");   LoopPriors.push_back("NNNNNNNN");
+   vector<bool> LoopVerbosity;
+   LoopConfigurations.push_back("NNNYYNYN");   LoopPriors.push_back("NNNNNNNNNN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("YYYNNNYN");   LoopPriors.push_back("NNNNNNNNNN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNNYNYN");   LoopPriors.push_back("NNNNNNNNNN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNNNNNNNNN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("YYYYYNYN");   LoopPriors.push_back("NNNNNNNNNN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNNNNYN");   LoopPriors.push_back("NNNNNNNNNN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNYYNYN");   LoopPriors.push_back("NNNNNNNNYN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("YYYNNNYN");   LoopPriors.push_back("NNNNNNNNYN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNNYNYN");   LoopPriors.push_back("NNNNNNNNYN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNNNNNNNYN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("YYYYYNYN");   LoopPriors.push_back("NNNNNNNNYN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNNNNYN");   LoopPriors.push_back("NNNNNNNNYN");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNYYNYN");   LoopPriors.push_back("NNNNNNNNNY");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("YYYNNNYN");   LoopPriors.push_back("NNNNNNNNNY");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNNYNYN");   LoopPriors.push_back("NNNNNNNNNY");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNYNNYN");   LoopPriors.push_back("NNNNNNNNNY");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("YYYYYNYN");   LoopPriors.push_back("NNNNNNNNNY");   LoopVerbosity.push_back(false);
+   LoopConfigurations.push_back("NNNNNNYN");   LoopPriors.push_back("NNNNNNNNNY");   LoopVerbosity.push_back(false);
 
    string Fs = "NNNN";
    if(BEMSize >= 0)         Fs[0] = 'Y';
@@ -280,7 +294,7 @@ int main(int argc, char *argv[])
          UUbarDDbarRatio_4e, UUbarDDbarRatio_4e);
 
       Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), false, BASIS_HIGGS, HiggsPriors[i], UUbarDDbarRatio));
-      Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), true, BASIS_HIGGS, HiggsPriors[i], UUbarDDbarRatio));
+      // Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), true, BASIS_HIGGS, HiggsPriors[i], UUbarDDbarRatio));
    }
    for(int i = 0; i < WarsawConfigurations.size(); i++)
    {
@@ -296,7 +310,7 @@ int main(int argc, char *argv[])
          UUbarDDbarRatio_4e, UUbarDDbarRatio_4e);
 
       Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), false, BASIS_WARSAW, WarsawPriors[i], UUbarDDbarRatio));
-      Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), true, BASIS_WARSAW, WarsawPriors[i], UUbarDDbarRatio));
+      // Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), true, BASIS_WARSAW, WarsawPriors[i], UUbarDDbarRatio));
    }
    for(int i = 0; i < LoopConfigurations.size(); i++)
    {
@@ -312,6 +326,11 @@ int main(int argc, char *argv[])
          UUbarDDbarRatio_4e, UUbarDDbarRatio_4e);
 
       Configurations.push_back(FitConfiguration(As, Fs, AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), false, BASIS_LOOP, LoopPriors[i], UUbarDDbarRatio));
+      
+      // if(Fs != "NNNN")
+      //    Configurations.push_back(FitConfiguration(As, "NNNN", AValues, ListToVector(4, TrueFem, 0, TrueFee, 0), false, BASIS_LOOP, LoopPriors[i], UUbarDDbarRatio));
+      // if(LoopVerbosity[i] == true)
+      //    Configurations[Configurations.size()-1].SetVerbose(true);
    }
 
    int BackgroundCounter = 0;
@@ -385,6 +404,8 @@ int main(int argc, char *argv[])
       Fits.BackgroundStateCount[3] = 0;
 
       cout << "." << endl;
+
+      // Normal Fits
       for(int iC = 0; iC < (int)Configurations.size(); iC++)
       {
          // cout << iC << "/" << (int)Configurations.size() << endl;
@@ -395,11 +416,109 @@ int main(int argc, char *argv[])
 
          Results.push_back(ResultTemp);
       }
+
+      // Scan gWW minimizing yt
+      if(DoMinYT == true)
+      {
+         // Step 1 - find the best point
+         vector<double> AValues = ListToVector(8, 0, 0, 0, 0, 0, 0, 0);
+         AValues[0] = TrueA.A2ZZ;
+         AValues[1] = TrueA.A3ZZ;
+         AValues[2] = TrueA.A4ZZ;
+         AValues[3] = TrueYT;        AValues[4] = TrueYTA;
+         AValues[5] = TrueMT;        AValues[6] = TrueGWW;
+         AValues[7] = TrueMW;
+
+         vector<double> UUbarDDbarRatio
+            = ListToVector(4, UUbarDDbarRatio_2e2mu, UUbarDDbarRatio_2e2mu,
+               UUbarDDbarRatio_4e, UUbarDDbarRatio_4e);
+
+         FitConfiguration Fit("NNNYNNYN", "NNNN",
+            AValues, ListToVector(4, TrueFem, 0, TrueFee, 0),
+            false, BASIS_LOOP, "NNNNNNNNNNNN", UUbarDDbarRatio);
+         Fit.SetVerbose(false);
+         
+         FitResultSummary ResultTemp = Fits.DoFit(Fit);
+
+         cout << "BestMinYT " << FitCount << " " << ResultTemp.Parameter4 << " " << ResultTemp.Parameter7 << " " << ResultTemp.BestNLL << endl;
+
+         // Step 2 - scan around gww minimizing yt in the process
+         double Unit = ResultTemp.Parameter7;
+         if(fabs(Unit) < 2)
+            Unit = 2;
+         for(double iX = -10; iX <= 10; iX = iX + 0.2)
+         {
+            FitConfiguration Temp = Fit;
+            Temp.SetFloatAs("NNNYNNNN");   // Float only yt
+            Temp.Parameter4InitialValue = ResultTemp.Parameter4;
+            Temp.Parameter7InitialValue = iX * Unit;
+
+            FitResultSummary FitTemp = Fits.DoFit(Temp);
+
+            cout << "MinYT " << FitCount<< " " << FitTemp.Parameter4 << " " << FitTemp.Parameter7 << " " << FitTemp.BestNLL << endl;
+         }
+      }
+
+      // Scan gWW AND yt
+      if(DoIntYT == true)
+      {
+         // Step 1 - find the best point
+         vector<double> AValues = ListToVector(8, 0, 0, 0, 0, 0, 0, 0);
+         AValues[0] = TrueA.A2ZZ;
+         AValues[1] = TrueA.A3ZZ;
+         AValues[2] = TrueA.A4ZZ;
+         AValues[3] = TrueYT;        AValues[4] = TrueYTA;
+         AValues[5] = TrueMT;        AValues[6] = TrueGWW;
+         AValues[7] = TrueMW;
+
+         vector<double> UUbarDDbarRatio
+            = ListToVector(4, UUbarDDbarRatio_2e2mu, UUbarDDbarRatio_2e2mu,
+               UUbarDDbarRatio_4e, UUbarDDbarRatio_4e);
+
+         FitConfiguration Fit("NNNYNNYN", "NNNN",
+            AValues, ListToVector(4, TrueFem, 0, TrueFee, 0),
+            false, BASIS_LOOP, "NNNNNNNNNNNN", UUbarDDbarRatio);
+         Fit.SetVerbose(false);
+         
+         FitResultSummary ResultTemp = Fits.DoFit(Fit);
+
+         cout << "BestIntYT " << FitCount << " " << ResultTemp.Parameter4 << " " << ResultTemp.Parameter7 << " " << ResultTemp.BestNLL << endl;
+
+         // Step 2 - scan around gww minimizing yt in the process
+         double Unit4 = ResultTemp.Parameter4;
+         double Unit7 = ResultTemp.Parameter7;
+         if(fabs(Unit4) < 2)   Unit4 = 2;
+         if(fabs(Unit7) < 2)   Unit7 = 2;
+         for(double iX = -10; iX <= 10; iX = iX + 0.25)
+         {
+            for(double iY = -10; iY <= 10; iY = iY + 0.25)
+            {
+               double Parameters[12];
+               Parameters[0]  = ResultTemp.Parameter1;
+               Parameters[1]  = ResultTemp.Parameter2;
+               Parameters[2]  = ResultTemp.Parameter3;
+               Parameters[3]  = iX * Unit4;
+               Parameters[4]  = ResultTemp.Parameter5;
+               Parameters[5]  = ResultTemp.Parameter6;
+               Parameters[6]  = iY * Unit7;
+               Parameters[7]  = ResultTemp.Parameter8;
+               Parameters[8]  = ResultTemp.Fem;
+               Parameters[9]  = ResultTemp.Fme;
+               Parameters[10] = ResultTemp.Fee;
+               Parameters[11] = ResultTemp.Fmm;
+
+               double NLL = Fits.CalculateLogLikelihoodAll(Parameters);
+
+            cout << "IntYT " << FitCount << " " << Parameters[3] << " " << Parameters[6] << " " << NLL << endl;
+            }
+         }
+      }
+
       FitCount = FitCount + 1;
 
       Fits.ClearPoints();
    }
-      
+
    TFile OutputFile("OutputFile.root", "RECREATE");
 
    string BranchList = "";
@@ -421,6 +540,7 @@ int main(int argc, char *argv[])
    BranchList = BranchList + ":Rud_em:Rud_me:Rud_ee:Rud_mm";          // 42
    BranchList = BranchList + ":Prior0:Prior1:Prior2:Prior3";          // 46
    BranchList = BranchList + ":Prior4:Prior5:Prior6:Prior7";          // 50
+   BranchList = BranchList + ":Prior8:Prior9:Prior10:Prior11";        // 54
    TNtuple OutputTree("ResultTree", "", BranchList.c_str());
 
    for(int i = 0; i < (int)Results.size(); i++)
@@ -464,6 +584,10 @@ int main(int argc, char *argv[])
       Array[47] = Results[i].UsedPriors[5];
       Array[48] = Results[i].UsedPriors[6];
       Array[49] = Results[i].UsedPriors[7];
+      Array[50] = Results[i].UsedPriors[8];
+      Array[51] = Results[i].UsedPriors[9];
+      Array[52] = Results[i].UsedPriors[10];
+      Array[53] = Results[i].UsedPriors[11];
 
       OutputTree.Fill(Array);
    }

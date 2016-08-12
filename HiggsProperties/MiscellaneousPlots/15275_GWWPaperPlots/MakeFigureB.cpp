@@ -13,6 +13,10 @@ using namespace std;
 
 #include "SetStyle.h"
 
+#define NO_PRIOR 0
+#define NORMAL_PRIOR 1
+#define LOOSE_PRIOR 2
+
 int main(int argc, char *argv[]);
 void SetAlias(TTree *Tree);
 
@@ -23,18 +27,21 @@ int main(int argc, char *argv[])
    string JobBase = "Result/JobBoth_5plet_ggPDF_J_";
    string Tag = "J_5plet";
    double TrueValue = -0.5;
+   int Prior = NO_PRIOR;
    
-   if(argc != 4)
+   if(argc != 5)
    {
-      cerr << "Usage: " << argv[0] << " JobBase Tag TrueValue" << endl;
+      cerr << "Usage: " << argv[0] << " JobBase Tag TrueValue Prior" << endl;
       cerr << "Example: " << argv[0] << " " << JobBase
-         << " " << Tag << " " << TrueValue << endl;
+         << " " << Tag << " " << TrueValue << " " << Prior << endl;
+      cerr << "Prior code: 0 = no, 1 = normal, 2 = loose" << endl;
       return -1;
    }
    
    JobBase = argv[1];
    Tag = argv[2];
    TrueValue = atof(argv[3]);
+   Prior = atoi(argv[4]);
 
    TGraphErrors GNNNYYNYN;
    TGraphErrors GYYYNNNYN;
@@ -42,6 +49,12 @@ int main(int argc, char *argv[])
    TGraphErrors GNNNNYNYN;
    TGraphErrors GNNNYNNYN;
    TGraphErrors GYYYYYNYN;
+
+   string PriorString = " && Prior8 == 0 && Prior9 == 0";
+   if(Prior == NORMAL_PRIOR)
+      PriorString = " && Prior8 > 0 && Prior9 == 0";
+   if(Prior == LOOSE_PRIOR)
+      PriorString = " && Prior8 == 0 && Prior9 > 0";
 
    int Lumi[11] = {25, 50, 100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600};
    for(int i = 0; i < 11; i++)
@@ -56,33 +69,33 @@ int main(int argc, char *argv[])
 
       TH1D HTemp("HTemp", "", 10000, 0, 100);
 
-      Tree->Draw(Form("abs(P7/2-%f)>>HTemp", TrueValue),
-         "Status == 3 && Basis == 3 && NNNYYNYN");
+      Tree->Draw(Form("sqrt(3.14159265358979323846/2)*abs(P7/2-%f)>>HTemp", TrueValue),
+         ("Status == 3 && Basis == 3 && NNNYYNYN" + PriorString).c_str());
       GNNNYYNYN.SetPoint(GNNNYYNYN.GetN(), Lumi[i], HTemp.GetMean());
       GNNNYYNYN.SetPointError(GNNNYYNYN.GetN() - 1, 0, HTemp.GetMeanError());
 
-      Tree->Draw(Form("abs(P7/2-%f)>>HTemp", TrueValue),
-         "Status == 3 && Basis == 3 && YYYNNNYN");
+      Tree->Draw(Form("sqrt(3.14159265358979323846/2)*abs(P7/2-%f)>>HTemp", TrueValue),
+         ("Status == 3 && Basis == 3 && YYYNNNYN" + PriorString).c_str());
       GYYYNNNYN.SetPoint(GYYYNNNYN.GetN(), Lumi[i], HTemp.GetMean());
       GYYYNNNYN.SetPointError(GYYYNNNYN.GetN() - 1, 0, HTemp.GetMeanError());
 
-      Tree->Draw(Form("abs(P7/2-%f)>>HTemp", TrueValue),
-         "Status == 3 && Basis == 3 && NNNNNNYN");
+      Tree->Draw(Form("sqrt(3.14159265358979323846/2)*abs(P7/2-%f)>>HTemp", TrueValue),
+         ("Status == 3 && Basis == 3 && NNNNNNYN" + PriorString).c_str());
       GNNNNNNYN.SetPoint(GNNNNNNYN.GetN(), Lumi[i], HTemp.GetMean());
       GNNNNNNYN.SetPointError(GNNNNNNYN.GetN() - 1, 0, HTemp.GetMeanError());
 
-      Tree->Draw(Form("abs(P7/2-%f)>>HTemp", TrueValue),
-         "Status == 3 && Basis == 3 && NNNNYNYN");
+      Tree->Draw(Form("sqrt(3.14159265358979323846/2)*abs(P7/2-%f)>>HTemp", TrueValue),
+         ("Status == 3 && Basis == 3 && NNNNYNYN" + PriorString).c_str());
       GNNNNYNYN.SetPoint(GNNNNYNYN.GetN(), Lumi[i], HTemp.GetMean());
       GNNNNYNYN.SetPointError(GNNNNYNYN.GetN() - 1, 0, HTemp.GetMeanError());
 
-      Tree->Draw(Form("abs(P7/2-%f)>>HTemp", TrueValue),
-         "Status == 3 && Basis == 3 && NNNYNNYN");
+      Tree->Draw(Form("sqrt(3.14159265358979323846/2)*abs(P7/2-%f)>>HTemp", TrueValue),
+         ("Status == 3 && Basis == 3 && NNNYNNYN" + PriorString).c_str());
       GNNNYNNYN.SetPoint(GNNNYNNYN.GetN(), Lumi[i], HTemp.GetMean());
       GNNNYNNYN.SetPointError(GNNNYNNYN.GetN() - 1, 0, HTemp.GetMeanError());
 
-      Tree->Draw(Form("abs(P7/2-%f)>>HTemp", TrueValue),
-         "Status == 3 && Basis == 3 && YYYYYNYN");
+      Tree->Draw(Form("sqrt(3.14159265358979323846/2)*abs(P7/2-%f)>>HTemp", TrueValue),
+         ("Status == 3 && Basis == 3 && YYYYYNYN" + PriorString).c_str());
       GYYYYYNYN.SetPoint(GYYYYYNYN.GetN(), Lumi[i], HTemp.GetMean());
       GYYYYYNYN.SetPointError(GYYYYYNYN.GetN() - 1, 0, HTemp.GetMeanError());
       
@@ -109,12 +122,12 @@ int main(int argc, char *argv[])
       Bins[i] = Lumi[i] / sqrt(2);
    Bins[11] = Lumi[10] * sqrt(2);
 
-   TH2D HWorld("HWorld", ";Luminosity (fb^{-1});k #times #sigma(#lambda_{WZ})",
+   TH2D HWorld("HWorld", ";Luminosity (fb^{-1});#sigma(#lambda_{WZ})",
       11, Bins, 100, 0.01, 300);
    HWorld.SetStats(0);
-   for(int i = 0; i < 11; i++)
-      HWorld.GetXaxis()->SetBinLabel(i + 1, Form("%d", Lumi[i]));
-   HWorld.GetXaxis()->SetTickLength(0);
+   // for(int i = 0; i < 11; i++)
+   //    HWorld.GetXaxis()->SetBinLabel(i + 1, Form("%d", Lumi[i]));
+   // HWorld.GetXaxis()->SetTickLength(0);
 
    HWorld.Draw();
    GNNNYYNYN.Draw("pl");
@@ -139,10 +152,16 @@ int main(int argc, char *argv[])
    C.SetLogx();
    C.SetLogy();
 
-   C.SaveAs(("Plots/FigureB_" + Tag + ".png").c_str());
-   C.SaveAs(("Plots/FigureB_" + Tag + ".C").c_str());
-   C.SaveAs(("Plots/FigureB_" + Tag + ".eps").c_str());
-   C.SaveAs(("Plots/FigureB_" + Tag + ".pdf").c_str());
+   string PriorTag = "_NoPrior";
+   if(Prior == NORMAL_PRIOR)
+      PriorTag = "_NormalPrior";
+   if(Prior == LOOSE_PRIOR)
+      PriorTag = "_LoosePrior";
+
+   C.SaveAs(("Plots/FigureB_" + Tag + PriorTag + ".png").c_str());
+   C.SaveAs(("Plots/FigureB_" + Tag + PriorTag + ".C").c_str());
+   C.SaveAs(("Plots/FigureB_" + Tag + PriorTag + ".eps").c_str());
+   C.SaveAs(("Plots/FigureB_" + Tag + PriorTag + ".pdf").c_str());
 
    return 0;
 }

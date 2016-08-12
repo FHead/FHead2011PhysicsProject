@@ -66,4 +66,15 @@ double InterpretedA3AA_Roberto14167(const InterpretationCoefficients &c);
 double InterpretedA3ZA_Top_Roberto14167(const InterpretationCoefficients &c);
 double InterpretedA3AA_Top_Roberto14167(const InterpretationCoefficients &c);
 //---------------------------------------------------------------------------
+// Updated ZA sign problem (1)5352
+double InterpretedA2ZA_Roberto15352(const InterpretationCoefficients &c);
+double InterpretedA3ZA_Roberto15352(const InterpretationCoefficients &c);
+double InterpretedA2AA_Roberto15352(const InterpretationCoefficients &c);
+double InterpretedA3AA_Roberto15352(const InterpretationCoefficients &c);
+double InterpretedA2ZA_Top_Roberto15352(const InterpretationCoefficients &c);
+double InterpretedA3ZA_Top_Roberto15352(const InterpretationCoefficients &c);
+double InterpretedA2ZA_W_Roberto15352(const InterpretationCoefficients &c);
+double InterpretedA3ZA_W_Roberto15352(const InterpretationCoefficients &c);
+//---------------------------------------------------------------------------
 #endif
+

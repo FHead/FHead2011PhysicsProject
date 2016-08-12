@@ -53,7 +53,7 @@ int main()
    for(int i = 0; i < 9; i++)
       Bins[i] = log(L[i] / sqrt(2));
 
-   TH2D HWorld("HWorld", ";Luminosity (fb^{-1});#sigma", 8, Bins, 100, -10, 15);
+   TH2D HWorld("HWorld", ";Luminosity (fb^{-1});#sigma", 8, Bins, 100, -6, 10);
    HWorld.SetStats(0);
    for(int i = 1; i <= 11 && i <= HWorld.GetNbinsX(); i++)
       HWorld.GetXaxis()->SetBinLabel(i, Form("%d", L[i-1]));

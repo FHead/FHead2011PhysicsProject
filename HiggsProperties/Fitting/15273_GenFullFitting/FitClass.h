@@ -36,6 +36,7 @@ public:
    bool FloatFmm;         double FmmInitialValue;
    bool UsePriors[20];
    bool NoSquareMode;
+   bool Verbose;
    vector<double> UUbarDDbarRatio;
 public:
    FitConfiguration();
@@ -53,6 +54,7 @@ public:
    void SetNoSquareMode(bool Decision);
    void SetBasis(int Decision);
    void SetUUbarDDbarRatio(vector<double> Ratio);
+   void SetVerbose(bool Decision);
    int TotalNumberOfFloats();
 };
 
@@ -92,8 +94,6 @@ public:
    std::vector<double> IS[16][16];
    std::vector<double> VB[2];
    std::vector<double> IB[2];
-   double *VSCopy[16][16];
-   double *ISCopy[16][16];
    std::vector<EventParameters> E;
    std::vector<std::string> S;
    int SignalStateCount[4];
@@ -103,8 +103,10 @@ public:
    int Basis;
    bool AVVEFTMode;
    vector<double> UUbarDDbarRatio;
+   bool Verbose;
+   int FitID;
 public:
-   FitClass() : SampleSize(0) {}
+   FitClass() : SampleSize(0), FitID(0) {}
 
    double CalculateLogLikelihoodAll(const double *Parameters) const;
 

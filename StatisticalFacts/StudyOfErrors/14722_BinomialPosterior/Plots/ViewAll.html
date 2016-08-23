@@ -1,35 +1,109 @@
 <html>
    <head>
       <title>Posterior Uncertainty In The Binomial Case: Expedition</title>
+      <script src="Data.json"></script>
+      <script text="text/javascript">
+         function UpdateResult()
+         {
+            var x = Number(document.getElementById("InputX").value);
+            var N = Number(document.getElementById("InputN").value);
+
+            var Valid = true;
+
+            if(typeof x !== 'number')    Valid = false;
+            if(typeof N !== 'number')    Valid = false;
+            if(isFinite(x) == false)     Valid = false;
+            if(isFinite(N) == false)     Valid = false;
+            if(isNaN(x) == true)         Valid = false;
+            if(isNaN(N) == true)         Valid = false;
+            if(x !== parseInt(x, 10))    Valid = false;
+            if(N !== parseInt(N, 10))    Valid = false;
+            if(N > 100 || N <= 0)        Valid = false;
+            if(x < 0 || x > N)           Valid = false;
+
+            if(Valid == false)
+               document.getElementById("ResultXN").innerHTML = "Please input a valid pair of numbers and the result will be shown here!";
+            else
+            {
+               document.getElementById("ResultXN").innerHTML
+                  = "The most likely value is x/N = " + (x / N) + "<br />"
+                  + "The 68% range is [" + Min68[N][x] + " - " + Max68[N][x] + "] "
+                  + "and the 95% range is [" + Min95[N][x] + " - " + Max95[N][x] + "]";
+            }
+         }
+      </script>
+      <link rel="stylesheet" type="text/css" href="style.css">
    </head>
    <body>
-      <div>
-         <img src="ErrorInX000.png" style="height: 200px;"/>
+      <div class="TextHolder">
+         <h1>Posterior Uncertainty In The Binomial Case</h1>
+         <p>There is an uneven coin with probability p landing on heads.
+         Suppose we don't know p and wish to make inference on it.  We toss the coin
+         N times, and see that it lands on heads x times.  The most likely value of p
+         of course is simply x/N.  The more interesting question is about the uncertainty.
+         What can we say about the posterior uncertainty of p around x/N, assuming a flat prior?</p>
+      </div>
+      <div class="PlotHolder">
+         <img src="ErrorInX000.png" />
          <p>Uncertainty as a function of trials in the case of x = 0</p>
       </div>
-      <div>
-         <img src="ErrorInX001.png" style="height: 200px;"/>
-         <p>Uncertainty as a function of trials in the case of x = 0</p>
+      <div class="PlotHolder">
+         <img src="ErrorInX001.png" />
+         <p>Uncertainty as a function of trials in the case of x/N = 0.01</p>
       </div>
-      <div>
-         <img src="ErrorInX002.png" style="height: 200px;"/>
-         <p>Uncertainty as a function of trials in the case of x = 0</p>
+      <div class="PlotHolder">
+         <img src="ErrorInX002.png" />
+         <p>Uncertainty as a function of trials in the case of x/N = 0.02</p>
       </div>
-      <div>
-         <img src="ErrorInX005.png" style="height: 200px;"/>
-         <p>Uncertainty as a function of trials in the case of x = 0</p>
+      <div class="PlotHolder">
+         <img src="ErrorInX005.png" />
+         <p>Uncertainty as a function of trials in the case of x/N = 0.05</p>
       </div>
-      <div>
-         <img src="ErrorInX010.png" style="height: 200px;"/>
-         <p>Uncertainty as a function of trials in the case of x = 0</p>
+      <div class="PlotHolder">
+         <img src="ErrorInX010.png" />
+         <p>Uncertainty as a function of trials in the case of x/N = 0.10</p>
       </div>
-      <div>
-         <img src="ErrorInX025.png" style="height: 200px;"/>
-         <p>Uncertainty as a function of trials in the case of x = 0</p>
+      <div class="PlotHolder">
+         <img src="ErrorInX025.png" />
+         <p>Uncertainty as a function of trials in the case of x/N = 0.25</p>
       </div>
-      <div>
-         <img src="ErrorInX050.png" style="height: 200px;"/>
+      <div class="PlotHolder">
+         <img src="ErrorInX050.png" />
          <p>Uncertainty as a function of trials in the case of x/N = 0.50</p>
+      </div>
+      <div class="TextHolder">
+         <h1>Technical Details</h1>
+         <p>Bayesian inference is used on the binomial distribution: P(p|x,N) ~ P(x|p,N) * Prior.
+         The prior is flat between 0 and 1 in this case.
+         The 68% (or 95%) range is calculated by looking at the distribution, integrate
+         the most likely regions until we reach 68% (or 95%) of the total integral of the distribution.
+         While the range included the most likely value (x/N), in most cases it is asymmetrical:
+         area inside the 68% below the peak is not the same as area above the peak; nor is this
+         the central 68% if we stretch the distributions to a line.  Those will be different
+         definitions of the 68% range, and not what is shown here</p>
+      </div>
+      <div class="TextHolder">
+         <h1>Some Observations</h1>
+         <p>The asymptotic behavior for x = 0 case scales as 1/N.  The 68% is roughly 1.2/N, and the 95%
+         is roughly 3/N.  On the other extreme, when x/N is 0.5, the binomial distribution approximates
+         a Gaussian distribution, and the uncertainty scales as 1/&radic;N: 68% is roughly 1.55/&radic;N,
+         and 95% is about 3.16/&radic;N.  The approximations are good for N &gt; 25 or so.</p>
+         <p>The scaling behavior for other x/N values are somewhere between 1/N and 1/&radic;N.</p>
+      </div>
+      <div class="TextHolder">
+         <h1>Numbers for N &le; 100</h1>
+         <p>Result for any pair of possible (x, N) where N &le; 100 can be seen here.
+         Please enter positive integers here</p>
+         <div>
+            x = <input type="number" id="InputX" onchange="UpdateResult();" />,
+            N = <input type="number" id="InputN" onchange="UpdateResult();" />
+         </div>
+         <p id="ResultXN">Please input a valid pair of numbers and the result will be shown here!</p>
+      </div>
+      <div class="TextHolder">
+         <p style="text-align: center;">Created and designed by FHead, Jan 12, 2016</p>
       </div>
    </body>
 </html>
+
+

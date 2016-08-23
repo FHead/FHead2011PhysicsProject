@@ -244,6 +244,35 @@ int main(int argc, char *argv[])
 
          FitResultSummary ResultTemp = Fits.DoFit(Temp);
 
+         double TempE[4] = {0}, TempB[4] = {0};
+         TempE[0] = ResultTemp.Sem + ResultTemp.Bem;
+         TempE[1] = ResultTemp.Sme + ResultTemp.Bme;
+         TempE[2] = ResultTemp.See + ResultTemp.Bee;
+         TempE[3] = ResultTemp.Smm + ResultTemp.Bmm;
+         TempB[0] = ResultTemp.Bem;
+         TempB[1] = ResultTemp.Bme;
+         TempB[2] = ResultTemp.Bee;
+         TempB[3] = ResultTemp.Bmm;
+
+         double X = ResultTemp.Parameter7;
+         for(double iX = -2; iX <= 2; iX = iX + 0.2)
+         {
+            double Parameters[12] = {0};
+            Parameters[0] = Temp.Parameter1InitialValue;
+            Parameters[1] = Temp.Parameter2InitialValue;
+            Parameters[2] = Temp.Parameter3InitialValue;
+            Parameters[3] = Temp.Parameter4InitialValue;
+            Parameters[4] = Temp.Parameter5InitialValue;
+            Parameters[5] = Temp.Parameter6InitialValue;
+            Parameters[6] = X * iX;
+            Parameters[7] = Temp.Parameter8InitialValue;
+            Parameters[8] = ((TempE[0] > 0) ? (TempB[0] / TempE[0]) : 0);
+            Parameters[9] = ((TempE[1] > 0) ? (TempB[1] / TempE[1]) : 0);
+            Parameters[10] = ((TempE[2] > 0) ? (TempB[2] / TempE[2]) : 0);
+            Parameters[11] = ((TempE[3] > 0) ? (TempB[3] / TempE[3]) : 0);
+            Fits.CalculateLogLikelihoodAll(Parameters);
+         }
+
          Results.push_back(ResultTemp);
       }
       FitCount = FitCount + 1;

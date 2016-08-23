@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 
    // Start looping
    double MaxEstimate = 1;
-   int EventCount = 5000000;
+   int EventCount = 1000000;
    EventParameters Angles;
 
    ProgressBar Bar(cerr, EventCount);

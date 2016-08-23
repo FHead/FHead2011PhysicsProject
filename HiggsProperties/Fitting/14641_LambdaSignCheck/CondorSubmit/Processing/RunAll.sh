@@ -3,6 +3,7 @@ mkdir -p Processed
 
 for i in Log/*
 do
+   echo Processing $i
    ./a.out $i > Calculated/`basename $i`
 done
 
@@ -19,7 +20,7 @@ do
 done
 for i in `ls Temp | cut --delim='_' --field=1,2,3 | sort | uniq`
 do
-   # cat Temp/${i}_* | grep -v nan | tee Processed/$i.txt | TextToTree Processed/$i.root 4 "N:ID:P:S"
+   cat Temp/${i}_* | grep -v nan | tee Processed/$i.txt | TextToTree Processed/$i.root 4 "N:ID:P:S"
    cat Temp/${i}_* | grep -v nan | TextToTree Processed/$i.root 4 "N:ID:P:S"
 done
 

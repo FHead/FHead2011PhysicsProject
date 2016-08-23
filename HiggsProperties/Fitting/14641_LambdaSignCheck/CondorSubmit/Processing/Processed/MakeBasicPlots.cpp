@@ -14,7 +14,7 @@ using namespace std;
 int main()
 {
    TFile F1("PointA_BothS_J.root");
-   TFile F2("PointSM14572_BothS_J.root");
+   TFile F2("PointH5_BothS_J.root");
 
    TTree *Tree1 = (TTree *)F1.Get("Tree");
    TTree *Tree2 = (TTree *)F2.Get("Tree");

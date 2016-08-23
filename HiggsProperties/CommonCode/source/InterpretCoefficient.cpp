@@ -432,6 +432,49 @@ double InterpretedA3AA_Top_Roberto14167(const InterpretationCoefficients &c)
    */
 }
 
+double InterpretedA2ZA_Roberto15352(const InterpretationCoefficients &c)
+{
+   return InterpretedA2ZA_Top_Roberto15352(c)
+      + InterpretedA2ZA_W_Roberto15352(c);
+}
+
+double InterpretedA3ZA_Roberto15352(const InterpretationCoefficients &c)
+{
+   return InterpretedA3ZA_Top_Roberto15352(c)
+      + InterpretedA3ZA_W_Roberto15352(c);
+}
+
+double InterpretedA2AA_Roberto15352(const InterpretationCoefficients &c)
+{
+   return InterpretedA2AA_Top_Roberto13711(c)
+      + InterpretedA2AA_W_Roberto13711(c);
+}
+
+double InterpretedA3AA_Roberto15352(const InterpretationCoefficients &c)
+{
+   return InterpretedA3AA_Top_Roberto14167(c)
+      + InterpretedA3AA_W_Roberto13711(c);
+}
+
+double InterpretedA2ZA_Top_Roberto15352(const InterpretationCoefficients &c)
+{
+   return -InterpretedA2ZA_Top_Roberto13711(c);
+}
+
+double InterpretedA3ZA_Top_Roberto15352(const InterpretationCoefficients &c)
+{
+   return -InterpretedA3ZA_Top_Roberto14167(c);
+}
+
+double InterpretedA2ZA_W_Roberto15352(const InterpretationCoefficients &c)
+{
+   return -InterpretedA2ZA_W_Roberto13711(c);
+}
+
+double InterpretedA3ZA_W_Roberto15352(const InterpretationCoefficients &c)
+{
+   return -InterpretedA3ZA_W_Roberto13711(c);
+}
 
 
 

@@ -1602,7 +1602,9 @@ double GetPTYDensity_MZ_CTEQ6l1_13432(int PID1, int PID2, double pt, double y, d
    double x1 = sqrt(Product * Ratio);
    double x2 = sqrt(Product / Ratio);
 
-   return GetFxDensity_MZ_CTEQ6l1_13432(x1, PID1) * GetFxDensity_MZ_CTEQ6l1_13432(x2, PID2) / s;
+   double Answer = GetFxDensity_MZ_CTEQ6l1_13432(x1, PID1) * GetFxDensity_MZ_CTEQ6l1_13432(x2, PID2) / s;
+   // std::cerr << Answer << endl;
+   return Answer;
 }
 //---------------------------------------------------------------------------
 double GetPTYDensityUUbar_MZ_CTEQ6l1_13432(double pt, double y, double s, double S)

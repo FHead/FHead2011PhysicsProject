@@ -1,0 +1,23 @@
+cat SResult/* BResult/* | grep ^TA | ./a.out CutA
+cat SResult/* BResult/* | grep ^TB | ./a.out CutB
+cat SResult/* BResult/* | grep ^TC | ./a.out CutC
+cat SResult/* BResult/* | grep ^TD | ./a.out CutD
+cat SResult/* BResult/* | grep ^TE | ./a.out CutE
+cat SResult/* BResult/* | grep ^TF | ./a.out CutF
+cat SResult/* BResult/* | grep ^TG | ./a.out CutG
+cat SResult/* BResult/* | grep ^TH | ./a.out CutH
+cat SResult/* BResult/* | grep ^TI | ./a.out CutI
+cat SResult/* BResult/* | grep ^TJ | ./a.out CutJ
+cat SResult/* BResult/* | grep ^TK | ./a.out CutK
+cat SResult/* BResult/* | grep ^VA | ./a.out CutA
+cat SResult/* BResult/* | grep ^VB | ./a.out CutB
+cat SResult/* BResult/* | grep ^VC | ./a.out CutC
+cat SResult/* BResult/* | grep ^VD | ./a.out CutD
+cat SResult/* BResult/* | grep ^VE | ./a.out CutE
+cat SResult/* BResult/* | grep ^VF | ./a.out CutF
+cat SResult/* BResult/* | grep ^VG | ./a.out CutG
+cat SResult/* BResult/* | grep ^VH | ./a.out CutH
+cat SResult/* BResult/* | grep ^VI | ./a.out CutI
+cat SResult/* BResult/* | grep ^VJ | ./a.out CutJ
+cat SResult/* BResult/* | grep ^VK | ./a.out CutK
+

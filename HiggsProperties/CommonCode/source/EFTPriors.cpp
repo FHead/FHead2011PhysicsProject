@@ -300,5 +300,35 @@ double GetChi2_HiggsPlusLEP2WW_Warsaw_14252(const WarsawBasis &W)
    return Chi2;
 }
 
+double GetChi2_TopYukawaMagnitude_15243(const LoopBasis &L)
+{
+   // TODO!  Here comes constraints from Htt search
+   return 1;
+}
+
+double GetLLFlatYTSoftEdge(const LoopBasis &L)
+{
+   double YT = L.YT;
+   if(YT < 0)
+      YT = -YT;
+
+   if(YT < 2)
+      return 0;
+
+   return -(YT - 2) * (YT - 2) / (2 * 0.5 * 0.5);
+}
+
+double GetLLFlatYTSoftEdgeLoose(const LoopBasis &L)
+{
+   double YT = L.YT;
+   if(YT < 0)
+      YT = -YT;
+
+   if(YT < 2.5)
+      return 0;
+
+   return -(YT - 2.5) * (YT - 2.5) / (2 * 1 * 1);
+}
+
 
 

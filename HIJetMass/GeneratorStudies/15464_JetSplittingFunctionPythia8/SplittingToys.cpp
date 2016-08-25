@@ -5,9 +5,6 @@
 #include <iomanip>
 using namespace std;
 
-#include "Pythia8/Pythia.h"
-using namespace Pythia8;
-
 #include "fastjet/ClusterSequence.hh"
 using namespace fastjet;
 
@@ -22,6 +19,7 @@ using namespace fastjet;
 #include "TEllipse.h"
 #include "TLegend.h"
 #include "TGraph.h"
+#include "TProfile.h"
 
 #include "Code/DrawRandom.h"
 #include "Code/TauHelperFunctions2.h"
@@ -81,6 +79,9 @@ int main(int argc, char *argv[])
    TH2D HPTMass("HPTMass", "Jet PT vs. Mass;PT;Mass", 100, 120, 200, 100, 0, 60);
    TH2D HPTGroomedMass("HPTGroomedMass", "Jet PT vs. Groomed Mass;PT;Mass", 100, 120, 200, 100, 0, 60);
    TH2D HPTGroomedPT("HPTGroomedPT", "Jet PT vs. Groomed PT;PT;PT", 100, 120, 200, 100, 0, 200);
+   TProfile PPTMass("PPTMass", "Jet PT vs. Mass;PT;Mass", 100, 120, 200);
+   TProfile PPTGroomedMass("PPTGroomedMass", "Jet PT vs. Groomed Mass;PT;Mass", 100, 120, 200);
+   TProfile PPTGroomedPT("PPTGroomedPT", "Jet PT vs. Groomed PT;PT;PT", 100, 120, 200);
 
    HPT.SetStats(0);
    HPTRatio.SetStats(0);
@@ -289,6 +290,9 @@ int main(int argc, char *argv[])
             HPTMass.Fill(Jets[LeadingIndex].perp(), Nodes[0]->P.GetMass());
             HPTGroomedMass.Fill(Jets[LeadingIndex].perp(), Current->P.GetMass());
             HPTGroomedPT.Fill(Jets[LeadingIndex].perp(), Current->P.GetPT());
+            PPTMass.Fill(Jets[LeadingIndex].perp(), Nodes[0]->P.GetMass());
+            PPTGroomedMass.Fill(Jets[LeadingIndex].perp(), Current->P.GetMass());
+            PPTGroomedPT.Fill(Jets[LeadingIndex].perp(), Current->P.GetPT());
          }
       }
 
@@ -507,6 +511,7 @@ int main(int argc, char *argv[])
    C.SaveAs("MassRatio.pdf");
 
    HPTMass.Draw("colz");
+   PPTMass.Draw("same");
 
    C.SaveAs("PTMass.png");
    C.SaveAs("PTMass.C");
@@ -514,6 +519,7 @@ int main(int argc, char *argv[])
    C.SaveAs("PTMass.pdf");
 
    HPTGroomedMass.Draw("colz");
+   PPTGroomedMass.Draw("same");
 
    C.SaveAs("PTGroomedMass.png");
    C.SaveAs("PTGroomedMass.C");
@@ -521,6 +527,7 @@ int main(int argc, char *argv[])
    C.SaveAs("PTGroomedMass.pdf");
 
    HPTGroomedPT.Draw("colz");
+   PPTGroomedPT.Draw("same");
 
    C.SaveAs("PTGroomedPT.png");
    C.SaveAs("PTGroomedPT.C");

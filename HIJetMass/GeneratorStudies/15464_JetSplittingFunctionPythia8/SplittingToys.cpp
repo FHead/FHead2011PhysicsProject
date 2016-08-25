@@ -21,6 +21,7 @@ using namespace fastjet;
 #include "TTree.h"
 #include "TEllipse.h"
 #include "TLegend.h"
+#include "TGraph.h"
 
 #include "Code/DrawRandom.h"
 #include "Code/TauHelperFunctions2.h"
@@ -66,21 +67,6 @@ int main(int argc, char *argv[])
 {
    SetThesisStyle();
 
-   Pythia pythia;
-
-   pythia.readString("Beams:eCM = 8000.");
-   pythia.readString("HardQCD:all = on");
-   pythia.readString("PhaseSpace:pTHatMin = 120.");
-   pythia.readString("PhaseSpace:pTHatMax = 260.");
-
-   pythia.readString("ParticleDecays:limitTau0 = on");     // Particle lifetime cutoff
-   pythia.readString("ParticleDecays:tauMax = 10");
-
-   pythia.readString("Random:setSeed = on");               // Random seed on
-   pythia.readString("Random:seed = 0");                   // Set random seed based on time
-
-   pythia.init();
-
    TH1D HPT("HPT", "Jet PT;PT", 100, 0, 500);
    TH1D HPTRatio("HPTRatio", "PT Groomed / Original;PT Ratio", 100, 0.5, 1.0);
    TH1D HNDropped("HNDropped", "Dropped Branches;N_{dropped}", 12, 0, 12);
@@ -92,6 +78,9 @@ int main(int argc, char *argv[])
    TH1D HMassRatio140("HMassRatio140", "Mass Groomed / original (PT = 140-160);Mass Ratio", 100, 0, 1);
    TH1D HMassRatio160("HMassRatio160", "Mass Groomed / original (PT = 160-180);Mass Ratio", 100, 0, 1);
    TH1D HMassRatio180("HMassRatio180", "Mass Groomed / original (PT = 180-200);Mass Ratio", 100, 0, 1);
+   TH2D HPTMass("HPTMass", "Jet PT vs. Mass;PT;Mass", 100, 120, 200, 100, 0, 60);
+   TH2D HPTGroomedMass("HPTGroomedMass", "Jet PT vs. Groomed Mass;PT;Mass", 100, 120, 200, 100, 0, 60);
+   TH2D HPTGroomedPT("HPTGroomedPT", "Jet PT vs. Groomed PT;PT;PT", 100, 120, 200, 100, 0, 200);
 
    HPT.SetStats(0);
    HPTRatio.SetStats(0);
@@ -100,45 +89,53 @@ int main(int argc, char *argv[])
    HZG140.SetStats(0);
    HZG160.SetStats(0);
    HZG180.SetStats(0);
+   HMassRatio120.SetStats(0);
+   HMassRatio140.SetStats(0);
+   HMassRatio160.SetStats(0);
+   HMassRatio180.SetStats(0);
+   HPTMass.SetStats(0);
+   HPTGroomedMass.SetStats(0);
+   HPTGroomedPT.SetStats(0);
 
    HZG120.Sumw2();
    HZG140.Sumw2();
    HZG160.Sumw2();
    HZG180.Sumw2();
 
-   int EntryCount = 100000;
+   int EntryCount = 10;
+   cin >> EntryCount;
+   
    for(int iEntry = 0; iEntry < EntryCount; iEntry++)
    {
       TH2D HEtaPhi(Form("HEtaPhi_%d", iEntry), Form("Event %d;#eta;#phi", iEntry), 100, -5, 5, 100, -3.14159, 3.14159);
       HEtaPhi.SetStats(0);
    
-      if((iEntry + 1) % 10000 == 0)
-         cout << "Generating and processing entry " << iEntry + 1 << "/" << EntryCount << endl;
+      if((iEntry + 1) % 1000 == 0)
+         cout << "Processing entry " << iEntry + 1 << "/" << EntryCount << endl;
 
-      // Generate event
-      pythia.next();
-
+      int EventSize = 0;
+      cin >> EventSize;
+      if(EventSize == 0)
+         break;
+      
       // Particles
-      vector<GenParticle> Particles(pythia.event.size());
+      vector<GenParticle> Particles(EventSize);
 
       // Loop over particles
-      for(int j = 0; j < pythia.event.size(); j++)
+      for(int j = 0; j < EventSize; j++)
       {
-         Particles[j].P[0] = pythia.event[j].e();
-         Particles[j].P[1] = pythia.event[j].px();
-         Particles[j].P[2] = pythia.event[j].py();
-         Particles[j].P[3] = pythia.event[j].pz();
+         cin >> Particles[j].P[0];
+         cin >> Particles[j].P[1];
+         cin >> Particles[j].P[2];
+         cin >> Particles[j].P[3];
 
-         Particles[j].V[0] = pythia.event[j].tProd();
-         Particles[j].V[1] = pythia.event[j].xProd();
-         Particles[j].V[2] = pythia.event[j].yProd();
-         Particles[j].V[3] = pythia.event[j].zProd();
+         Particles[j].V[0] = 0;
+         Particles[j].V[1] = 0;
+         Particles[j].V[2] = 0;
+         Particles[j].V[3] = 0;
 
-         Particles[j].PDGID = pythia.event[j].id();
-         Particles[j].StatusCode = pythia.event[j].statusHepMC();
-
-         Particles[j].Mothers = pythia.event[j].motherList();
-         Particles[j].Daughters = pythia.event[j].daughterList();
+         cin >> Particles[j].PDGID;
+         cin >> Particles[j].StatusCode;
       }
       GenParticleTree Tree(Particles, 1, iEntry + 1);
 
@@ -288,6 +285,10 @@ int main(int argc, char *argv[])
                HMassRatio160.Fill(Current->P.GetMass() / Nodes[0]->P.GetMass());
             if(Jets[LeadingIndex].perp() > 180 && Jets[LeadingIndex].perp() < 200)
                HMassRatio180.Fill(Current->P.GetMass() / Nodes[0]->P.GetMass());
+
+            HPTMass.Fill(Jets[LeadingIndex].perp(), Nodes[0]->P.GetMass());
+            HPTGroomedMass.Fill(Jets[LeadingIndex].perp(), Current->P.GetMass());
+            HPTGroomedPT.Fill(Jets[LeadingIndex].perp(), Current->P.GetPT());
          }
       }
 
@@ -504,6 +505,27 @@ int main(int argc, char *argv[])
    C.SaveAs("MassRatio.C");
    C.SaveAs("MassRatio.eps");
    C.SaveAs("MassRatio.pdf");
+
+   HPTMass.Draw("colz");
+
+   C.SaveAs("PTMass.png");
+   C.SaveAs("PTMass.C");
+   C.SaveAs("PTMass.eps");
+   C.SaveAs("PTMass.pdf");
+
+   HPTGroomedMass.Draw("colz");
+
+   C.SaveAs("PTGroomedMass.png");
+   C.SaveAs("PTGroomedMass.C");
+   C.SaveAs("PTGroomedMass.eps");
+   C.SaveAs("PTGroomedMass.pdf");
+
+   HPTGroomedPT.Draw("colz");
+
+   C.SaveAs("PTGroomedPT.png");
+   C.SaveAs("PTGroomedPT.C");
+   C.SaveAs("PTGroomedPT.eps");
+   C.SaveAs("PTGroomedPT.pdf");
 
    return 0;
 }

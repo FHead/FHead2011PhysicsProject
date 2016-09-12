@@ -1,0 +1,24 @@
+PP8Dijet100      -1
+PP8Dijet170      1.223E-5
+PP8Dijet220      3.031E-6
+PP8Dijet280      7.746E-7
+PP6Dijet100      -1
+PP6Dijet120      6.147e-5
+PP6Dijet170      1.108e-5
+PP6Dijet220      2.477e-6
+PP6Dijet280      6.160e-7
+HerwigDijet100   -1
+AA8Dijet120      7.096e-5
+AA8Dijet170      1.223E-5
+AA8Dijet220      3.031E-6
+AA8Dijet280      7.746E-7
+AA6Dijet120      6.147e-5
+AA6Dijet170      1.108e-5
+AA6Dijet220      2.477e-6
+AA6Dijet280      6.160e-7
+HydjetMB         -1
+PPDataHighPTJet  -1
+AAData           -1
+AADataMB         -1
+
+

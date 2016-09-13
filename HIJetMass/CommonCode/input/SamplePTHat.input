@@ -1,0 +1,23 @@
+PP8Dijet100      100 170
+PP8Dijet170      170 220
+PP8Dijet220      220 280
+PP8Dijet280      280 10000
+PP6Dijet100      100 120
+PP6Dijet120      120 170
+PP6Dijet170      170 220
+PP6Dijet220      220 280
+PP6Dijet280      280 10000
+HerwigDijet100   100 10000
+AA8Dijet120      120 170
+AA8Dijet170      170 220
+AA8Dijet220      220 280
+AA8Dijet280      280 10000
+AA6Dijet120      120 170
+AA6Dijet170      170 220
+AA6Dijet220      220 280
+AA6Dijet280      280 10000
+HydjetMB         -10000 10000
+PPDataHighPTJet  -10000 10000
+AAData           -10000 10000
+AADataMB         -10000 10000
+

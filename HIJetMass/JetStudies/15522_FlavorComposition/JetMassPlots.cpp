@@ -19,15 +19,17 @@ double CalculateDR(double eta1, double phi1, double eta2, double phi2);
 
 int main(int argc, char *argv[])
 {
-   if(argc < 4)
+   if(argc < 6)
    {
-      cerr << "Usage: " << argv[0] << " Input Output Tag" << endl;
+      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax" << endl;
       return -1;
    }
 
    string Input = argv[1];
    string Output = argv[2];
    string Tag = argv[3];
+   double PTHatMin = atof(argv[4]);
+   double PTHatMax = atof(argv[4]);
 
    bool IsData = IsDataFromTag(Tag);
    bool IsPP = IsPPFromTag(Tag);
@@ -62,6 +64,8 @@ int main(int argc, char *argv[])
    double CBinMin[6] = {0.0, 0.1, 0.3, 0.5, 0.8, 1.0};
 
    TH1D HN("HN", "Raw event count", 1, 0, 1);
+   TH1D HPTHatAll("HPTHatAll", "PTHat", 100, 0, 300);
+   TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 300);
 
    TH2D *HNVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};
    TProfile2D *PSDMassVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};
@@ -115,6 +119,11 @@ int main(int argc, char *argv[])
       MJet.GetEntry(iEntry);
       MSDJet.GetEntry(iEntry);
 
+      HPTHatAll.Fill(MSDJet.PTHat);
+      if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
+         continue;
+      HPTHatSelected.Fill(MSDJet.PTHat);
+
       double Centrality = GetCentrality(MHiEvent.hiBin);
 
       for(int i = 0; i < MSDJet.JetCount; i++)
@@ -166,6 +175,8 @@ int main(int argc, char *argv[])
    }
 
    HN.Write();
+   HPTHatAll.Write();
+   HPTHatSelected.Write();
 
    for(int i = 0; i < 4; i++)
    {

@@ -208,6 +208,8 @@ bool JetTreeMessenger::Initialize()
    RefGSubJetPhi = NULL;
    RefGSubJetM = NULL;
 
+   if(Tree->GetBranch("pthat"))   Tree->SetBranchAddress("pthat", &PTHat);
+
    if(Tree->GetBranch("nref"))    Tree->SetBranchAddress("nref", &JetCount);
    else                           JetCount = 0;
    if(Tree->GetBranch("rawpt"))   Tree->SetBranchAddress("rawpt", &JetRawPT);
@@ -258,6 +260,13 @@ bool JetTreeMessenger::Initialize()
    if(Tree->GetBranch("refphiG")) Tree->SetBranchAddress("refphiG", &RefGPhi);
    if(Tree->GetBranch("refmG"))   Tree->SetBranchAddress("refmG", &RefGM);
 
+   if(Tree->GetBranch("refparton_pt"))
+      Tree->SetBranchAddress("refparton_pt", &RefPartonPT);
+   if(Tree->GetBranch("refparton_flavor"))
+      Tree->SetBranchAddress("refparton_flavor", &RefPartonFlavor);
+   if(Tree->GetBranch("refparton_flavorForB"))
+      Tree->SetBranchAddress("refparton_flavorForB", &RefPartonFlavorForB);
+   
    if(Tree->GetBranch("refSubJetPt"))
       Tree->SetBranchAddress("refSubJetPt", &RefGSubJetPT);
    else

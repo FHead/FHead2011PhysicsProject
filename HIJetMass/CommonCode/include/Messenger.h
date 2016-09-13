@@ -67,6 +67,7 @@ class JetTreeMessenger
 {
 public:
    TTree *Tree;
+   float PTHat;
    int JetCount;
    float JetRawPT[JETCOUNTMAX];
    float JetPT[JETCOUNTMAX];
@@ -92,6 +93,9 @@ public:
    float RefGEta[JETCOUNTMAX];
    float RefGPhi[JETCOUNTMAX];
    float RefGM[JETCOUNTMAX];
+   float RefPartonPT[JETCOUNTMAX];
+   int RefPartonFlavor[JETCOUNTMAX];
+   int RefPartonFlavorForB[JETCOUNTMAX];
    std::vector<std::vector<float> > *RefGSubJetPT;
    std::vector<std::vector<float> > *RefGSubJetEta;
    std::vector<std::vector<float> > *RefGSubJetPhi;

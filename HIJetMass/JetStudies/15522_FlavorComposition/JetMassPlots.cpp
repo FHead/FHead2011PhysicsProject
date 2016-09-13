@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
    string Output = argv[2];
    string Tag = argv[3];
    double PTHatMin = atof(argv[4]);
-   double PTHatMax = atof(argv[4]);
+   double PTHatMax = atof(argv[5]);
 
    bool IsData = IsDataFromTag(Tag);
    bool IsPP = IsPPFromTag(Tag);
@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
    double CBinMin[6] = {0.0, 0.1, 0.3, 0.5, 0.8, 1.0};
 
    TH1D HN("HN", "Raw event count", 1, 0, 1);
-   TH1D HPTHatAll("HPTHatAll", "PTHat", 100, 0, 300);
-   TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 300);
+   TH1D HPTHatAll("HPTHatAll", "PTHat", 100, 0, 500);
+   TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 500);
 
    TH2D *HNVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};
    TProfile2D *PSDMassVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};

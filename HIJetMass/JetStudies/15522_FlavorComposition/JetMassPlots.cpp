@@ -51,29 +51,58 @@ int main(int argc, char *argv[])
    HiEventTreeMessenger MHiEvent(InputFile);
    JetTreeMessenger MJet(InputFile, JetTreeName);
    JetTreeMessenger MSDJet(InputFile, SoftDropJetTreeName);
-   GenParticleTreeMessenger MGen(InputFile);
 
    if(MHiEvent.Tree == NULL)
       return -1;
 
    TFile OutputFile(Output.c_str(), "RECREATE");
 
-   TH2D HLightNVsGenJetPTRecoSubJetDR("HLightNVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Light quark count", 100, 80, 500, 100, 0, 0.5);
-   TH2D HGluonNVsGenJetPTRecoSubJetDR("HGluonNVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Gluon quark count", 100, 80, 500, 100, 0, 0.5);
-   TH2D HCharmNVsGenJetPTRecoSubJetDR("HCharmNVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Charm quark count", 100, 80, 500, 100, 0, 0.5);
-   TH2D HHeavyNVsGenJetPTRecoSubJetDR("HHeavyNVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Heavy quark count", 100, 80, 500, 100, 0, 0.5);
-   TProfile2D PLightSDMassVsGenJetPTRecoSubJetDR("PLightSDMassVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Light quark SDMass", 100, 80, 500, 100, 0, 0.5);
-   TProfile2D PGluonSDMassVsGenJetPTRecoSubJetDR("PGluonSDMassVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Gluon quark SDMass", 100, 80, 500, 100, 0, 0.5);
-   TProfile2D PCharmSDMassVsGenJetPTRecoSubJetDR("PCharmSDMassVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Charm quark SDMass", 100, 80, 500, 100, 0, 0.5);
-   TProfile2D PHeavySDMassVsGenJetPTRecoSubJetDR("PHeavySDMassVsGenJetPTRecoSubJetDR",
-      ";Gen Jet PT;Reco SubJet DR;Heavy quark SDMass", 100, 80, 500, 100, 0, 0.5);
+   string Flavor[4] = {"Light", "Charm", "Heavy", "Gluon"};
+   string CBin[5] = {"CBin0", "CBin1", "CBin2", "CBin3", "CBin4"};
+   double CBinMin[6] = {0.0, 0.1, 0.3, 0.5, 0.8, 1.0};
+
+   TH2D *HNVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};
+   TProfile2D *PSDMassVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};
+   TProfile2D *PSDMassVsRecoJetPTRecoSubJetDR[4][5] = {{NULL}};
+   TH2D *HSDMassVsRecoSubJetDR[4][5] = {{NULL}};
+   TH2D *HSDMassVsRecoJetPT[4][5] = {{NULL}};
+   TH2D *HZGVsRecoSubJetDR[4][5] = {{NULL}};
+   TH2D *HZGVsRecoJetPT[4][5] = {{NULL}};
+
+   for(int i = 0; i < 4; i++)
+   {
+      for(int j = 0; j < 5; j++)
+      {
+         HNVsGenJetPTRecoSubJetDR[i][j]
+            = new TH2D(Form("H%sNVsGenJetPTRecoSubJetDR_%s", Flavor[i].c_str(), CBin[j].c_str()),
+            Form("%.1f-%.1f;Gen Jet PT;Reco SubJet DR;%s quark count", CBinMin[j], CBinMin[j+1], Flavor[i].c_str()),
+            100, 80, 500, 100, 0, 0.5);
+         PSDMassVsGenJetPTRecoSubJetDR[i][j]
+            = new TProfile2D(Form("P%sSDMassVsGenJetPTRecoSubJetDR_%s", Flavor[i].c_str(), CBin[j].c_str()),
+            Form("%.1f-%.1f;Gen Jet PT;Reco SubJet DR;%s quark SDMass", CBinMin[j], CBinMin[j+1], Flavor[i].c_str()),
+            100, 80, 500, 100, 0, 0.5);
+         PSDMassVsRecoJetPTRecoSubJetDR[i][j]
+            = new TProfile2D(Form("P%sSDMassVsRecoJetPTRecoSubJetDR_%s", Flavor[i].c_str(), CBin[j].c_str()),
+            Form("%.1f-%.1f;Gen Jet PT;Reco SubJet DR;%s quark SDMass", CBinMin[j], CBinMin[j+1], Flavor[i].c_str()),
+            100, 80, 500, 100, 0, 0.5);
+         HSDMassVsRecoSubJetDR[i][j]
+            = new TH2D(Form("H%sSDMassVsRecoSubJetDR_%s", Flavor[i].c_str(), CBin[j].c_str()),
+            Form("%.1f-%.1f;Reco SubJet DR;%s SDMass", CBinMin[j], CBinMin[j+1], Flavor[i].c_str()), 
+            100, 0, 0.5, 200, 0, 80);
+         HSDMassVsRecoJetPT[i][j]
+            = new TH2D(Form("H%sSDMassVsRecoJetPT_%s", Flavor[i].c_str(), CBin[j].c_str()),
+            Form("%.1f-%.1f;Reco Jet PT;%s SDMass", CBinMin[j], CBinMin[j+1], Flavor[i].c_str()),
+            100, 80, 500, 200, 0, 80);
+         HZGVsRecoSubJetDR[i][j]
+            = new TH2D(Form("H%sZGVsRecoSubJetDR_%s", Flavor[i].c_str(), CBin[j].c_str()),
+            Form("%.1f-%.1f;Reco SubJet DR;%s ZG", CBinMin[j], CBinMin[j+1], Flavor[i].c_str()),
+            100, 0, 0.5, 100, 0.1, 0.5);
+         HZGVsRecoJetPT[i][j]
+            = new TH2D(Form("H%sZGVsRecoJetPT_%s", Flavor[i].c_str(), CBin[j].c_str()),
+            Form("%.1f-%.1f;Reco Jet PT;%s ZG", CBinMin[j], CBinMin[j+1], Flavor[i].c_str()),
+            100, 80, 500, 100, 0.1, 0.5);
+      }
+   }
 
    int EntryCount = MHiEvent.Tree->GetEntries();
    for(int iEntry = 0; iEntry < EntryCount; iEntry++)
@@ -81,7 +110,6 @@ int main(int argc, char *argv[])
       MHiEvent.GetEntry(iEntry);
       MJet.GetEntry(iEntry);
       MSDJet.GetEntry(iEntry);
-      MGen.GetEntry(iEntry);
 
       double Centrality = GetCentrality(MHiEvent.hiBin);
 
@@ -103,40 +131,58 @@ int main(int argc, char *argv[])
             continue;
          Flavor = ((Flavor < 0) ? -Flavor : Flavor);
 
+         int FIndex = 0;
          if(Flavor == 1 || Flavor == 2 || Flavor == 3)
-         {
-            HLightNVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR);
-            PLightSDMassVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR, MSDJet.JetM[i]);
-         }
+            FIndex = 0;
          else if(Flavor == 4)
-         {
-            HCharmNVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR);
-            PCharmSDMassVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR, MSDJet.JetM[i]);
-         }
+            FIndex = 1;
          else if(Flavor == 5)
-         {
-            HHeavyNVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR);
-            PHeavySDMassVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR, MSDJet.JetM[i]);
-         }
+            FIndex = 2;
          else if(Flavor == 21)
-         {
-            HGluonNVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR);
-            PGluonSDMassVsGenJetPTRecoSubJetDR.Fill(MSDJet.RefPT[i], RecoSubJetDR, MSDJet.JetM[i]);
-         }
+            FIndex = 3;
          else
             cerr << "Flavor = " << Flavor << endl;
+
+         int CIndex = 0;
+         for(int i = 0; i < 5; i++)
+            if(Centrality >= CBinMin[i] && Centrality < CBinMin[i+1])
+               CIndex = i;
+
+         HNVsGenJetPTRecoSubJetDR[FIndex][CIndex]->Fill(MSDJet.RefPT[i], RecoSubJetDR);
+         PSDMassVsGenJetPTRecoSubJetDR[FIndex][CIndex]->Fill(MSDJet.RefPT[i], RecoSubJetDR, MSDJet.JetM[i]);
+         PSDMassVsRecoJetPTRecoSubJetDR[FIndex][CIndex]->Fill(MSDJet.JetPT[i], RecoSubJetDR, MSDJet.JetM[i]);
+         HZGVsRecoSubJetDR[FIndex][CIndex]->Fill(RecoSubJetDR, MSDJet.JetSym[i]);
+         HSDMassVsRecoSubJetDR[FIndex][CIndex]->Fill(RecoSubJetDR, MSDJet.JetM[i]);
+         if(RecoSubJetDR > 0.1)
+         {
+            HZGVsRecoJetPT[FIndex][CIndex]->Fill(MSDJet.JetPT[i], MSDJet.JetSym[i]);
+            HSDMassVsRecoJetPT[FIndex][CIndex]->Fill(MSDJet.JetPT[i], MSDJet.JetM[i]);
+         }
       }
    }
 
-   HLightNVsGenJetPTRecoSubJetDR.Write();
-   HGluonNVsGenJetPTRecoSubJetDR.Write();
-   HCharmNVsGenJetPTRecoSubJetDR.Write();
-   HHeavyNVsGenJetPTRecoSubJetDR.Write();
-   PLightSDMassVsGenJetPTRecoSubJetDR.Write();
-   PGluonSDMassVsGenJetPTRecoSubJetDR.Write();
-   PCharmSDMassVsGenJetPTRecoSubJetDR.Write();
-   PHeavySDMassVsGenJetPTRecoSubJetDR.Write();
-   
+   for(int i = 0; i < 4; i++)
+   {
+      for(int j = 0; j < 5; j++)
+      {
+         HNVsGenJetPTRecoSubJetDR[i][j]->Write();
+         PSDMassVsGenJetPTRecoSubJetDR[i][j]->Write();
+         PSDMassVsRecoJetPTRecoSubJetDR[i][j]->Write();
+         HZGVsRecoSubJetDR[i][j]->Write();
+         HZGVsRecoJetPT[i][j]->Write();
+         HSDMassVsRecoSubJetDR[i][j]->Write();
+         HSDMassVsRecoJetPT[i][j]->Write();
+         
+         delete HNVsGenJetPTRecoSubJetDR[i][j];
+         delete PSDMassVsGenJetPTRecoSubJetDR[i][j];
+         delete PSDMassVsRecoJetPTRecoSubJetDR[i][j];
+         delete HZGVsRecoSubJetDR[i][j];
+         delete HZGVsRecoJetPT[i][j];
+         delete HSDMassVsRecoSubJetDR[i][j];
+         delete HSDMassVsRecoJetPT[i][j];
+      }
+   }
+
    OutputFile.Close();
 
    InputFile.Close();

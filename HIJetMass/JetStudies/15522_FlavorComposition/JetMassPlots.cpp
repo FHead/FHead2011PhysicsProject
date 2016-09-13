@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
    string CBin[5] = {"CBin0", "CBin1", "CBin2", "CBin3", "CBin4"};
    double CBinMin[6] = {0.0, 0.1, 0.3, 0.5, 0.8, 1.0};
 
+   TH1D HN("HN", "Raw event count", 1, 0, 1);
+
    TH2D *HNVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};
    TProfile2D *PSDMassVsGenJetPTRecoSubJetDR[4][5] = {{NULL}};
    TProfile2D *PSDMassVsRecoJetPTRecoSubJetDR[4][5] = {{NULL}};
@@ -107,6 +109,8 @@ int main(int argc, char *argv[])
    int EntryCount = MHiEvent.Tree->GetEntries();
    for(int iEntry = 0; iEntry < EntryCount; iEntry++)
    {
+      HN.Fill(0);
+
       MHiEvent.GetEntry(iEntry);
       MJet.GetEntry(iEntry);
       MSDJet.GetEntry(iEntry);
@@ -160,6 +164,8 @@ int main(int argc, char *argv[])
          }
       }
    }
+
+   HN.Write();
 
    for(int i = 0; i < 4; i++)
    {

@@ -10,6 +10,7 @@ using namespace std;
 #include "TProfile2D.h"
 #include "TLatex.h"
 #include "TLegend.h"
+#include "TGraph.h"
 
 #include "SetStyle.h"
 
@@ -18,6 +19,8 @@ using namespace std;
 #define PROJECTION_NONE 0
 #define PROJECTION_X 1
 #define PROJECTION_Y 2
+#define PROFILE_X 3
+#define PROFILE_Y 4
 
 int main(int argc, char *argv[]);
 void NormalizeHistogram(TH1D *H);
@@ -29,6 +32,9 @@ void ExportHistogram2DWithProfile(TFile &F, string Name, string PName, string Ou
 void Stack1DHistograms(TFile &F, TH2D &HWorld, vector<string> Names, vector<string> Labels,
    string OutputBase, string Tag,
    int Projection, int ProjectionMin = -1, int ProjectionMax = -1, bool LogY = false);
+void OverlayMeanRMS(TFile &F, TH2D &HWorldMean, TH2D &HWorldRMS, vector<string> Names, vector<string> Labels,
+   string OutputBase, string Tag,
+   int Projection, int ProjectionMin, int ProjectionMax, bool LogY);
 
 int main(int argc, char *argv[])
 {
@@ -158,6 +164,15 @@ int main(int argc, char *argv[])
          Stack1DHistograms(F, HWorldZGPTLinear, Names, FBin, OutputBase + "_ZG_" + CBin[i] + "_" + PTBin[k] + "_Linear",
             OutputBase, PROJECTION_Y, PTBinIndex[k], PTBinIndex[k+1], false);
       }
+      
+      Names.clear();
+      for(int j = 0; j < (int)FBin.size(); j++)
+         Names.push_back("P" + FBin[j] + "SDMassVsRecoJetPTRecoSubJetDR_" + CBin[i]);
+
+      TH2D HWorldSDMassMean("HWorldSDMassMean", ";Jet PT;SD Mass Mean", 100, 80, 500, 100, 0, 100);
+      TH2D HWorldSDMassRMS("HWorldSDMassRMS", ";Jet PT;SD Mass RMS", 100, 80, 500, 100, 0, 40);
+      OverlayMeanRMS(F, HWorldSDMassMean, HWorldSDMassRMS, Names, FBin, OutputBase + "_SDMassPT_" + CBin[i],
+         OutputBase, PROFILE_X, 21, 100, false);
    }
 
    TCanvas Canvas;
@@ -384,5 +399,121 @@ void Stack1DHistograms(TFile &F, TH2D &HWorld, vector<string> Names, vector<stri
    for(int i = 0; i < (int)H.size(); i++)
       if(H[i] != NULL)
          delete H[i];
+}
+
+void OverlayMeanRMS(TFile &F, TH2D &HWorldMean, TH2D &HWorldRMS, vector<string> Names, vector<string> Labels,
+   string OutputBase, string Tag,
+   int Projection, int ProjectionMin, int ProjectionMax, bool LogY)
+{
+   int Color[] = {kBlack, kRed, kBlue, kGreen - 3, kYellow, kCyan - 3};
+
+   int N = Names.size();
+   if(Labels.size() < N)
+      Labels.resize(N);
+
+   vector<TProfile *> H(N);
+   for(int i = 0; i < N; i++)
+   {
+      TObject *Object = (TObject *)F.Get(Names[i].c_str());
+      if(Object == NULL)
+      {
+         cerr << "Histogram " << Names[i] << " not found!" << endl;
+         return;
+      }
+      else
+      {
+         if(Projection == PROJECTION_NONE)
+            H[i] = (TProfile *)Object->Clone(Form("H%d", i));
+         else if(Projection == PROFILE_X)
+            H[i] = ((TH2 *)Object)->ProfileX(Form("H%d", i), ProjectionMin, ProjectionMax);
+         else if(Projection == PROFILE_Y)
+            H[i] = ((TH2 *)Object)->ProfileY(Form("H%d", i), ProjectionMin, ProjectionMax);
+         else
+         {
+            cerr << "Bad projection setting!" << endl;
+            return;
+         }
+      }
+   }
+
+   TCanvas C;
+   
+   HWorldMean.SetStats(0);
+   HWorldRMS.SetStats(0);
+
+   vector<TGraph *> GMean(H.size()), GRMS(H.size());
+
+   for(int i = 0; i < (int)H.size(); i++)
+   {
+      GMean[i] = new TGraph;
+      GRMS[i] = new TGraph;
+
+      H[i]->Rebin(4);
+      H[i]->SetErrorOption("S");
+
+      for(int j = 1; j <= H[i]->GetNbinsX(); j++)
+      {
+         GMean[i]->SetPoint(j - 1, H[i]->GetBinCenter(j), H[i]->GetBinContent(j));
+         GRMS[i]->SetPoint(j - 1, H[i]->GetBinCenter(j), H[i]->GetBinError(j));
+      }
+   }
+
+   for(int i = 0; i < (int)H.size(); i++)
+   {
+      GMean[i]->SetLineWidth(2);
+      GMean[i]->SetLineColor(Color[i]);
+      GMean[i]->SetMarkerColor(Color[i]);
+      GRMS[i]->SetLineWidth(2);
+      GRMS[i]->SetLineColor(Color[i]);
+      GRMS[i]->SetMarkerColor(Color[i]);
+   }
+
+   TLatex Latex;
+   Latex.SetNDC();
+   Latex.SetTextFont(42);
+   Latex.SetTextSize(0.02);
+
+   TLegend Legend(0.2, 0.8, 0.5, 0.5);
+   Legend.SetFillStyle(0);
+   Legend.SetTextFont(42);
+   Legend.SetTextSize(0.035);
+   Legend.SetBorderSize(0);
+   for(int i = 0; i < (int)H.size(); i++)
+      Legend.AddEntry(GMean[i], Labels[i].c_str(), "lp");
+
+   HWorldMean.Draw();
+   for(int i = 0; i < (int)H.size(); i++)
+      GMean[i]->Draw("pl");
+   Legend.Draw();
+   HWorldMean.Draw("hist same");
+   Latex.DrawLatex(0.10, 0.92, Tag.c_str());
+   
+   C.SetLogy(LogY);
+
+   C.SaveAs(Form("%s_Mean.png", OutputBase.c_str()));
+   C.SaveAs(Form("%s_Mean.C", OutputBase.c_str()));
+   C.SaveAs(Form("%s_Mean.eps", OutputBase.c_str()));
+   C.SaveAs(Form("%s_Mean.pdf", OutputBase.c_str()));
+
+   HWorldRMS.Draw();
+   for(int i = 0; i < (int)H.size(); i++)
+      GRMS[i]->Draw("pl");
+   Legend.Draw();
+   HWorldRMS.Draw("hist same");
+   Latex.DrawLatex(0.10, 0.92, Tag.c_str());
+   
+   C.SetLogy(LogY);
+
+   C.SaveAs(Form("%s_RMS.png", OutputBase.c_str()));
+   C.SaveAs(Form("%s_RMS.C", OutputBase.c_str()));
+   C.SaveAs(Form("%s_RMS.eps", OutputBase.c_str()));
+   C.SaveAs(Form("%s_RMS.pdf", OutputBase.c_str()));
+
+   for(int i = 0; i < (int)H.size(); i++)
+   {
+      if(H[i] != NULL)       delete H[i];
+      if(GMean[i] != NULL)   delete GMean[i];
+      if(GRMS[i] != NULL)    delete GRMS[i];
+   }
 }
 

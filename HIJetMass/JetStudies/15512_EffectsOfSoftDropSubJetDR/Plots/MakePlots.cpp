@@ -8,6 +8,7 @@ using namespace std;
 #include "TProfile.h"
 #include "TH2D.h"
 #include "TProfile2D.h"
+#include "TGraph.h"
 #include "TLatex.h"
 
 #include "SetStyle.h"
@@ -151,6 +152,34 @@ int main(int argc, char *argv[])
       OutputBase + "_LeadingSubJetPTRatioVsSubleadingSubJetPTRatio_LargeSubjetDRMax_DR03", OutputBase, "colz");
    ExportHistogram2D(F, "HLeadingSubJetPTRatioVsSubleadingSubJetPTRatio_LargeSubjetDRMax_DR04",
       OutputBase + "_LeadingSubJetPTRatioVsSubleadingSubJetPTRatio_LargeSubjetDRMax_DR04", OutputBase, "colz");
+
+   TProfile *P = (TProfile *)F.Get("PSDMassRatioVsSubJetDR_SmallSubjetDRMax");
+   if(P != NULL)
+   {
+      P->SetErrorOption("S");
+      TGraph G;
+      for(int i = 1; i <= P->GetNbinsX(); i++)
+         G.SetPoint(i - 1, P->GetBinCenter(i), P->GetBinError(i));
+
+      TH2D HWorld("HWorld", ";Sub-jet DR;RMS on SD Mass response (reco / gen)", 100, 0, 0.5, 100, 0, 0.5);
+      HWorld.SetStats(0);
+
+      TCanvas C;
+
+      HWorld.Draw();
+      G.Draw("p");
+      
+      TLatex Latex;
+      Latex.SetNDC();
+      Latex.SetTextFont(42);
+      Latex.SetTextSize(0.02);
+      Latex.DrawLatex(0.10, 0.92, OutputBase.c_str());
+
+      C.SaveAs((OutputBase + "_SDMassRatioRMSVsSubJetDR.png").c_str());
+      C.SaveAs((OutputBase + "_SDMassRatioRMSVsSubJetDR.C").c_str());
+      C.SaveAs((OutputBase + "_SDMassRatioRMSVsSubJetDR.eps").c_str());
+      C.SaveAs((OutputBase + "_SDMassRatioRMSVsSubJetDR.pdf").c_str());
+   }
 
    F.Close();
 

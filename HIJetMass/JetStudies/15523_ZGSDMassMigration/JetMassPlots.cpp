@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
    JetTreeMessenger MJet(InputFile, JetTreeName);
    JetTreeMessenger MSDJet(InputFile, SoftDropJetTreeName);
    SkimTreeMessenger MSkim(InputFile);
+   TriggerTreeMessenger MTrigger(InputFile);
 
    if(MHiEvent.Tree == NULL)
       return -1;
@@ -61,6 +62,7 @@ int main(int argc, char *argv[])
    TH1D HPTHatAll("HPTHatAll", "PTHat", 100, 0, 500);
    TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 500);
 
+   TH2D *HSDDepthRecoSubJetDR[5] = {NULL};
    TH2D *HSDMassRecoJetPT[5] = {NULL};
    TProfile *PSDMassRecoJetPT[5] = {NULL};
    TH2D *HZGRecoJetPT[5] = {NULL};
@@ -71,9 +73,14 @@ int main(int argc, char *argv[])
    TProfile *PSDJetPTRecoJetPT[5] = {NULL};
    TH2D *HSDDepthRecoJetPT[5] = {NULL};
    TProfile *PSDDepthRecoJetPT[5] = {NULL};
+   TH2D *HSDDepthGenJetPT[5] = {NULL};
+   TProfile *PSDDepthGenJetPT[5] = {NULL};
 
    for(int i = 0; i < 5; i++)
    {
+      HSDDepthRecoSubJetDR[i] = new TH2D(Form("HSDDepthRecoSubJetDR_%s", CBin[i].c_str()),
+         Form("Centrality %.1f-%.1f;Reco Sub Jet DR;SD Depth", CBinMin[i], CBinMin[i+1]),
+         100, 0, 0.5, 12, 0, 12);
       HSDMassRecoJetPT[i] = new TH2D(Form("HSDMassRecoJetPT_%s", CBin[i].c_str()),
          Form("Centrality %.1f-%.1f;Reco Jet PT;SD Mass", CBinMin[i], CBinMin[i+1]),
          100, 80, 500, 100, 0, 80);
@@ -104,6 +111,12 @@ int main(int argc, char *argv[])
       PSDDepthRecoJetPT[i] = new TProfile(Form("PSDDepthRecoJetPT_%s", CBin[i].c_str()),
          Form("Centrality %.1f-%.1f;Reco Jet PT;Groomed Depth", CBinMin[i], CBinMin[i+1]),
          100, 80, 500);
+      HSDDepthGenJetPT[i] = new TH2D(Form("HSDDepthGenJetPT_%s", CBin[i].c_str()),
+         Form("Centrality %.1f-%.1f;Gen Jet PT;Groomed Depth", CBinMin[i], CBinMin[i+1]),
+         100, 80, 500, 12, 0, 12);
+      PSDDepthGenJetPT[i] = new TProfile(Form("PSDDepthGenJetPT_%s", CBin[i].c_str()),
+         Form("Centrality %.1f-%.1f;Gen Jet PT;Groomed Depth", CBinMin[i], CBinMin[i+1]),
+         100, 80, 500);
    }
 
    int EntryCount = MHiEvent.Tree->GetEntries();
@@ -115,15 +128,21 @@ int main(int argc, char *argv[])
       MJet.GetEntry(iEntry);
       MSDJet.GetEntry(iEntry);
       MSkim.GetEntry(iEntry);
+      MTrigger.GetEntry(iEntry);
 
       HPTHatAll.Fill(MSDJet.PTHat);
       if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
          continue;
-      HPTHatSelected.Fill(MSDJet.PTHat);
 
       if(IsData == true && MSkim.PassBasicFilter() == false)
          continue;
+      if(IsData == true && IsPP == false && MTrigger.CheckTrigger("HLT_HIPuAK4CaloJet80_Eta5p1_v1") != 1)
+         continue;
+      if(IsData == true && IsPP == true && MTrigger.CheckTrigger("HLT_AK4PFJet80_Eta5p1_v1") != 1)
+         continue;
 
+      HPTHatSelected.Fill(MSDJet.PTHat);
+      
       double Centrality = GetCentrality(MHiEvent.hiBin);
 
       for(int i = 0; i < MSDJet.JetCount; i++)
@@ -139,17 +158,23 @@ int main(int argc, char *argv[])
          double RecoSubJetDR = CalculateDR((*MSDJet.JetSubJetEta)[i][0], (*MSDJet.JetSubJetPhi)[i][0],
             (*MSDJet.JetSubJetEta)[i][1], (*MSDJet.JetSubJetPhi)[i][1]);
 
-         double ZG = MSDJet.JetSym[i];
+         double SubJetPT1 = (*MSDJet.JetSubJetPT)[i][0];
+         double SubJetPT2 = (*MSDJet.JetSubJetPT)[i][1];
+
+         double ZG = min(SubJetPT1, SubJetPT2) / (SubJetPT1 + SubJetPT2);
          double SDMass = MSDJet.JetM[i];
          double RecoJetPT = MSDJet.JetPT[i];
-
-         if(RecoSubJetDR < 0.1)
-            continue;
+         double GenJetPT = MSDJet.RefPT[i];
 
          int CIndex = 0;
          for(int i = 0; i < 5; i++)
             if(Centrality >= CBinMin[i] && Centrality < CBinMin[i+1])
                CIndex = i;
+
+         HSDDepthRecoSubJetDR[CIndex]->Fill(RecoSubJetDR, MSDJet.JetDroppedBranches[i]);
+
+         if(RecoSubJetDR < 0.1)
+            continue;
 
          HSDMassRecoJetPT[CIndex]->Fill(RecoJetPT, SDMass);
          PSDMassRecoJetPT[CIndex]->Fill(RecoJetPT, SDMass);
@@ -161,8 +186,13 @@ int main(int argc, char *argv[])
             (*MSDJet.JetSubJetPT)[i][0] + (*MSDJet.JetSubJetPT)[i][1]);
          PSDJetPTRecoJetPT[CIndex]->Fill(RecoJetPT,
             (*MSDJet.JetSubJetPT)[i][0] + (*MSDJet.JetSubJetPT)[i][1]);
-         HSDDepthRecoJetPT[CIndex]->Fill(RecoJetPT, MSDJet.JetDroppedBranches[i]);
-         PSDDepthRecoJetPT[CIndex]->Fill(RecoJetPT, MSDJet.JetDroppedBranches[i]);
+         if(MSDJet.JetDroppedBranches[i] >= 0)
+         {
+            HSDDepthRecoJetPT[CIndex]->Fill(RecoJetPT, MSDJet.JetDroppedBranches[i]);
+            PSDDepthRecoJetPT[CIndex]->Fill(RecoJetPT, MSDJet.JetDroppedBranches[i]);
+            HSDDepthGenJetPT[CIndex]->Fill(GenJetPT, MSDJet.JetDroppedBranches[i]);
+            PSDDepthGenJetPT[CIndex]->Fill(GenJetPT, MSDJet.JetDroppedBranches[i]);
+         }
       }
    }
 
@@ -172,27 +202,33 @@ int main(int argc, char *argv[])
 
    for(int i = 0; i < 5; i++)
    {
+      if(HSDDepthRecoSubJetDR[i] != NULL)             HSDDepthRecoSubJetDR[i]->Write();
       if(HSDMassRecoJetPT[i] != NULL)             HSDMassRecoJetPT[i]->Write();
       if(PSDMassRecoJetPT[i] != NULL)             PSDMassRecoJetPT[i]->Write();
       if(HZGRecoJetPT[i] != NULL)                 HZGRecoJetPT[i]->Write();
       if(PZGRecoJetPT[i] != NULL)                 PZGRecoJetPT[i]->Write();
       if(HSDMassZG[i] != NULL)                    HSDMassZG[i]->Write();
       if(HSDMassOverPTZG[i] != NULL)              HSDMassOverPTZG[i]->Write();
-      if(HSDJetPTRecoJetPT[i] != NULL)   HSDJetPTRecoJetPT[i]->Write();
-      if(PSDJetPTRecoJetPT[i] != NULL)   PSDJetPTRecoJetPT[i]->Write();
-      if(HSDDepthRecoJetPT[i] != NULL)       HSDDepthRecoJetPT[i]->Write();
-      if(PSDDepthRecoJetPT[i] != NULL)       PSDDepthRecoJetPT[i]->Write();
+      if(HSDJetPTRecoJetPT[i] != NULL)            HSDJetPTRecoJetPT[i]->Write();
+      if(PSDJetPTRecoJetPT[i] != NULL)            PSDJetPTRecoJetPT[i]->Write();
+      if(HSDDepthRecoJetPT[i] != NULL)            HSDDepthRecoJetPT[i]->Write();
+      if(PSDDepthRecoJetPT[i] != NULL)            PSDDepthRecoJetPT[i]->Write();
+      if(HSDDepthGenJetPT[i] != NULL)             HSDDepthGenJetPT[i]->Write();
+      if(PSDDepthGenJetPT[i] != NULL)             PSDDepthGenJetPT[i]->Write();
       
+      if(HSDDepthRecoSubJetDR[i] != NULL)             delete HSDDepthRecoSubJetDR[i];
       if(HSDMassRecoJetPT[i] != NULL)             delete HSDMassRecoJetPT[i];
       if(PSDMassRecoJetPT[i] != NULL)             delete PSDMassRecoJetPT[i];
       if(HZGRecoJetPT[i] != NULL)                 delete HZGRecoJetPT[i];
       if(PZGRecoJetPT[i] != NULL)                 delete PZGRecoJetPT[i];
       if(HSDMassZG[i] != NULL)                    delete HSDMassZG[i];
       if(HSDMassOverPTZG[i] != NULL)              delete HSDMassOverPTZG[i];
-      if(HSDJetPTRecoJetPT[i] != NULL)   delete HSDJetPTRecoJetPT[i];
-      if(PSDJetPTRecoJetPT[i] != NULL)   delete PSDJetPTRecoJetPT[i];
-      if(HSDDepthRecoJetPT[i] != NULL)       delete HSDDepthRecoJetPT[i];
-      if(PSDDepthRecoJetPT[i] != NULL)       delete PSDDepthRecoJetPT[i];
+      if(HSDJetPTRecoJetPT[i] != NULL)            delete HSDJetPTRecoJetPT[i];
+      if(PSDJetPTRecoJetPT[i] != NULL)            delete PSDJetPTRecoJetPT[i];
+      if(HSDDepthRecoJetPT[i] != NULL)            delete HSDDepthRecoJetPT[i];
+      if(PSDDepthRecoJetPT[i] != NULL)            delete PSDDepthRecoJetPT[i];
+      if(HSDDepthGenJetPT[i] != NULL)             delete HSDDepthGenJetPT[i];
+      if(PSDDepthGenJetPT[i] != NULL)             delete PSDDepthGenJetPT[i];
    }
 
    OutputFile.Close();

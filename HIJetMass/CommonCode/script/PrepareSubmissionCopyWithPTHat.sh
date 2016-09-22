@@ -76,9 +76,8 @@ do
       continue
    fi
 
-
-   PTHatMin=`grep $Tag $SamplePTHat | awk '{print $2}'`
-   PTHatMax=`grep $Tag $SamplePTHat | awk '{print $3}'`
+   PTHatMin=`grep "^$Tag " $SamplePTHat | awk '{print $2}'`
+   PTHatMax=`grep "^$Tag " $SamplePTHat | awk '{print $3}'`
    
    if [ "$SamplePTHat" = "NONE" ]; then
       PTHatMin=
@@ -91,9 +90,9 @@ do
    echo
 
    FileCount=0
-   for i in `ls $EOSBase/$Location | grep root$`
+   for i in $EOSBase/$Location/*root
    do
-      echo "   " $Executable $EOSBase/$Location/$i Result/${Tag}_${FileCount}.root $Tag $PTHatMin $PTHatMax "$@"
+      echo "   " $Executable $i Result/${Tag}_${FileCount}.root $Tag $PTHatMin $PTHatMax "$@"
       FileCount=$((FileCount+1))
    done
 
@@ -105,10 +104,11 @@ do
    echo
 
    FileCount=0
-   for i in `ls $EOSBase/$Location | grep root$`
+   for i in $EOSBase/$Location/*root
    do
+      i=`echo $i | sed "s#$EOSBase/##g"`
       echo "   sed \"s#__EXECUTABLE__#$PWD/$Executable#g\" < BatchTemplate.submit \\"
-      echo "      | sed \"s#__INPUT__#$Location/$i#g\" \\"
+      echo "      | sed \"s#__INPUT__#$i#g\" \\"
       echo "      | sed \"s#__OUTPUT__#$PWD/Result/${Tag}_${FileCount}.root#g\" \\"
       echo "      | sed \"s#__PTHATMIN__#$PTHatMin#g\" \\"
       echo "      | sed \"s#__PTHATMAX__#$PTHatMax#g\" \\"
@@ -122,7 +122,7 @@ do
    echo "# Submit$Tag" >> $TempFile2
    echo
 
-done < $SampleLocation | tee RunAll.sh
+done < $SampleLocation > RunAll.sh
 
 cat RunAll.sh $TempFile1 $TempFile2 > Total$TempFile
 rm -f $TempFile1 $TempFile2

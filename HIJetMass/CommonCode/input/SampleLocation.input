@@ -8,10 +8,13 @@ PP6Dijet170      /store/cmst3/group/hintt/mverweij/jetsPbPb/Run2/MC/PP/Pythia6_D
 PP6Dijet220      /store/cmst3/group/hintt/mverweij/jetsPbPb/Run2/MC/PP/Pythia6_Dijet220_pp502_TuneCUETP8M1/local/v1/
 PP6Dijet280      /store/cmst3/group/hintt/mverweij/jetsPbPb/Run2/MC/PP/Pythia6_Dijet280_pp502_TuneCUETP8M1/local/v1/
 HerwigDijet100   NONE
-AA8Dijet120      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia8_Dijet120_pp_TuneCUETP8M1_Hydjet_Min_Bias_5020GeV/crab_HiForestDijet120V3/160615_105628/merge
+AA8Dijet50       /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia8_Dijet50_pp_TuneCUETP8M1_Hydjet_Min_Bias_5020GeV/crab_HiForestDijet50V4/160808_220915/0000/
+AA8Dijet80       /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia8_Dijet80_pp_TuneCUETP8M1_Hydjet_Min_Bias_5020GeV/crab_HiForestDijet80V4/160808_213913/0000/
 AA8Dijet170      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia8_Dijet170_pp_TuneCUETP8M1_Hydjet_Min_Bias_5020GeV/crab_HiForestDijet170V4/160808_221719/0000
 AA8Dijet220      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia8_Dijet220_pp_TuneCUETP8M1_Hydjet_Min_Bias_5020GeV/crab_HiForestDijet220V4/160808_221830/0000
 AA8Dijet280      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia8_Dijet280_pp_TuneCUETP8M1_Hydjet_Min_Bias_5020GeV/crab_HiForestDijet280V4/160808_221915/0000
+AA6Dijet80       /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia6_Dijet80_pp502_Hydjet_MB/crab_HiForestDijet80P6V1/160628_222604/*/
+AA6Dijet100      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia6_Dijet100_pp502_Hydjet_MB/crab_HiForestDijet100P6V1/160628_222511/*/
 AA6Dijet120      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia6_Dijet120_pp502_Hydjet_MB/crab_HiForestDijet120P6V2/160708_164730/merge
 AA6Dijet170      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia6_Dijet170_pp502_Hydjet_MB/crab_HiForestDijet170P6V2/160708_164755/merge
 AA6Dijet220      /store/group/cmst3/group/hintt/mverweij/CS/MC/PbPb/Pythia6_Dijet220_pp502_Hydjet_MB/crab_HiForestDijet220P6V2/160708_164816/merge

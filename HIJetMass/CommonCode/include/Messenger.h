@@ -13,6 +13,8 @@ class SkimTreeMessenger;
 class JetTreeMessenger;
 class GenParticleTreeMessenger;
 class PFTreeMessenger;
+class TriggerTreeMessenger;
+class HLTBitTreeMessenger;
 
 class HiEventTreeMessenger
 {
@@ -20,7 +22,9 @@ public:
    TTree *Tree;
    float hiHF;
    int hiBin;
-   unsigned int run;
+   unsigned int Run;
+   unsigned long long Event;
+   unsigned int Lumi;
 public:
    HiEventTreeMessenger(TFile &File);
    HiEventTreeMessenger(TTree *HiEventTree);
@@ -154,6 +158,27 @@ public:
    bool GetEntry(int iEntry);
 };
 
+class TriggerTreeMessenger
+{
+public:
+   TTree *Tree;
+   int Run;
+   unsigned long long Event;
+   int Lumi;
+   std::vector<std::string> Name;
+   std::vector<int> Decision;
+   std::vector<bool> Exist;
+public:
+   TriggerTreeMessenger(TFile &File, std::string TreeName = "hltanalysis/HltTree");
+   TriggerTreeMessenger(TTree *TriggerTree);
+   bool Initialize(TTree *TriggerTree);
+   bool Initialize();
+   bool GetEntry(int iEntry);
+   void FillTriggerNames();
+   int FindIndex(std::string Trigger);
+   int CheckTrigger(std::string Trigger);
+   int CheckTrigger(int Index);
+};
 
 
 

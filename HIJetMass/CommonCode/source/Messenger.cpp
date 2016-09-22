@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -40,8 +41,12 @@ bool HiEventTreeMessenger::Initialize()
    else                         hiHF = 0;
    if(Tree->GetBranch("hiBin")) Tree->SetBranchAddress("hiBin", &hiBin);
    else                         hiBin = 0;
-   if(Tree->GetBranch("run"))   Tree->SetBranchAddress("run", &run);
-   else                         run = 1;
+   if(Tree->GetBranch("run"))   Tree->SetBranchAddress("run", &Run);
+   else                         Run = 1;
+   if(Tree->GetBranch("evt"))   Tree->SetBranchAddress("evt", &Event);
+   else                         Event = 1;
+   if(Tree->GetBranch("lumi"))  Tree->SetBranchAddress("lumi", &Lumi);
+   else                         Lumi = 1;
    
    return true;
 }
@@ -424,6 +429,123 @@ bool PFTreeMessenger::GetEntry(int iEntry)
    return true;
 }
 
+TriggerTreeMessenger::TriggerTreeMessenger(TFile &File, std::string TreeName)
+{
+   Tree = (TTree *)File.Get(TreeName.c_str());
+   Initialize();
+}
+
+TriggerTreeMessenger::TriggerTreeMessenger(TTree *TriggerTree)
+{
+   Initialize(TriggerTree);
+}
+
+bool TriggerTreeMessenger::Initialize(TTree *TriggerTree)
+{
+   Tree = TriggerTree;
+   return Initialize();
+}
+
+bool TriggerTreeMessenger::Initialize()
+{
+   if(Tree == NULL)
+      return false;
+
+   if(Tree->GetBranch("Run"))   Tree->SetBranchAddress("Run", &Run);
+   else                         Run = 0;
+   if(Tree->GetBranch("LumiBlock")) Tree->SetBranchAddress("LumiBlock", &Lumi);
+   else                         Lumi = 0;
+   if(Tree->GetBranch("Event")) Tree->SetBranchAddress("Event", &Event);
+   else                         Event = 0;
+
+   FillTriggerNames();
+
+   for(int i = 0; i < (int)Name.size(); i++)
+   {
+      if(Tree->GetBranch(Name[i].c_str()))
+      {
+         Tree->SetBranchAddress(Name[i].c_str(), &Decision[i]);
+         Exist[i] = true;
+      }
+      else
+      {
+         Decision[i] = false;
+         Exist[i] = false;
+      }
+   }
+
+   return true;
+}
+
+bool TriggerTreeMessenger::GetEntry(int iEntry)
+{
+   if(Tree == NULL)
+      return false;
+
+   Tree->GetEntry(iEntry);
+   return true;
+}
+   
+void TriggerTreeMessenger::FillTriggerNames()
+{
+   Name.clear();
+   Decision.clear();
+   
+   // AA trigger
+   Name.push_back("HLT_HIPuAK4CaloJet100_Eta5p1_v1");
+   Name.push_back("HLT_HIPuAK4CaloJet80_Eta5p1_v1");
+   Name.push_back("HLT_HIPuAK4CaloJet60_Eta5p1_v1");
+   Name.push_back("HLT_HIPuAK4CaloJet60_Eta5p1_v1");
+   Name.push_back("HLT_HIPuAK4CaloJet40_Eta5p1_v1");
+
+   Name.push_back("HLT_PAAK4PFJet40_Eta5p1v2");
+   Name.push_back("HLT_PAAK4PFJet60_Eta5p1_v2");
+   Name.push_back("HLT_PAAK4PFJet80_Eta5p1_v2");
+
+   // pp trigger
+   Name.push_back("HLT_AK4PFJet80_Eta5p1_v1");
+
+   // L1 pass through
+   Name.push_back("HLT_L1SingleJet8_v1_BptxAND_v1");
+   Name.push_back("HLT_L1SingleJet12_v1_BptxAND_v1");
+   Name.push_back("HLT_L1SingleJet16_v1");
+   Name.push_back("HLT_L1SingleJet20_v1");
+   Name.push_back("HLT_L1SingleJet35_v1");
+   Name.push_back("HLT_L1SingleJet40_v1");
+   Name.push_back("HLT_L1SingleJet44_v1");
+   Name.push_back("HLT_L1SingleJet60_v1");
+
+   std::sort(Name.begin(), Name.end());
+   Decision.resize(Name.size());
+   Exist.resize(Name.size());
+}
+
+int TriggerTreeMessenger::FindIndex(std::string Trigger)
+{
+   std::vector<std::string>::iterator iter
+      = std::lower_bound(Name.begin(), Name.end(), Trigger);
+
+   if(iter == Name.end())
+      return -1;
+   if(Trigger == *iter)
+      return (iter - Name.begin());
+   return -1;
+}
+
+int TriggerTreeMessenger::CheckTrigger(std::string Trigger)
+{
+   return CheckTrigger(FindIndex(Trigger));
+}
+   
+int TriggerTreeMessenger::CheckTrigger(int Index)
+{
+   if(Index < 0 || Index >= (int)Name.size())
+      return -1;
+   if(Exist[Index] == false)
+      return -1;
+
+   return Decision[Index];
+}
 
 
 

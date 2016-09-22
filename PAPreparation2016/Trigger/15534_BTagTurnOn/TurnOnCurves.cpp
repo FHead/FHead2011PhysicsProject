@@ -76,7 +76,17 @@ int main(int argc, char *argv[])
       Location[E] = i;
    }
 
-   TH1D HJetPT_All("HJetPT_All", ";Jet PT;", 100, 0, 300);
+   // "V1V2" = trigger V1, offline V2, and similarly for others
+   TH1D HJetBestCSVV1V1_All("HJetBestCSVV1V1_All", "Trigger V1, offline V1;Discriminant Value;", 100, 0, 1);
+   TH1D HJetBestCSVV1V1_Passed("HJetBestCSVV1V1_Passed", "Trigger V1, offline V1;Discriminant Value;", 100, 0, 1);
+   TH1D HJetBestCSVV1V2_All("HJetBestCSVV1V2_All", "Trigger V1, offline V2;Discriminant Value;", 100, 0, 1);
+   TH1D HJetBestCSVV1V2_Passed("HJetBestCSVV1V2_Passed", "Trigger V1, offline V2;Discriminant Value;", 100, 0, 1);
+   TH1D HJetBestCSVV2V1_All("HJetBestCSVV2V1_All", "Trigger V2, offline V1;Discriminant Value;", 100, 0, 1);
+   TH1D HJetBestCSVV2V1_Passed("HJetBestCSVV2V1_Passed", "Trigger V2, offline V1;Discriminant Value;", 100, 0, 1);
+   TH1D HJetBestCSVV2V2_All("HJetBestCSVV2V2_All", "Trigger V2, offline V2;Discriminant Value;", 100, 0, 1);
+   TH1D HJetBestCSVV2V2_Passed("HJetBestCSVV2V2_Passed", "Trigger V2, offline V2;Discriminant Value;", 100, 0, 1);
+   TH1D HPFJetBestCSV_All("HPFJetBestCSV_All", ";Discriminant Value;", 100, 0, 1);
+   TH1D HPFJetBestCSV_Passed("HPFJetBestCSV_Passed", ";Discriminant Value;", 100, 0, 1);
 
    EntryCount = MTrigger.Tree->GetEntries();
    for(int i = 0; i < EntryCount; i++)
@@ -93,23 +103,72 @@ int main(int argc, char *argv[])
 
       MHiEvent.GetEntry(I);
       MCaloJet.GetEntry(I);
+      MPFJet.GetEntry(I);
 
-      int LeadingIndex = -1;
+      int BestCSVV1Index = -1;
+      int BestCSVV2Index = -1;
+      int BestPFCSVIndex = -1;
+
       for(int j = 0; j < MCaloJet.JetCount; j++)
       {
          if(MCaloJet.JetEta[j] < -2.1 || MCaloJet.JetEta[j] > 2.1)
             continue;
-         if(LeadingIndex < 0 || MCaloJet.JetPT[LeadingIndex] < MCaloJet.JetPT[j])
-            LeadingIndex = j;
+         if(MCaloJet.JetPT[j] < 60)
+            continue;
+         if(BestCSVV1Index < 0 || MCaloJet.JetCSVV1P[BestCSVV1Index] < MCaloJet.JetCSVV1P[j])
+            BestCSVV1Index = j;
+         if(BestCSVV2Index < 0 || MCaloJet.JetCSVV2P[BestCSVV2Index] < MCaloJet.JetCSVV2P[j])
+            BestCSVV2Index = j;
+      }
+      for(int j = 0; j < MPFJet.JetCount; j++)
+      {
+         if(MPFJet.JetEta[j] < -2.1 || MPFJet.JetEta[j] > 2.1)
+            continue;
+         if(MPFJet.JetPT[j] < 60)
+            continue;
+         if(BestPFCSVIndex < 0 || MPFJet.JetCSVV2[BestPFCSVIndex] < MPFJet.JetCSVV2[j])
+         {
+            if(MPFJet.JetCSVV2[BestPFCSVIndex] < 1000)
+               BestPFCSVIndex = j;
+         }
       }
 
-      if(LeadingIndex < 0)
-         continue;
-
-      HJetPT_All.Fill(MCaloJet.JetPT[LeadingIndex]);
+      if(BestCSVV1Index >= 0)
+      {
+         HJetBestCSVV1V1_All.Fill(MCaloJet.JetCSVV1P[BestCSVV1Index]);
+         HJetBestCSVV2V1_All.Fill(MCaloJet.JetCSVV1P[BestCSVV1Index]);
+         if(MTrigger.CheckTrigger("HLT_PAAK4CaloBJetCSVv160_Eta2p1_v1") == 1)
+            HJetBestCSVV1V1_Passed.Fill(MCaloJet.JetCSVV1P[BestCSVV1Index]);
+         if(MTrigger.CheckTrigger("HLT_PAAK4CaloBJetCSVv260_Eta2p1_v1") == 1)
+            HJetBestCSVV2V1_Passed.Fill(MCaloJet.JetCSVV1P[BestCSVV1Index]);
+      }
+      if(BestCSVV2Index >= 0)
+      {
+         HJetBestCSVV1V2_All.Fill(MCaloJet.JetCSVV2P[BestCSVV2Index]);
+         HJetBestCSVV2V2_All.Fill(MCaloJet.JetCSVV2P[BestCSVV2Index]);
+         if(MTrigger.CheckTrigger("HLT_PAAK4CaloBJetCSVv160_Eta2p1_v1") == 1)
+            HJetBestCSVV1V2_Passed.Fill(MCaloJet.JetCSVV2P[BestCSVV2Index]);
+         if(MTrigger.CheckTrigger("HLT_PAAK4CaloBJetCSVv260_Eta2p1_v1") == 1)
+            HJetBestCSVV2V2_Passed.Fill(MCaloJet.JetCSVV2P[BestCSVV2Index]);
+      }
+      if(BestPFCSVIndex >= 0)
+      {
+         HPFJetBestCSV_All.Fill(MPFJet.JetCSVV2[BestPFCSVIndex]);
+         if(MTrigger.CheckTrigger("HLT_PAAK4PFJetCSV60_Eta2p1_v2") == 1)
+            HPFJetBestCSV_Passed.Fill(MPFJet.JetCSVV2[BestPFCSVIndex]);
+      }
    }
 
-   HJetPT_All.Write();
+   HJetBestCSVV1V1_All.Write();
+   HJetBestCSVV1V1_Passed.Write();
+   HJetBestCSVV1V2_All.Write();
+   HJetBestCSVV1V2_Passed.Write();
+   HJetBestCSVV2V1_All.Write();
+   HJetBestCSVV2V1_Passed.Write();
+   HJetBestCSVV2V2_All.Write();
+   HJetBestCSVV2V2_Passed.Write();
+   HPFJetBestCSV_All.Write();
+   HPFJetBestCSV_Passed.Write();
 
    OutputFile.Close();
 

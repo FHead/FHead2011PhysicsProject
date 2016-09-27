@@ -24,8 +24,8 @@ int main()
 {
    SetThesisStyle();
 
-   cout << 10 << " " << 10 << " " << 0.5 << " " << IntBinomial(10, 10, 0.5) << " " <<
-      JntBinomial(10, 10, 0.5) << endl;
+   cout << 9 << " " << 10 << " " << 0.5 << " " << IntBinomial(9, 10, 0.5) << " " <<
+      JntBinomial(9, 10, 0.5) << endl;
 
    return 0;
 
@@ -273,15 +273,26 @@ double IntBinomial(int x, int N, double r)
 
 double JntBinomial(int x, int N, double r)
 {
-   // This calculates (N-x+1) * \int r^x (1-r)^(N-x) dr using a recursion relationship
+   // This calculates C(N,x) * \int r^x (1-r)^(N-x) dr using a recursion relationship
 
    if(r == 0)
       return 0;
 
    if(x == 0)
-      return 1 - pow(1 - r, N + 1);
-   
-   return JntBinomial(x - 1, N ,r) * x / (N - x + 2) - pow(r, x) * pow(1 - r, N - x + 1);
+      return (1 - pow(1 - r, N + 1)) / (N + 1);
+
+   double LogExtraTerm = x * log(r) + (N - x + 1) * log(1 - r);
+   for(int i = 1; i <= N; i++)
+      LogExtraTerm = LogExtraTerm + log(i);
+   for(int i = 1; i <= x; i++)
+      LogExtraTerm = LogExtraTerm - log(i);
+   for(int i = 1; i <= N - x + 1; i++)
+      LogExtraTerm = LogExtraTerm - log(i);
+
+   if(r == 1)   // there is no extra term when r = 1
+      return JntBinomial(x - 1, N, r);
+
+   return JntBinomial(x - 1, N, r) - exp(LogExtraTerm);
 }
 
 

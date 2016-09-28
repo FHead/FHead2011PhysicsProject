@@ -71,11 +71,20 @@ int main(int argc, char *argv[])
 
    TH2D *HSubJet1Location[5][7] = {NULL};
    TH2D *HSubJet2Location[5][7] = {NULL};
-   TH2D *HSubJet1XVsGenWeightedX[5][7] = {NULL};
-   TH2D *HSubJet1PTVsGenSumPT[5][7] = {NULL};
-   TH2D *HSubJet1PTVsGenSubJet1PT[5][7] = {NULL};
-   TH2D *HSubJet2PTVsGenSubJet2PT[5][7] = {NULL};
-   TH2D *HSubJet1DPTVsSubJet2DPT[5][7] = {NULL};
+   TH2D *HSubJet1XVsGenWeightedXIn[5][7] = {NULL};
+   TH2D *HSubJet1PTVsGenSumPTIn[5][7] = {NULL};
+   TH2D *HSubJet1PTVsGenSubJet1PTIn[5][7] = {NULL};
+   TH2D *HSubJet2PTVsGenSubJet2PTIn[5][7] = {NULL};
+   TH2D *HSubJet1DPTVsSubJet2DPTIn[5][7] = {NULL};
+   TH2D *HSumPTVsGenSubJet1PTIn[5][7] = {NULL};
+   TH2D *HSubJetAverageXVsSubJetAverageYIn[5][7] = {NULL};
+   TH2D *HSubJet1XVsGenWeightedXOut[5][7] = {NULL};
+   TH2D *HSubJet1PTVsGenSumPTOut[5][7] = {NULL};
+   TH2D *HSubJet1PTVsGenSubJet1PTOut[5][7] = {NULL};
+   TH2D *HSubJet2PTVsGenSubJet2PTOut[5][7] = {NULL};
+   TH2D *HSubJet1DPTVsSubJet2DPTOut[5][7] = {NULL};
+   TH2D *HSumPTVsGenSubJet1PTOut[5][7] = {NULL};
+   TH2D *HSubJetAverageXVsSubJetAverageYOut[5][7] = {NULL};
    
    for(int i = 0; i < 5; i++)
    {
@@ -89,16 +98,34 @@ int main(int argc, char *argv[])
             Form("%s;x;y", Title), 100, -5, 5, 100, -5, 5);
          HSubJet2Location[i][j] = new TH2D(Form("HSubJet2Location%d%d", i, j),
             Form("%s;x;y", Title), 100, -5, 5, 100, -5, 5);
-         HSubJet1XVsGenWeightedX[i][j] = new TH2D(Form("HSubJet1XVsGenWeightedX%d%d", i, j),
+         HSubJet1XVsGenWeightedXIn[i][j] = new TH2D(Form("HSubJet1XVsGenWeightedXIn%d%d", i, j),
             Form("%s;subjet1 x;average gen x", Title), 100, -2, 2, 100, 0, 1);
-         HSubJet1PTVsGenSumPT[i][j] = new TH2D(Form("HSubJet1PTVsGenSumPT%d%d", i, j),
+         HSubJet1PTVsGenSumPTIn[i][j] = new TH2D(Form("HSubJet1PTVsGenSumPTIn%d%d", i, j),
             Form("%s;subjet1 PT;gen PT1 + PT2", Title), 500, 0, 500, 500, 0, 500);
-         HSubJet1PTVsGenSubJet1PT[i][j] = new TH2D(Form("HSubJet1PTVsGenSubJet1PT%d%d", i, j),
+         HSubJet1PTVsGenSubJet1PTIn[i][j] = new TH2D(Form("HSubJet1PTVsGenSubJet1PTIn%d%d", i, j),
             Form("%s;subjet1 PT;gen PT1", Title), 500, 0, 500, 500, 0, 500);
-         HSubJet2PTVsGenSubJet2PT[i][j] = new TH2D(Form("HSubJet2PTVsGenSubJet2PT%d%d", i, j),
-            Form("%s;subjet2 PT;gen PT1", Title), 500, 0, 500, 500, 0, 500);
-         HSubJet1DPTVsSubJet2DPT[i][j] = new TH2D(Form("HSubJet1DPTVsSubJet2DPT%d%d", i, j),
+         HSubJet2PTVsGenSubJet2PTIn[i][j] = new TH2D(Form("HSubJet2PTVsGenSubJet2PTIn%d%d", i, j),
+            Form("%s;subjet2 PT;gen PT2", Title), 500, 0, 500, 500, 0, 500);
+         HSubJet1DPTVsSubJet2DPTIn[i][j] = new TH2D(Form("HSubJet1DPTVsSubJet2DPTIn%d%d", i, j),
             Form("%s;subjet1 PT reco - gen;subjet2 PT reco - gen", Title), 200, -100, 100, 200, -100, 100);
+         HSumPTVsGenSubJet1PTIn[i][j] = new TH2D(Form("HSumPTVsGenSubJet1PTIn%d%d", i, j),
+            Form("%s;Sum PT;gen PT1", Title), 500, 0, 500, 500, 0, 500);
+         HSubJetAverageXVsSubJetAverageYIn[i][j] = new TH2D(Form("HSubJetAverageXVsSubJetAverageYIn%d%d", i, j),
+            Form("%s;Average x;Average y", Title), 100, -2.5, 2.5, 100, -2.5, 2.5);
+         HSubJet1XVsGenWeightedXOut[i][j] = new TH2D(Form("HSubJet1XVsGenWeightedXOut%d%d", i, j),
+            Form("%s;subjet1 x;average gen x", Title), 100, -2, 2, 100, 0, 1);
+         HSubJet1PTVsGenSumPTOut[i][j] = new TH2D(Form("HSubJet1PTVsGenSumPTOut%d%d", i, j),
+            Form("%s;subjet1 PT;gen PT1 + PT2", Title), 500, 0, 500, 500, 0, 500);
+         HSubJet1PTVsGenSubJet1PTOut[i][j] = new TH2D(Form("HSubJet1PTVsGenSubJet1PTOut%d%d", i, j),
+            Form("%s;subjet1 PT;gen PT1", Title), 500, 0, 500, 500, 0, 500);
+         HSubJet2PTVsGenSubJet2PTOut[i][j] = new TH2D(Form("HSubJet2PTVsGenSubJet2PTOut%d%d", i, j),
+            Form("%s;subjet2 PT;gen PT2", Title), 500, 0, 500, 500, 0, 500);
+         HSubJet1DPTVsSubJet2DPTOut[i][j] = new TH2D(Form("HSubJet1DPTVsSubJet2DPTOut%d%d", i, j),
+            Form("%s;subjet1 PT reco - gen;subjet2 PT reco - gen", Title), 200, -100, 100, 200, -100, 100);
+         HSumPTVsGenSubJet1PTOut[i][j] = new TH2D(Form("HSumPTVsGenSubJet1PTOut%d%d", i, j),
+            Form("%s;Sum PT;gen PT1", Title), 500, 0, 500, 500, 0, 500);
+         HSubJetAverageXVsSubJetAverageYOut[i][j] = new TH2D(Form("HSubJetAverageXVsSubJetAverageYOut%d%d", i, j),
+            Form("%s;Average x;Average y", Title), 100, -2.5, 2.5, 100, -2.5, 2.5);
       }
    }
 
@@ -148,16 +175,47 @@ int main(int argc, char *argv[])
          double GenWeightedX = (1 * HSDJet.GenSubJet1[i].GetPT() + (-1) * HSDJet.GenSubJet2[i].GetPT())
             / (HSDJet.GenSubJet1[i].GetPT() + HSDJet.GenSubJet2[i].GetPT());
 
+         bool Inside = false;
+         if((HSDJet.SubJetX2[i] - 1) * (HSDJet.SubJetX2[i] - 1) + HSDJet.SubJetY2[i] * HSDJet.SubJetY2[i] < 2 * 2)
+            Inside = true;
+         if((HSDJet.SubJetX2[i] + 1) * (HSDJet.SubJetX2[i] + 1) + HSDJet.SubJetY2[i] * HSDJet.SubJetY2[i] < 2 * 2)
+            Inside = true;
+
+         double AverageX = (HSDJet.SubJetX1[i] * HSDJet.RecoSubJet1[i].GetPT() + HSDJet.SubJetX2[i] * HSDJet.RecoSubJet2[i].GetPT()) / (HSDJet.RecoSubJet1[i].GetPT() + HSDJet.RecoSubJet2[i].GetPT());
+         double AverageY = (HSDJet.SubJetY1[i] * HSDJet.RecoSubJet1[i].GetPT() + HSDJet.SubJetY2[i] * HSDJet.RecoSubJet2[i].GetPT()) / (HSDJet.RecoSubJet1[i].GetPT() + HSDJet.RecoSubJet2[i].GetPT());
+
          HSubJet1Location[CIndex][PIndex]->Fill(HSDJet.SubJetX1[i], HSDJet.SubJetY1[i]);
          HSubJet2Location[CIndex][PIndex]->Fill(HSDJet.SubJetX2[i], HSDJet.SubJetY2[i]);
-         HSubJet1XVsGenWeightedX[CIndex][PIndex]->Fill(HSDJet.SubJetX1[i], GenWeightedX);
-         HSubJet1PTVsGenSumPT[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT(),
-            HSDJet.GenSubJet1[i].GetPT() + HSDJet.GenSubJet2[i].GetPT());
-         HSubJet1PTVsGenSubJet1PT[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT(),
-            HSDJet.GenSubJet1[i].GetPT());
-         HSubJet2PTVsGenSubJet2PT[CIndex][PIndex]->Fill(HSDJet.RecoSubJet2[i].GetPT(),
-            HSDJet.GenSubJet2[i].GetPT());
-         HSubJet1DPTVsSubJet2DPT[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT() - HSDJet.GenSubJet1[i].GetPT(), HSDJet.RecoSubJet2[i].GetPT() - HSDJet.GenSubJet2[i].GetPT());
+         if(Inside == true)
+         {
+            HSubJet1XVsGenWeightedXIn[CIndex][PIndex]->Fill(HSDJet.SubJetX1[i], GenWeightedX);
+            HSubJet1PTVsGenSumPTIn[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT(),
+               HSDJet.GenSubJet1[i].GetPT() + HSDJet.GenSubJet2[i].GetPT());
+            HSubJet1PTVsGenSubJet1PTIn[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT(),
+               HSDJet.GenSubJet1[i].GetPT());
+            HSubJet2PTVsGenSubJet2PTIn[CIndex][PIndex]->Fill(HSDJet.RecoSubJet2[i].GetPT(),
+               HSDJet.GenSubJet2[i].GetPT());
+            HSubJet1DPTVsSubJet2DPTIn[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT() - HSDJet.GenSubJet1[i].GetPT(),
+               HSDJet.RecoSubJet2[i].GetPT() - HSDJet.GenSubJet2[i].GetPT());
+            HSumPTVsGenSubJet1PTIn[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT() + HSDJet.RecoSubJet2[i].GetPT(),
+               HSDJet.GenSubJet1[i].GetPT());
+            HSubJetAverageXVsSubJetAverageYIn[CIndex][PIndex]->Fill(AverageX, AverageY);
+         }
+         else
+         {
+            HSubJet1XVsGenWeightedXOut[CIndex][PIndex]->Fill(HSDJet.SubJetX1[i], GenWeightedX);
+            HSubJet1PTVsGenSumPTOut[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT(),
+               HSDJet.GenSubJet1[i].GetPT() + HSDJet.GenSubJet2[i].GetPT());
+            HSubJet1PTVsGenSubJet1PTOut[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT(),
+               HSDJet.GenSubJet1[i].GetPT());
+            HSubJet2PTVsGenSubJet2PTOut[CIndex][PIndex]->Fill(HSDJet.RecoSubJet2[i].GetPT(),
+               HSDJet.GenSubJet2[i].GetPT());
+            HSubJet1DPTVsSubJet2DPTOut[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT() - HSDJet.GenSubJet1[i].GetPT(),
+               HSDJet.RecoSubJet2[i].GetPT() - HSDJet.GenSubJet2[i].GetPT());
+            HSumPTVsGenSubJet1PTOut[CIndex][PIndex]->Fill(HSDJet.RecoSubJet1[i].GetPT() + HSDJet.RecoSubJet2[i].GetPT(),
+               HSDJet.GenSubJet1[i].GetPT());
+            HSubJetAverageXVsSubJetAverageYOut[CIndex][PIndex]->Fill(AverageX, AverageY);
+         }
       }
    }
 
@@ -171,19 +229,37 @@ int main(int argc, char *argv[])
       {
          if(HSubJet1Location[i][j] != NULL)   HSubJet1Location[i][j]->Write();
          if(HSubJet2Location[i][j] != NULL)   HSubJet2Location[i][j]->Write();
-         if(HSubJet1XVsGenWeightedX[i][j] != NULL)   HSubJet1XVsGenWeightedX[i][j]->Write();
-         if(HSubJet1PTVsGenSumPT[i][j] != NULL)   HSubJet1PTVsGenSumPT[i][j]->Write();
-         if(HSubJet1PTVsGenSubJet1PT[i][j] != NULL)   HSubJet1PTVsGenSubJet1PT[i][j]->Write();
-         if(HSubJet2PTVsGenSubJet2PT[i][j] != NULL)   HSubJet2PTVsGenSubJet2PT[i][j]->Write();
-         if(HSubJet1DPTVsSubJet2DPT[i][j] != NULL)   HSubJet1DPTVsSubJet2DPT[i][j]->Write();
+         if(HSubJet1XVsGenWeightedXIn[i][j] != NULL)   HSubJet1XVsGenWeightedXIn[i][j]->Write();
+         if(HSubJet1PTVsGenSumPTIn[i][j] != NULL)   HSubJet1PTVsGenSumPTIn[i][j]->Write();
+         if(HSubJet1PTVsGenSubJet1PTIn[i][j] != NULL)   HSubJet1PTVsGenSubJet1PTIn[i][j]->Write();
+         if(HSubJet2PTVsGenSubJet2PTIn[i][j] != NULL)   HSubJet2PTVsGenSubJet2PTIn[i][j]->Write();
+         if(HSubJet1DPTVsSubJet2DPTIn[i][j] != NULL)   HSubJet1DPTVsSubJet2DPTIn[i][j]->Write();
+         if(HSumPTVsGenSubJet1PTIn[i][j] != NULL)   HSumPTVsGenSubJet1PTIn[i][j]->Write();
+         if(HSubJetAverageXVsSubJetAverageYIn[i][j] != NULL)   HSubJetAverageXVsSubJetAverageYIn[i][j]->Write();
+         if(HSubJet1XVsGenWeightedXOut[i][j] != NULL)   HSubJet1XVsGenWeightedXOut[i][j]->Write();
+         if(HSubJet1PTVsGenSumPTOut[i][j] != NULL)   HSubJet1PTVsGenSumPTOut[i][j]->Write();
+         if(HSubJet1PTVsGenSubJet1PTOut[i][j] != NULL)   HSubJet1PTVsGenSubJet1PTOut[i][j]->Write();
+         if(HSubJet2PTVsGenSubJet2PTOut[i][j] != NULL)   HSubJet2PTVsGenSubJet2PTOut[i][j]->Write();
+         if(HSubJet1DPTVsSubJet2DPTOut[i][j] != NULL)   HSubJet1DPTVsSubJet2DPTOut[i][j]->Write();
+         if(HSumPTVsGenSubJet1PTOut[i][j] != NULL)   HSumPTVsGenSubJet1PTOut[i][j]->Write();
+         if(HSubJetAverageXVsSubJetAverageYOut[i][j] != NULL)   HSubJetAverageXVsSubJetAverageYOut[i][j]->Write();
 
          if(HSubJet1Location[i][j] != NULL)   delete HSubJet1Location[i][j];
          if(HSubJet2Location[i][j] != NULL)   delete HSubJet2Location[i][j];
-         if(HSubJet1XVsGenWeightedX[i][j] != NULL)   delete HSubJet1XVsGenWeightedX[i][j];
-         if(HSubJet1PTVsGenSumPT[i][j] != NULL)   delete HSubJet1PTVsGenSumPT[i][j];
-         if(HSubJet1PTVsGenSubJet1PT[i][j] != NULL)   delete HSubJet1PTVsGenSubJet1PT[i][j];
-         if(HSubJet2PTVsGenSubJet2PT[i][j] != NULL)   delete HSubJet2PTVsGenSubJet2PT[i][j];
-         if(HSubJet1DPTVsSubJet2DPT[i][j] != NULL)   delete HSubJet1DPTVsSubJet2DPT[i][j];
+         if(HSubJet1XVsGenWeightedXIn[i][j] != NULL)   delete HSubJet1XVsGenWeightedXIn[i][j];
+         if(HSubJet1PTVsGenSumPTIn[i][j] != NULL)   delete HSubJet1PTVsGenSumPTIn[i][j];
+         if(HSubJet1PTVsGenSubJet1PTIn[i][j] != NULL)   delete HSubJet1PTVsGenSubJet1PTIn[i][j];
+         if(HSubJet2PTVsGenSubJet2PTIn[i][j] != NULL)   delete HSubJet2PTVsGenSubJet2PTIn[i][j];
+         if(HSubJet1DPTVsSubJet2DPTIn[i][j] != NULL)   delete HSubJet1DPTVsSubJet2DPTIn[i][j];
+         if(HSumPTVsGenSubJet1PTIn[i][j] != NULL)   delete HSumPTVsGenSubJet1PTIn[i][j];
+         if(HSubJetAverageXVsSubJetAverageYIn[i][j] != NULL)   delete HSubJetAverageXVsSubJetAverageYIn[i][j];
+         if(HSubJet1XVsGenWeightedXOut[i][j] != NULL)   delete HSubJet1XVsGenWeightedXOut[i][j];
+         if(HSubJet1PTVsGenSumPTOut[i][j] != NULL)   delete HSubJet1PTVsGenSumPTOut[i][j];
+         if(HSubJet1PTVsGenSubJet1PTOut[i][j] != NULL)   delete HSubJet1PTVsGenSubJet1PTOut[i][j];
+         if(HSubJet2PTVsGenSubJet2PTOut[i][j] != NULL)   delete HSubJet2PTVsGenSubJet2PTOut[i][j];
+         if(HSubJet1DPTVsSubJet2DPTOut[i][j] != NULL)   delete HSubJet1DPTVsSubJet2DPTOut[i][j];
+         if(HSumPTVsGenSubJet1PTOut[i][j] != NULL)   delete HSumPTVsGenSubJet1PTOut[i][j];
+         if(HSubJetAverageXVsSubJetAverageYOut[i][j] != NULL)   delete HSubJetAverageXVsSubJetAverageYOut[i][j];
       }
    }
 

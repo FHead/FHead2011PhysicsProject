@@ -121,8 +121,8 @@ int main(int argc, char *argv[])
 
       for(int iJ = 0; iJ < MSDJet.JetCount; iJ++)
       {
-         if(MSDJet.JetPT[iJ] < 80 || MSDJet.JetPT[iJ] > 500)
-            continue;
+         // if(MSDJet.JetPT[iJ] < 80 || MSDJet.JetPT[iJ] > 500)
+         //    continue;
          if(MSDJet.JetEta[iJ] < -1.3 || MSDJet.JetEta[iJ] > 1.3)
             continue;
 
@@ -245,12 +245,12 @@ int main(int argc, char *argv[])
 
             HSDMassJetPT.Fill(MSDJet.JetPT[iJ], MSDJet.JetM[iJ]);
             HNewSDMassNewJetPT.Fill(NewJetP.GetPT(), Groomed->P.GetMass());
-
-            if(HSDJet.RecoSubJetDR[iJ] > 0.1)
-               HSDMass.Fill(MSDJet.JetM[iJ]);
-            if(GetDR(Groomed->Child1->P, Groomed->Child2->P) > 0.1)
-               HNewSDMass.Fill(Groomed->P.GetMass());
          }
+            
+         if(HSDJet.RecoSubJetDR[iJ] > 0.1 && MSDJet.JetPT[iJ] > 80)
+            HSDMass.Fill(MSDJet.JetM[iJ]);
+         if(Groomed->N > 1 && GetDR(Groomed->Child1->P, Groomed->Child2->P) > 0.1 && Groomed->P.GetPT() > 80)
+            HNewSDMass.Fill(Groomed->P.GetMass());
 
          // Cleanup
          if(Nodes.size() > 0)

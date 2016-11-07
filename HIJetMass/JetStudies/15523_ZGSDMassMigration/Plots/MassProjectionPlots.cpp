@@ -54,12 +54,19 @@ int main()
          HPP8MC->SetLineColor(kRed);
          HPPData->SetLineColor(kGreen - 3);
 
-         HAA6MC->Scale(1 / HAA6MC->Integral());
-         HAA8MC->Scale(1 / HAA8MC->Integral());
-         HAAData->Scale(1 / HAAData->Integral());
-         HPP6MC->Scale(1 / HPP6MC->Integral());
-         HPP8MC->Scale(1 / HPP8MC->Integral());
-         HPPData->Scale(1 / HPPData->Integral());
+         HAA6MC->Rebin(2);
+         HAA8MC->Rebin(2);
+         HAAData->Rebin(2);
+         HPP6MC->Rebin(2);
+         HPP8MC->Rebin(2);
+         HPPData->Rebin(2);
+
+         HAA6MC->Scale(1 / HAA6MC->Integral() / 2);
+         HAA8MC->Scale(1 / HAA8MC->Integral() / 2);
+         HAAData->Scale(1 / HAAData->Integral() / 2);
+         HPP6MC->Scale(1 / HPP6MC->Integral() / 2);
+         HPP8MC->Scale(1 / HPP8MC->Integral() / 2);
+         HPPData->Scale(1 / HPPData->Integral() / 2);
 
          TH2D HWorld("HWorld",
             Form("Centrality %d-%d, Jet PT %.0f-%.0f;Jet Mass;a.u.", CBinMin[iC], CBinMin[iC+1], PTMin, PTMax),

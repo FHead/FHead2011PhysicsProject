@@ -6,6 +6,8 @@ mkdir -p Plots
 ./a.out ScaledResult/AAData_NoCrossSection.root Plots/AAData
 ./a.out ScaledResult/PPDataHighPTJet_NoCrossSection.root Plots/PPData
 
+./b.out
+
 mkdir -p RenamedPlots
 for i in `ls Plots | grep pdf | grep -v MassProjection`
 do

@@ -81,6 +81,12 @@ public:
    float JetPU[JETCOUNTMAX];
    float JetM[JETCOUNTMAX];
    float JetArea[JETCOUNTMAX];
+   float JetCSVV1[JETCOUNTMAX];
+   float JetCSVV2[JETCOUNTMAX];
+   float JetCSVV1N[JETCOUNTMAX];
+   float JetCSVV2N[JETCOUNTMAX];
+   float JetCSVV1P[JETCOUNTMAX];
+   float JetCSVV2P[JETCOUNTMAX];
    std::vector<std::vector<float> > *JetSubJetPT;
    std::vector<std::vector<float> > *JetSubJetEta;
    std::vector<std::vector<float> > *JetSubJetPhi;
@@ -111,6 +117,8 @@ public:
    float GenY[JETCOUNTMAX];
    float GenPhi[JETCOUNTMAX];
    float GenM[JETCOUNTMAX];
+   double HcalSum[JETCOUNTMAX];
+   double EcalSum[JETCOUNTMAX];
 public:
    JetTreeMessenger(TFile &File, std::string TreeName = "akCs4PFJetAnalyzer/t");
    JetTreeMessenger(TTree *JetTree);

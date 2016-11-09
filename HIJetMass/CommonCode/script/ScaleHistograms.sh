@@ -1,10 +1,34 @@
 
 WorkspaceBase=~/work/PhysicsWorkspace/HIJetMass/
-InputFolder=CombinedResult
+InputFolder=$1
 IntermediateFolder=TempResult
-OutputFolder=ScaledResult
-CrossSectionFile=$WorkspaceBase/CommonCode/input/SampleCrossSection.input
-CombinationFile=$WorkspaceBase/CommonCode/input/SampleCombination.input
+OutputFolder=$2
+CrossSectionFile=$3
+CombinationFile=$4
+
+if [ -z $1 ]
+then
+   echo "[Notice] Using default combined folder name: CombinedResult"
+   InputFolder=CombinedResult
+fi
+
+if [ -z $2 ]
+then
+   echo "[Notice] Using default scaled folder name: ScaledResult"
+   OutputFolder=ScaledResult
+fi
+
+if [ -z $3 ]
+then
+   echo "[Notice] Using default cross section"
+   CrossSectionFile=$WorkspaceBase/CommonCode/input/SampleCrossSection.input
+fi
+
+if [ -z $4 ]
+then
+   echo "[Notice] Using default sample combination scheme"
+   CombinationFile=$WorkspaceBase/CommonCode/input/SampleCombination.input
+fi
 
 mkdir -p $IntermediateFolder
 mkdir -p $OutputFolder

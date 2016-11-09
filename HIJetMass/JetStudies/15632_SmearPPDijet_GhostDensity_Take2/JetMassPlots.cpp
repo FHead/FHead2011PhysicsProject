@@ -26,10 +26,13 @@ double GetPT(double Eta, double Rho, DataHelper &DHFile);
 double PresampleFactor(double PT);
 double Evaluate(double Eta, double Rho, double PT, DataHelper &DHFile);
 double Evaluate(double PT, DataHelper &DHFile, string State);
+double EvaluateWithCache(int EtaBin, int RhoBin, double PT, DataHelper &DHFile);
 double GetEtaMin(double Eta);
 double GetEtaMax(double Eta);
+int GetEtaBin(double Eta);
 double GetRhoMin(double Rho);
 double GetRhoMax(double Rho);
+int GetRhoBin(double Rho);
 string FindState(double Eta, double Rho);
 double GetPresample();
 
@@ -37,7 +40,7 @@ int main(int argc, char *argv[])
 {
    if(argc < 7)
    {
-      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax Smear" << endl;
+      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax GhostDistance" << endl;
       return -1;
    }
 
@@ -47,7 +50,7 @@ int main(int argc, char *argv[])
    double PTHatMin = atof(argv[4]);
    double PTHatMax = atof(argv[5]);
 
-   double Smear = atof(argv[6]);
+   double GhostDistance = atof(argv[6]);
 
    DataHelper DHFile("SimpleFitParameters.dh");
 
@@ -102,7 +105,7 @@ int main(int argc, char *argv[])
    TH1D HSDMass("HSDMass", "SD Mass, DR > 0.1;SD Mass", 100, 0, 100);
    TH1D HNewSDMass("HNewSDMass", "New SD Mass, New DR > 0.1; New SD Mass", 100, 0, 100);
 
-   double Rho = 350;
+   double Rho = 300;
 
    int EntryCount = MHiEvent.Tree->GetEntries();
    ProgressBar Bar(cout, EntryCount);
@@ -153,7 +156,7 @@ int main(int argc, char *argv[])
          }
 
          // Step 2 - sprinkle underlying event contribution
-         double TotalPT = Rho * 0.4 * 0.4 * PI * DrawGaussian(1, Smear);
+         double TotalPT = Rho * 0.4 * 0.4 * PI;
          while(TotalPT > 0)
          {
             double DEta, DPhi;
@@ -183,7 +186,7 @@ int main(int argc, char *argv[])
 
          // Step 3 - do pileup subtraction algorithm
          vector<FourVector> Ghosts;
-         double Delta = 0.04;
+         double Delta = GhostDistance;
          for(double Eta = -0.4; Eta <= 0.4; Eta = Eta + Delta)
          {
             for(double Phi = -0.4; Phi <= 0.4; Phi = Phi + Delta)
@@ -314,11 +317,12 @@ int main(int argc, char *argv[])
 
 double GetPT(double Eta, double Rho, DataHelper &DHFile)
 {
-   string State = FindState(Eta, Rho);
+   int EtaBin = GetEtaBin(Eta);
+   int RhoBin = GetRhoBin(Rho);
 
-   double M1 = Evaluate(Eta, Rho, 2, DHFile) / PresampleFactor(2);
-   double M2 = Evaluate(Eta, Rho, 3, DHFile) / PresampleFactor(3);
-   double M3 = Evaluate(Eta, Rho, 4, DHFile) / PresampleFactor(4);
+   double M1 = EvaluateWithCache(EtaBin, RhoBin, 2, DHFile) / PresampleFactor(2);
+   double M2 = EvaluateWithCache(EtaBin, RhoBin, 3, DHFile) / PresampleFactor(3);
+   double M3 = EvaluateWithCache(EtaBin, RhoBin, 4, DHFile) / PresampleFactor(4);
 
    double Max = M1;
    if(Max < M2)
@@ -335,7 +339,7 @@ double GetPT(double Eta, double Rho, DataHelper &DHFile)
    {
       PT = GetPresample();
 
-      double Height = Evaluate(PT, DHFile, State) / PresampleFactor(PT);
+      double Height = EvaluateWithCache(EtaBin, RhoBin, PT, DHFile) / PresampleFactor(PT);
 
       if(DrawRandom(0, 1) < Height / Max)
          Accepted = true;
@@ -381,6 +385,53 @@ double Evaluate(double PT, DataHelper &DHFile, string State)
       * (exp(-P3 * PT) + P4 * exp(-P5 * PT) + P6 * exp(-P7 * PT) + P8 * exp(-P9 * PT));
 }
 
+double EvaluateWithCache(int EtaBin, int RhoBin, double PT, DataHelper &DHFile)
+{
+   static bool First = true;
+   static double P1[3][6];
+   static double P2[3][6];
+   static double P3[3][6];
+   static double P4[3][6];
+   static double P5[3][6];
+   static double P6[3][6];
+   static double P7[3][6];
+   static double P8[3][6];
+   static double P9[3][6];
+
+   if(First == true)
+   {
+      First = false;
+
+      double Etas[4] = {0.0, 0.5, 0.9, 1.3};
+      double Rhos[7] = {0, 50, 100, 150, 200, 250, 350};
+
+      for(int i = 0; i < 3; i++)
+      {
+         for(int j = 0; j < 6; j++)
+         {
+            double EtaMin = Etas[i];
+            double EtaMax = Etas[i+1];
+            double RhoMin = Rhos[j];
+            double RhoMax = Rhos[j+1];
+            string State = Form("SimpleFit_%.2f_%.2f_%.0f_%.0f", EtaMin, EtaMax, RhoMin, RhoMax);
+
+            P1[i][j] = DHFile[State]["P1"].GetDouble();
+            P2[i][j] = DHFile[State]["P2"].GetDouble();
+            P3[i][j] = DHFile[State]["P3"].GetDouble();
+            P4[i][j] = DHFile[State]["P4"].GetDouble();
+            P5[i][j] = DHFile[State]["P5"].GetDouble();
+            P6[i][j] = DHFile[State]["P6"].GetDouble();
+            P7[i][j] = DHFile[State]["P7"].GetDouble();
+            P8[i][j] = DHFile[State]["P8"].GetDouble();
+            P9[i][j] = DHFile[State]["P9"].GetDouble();
+         }
+      }
+   }
+
+   return max(tanh(P1[EtaBin][RhoBin] * (PT - P2[EtaBin][RhoBin])), 0.0)
+      * (exp(-P3[EtaBin][RhoBin] * PT) + P4[EtaBin][RhoBin] * exp(-P5[EtaBin][RhoBin] * PT) + P6[EtaBin][RhoBin] * exp(-P7[EtaBin][RhoBin] * PT) + P8[EtaBin][RhoBin] * exp(-P9[EtaBin][RhoBin] * PT));
+}
+
 double GetEtaMin(double Eta)
 {
    if(Eta < 0)
@@ -403,6 +454,18 @@ double GetEtaMax(double Eta)
    if(Eta < 0.9)
       return 0.9;
    return 1.3;
+}
+
+int GetEtaBin(double Eta)
+{
+   if(Eta < 0)
+      Eta = -Eta;
+
+   if(Eta < 0.5)
+      return 0;
+   if(Eta < 0.9)
+      return 1;
+   return 2;
 }
 
 double GetRhoMin(double Rho)
@@ -433,6 +496,21 @@ double GetRhoMax(double Rho)
    if(Rho < 250)
       return 250;
    return 350;
+}
+
+int GetRhoBin(double Rho)
+{
+   if(Rho < 50)
+      return 0;
+   if(Rho < 100)
+      return 1;
+   if(Rho < 150)
+      return 2;
+   if(Rho < 200)
+      return 3;
+   if(Rho < 250)
+      return 4;
+   return 5;
 }
 
 string FindState(double Eta, double Rho)

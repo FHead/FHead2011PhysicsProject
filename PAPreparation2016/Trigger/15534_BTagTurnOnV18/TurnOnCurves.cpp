@@ -35,8 +35,8 @@ public:
 
 int main(int argc, char *argv[])
 {
-   string ForestFileName = "HiForestAOD.root";
-   string HLTFileName = "openHLT.root";
+   string ForestFileName = "HiForestAOD_AllJets.root";
+   string HLTFileName = "openHLT_Tranche.root";
    string OutputFileName = "Output.root";
 
    TFile *ForestFile = TFile::Open(ForestFileName.c_str());
@@ -148,19 +148,19 @@ int main(int argc, char *argv[])
       {
          if(MCaloJet.JetEta[j] < -2.1 || MCaloJet.JetEta[j] > 2.1)
             continue;
-         if(MCaloJet.JetPT[j] < 60)
+         if(MCaloJet.JetRawPT[j] < 35)
             continue;
          if(BestCSVV1Index60 < 0 || MCaloJet.JetCSVV1P[BestCSVV1Index60] < MCaloJet.JetCSVV1P[j])
             BestCSVV1Index60 = j;
          if(BestCSVV2Index60 < 0 || MCaloJet.JetCSVV2P[BestCSVV2Index60] < MCaloJet.JetCSVV2P[j])
             BestCSVV2Index60 = j;
-         if(MCaloJet.JetPT[j] < 80)
+         if(MCaloJet.JetRawPT[j] < 50)
             continue;
          if(BestCSVV1Index80 < 0 || MCaloJet.JetCSVV1P[BestCSVV1Index80] < MCaloJet.JetCSVV1P[j])
             BestCSVV1Index80 = j;
          if(BestCSVV2Index80 < 0 || MCaloJet.JetCSVV2P[BestCSVV2Index80] < MCaloJet.JetCSVV2P[j])
             BestCSVV2Index80 = j;
-         if(MCaloJet.JetPT[j] < 100)
+         if(MCaloJet.JetRawPT[j] < 50)
             continue;
          if(BestCSVV1Index100 < 0 || MCaloJet.JetCSVV1P[BestCSVV1Index100] < MCaloJet.JetCSVV1P[j])
             BestCSVV1Index100 = j;
@@ -171,17 +171,17 @@ int main(int argc, char *argv[])
       {
          if(MPFJet.JetEta[j] < -2.1 || MPFJet.JetEta[j] > 2.1)
             continue;
-         if(MPFJet.JetPT[j] < 60)
+         if(MPFJet.JetRawPT[j] < 50)
             continue;
          if(BestPFCSVIndex60 < 0 || MPFJet.JetCSVV2[BestPFCSVIndex60] < MPFJet.JetCSVV2[j])
             if(MPFJet.JetCSVV2[BestPFCSVIndex60] < 1000)
                BestPFCSVIndex60 = j;
-         if(MPFJet.JetPT[j] < 80)
+         if(MPFJet.JetRawPT[j] < 75)
             continue;
          if(BestPFCSVIndex80 < 0 || MPFJet.JetCSVV2[BestPFCSVIndex80] < MPFJet.JetCSVV2[j])
             if(MPFJet.JetCSVV2[BestPFCSVIndex80] < 1000)
                BestPFCSVIndex80 = j;
-         if(MPFJet.JetPT[j] < 100)
+         if(MPFJet.JetRawPT[j] < 95)
             continue;
          if(BestPFCSVIndex100 < 0 || MPFJet.JetCSVV2[BestPFCSVIndex100] < MPFJet.JetCSVV2[j])
             if(MPFJet.JetCSVV2[BestPFCSVIndex100] < 1000)
@@ -268,36 +268,50 @@ int main(int argc, char *argv[])
       {
          if(MCaloJet.JetEta[j] < -2.1 || MCaloJet.JetEta[j] > 2.1)
             continue;
-         if(BestCaloJetPTIndex < 0 || MCaloJet.JetPT[BestCaloJetPTIndex] < MCaloJet.JetPT[j])
+         if(BestCaloJetPTIndex < 0 || MCaloJet.JetRawPT[BestCaloJetPTIndex] < MCaloJet.JetRawPT[j])
             BestCaloJetPTIndex = j;
       }
       for(int j = 0; j < MPFJet.JetCount; j++)
       {
          if(MPFJet.JetEta[j] < -2.1 || MPFJet.JetEta[j] > 2.1)
             continue;
-         if(BestPFJetPTIndex < 0 || MPFJet.JetPT[BestPFJetPTIndex] < MPFJet.JetPT[j])
+         if(BestPFJetPTIndex < 0 || MPFJet.JetRawPT[BestPFJetPTIndex] < MPFJet.JetRawPT[j])
             BestPFJetPTIndex = j;
       }
 
-      if(BestCaloJetPTIndex >= 0)
+      if(BestCaloJetPTIndex >= 0 && MTrigger.CheckTrigger("HLT_L1ZeroBias_BptxAND_v1") == 1)
       {
-         HCaloJetBestPT_All.Fill(MCaloJet.JetPT[BestCaloJetPTIndex]);
+         HCaloJetBestPT_All.Fill(MCaloJet.JetRawPT[BestCaloJetPTIndex]);
          if(MTrigger.CheckTrigger("HLT_PAAK4CaloJet60_Eta2p1_v1") == 1)
-            HCaloJetBestPT_Passed60.Fill(MCaloJet.JetPT[BestCaloJetPTIndex]);
+            HCaloJetBestPT_Passed60.Fill(MCaloJet.JetRawPT[BestCaloJetPTIndex]);
          if(MTrigger.CheckTrigger("HLT_PAAK4CaloJet80_Eta2p1_v1") == 1)
-            HCaloJetBestPT_Passed80.Fill(MCaloJet.JetPT[BestCaloJetPTIndex]);
+            HCaloJetBestPT_Passed80.Fill(MCaloJet.JetRawPT[BestCaloJetPTIndex]);
          if(MTrigger.CheckTrigger("HLT_PAAK4CaloJet100_Eta2p1_v1") == 1)
-            HCaloJetBestPT_Passed100.Fill(MCaloJet.JetPT[BestCaloJetPTIndex]);
+            HCaloJetBestPT_Passed100.Fill(MCaloJet.JetRawPT[BestCaloJetPTIndex]);
       }
-      if(BestPFJetPTIndex >= 0)
+      if(BestPFJetPTIndex >= 0 && MTrigger.CheckTrigger("HLT_L1ZeroBias_BptxAND_v1") == 1)
       {
-         HPFJetBestPT_All.Fill(MPFJet.JetPT[BestPFJetPTIndex]);
+         HPFJetBestPT_All.Fill(MPFJet.JetRawPT[BestPFJetPTIndex]);
          if(MTrigger.CheckTrigger("HLT_PAAK4PFJet60_Eta2p1_v1") == 1)
-            HPFJetBestPT_Passed60.Fill(MPFJet.JetPT[BestPFJetPTIndex]);
+            HPFJetBestPT_Passed60.Fill(MPFJet.JetRawPT[BestPFJetPTIndex]);
          if(MTrigger.CheckTrigger("HLT_PAAK4PFJet80_Eta2p1_v1") == 1)
-            HPFJetBestPT_Passed80.Fill(MPFJet.JetPT[BestPFJetPTIndex]);
+            HPFJetBestPT_Passed80.Fill(MPFJet.JetRawPT[BestPFJetPTIndex]);
          if(MTrigger.CheckTrigger("HLT_PAAK4PFJet100_Eta2p1_v1") == 1)
-            HPFJetBestPT_Passed100.Fill(MPFJet.JetPT[BestPFJetPTIndex]);
+            HPFJetBestPT_Passed100.Fill(MPFJet.JetRawPT[BestPFJetPTIndex]);
+      }
+         
+      if(MTrigger.CheckTrigger("HLT_PAAK4CaloJet60_Eta2p1_v1") == 1 && BestCaloJetPTIndex >= 0
+         && MCaloJet.JetRawPT[BestCaloJetPTIndex] < 30)
+      {
+         cout << "BEGIN EVENT " << MTrigger.Run << " " << MTrigger.Event << " " << MTrigger.Lumi << endl;
+         for(int j = 0; j < MCaloJet.JetCount; j++)
+            cout << j << " " << MCaloJet.JetEta[j] << " " << MCaloJet.JetRawPT[j] << endl;
+      }
+      else if(i < 50)
+      {
+         cout << "BEGIN GOODEVENT " << MTrigger.Run << " " << MTrigger.Event << " " << MTrigger.Lumi << endl;
+         for(int j = 0; j < MCaloJet.JetCount; j++)
+            cout << j << " " << MCaloJet.JetEta[j] << " " << MCaloJet.JetRawPT[j] << endl;
       }
    }
 

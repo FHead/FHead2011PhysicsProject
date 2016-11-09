@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
    TF1 F("F", Model.c_str(), 0, 20);
    F.SetParameter(0, 1e6);
    F.SetParameter(1, 50);             F.FixParameter(1, 50);
-   F.SetParameter(2, 0.258);          F.FixParameter(2, 0.258);
+   F.SetParameter(2, 0.158);          // F.FixParameter(2, 0.158);
    F.SetParameter(3, 1.5);
    F.SetParameter(4, -1);
    F.SetParameter(5, 4.5);
@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
    F.SetParLimits(7, 0.5, 0.5);
    F.SetParLimits(8, 0.0003, 0.0003);
    F.SetParLimits(9, 0.3, 0.3);
-   F.SetParLimits(10, 0.00003, 0.00003);
-   F.SetParLimits(11, 0.1, 0.1);
    HPT.Fit(&F);
    
    F.SetParLimits(6, 0.0001, 0.01);

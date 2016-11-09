@@ -4,6 +4,7 @@
 
 class Node;
 void BuildCATree(std::vector<Node *> &Nodes);
+Node *FindSDNode(Node *HeadNode, double ZCut = 0.1, double Beta = 0, double R0 = 0.4);
 
 class Node
 {

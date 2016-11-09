@@ -225,6 +225,12 @@ bool JetTreeMessenger::Initialize()
    if(Tree->GetBranch("jtpu"))    Tree->SetBranchAddress("jtpu", &JetPU);
    if(Tree->GetBranch("jtm"))     Tree->SetBranchAddress("jtm", &JetM);
    if(Tree->GetBranch("jtarea"))  Tree->SetBranchAddress("jtarea", &JetArea);
+   if(Tree->GetBranch("discr_csvV1"))  Tree->SetBranchAddress("discr_csvV1", &JetCSVV1);
+   if(Tree->GetBranch("discr_csvV2"))  Tree->SetBranchAddress("discr_csvV2", &JetCSVV2);
+   if(Tree->GetBranch("ndiscr_csvV1")) Tree->SetBranchAddress("ndiscr_csvV1", &JetCSVV1N);
+   if(Tree->GetBranch("ndiscr_csvV2")) Tree->SetBranchAddress("ndiscr_csvV2", &JetCSVV2N);
+   if(Tree->GetBranch("pdiscr_csvV1")) Tree->SetBranchAddress("pdiscr_csvV1", &JetCSVV1P);
+   if(Tree->GetBranch("pdiscr_csvV2")) Tree->SetBranchAddress("pdiscr_csvV2", &JetCSVV2P);
 
    if(Tree->GetBranch("jtSubJetPt"))
       Tree->SetBranchAddress("jtSubJetPt", &JetSubJetPT);
@@ -302,6 +308,9 @@ bool JetTreeMessenger::Initialize()
    if(Tree->GetBranch("geny"))    Tree->SetBranchAddress("geny", &GenY);
    if(Tree->GetBranch("genphi"))  Tree->SetBranchAddress("genphi", &GenPhi);
    if(Tree->GetBranch("genm"))    Tree->SetBranchAddress("genm", &GenM);
+
+   if(Tree->GetBranch("hcalSum")) Tree->SetBranchAddress("hcalSum", &HcalSum);
+   if(Tree->GetBranch("ecalSum")) Tree->SetBranchAddress("ecalSum", &EcalSum);
 
    return true;
 }
@@ -515,7 +524,93 @@ void TriggerTreeMessenger::FillTriggerNames()
    Name.push_back("HLT_L1SingleJet44_v1");
    Name.push_back("HLT_L1SingleJet60_v1");
 
+   // pA temporary triggers - v16
+   // Name.push_back("HLT_PAAK4CaloBJetCSVv160_Eta2p1_v1");   // same in v18
+   // Name.push_back("HLT_PAAK4CaloBJetCSVv260_Eta2p1_v1");   // same in v18
+   Name.push_back("HLT_PAAK4PFJetCSV60_Eta2p1_v2");
+
+   // pA temporary triggers - v22
+   Name.push_back("HLT_PAAK4CaloJet60_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloJet80_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloJet100_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSVv160_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSVv180_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSVv1100_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSVv260_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSVv280_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSVv2100_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFJet60_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFJet80_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFJet100_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFBJetCSV60_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFBJetCSV80_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFBJetCSV100_Eta2p1_v1");
+
+   // pA temporary triggers - v24
+   Name.push_back("HLT_L1ZeroBias_BptxAND_v1");
+   
+   // pA temporary triggers - v27
+   Name.push_back("HLT_PAAK4CaloJet40_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSV40_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSV60_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSV80_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFJet40_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4PFBJetCSV40_Eta2p1_v1");
+   
+   // pA temporary triggers - v31 / JCv1
+   Name.push_back("HLT_PAAK4CaloBJetCSV40_CommonTracking_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSV60_CommonTracking_Eta2p1_v1");
+   Name.push_back("HLT_PAAK4CaloBJetCSV80_CommonTracking_Eta2p1_v1");
+
+   // Chris V14
+   Name.push_back("HLT_PAAK4CaloJet40_Eta5p1_v2");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta5p1_v2");
+   Name.push_back("HLT_PAAK4CaloJet80_Eta5p1_v2");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta1p9toEta5p1_v2");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta1p9toEta5p1_v2");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta2p9toEta5p1_v2");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta5p1_PAL3Mu3_v2");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta5p1_PAL3Mu5_v2");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta5p1_PAL3Mu3_v2");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta5p1_PAL3Mu5_v2");
+   Name.push_back("HLT_PAAK4PFJet40_Eta5p1_v2");
+   Name.push_back("HLT_PAAK4PFJet60_Eta5p1_v2");
+   Name.push_back("HLT_PAAK4PFJet80_Eta5p1_v2");
+   Name.push_back("HLT_PAAK4PFJet60_Eta1p9toEta5p1_v2");
+   Name.push_back("HLT_PAAK4PFJet40_Eta1p9toEta5p1_v2");
+   Name.push_back("HLT_PAAK4PFJet40_Eta2p9toEta5p1_v2");
+   Name.push_back("HLT_PADiAK4CaloJetAve40_Eta5p1_v2");
+   Name.push_back("HLT_PADiAK4CaloJetAve60_Eta5p1_v2");
+   Name.push_back("HLT_PADiAK4CaloJetAve80_Eta5p1_v2");
+   Name.push_back("HLT_PADiAK4PFJetAve40_Eta5p1_v2");
+   Name.push_back("HLT_PADiAK4PFJetAve60_Eta5p1_v2");
+   Name.push_back("HLT_PADiAK4PFJetAve80_Eta5p1_v2");
+   Name.push_back("HLT_PASinglePhoton10_Eta3p1_v2");
+   Name.push_back("HLT_PASinglePhoton15_Eta3p1_v2");
+   Name.push_back("HLT_PASinglePhoton20_Eta3p1_v2");
+   Name.push_back("HLT_PASinglePhoton30_Eta3p1_v2");
+   Name.push_back("HLT_PADoublePhoton15_Eta3p1_Mass50_1000_v2");
+   Name.push_back("HLT_PASinglePhoton10_Eta3p1_PAL3Mu3_v2");
+   Name.push_back("HLT_PASinglePhoton10_Eta3p1_PAL3Mu5_v2");
+   Name.push_back("HLT_PASinglePhoton15_Eta3p1_PAL3Mu3_v2");
+   Name.push_back("HLT_PASinglePhoton15_Eta3p1_PAL3Mu5_v2");
+   Name.push_back("HLT_PASinglePhoton20_Eta3p1_PAL3Mu3_v2");
+   Name.push_back("HLT_PASinglePhoton20_Eta3p1_PAL3Mu5_v2");
+
+   Name.push_back("L1_SingleJet12_BptxAND");
+   
+   Name.push_back("HLT_PAAK4CaloJet40_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4CaloJet80_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4CaloJet100_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4PFJet40_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4PFJet60_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4PFJet80_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4PFJet100_Eta5p1_v1");
+
    std::sort(Name.begin(), Name.end());
+   std::vector<std::string>::iterator iter = std::unique(Name.begin(), Name.end());
+   Name.erase(iter, Name.end());
    Decision.resize(Name.size());
    Exist.resize(Name.size());
 }

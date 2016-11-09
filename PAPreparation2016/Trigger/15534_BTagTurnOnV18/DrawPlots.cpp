@@ -19,15 +19,13 @@ pair<double, double> BinomialRange2(int x, int N);
 double LogBinomial(int x, int N, double r);
 double IntBinomial(int x, int N, double r);
 double JntBinomial(int x, int N, double r);
+double LogFactorial(int N);
 
 int main()
 {
    SetThesisStyle();
 
-   cout << 9 << " " << 10 << " " << 0.5 << " " << IntBinomial(9, 10, 0.5) << " " <<
-      JntBinomial(9, 10, 0.5) << endl;
-
-   return 0;
+   cout << JntBinomial(5, 10, 0.4) << endl;
 
    TFile File("Output.root");
 
@@ -95,7 +93,7 @@ void ExportCurve(TFile &File, string H1Name, string H2Name, string OutputBase, b
 
    TGraphAsymmErrors G;
    
-   for(int i = 1; i <= H1->GetNbinsX(); i++)
+   for(int i = 1; i <= H1C->GetNbinsX(); i++)
    {
       double x = H2C->GetBinContent(i);
       double N = H1C->GetBinContent(i);
@@ -228,16 +226,16 @@ pair<double, double> BinomialRange2(int x, int N)
       }
       Range.second = (L + R) / 2;
 
-      cout << x << " " << N << " "
-         << Range.first << " " << Range.second << " " << JntBinomial(x, N, Range.first)
-         << " " << JntBinomial(x, N, Range.second) << " " << Max << endl;
-
       double Check = JntBinomial(x, N, Range.second) - JntBinomial(x, N, Range.first);
-      if(Check < 0.68 * Max)   // Range too small, lower height
+      if(Check < 0.90 * Max)   // Range too small, lower height
          LogHeightR = LogHeightC;
       else
          LogHeightL = LogHeightC;
    }
+      
+   cout << x << " " << N << " "
+      << Range.first << " " << Range.second << " " << JntBinomial(x, N, Range.first) / Max
+      << " " << JntBinomial(x, N, Range.second) / Max << endl;
 
    return Range;
 }
@@ -282,12 +280,9 @@ double JntBinomial(int x, int N, double r)
       return (1 - pow(1 - r, N + 1)) / (N + 1);
 
    double LogExtraTerm = x * log(r) + (N - x + 1) * log(1 - r);
-   for(int i = 1; i <= N; i++)
-      LogExtraTerm = LogExtraTerm + log(i);
-   for(int i = 1; i <= x; i++)
-      LogExtraTerm = LogExtraTerm - log(i);
-   for(int i = 1; i <= N - x + 1; i++)
-      LogExtraTerm = LogExtraTerm - log(i);
+   LogExtraTerm = LogExtraTerm + LogFactorial(N);
+   LogExtraTerm = LogExtraTerm - LogFactorial(x);
+   LogExtraTerm = LogExtraTerm - LogFactorial(N - x + 1);
 
    if(r == 1)   // there is no extra term when r = 1
       return JntBinomial(x - 1, N, r);
@@ -295,5 +290,23 @@ double JntBinomial(int x, int N, double r)
    return JntBinomial(x - 1, N, r) - exp(LogExtraTerm);
 }
 
+double LogFactorial(int N)
+{
+   static double Result[100000] = {0};
+
+   if(N == 0)   // log(0) = 0
+      return 0;
+   if(N == 1)   // log(1) = 0
+      return 0;
+
+   if(Result[N] == 0)
+   {
+      double Answer = LogFactorial(N - 1) + log(N);
+      Result[N] = Answer;
+      return Answer;
+   }
+
+   return Result[N];
+}
 
 

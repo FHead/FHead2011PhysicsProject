@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
    TH1D HSDMass("HSDMass", "SD Mass, DR > 0.1;SD Mass", 100, 0, 100);
    TH1D HNewSDMass("HNewSDMass", "New SD Mass, New DR > 0.1; New SD Mass", 100, 0, 100);
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(1);
          
@@ -353,14 +353,14 @@ int main(int argc, char *argv[])
 
          PseudoJet &Jet = Jets[LeadingIndex];
          FourVector NewJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
-         // for(int i = 0; i < (int)GoodCandidates.size(); i++)
-         // {
-         //    if(GetDR(GoodCandidates[i], NewJetP) > 0.4)
-         //    {
-         //       GoodCandidates.erase(GoodCandidates.begin() + i);
-         //       i = i - 1;
-         //    }
-         // }
+         for(int i = 0; i < (int)GoodCandidates.size(); i++)
+         {
+            if(GetDR(GoodCandidates[i], NewJetP) > 0.4)
+            {
+               GoodCandidates.erase(GoodCandidates.begin() + i);
+               i = i - 1;
+            }
+         }
 
          HJetPTComparison.Fill(MSDJet.JetPT[iJ], NewJetP.GetPT());
 

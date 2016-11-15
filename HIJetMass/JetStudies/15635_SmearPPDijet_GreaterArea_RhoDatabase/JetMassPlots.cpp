@@ -403,6 +403,8 @@ int main(int argc, char *argv[])
          // Cleanup
          if(Nodes.size() > 0)
             delete Nodes[0];
+
+         OutputTree.Fill();
       }
    }
 

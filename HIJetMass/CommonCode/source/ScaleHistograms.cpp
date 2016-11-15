@@ -8,6 +8,7 @@ using namespace std;
 #include "TKey.h"
 #include "TList.h"
 #include "TObject.h"
+#include "TTree.h"
 #include "TClass.h"
 
 int main(int argc, char *argv[])
@@ -71,7 +72,24 @@ int main(int argc, char *argv[])
          else
             H->Clone(Form("%s__%s", H->GetName(), Tag.c_str()))->Write();
       }
-      else   // not histograms!  do nothing and simply copy them!
+      else if(Object->IsA()->InheritsFrom("TTree") == true)   // trees!  attach a "MCWeight"!
+      {
+         TTree *T = (TTree *)Object;
+         T = T->CloneTree();
+
+         TBranch *Branch = T->Branch("MCWeight", &ScaleFactor, "MCWeight/D");
+         int EntryCount = T->GetEntries();
+         for(int i = 0; i < EntryCount; i++)
+         {
+            T->GetEntry(i);
+            Branch->Fill();
+         }
+
+         if(Tag != "")
+            T->SetName(Form("%s__%s", Object->GetName(), Tag.c_str()));
+         T->Write();
+      }
+      else   // not histograms and not trees!  do nothing and simply copy them!
       {
          if(Tag == "")
             Object->Clone(Object->GetName())->Write();

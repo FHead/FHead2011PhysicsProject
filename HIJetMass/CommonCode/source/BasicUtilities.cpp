@@ -114,16 +114,21 @@ int GetIndex(double X, double *Begin, double *End)
    return Index;
 }
 
-double GetDR(double Eta1, double Phi1, double Eta2, double Phi2)
+double GetDR2(double Eta1, double Phi1, double Eta2, double Phi2)
 {
    double DEta = Eta1 - Eta2;
    double DPhi = Phi1 - Phi2;
-   if(DPhi < -PI)
+   while(DPhi < -PI)
       DPhi = DPhi + 2 * PI;
-   if(DPhi > +PI)
+   while(DPhi > +PI)
       DPhi = DPhi - 2 * PI;
 
-   return std::sqrt(DEta * DEta + DPhi * DPhi);
+   return DEta * DEta + DPhi * DPhi;
+}
+
+double GetDR(double Eta1, double Phi1, double Eta2, double Phi2)
+{
+   return std::sqrt(GetDR2(Eta1, Phi1, Eta2, Phi2));
 }
 
 XY::XY() : X(0), Y(0)

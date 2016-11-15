@@ -16,6 +16,7 @@ template<class T, class U>
    std::vector<int> DRMatching(int BaseN, T BaseEta, T BasePhi,
       int TargetN, U TargetEta, U TargetPhi);
 int GetIndex(double X, double *Begin, double *End);
+double GetDR2(double Eta1, double Phi1, double Eta2, double Phi2);
 double GetDR(double Eta1, double Phi1, double Eta2, double Phi2);
 
 class XY

@@ -6,6 +6,6 @@ g++ source/SDJetHelper.cpp -I. -c -o library/SDJetHelper.o -I/afs/cern.ch/user/c
    `root-config --cflags` -std=c++11
 g++ source/EventMatching.cpp -I. -c -o library/EventMatching.o `root-config --cflags` -std=c++11
 
-# CompileRootMacro source/ScaleHistograms.cpp bin/ScaleHistograms
+CompileRootMacro source/ScaleHistograms.cpp bin/ScaleHistograms
 # CompileRootMacro source/AttachTags.cpp bin/AttachTags
 

@@ -605,8 +605,25 @@ void TriggerTreeMessenger::FillTriggerNames()
    Name.push_back("HLT_PAAK4CaloJet100_Eta5p1_v1");
    Name.push_back("HLT_PAAK4PFJet40_Eta5p1_v1");
    Name.push_back("HLT_PAAK4PFJet60_Eta5p1_v1");
+   Name.push_back("HLT_PAAK4PFJet60_Eta5p1_v3");
    Name.push_back("HLT_PAAK4PFJet80_Eta5p1_v1");
    Name.push_back("HLT_PAAK4PFJet100_Eta5p1_v1");
+
+   Name.push_back("L1_MinimumBiasHF0_OR_BptxAND_Initial");
+   Name.push_back("L1_MinimumBiasHF0_OR_BptxAND_Final");
+   Name.push_back("L1_MinimumBiasHF0_OR_BptxAND");
+   Name.push_back("HLT_PAL1MinimumBiasHF_AND_SinglePixelTrack_v1");
+
+   Name.push_back("L1_SingleJet12_BptxAND_Initial");
+   Name.push_back("L1_SingleJet12_BptxAND_Final");
+   Name.push_back("L1_SingleJet16_BptxAND_Initial");
+   Name.push_back("L1_SingleJet16_BptxAND_Final");
+   Name.push_back("L1_SingleJet24_BptxAND_Initial");
+   Name.push_back("L1_SingleJet24_BptxAND_Final");
+   Name.push_back("L1_SingleJet36_BptxAND_Initial");
+   Name.push_back("L1_SingleJet36_BptxAND_Final");
+   Name.push_back("L1_SingleJet52_BptxAND_Initial");
+   Name.push_back("L1_SingleJet52_BptxAND_Final");
 
    std::sort(Name.begin(), Name.end());
    std::vector<std::string>::iterator iter = std::unique(Name.begin(), Name.end());

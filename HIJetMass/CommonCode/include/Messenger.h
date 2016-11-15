@@ -14,7 +14,6 @@ class JetTreeMessenger;
 class GenParticleTreeMessenger;
 class PFTreeMessenger;
 class TriggerTreeMessenger;
-class HLTBitTreeMessenger;
 
 class HiEventTreeMessenger
 {

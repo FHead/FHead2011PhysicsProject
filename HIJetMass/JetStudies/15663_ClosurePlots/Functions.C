@@ -1,5 +1,6 @@
 void FourPanelComplicated(TTree *T1, TTree *T2, TTree *T3, string XAxis);
 void TidyHistogram(TH1F *A, TH1F *B, TH1F *C, string XAxis);
+void TidyHistogram(TH1F *A, TH1F *B, string XAxis);
 void FourPanel(TCanvas *C, TH1F *A1, TH1F *B1, TH1F *C1,
    TH1F *A2, TH1F *B2, TH1F *C2,
    TH1F *A3, TH1F *B3, TH1F *C3,
@@ -81,6 +82,22 @@ void TidyHistogram(TH1F *A, TH1F *B, TH1F *C, string XAxis)
    A->SetStats(0);
    B->SetStats(0);
    C->SetStats(0);
+}
+
+void TidyHistogram(TH1F *A, TH1F *B, string XAxis)
+{
+   B->Scale(1 / B->Integral() * A->Integral());
+   B->SetLineColor(kRed);
+   B->SetMarkerColor(kRed);
+   B->SetMarkerStyle(20);
+   A->GetXaxis()->SetTitle(XAxis.c_str());
+   A->SetLineColor(kBlack);
+   A->SetMarkerColor(kBlack);
+   A->SetMarkerStyle(20);
+   A->SetTitle("");
+   
+   A->SetStats(0);
+   B->SetStats(0);
 }
 
 void FourPanel(TCanvas *C, TH1F *A1, TH1F *B1, TH1F *C1,

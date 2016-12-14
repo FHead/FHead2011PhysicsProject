@@ -74,12 +74,14 @@ int main(int argc, char *argv[])
    T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P5", "MCWeight * (JetShift < 0.2 && JetPT > 300 && JetPT < 500 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
    
    T2->SetAlias("Fudge", "((MCWeight < 500) * (1 + 122.874 * exp(-0.5 * ((JetPT-45.0945) / 43.8684)**2)))");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P0", "MCWeight * (JetShift < 0.2 && JetPT > 120 && JetPT < 140 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P1", "MCWeight * (JetShift < 0.2 && JetPT > 140 && JetPT < 160 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P2", "MCWeight * (JetShift < 0.2 && JetPT > 160 && JetPT < 180 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P3", "MCWeight * (JetShift < 0.2 && JetPT > 180 && JetPT < 200 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P4", "MCWeight * (JetShift < 0.2 && JetPT > 200 && JetPT < 300 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P5", "MCWeight * (JetShift < 0.2 && JetPT > 300 && JetPT < 500 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
+   T2->SetAlias("ExcessPT", "((TotalPT - Rho * 0.8 * 0.8 * 3.1415926535)*0.25)");
+   T2->SetAlias("SmearChange", "(exp(-ExcessPT*ExcessPT/(2*21.4*21.4*0.9*0.9)) / exp(-ExcessPT*ExcessPT/(2*21.4*21.4)))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P0", "MCWeight * SmearChange * (JetShift < 0.2 && JetPT > 120 && JetPT < 140 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P1", "MCWeight * SmearChange * (JetShift < 0.2 && JetPT > 140 && JetPT < 160 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P2", "MCWeight * SmearChange * (JetShift < 0.2 && JetPT > 160 && JetPT < 180 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P3", "MCWeight * SmearChange * (JetShift < 0.2 && JetPT > 180 && JetPT < 200 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P4", "MCWeight * SmearChange * (JetShift < 0.2 && JetPT > 200 && JetPT < 300 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P5", "MCWeight * SmearChange * (JetShift < 0.2 && JetPT > 300 && JetPT < 500 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
 
    HNominal_P0.Scale(1 / HNominal_P0.Integral());
    HNominal_P1.Scale(1 / HNominal_P1.Integral());

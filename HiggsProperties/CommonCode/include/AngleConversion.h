@@ -17,6 +17,7 @@ struct ZALeptonVectors;
 struct Cs;
 struct ZACs;
 struct GeneralScalarParameters;
+struct ZPrimeParameters;
 LeptonVectors ConvertAnglesToVectors(const EventParameters &Angles, double HiggsPT, double HiggsEta,
    bool FrameChoice = 0);
 EventParameters ConvertVectorsToAngles(const LeptonVectors &Leptons,
@@ -151,6 +152,7 @@ public:
 //----------------------------------------------------------------------------
 struct GeneralScalarParameters
 {
+public:
    double aAR, aAI;
    double aAdR, aAdI;
    double aZAR, aZAI;
@@ -162,6 +164,22 @@ public:
    GeneralScalarParameters()
       : aAR(0), aAI(0), aAdR(0), aAdI(0), aZAR(0), aZAI(0), aZAdR(0), aZAdI(0),
       aZR(0), aZI(0), aZdR(0), aZdI(0), ahR(0), ahI(0)
+   {
+   }
+};
+//---------------------------------------------------------------------------
+struct ZPrimeParameters
+{
+public:
+   double VMass;
+   double VWidth;
+   double G1VL;
+   double G1VR;
+   double G2VL;
+   double G2VR;
+public:
+   ZPrimeParameters()
+      : VMass(50), VWidth(1), G1VL(1), G1VR(1), G2VL(1), G2VR(1)
    {
    }
 };

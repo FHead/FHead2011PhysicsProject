@@ -1,0 +1,19 @@
+(pow(A3ZZR,2)*pow(Pi,-7)*pow(s,-1)*
+    pow(1 - 2*(pow(M1,2) + pow(M2,2))*pow(s,-1) + 
+      pow(s,-2)*pow(pow(M1,2) - pow(M2,2),2),0.5)*
+    (16*pow(vh,-2)*pow(pow(gL,2) - pow(gR,2),2)*
+       pow(pow(Mz,4) + pow(Mz,2)*pow(wZ,2) + 4*pow(SC(p3,p4),2) - 
+         4*pow(Mz,2)*SC(p3,p4),-1)*
+       pow(pow(Mz,4) + pow(Mz,2)*pow(wZ,2) + 4*pow(SC(p5,p6),2) - 
+         4*pow(Mz,2)*SC(p5,p6),-1)*SC(p3,p4)*
+       (SC(p3,p5) + SC(p3,p6) - SC(p4,p5) - SC(p4,p6))*
+       (SC(p3,p5) - SC(p3,p6) + SC(p4,p5) - SC(p4,p6))*SC(p5,p6) + 
+      16*pow(vh,-2)*pow(pow(gL,2) + pow(gR,2),2)*
+       pow(pow(Mz,4) + pow(Mz,2)*pow(wZ,2) + 4*pow(SC(p3,p4),2) - 
+         4*pow(Mz,2)*SC(p3,p4),-1)*
+       pow(pow(Mz,4) + pow(Mz,2)*pow(wZ,2) + 4*pow(SC(p5,p6),2) - 
+         4*pow(Mz,2)*SC(p5,p6),-1)*
+       (-2*pow(SC(p3,p6)*SC(p4,p5) - SC(p3,p5)*SC(p4,p6),2) - 
+         2*pow(SC(p3,p4),2)*pow(SC(p5,p6),2) + 
+         (pow(SC(p3,p6) + SC(p4,p5),2) + pow(SC(p3,p5) + SC(p4,p6),2))*
+          SC(p3,p4)*SC(p5,p6))))/262144.

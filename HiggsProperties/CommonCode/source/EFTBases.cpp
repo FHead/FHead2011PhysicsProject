@@ -418,6 +418,36 @@ void LoopBasis2::Print(std::ostream &out)
    out << "(" << A2ZZ << ", " << A3ZZ << ", " << A4ZZ << ", " << YT << ", " << YTA << ", " << MT << ", " << GWW << ", " << CZ << ")";
 }
 
+ExtendedAVVBasis::ExtendedAVVBasis()
+{
+   A1ZZ = 0;   A2ZZ = 0;   A3ZZ = 0;   A4ZZ = 0;
+   A1ZV = 0;   A2ZV = 0;   A3ZV = 0;   A4ZV = 0;
+   A1ZA = 0;   A2ZA = 0;   A3ZA = 0;   A4ZA = 0;
+   A1VV = 0;   A2VV = 0;   A3VV = 0;   A4VV = 0;
+   A1VA = 0;   A2VA = 0;   A3VA = 0;   A4VA = 0;
+   A1AA = 0;   A2AA = 0;   A3AA = 0;   A4AA = 0;
+}
+
+ExtendedAVVBasis::ExtendedAVVBasis(double A[24])
+{
+   A1ZZ = A[0];   A2ZZ = A[1];   A3ZZ = A[2];   A4ZZ = A[3];
+   A1ZV = A[4];   A2ZV = A[5];   A3ZV = A[6];   A4ZV = A[7];
+   A1ZA = A[8];   A2ZA = A[9];   A3ZA = A[10];  A4ZA = A[11];
+   A1VV = A[12];  A2VV = A[13];  A3VV = A[14];  A4VV = A[15];
+   A1VA = A[16];  A2VA = A[17];  A3VA = A[18];  A4VA = A[19];
+   A1AA = A[20];  A2AA = A[21];  A3AA = A[22];  A4AA = A[23];
+}
+   
+void ExtendedAVVBasis::Print(std::ostream &out)
+{
+   out << "(" << A1ZZ << ", " << A2ZZ << ", " << A3ZZ << ", " << A4ZZ << "; "
+      << A1ZV << ", " << A2ZV << ", " << A3ZV << ", " << A4ZV << "; "
+      << A1ZA << ", " << A2ZA << ", " << A3ZA << ", " << A4ZA << "; "
+      << A1VV << ", " << A2VV << ", " << A3VV << ", " << A4VV << "; "
+      << A1VA << ", " << A2VA << ", " << A3VA << ", " << A4VA << "; "
+      << A1AA << ", " << A2AA << ", " << A3AA << ", " << A4AA << ")";
+}
+
 std::ostream &operator <<(std::ostream &out, AVVBasis &A)
 {
    A.Print(out);

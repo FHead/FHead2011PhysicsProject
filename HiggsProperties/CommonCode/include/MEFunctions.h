@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 #include "AngleConversion.h"
 #include "CalculateME.h"
+#include "EFTBases.h"
 //---------------------------------------------------------------------------
 double CalculateA1RA1RSignal2e2mu(LeptonVectors &Leptons);
 double CalculateA2RA2RSignal2e2mu(LeptonVectors &Leptons);
@@ -368,6 +369,8 @@ double CalculateA1LQZZIA2AARSignal4e(LeptonVectors &Leptons);
 double CalculateA1LQZZIA2AAISignal4e(LeptonVectors &Leptons);
 double CalculateA1LQZZIA3AARSignal4e(LeptonVectors &Leptons);
 double CalculateA1LQZZIA3AAISignal4e(LeptonVectors &Leptons);
+//---------------------------------------------------------------------------
+double CalculateARARWithZPrime15714(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
 //---------------------------------------------------------------------------
 
 

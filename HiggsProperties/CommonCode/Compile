@@ -1,99 +1,101 @@
 #!/bin/sh
 
-echo g++ source/Constants.cpp -o library/Constants.o -c -I./include -I$HOME/RootMacros
-g++ source/Constants.cpp -o library/Constants.o -c -I./include -I$HOME/RootMacros
-echo g++ source/EFTBases.cpp -o library/EFTBases.o -c -I./include -I$HOME/RootMacros
-g++ source/EFTBases.cpp -o library/EFTBases.o -c -I./include -I$HOME/RootMacros
-echo g++ source/EFTPriors.cpp -o library/EFTPriors.o -c -I./include -I$HOME/RootMacros
-g++ source/EFTPriors.cpp -o library/EFTPriors.o -c -I./include -I$HOME/RootMacros
-echo g++ source/Lists.cpp -o library/Lists.o -c -I./include -I$HOME/RootMacros
-g++ source/Lists.cpp -o library/Lists.o -c -I./include -I$HOME/RootMacros
-echo g++ source/InterpretCoefficient.cpp -o library/InterpretCoefficient.o -c -I./include -I$HOME/RootMacros
-g++ source/InterpretCoefficient.cpp -o library/InterpretCoefficient.o -c -I./include -I$HOME/RootMacros
-echo g++ source/MEFunctions.cpp -o library/MEFunctions.o -c -I./include -I$HOME/RootMacros
-g++ source/MEFunctions.cpp -o library/MEFunctions.o -c -I./include -I$HOME/RootMacros
-echo g++ source/MEFunctionsVFF.cpp -o library/MEFunctionsVFF.o -c -I./include -I$HOME/RootMacros
-g++ source/MEFunctionsVFF.cpp -o library/MEFunctionsVFF.o -c -I./include -I$HOME/RootMacros
-echo g++ source/MEFunctionsZA.cpp -o library/MEFunctionsZA.o -c -I./include -I$HOME/RootMacros
-g++ source/MEFunctionsZA.cpp -o library/MEFunctionsZA.o -c -I./include -I$HOME/RootMacros
-echo g++ source/AngleConversion.cpp -o library/AngleConversion.o -c -I./include -I$HOME/RootMacros
-g++ source/AngleConversion.cpp -o library/AngleConversion.o -c -I./include -I$HOME/RootMacros
-echo g++ source/Cuts.cpp -o library/Cuts.o -c -I./include -I$HOME/RootMacros
-g++ source/Cuts.cpp -o library/Cuts.o -c -I./include -I$HOME/RootMacros
-echo g++ source/VolumeElement.cpp -o library/VolumeElement.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/VolumeElement.cpp -o library/VolumeElement.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/IndexAndLabels.cpp -o library/IndexAndLabels.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/IndexAndLabels.cpp -o library/IndexAndLabels.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part1.cpp -o library/CalculateME_Part1.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part1.cpp -o library/CalculateME_Part1.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part2.cpp -o library/CalculateME_Part2.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part2.cpp -o library/CalculateME_Part2.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part3.cpp -o library/CalculateME_Part3.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part3.cpp -o library/CalculateME_Part3.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part4.cpp -o library/CalculateME_Part4.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part4.cpp -o library/CalculateME_Part4.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part5.cpp -o library/CalculateME_Part5.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part5.cpp -o library/CalculateME_Part5.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part6.cpp -o library/CalculateME_Part6.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part6.cpp -o library/CalculateME_Part6.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part7.cpp -o library/CalculateME_Part7.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part7.cpp -o library/CalculateME_Part7.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part8.cpp -o library/CalculateME_Part8.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part8.cpp -o library/CalculateME_Part8.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part9.cpp -o library/CalculateME_Part9.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part9.cpp -o library/CalculateME_Part9.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part10.cpp -o library/CalculateME_Part10.o -c -I./include -O1 -I$HOME/RootMacros/
-g++ source/CalculateME_Part10.cpp -o library/CalculateME_Part10.o -c -I./include -O1 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part11.cpp -o library/CalculateME_Part11.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part11.cpp -o library/CalculateME_Part11.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part12.cpp -o library/CalculateME_Part12.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part12.cpp -o library/CalculateME_Part12.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part14.cpp -o library/CalculateME_Part14.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part14.cpp -o library/CalculateME_Part14.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part15.cpp -o library/CalculateME_Part15.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part15.cpp -o library/CalculateME_Part15.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part16.cpp -o library/CalculateME_Part16.o -c -I./include -O0 -I$HOME/RootMacros/ -fdata-sections -ffunction-sections -Wl,--gc-sections
-g++ source/CalculateME_Part16.cpp -o library/CalculateME_Part16.o -c -I./include -O0 -I$HOME/RootMacros/ -fdata-sections -ffunction-sections -Wl,--gc-sections
-echo g++ source/CalculateME_Part17.cpp -o library/CalculateME_Part17.o -c -I./include -O2 -I$HOME/RootMacros/ -fdata-sections -ffunction-sections -Wl,--gc-sections
-g++ source/CalculateME_Part17.cpp -o library/CalculateME_Part17.o -c -I./include -O2 -I$HOME/RootMacros/ -fdata-sections -ffunction-sections -Wl,--gc-sections
-echo g++ source/CalculateME_Part18.cpp -o library/CalculateME_Part18.o -c -I./include -O2 -I$HOME/RootMacros/ -fdata-sections -ffunction-sections -Wl,--gc-sections
-g++ source/CalculateME_Part18.cpp -o library/CalculateME_Part18.o -c -I./include -O2 -I$HOME/RootMacros/ -fdata-sections -ffunction-sections -Wl,--gc-sections
-echo g++ source/CalculateME_Part19.cpp -o library/CalculateME_Part19.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part19.cpp -o library/CalculateME_Part19.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part20.cpp -o library/CalculateME_Part20.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part20.cpp -o library/CalculateME_Part20.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part21.cpp -o library/CalculateME_Part21.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part21.cpp -o library/CalculateME_Part21.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part22.cpp -o library/CalculateME_Part22.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part22.cpp -o library/CalculateME_Part22.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part23.cpp -o library/CalculateME_Part23.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part23.cpp -o library/CalculateME_Part23.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part24.cpp -o library/CalculateME_Part24.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part24.cpp -o library/CalculateME_Part24.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part25.cpp -o library/CalculateME_Part25.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part25.cpp -o library/CalculateME_Part25.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part26.cpp -o library/CalculateME_Part26.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part26.cpp -o library/CalculateME_Part26.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part27.cpp -o library/CalculateME_Part27.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part27.cpp -o library/CalculateME_Part27.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part28.cpp -o library/CalculateME_Part28.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part28.cpp -o library/CalculateME_Part28.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateME_Part29.cpp -o library/CalculateME_Part29.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateME_Part29.cpp -o library/CalculateME_Part29.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateZAME_Part1.cpp -o library/CalculateZAME_Part1.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateZAME_Part1.cpp -o library/CalculateZAME_Part1.o -c -I./include -O2 -I$HOME/RootMacros/
-echo g++ source/CalculateZAME_Part2.cpp -o library/CalculateZAME_Part2.o -c -I./include -O2 -I$HOME/RootMacros/
-g++ source/CalculateZAME_Part2.cpp -o library/CalculateZAME_Part2.o -c -I./include -O2 -I$HOME/RootMacros/
-echo ~/RootMacros/CompileRootMacro source/RooDoubleSidedCBShape.cpp library/RooDoubleSidedCBShape.o -c -I./include
-~/RootMacros/CompileRootMacro source/RooDoubleSidedCBShape.cpp library/RooDoubleSidedCBShape.o -c -I./include
-echo ~/RootMacros/CompileRootMacro source/RooqqZZ_JHU.cxx library/RooqqZZ_JHU.o -c -I./include
-~/RootMacros/CompileRootMacro source/RooqqZZ_JHU.cxx library/RooqqZZ_JHU.o -c -I./include
-echo ~/RootMacros/CompileRootMacro source/RooMeow.cpp library/RooMeow.o -c -I./include
-~/RootMacros/CompileRootMacro source/RooMeow.cpp library/RooMeow.o -c -I./include
-echo ~/RootMacros/CompileRootMacro source/RooModifiedBreitWigner.cpp library/RooModifiedBreitWigner.o -c -I./include
-~/RootMacros/CompileRootMacro source/RooModifiedBreitWigner.cpp library/RooModifiedBreitWigner.o -c -I./include
-# echo g++ source/HybridCalculator.cpp -o library/HybridCalculator.o -c -I./include -I$HOME/RootMacros
-# g++ source/HybridCalculator.cpp -o library/HybridCalculator.o -c -I./include -I$HOME/RootMacros
+echo g++ source/Constants.cpp -o library/Constants.o -c -I./include -I$RootMacrosBase
+g++ source/Constants.cpp -o library/Constants.o -c -I./include -I$RootMacrosBase
+echo g++ source/EFTBases.cpp -o library/EFTBases.o -c -I./include -I$RootMacrosBase
+g++ source/EFTBases.cpp -o library/EFTBases.o -c -I./include -I$RootMacrosBase
+echo g++ source/EFTPriors.cpp -o library/EFTPriors.o -c -I./include -I$RootMacrosBase
+g++ source/EFTPriors.cpp -o library/EFTPriors.o -c -I./include -I$RootMacrosBase
+echo g++ source/Lists.cpp -o library/Lists.o -c -I./include -I$RootMacrosBase
+g++ source/Lists.cpp -o library/Lists.o -c -I./include -I$RootMacrosBase
+echo g++ source/InterpretCoefficient.cpp -o library/InterpretCoefficient.o -c -I./include -I$RootMacrosBase
+g++ source/InterpretCoefficient.cpp -o library/InterpretCoefficient.o -c -I./include -I$RootMacrosBase
+echo g++ source/MEFunctions.cpp -o library/MEFunctions.o -c -I./include -I$RootMacrosBase
+g++ source/MEFunctions.cpp -o library/MEFunctions.o -c -I./include -I$RootMacrosBase
+echo g++ source/MEFunctionsVFF.cpp -o library/MEFunctionsVFF.o -c -I./include -I$RootMacrosBase
+g++ source/MEFunctionsVFF.cpp -o library/MEFunctionsVFF.o -c -I./include -I$RootMacrosBase
+echo g++ source/MEFunctionsZA.cpp -o library/MEFunctionsZA.o -c -I./include -I$RootMacrosBase
+g++ source/MEFunctionsZA.cpp -o library/MEFunctionsZA.o -c -I./include -I$RootMacrosBase
+echo g++ source/AngleConversion.cpp -o library/AngleConversion.o -c -I./include -I$RootMacrosBase
+g++ source/AngleConversion.cpp -o library/AngleConversion.o -c -I./include -I$RootMacrosBase
+echo g++ source/Cuts.cpp -o library/Cuts.o -c -I./include -I$RootMacrosBase
+g++ source/Cuts.cpp -o library/Cuts.o -c -I./include -I$RootMacrosBase
+echo g++ source/VolumeElement.cpp -o library/VolumeElement.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/VolumeElement.cpp -o library/VolumeElement.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/IndexAndLabels.cpp -o library/IndexAndLabels.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/IndexAndLabels.cpp -o library/IndexAndLabels.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part1.cpp -o library/CalculateME_Part1.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part1.cpp -o library/CalculateME_Part1.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part2.cpp -o library/CalculateME_Part2.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part2.cpp -o library/CalculateME_Part2.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part3.cpp -o library/CalculateME_Part3.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part3.cpp -o library/CalculateME_Part3.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part4.cpp -o library/CalculateME_Part4.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part4.cpp -o library/CalculateME_Part4.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part5.cpp -o library/CalculateME_Part5.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part5.cpp -o library/CalculateME_Part5.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part6.cpp -o library/CalculateME_Part6.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part6.cpp -o library/CalculateME_Part6.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part7.cpp -o library/CalculateME_Part7.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part7.cpp -o library/CalculateME_Part7.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part8.cpp -o library/CalculateME_Part8.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part8.cpp -o library/CalculateME_Part8.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part9.cpp -o library/CalculateME_Part9.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part9.cpp -o library/CalculateME_Part9.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part10.cpp -o library/CalculateME_Part10.o -c -I./include -O1 -I$RootMacrosBase/
+g++ source/CalculateME_Part10.cpp -o library/CalculateME_Part10.o -c -I./include -O1 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part11.cpp -o library/CalculateME_Part11.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part11.cpp -o library/CalculateME_Part11.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part12.cpp -o library/CalculateME_Part12.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part12.cpp -o library/CalculateME_Part12.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part14.cpp -o library/CalculateME_Part14.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part14.cpp -o library/CalculateME_Part14.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part15.cpp -o library/CalculateME_Part15.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part15.cpp -o library/CalculateME_Part15.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part16.cpp -o library/CalculateME_Part16.o -c -I./include -O0 -I$RootMacrosBase/ -fdata-sections -ffunction-sections -Wl,--gc-sections
+g++ source/CalculateME_Part16.cpp -o library/CalculateME_Part16.o -c -I./include -O0 -I$RootMacrosBase/ -fdata-sections -ffunction-sections -Wl,--gc-sections
+echo g++ source/CalculateME_Part17.cpp -o library/CalculateME_Part17.o -c -I./include -O2 -I$RootMacrosBase/ -fdata-sections -ffunction-sections -Wl,--gc-sections
+g++ source/CalculateME_Part17.cpp -o library/CalculateME_Part17.o -c -I./include -O2 -I$RootMacrosBase/ -fdata-sections -ffunction-sections -Wl,--gc-sections
+echo g++ source/CalculateME_Part18.cpp -o library/CalculateME_Part18.o -c -I./include -O2 -I$RootMacrosBase/ -fdata-sections -ffunction-sections -Wl,--gc-sections
+g++ source/CalculateME_Part18.cpp -o library/CalculateME_Part18.o -c -I./include -O2 -I$RootMacrosBase/ -fdata-sections -ffunction-sections -Wl,--gc-sections
+echo g++ source/CalculateME_Part19.cpp -o library/CalculateME_Part19.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part19.cpp -o library/CalculateME_Part19.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part20.cpp -o library/CalculateME_Part20.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part20.cpp -o library/CalculateME_Part20.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part21.cpp -o library/CalculateME_Part21.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part21.cpp -o library/CalculateME_Part21.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part22.cpp -o library/CalculateME_Part22.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part22.cpp -o library/CalculateME_Part22.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part23.cpp -o library/CalculateME_Part23.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part23.cpp -o library/CalculateME_Part23.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part24.cpp -o library/CalculateME_Part24.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part24.cpp -o library/CalculateME_Part24.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part25.cpp -o library/CalculateME_Part25.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part25.cpp -o library/CalculateME_Part25.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part26.cpp -o library/CalculateME_Part26.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part26.cpp -o library/CalculateME_Part26.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part27.cpp -o library/CalculateME_Part27.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part27.cpp -o library/CalculateME_Part27.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part28.cpp -o library/CalculateME_Part28.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part28.cpp -o library/CalculateME_Part28.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part29.cpp -o library/CalculateME_Part29.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part29.cpp -o library/CalculateME_Part29.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part30.cpp -o library/CalculateME_Part30.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part30.cpp -o library/CalculateME_Part30.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateZAME_Part1.cpp -o library/CalculateZAME_Part1.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateZAME_Part1.cpp -o library/CalculateZAME_Part1.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateZAME_Part2.cpp -o library/CalculateZAME_Part2.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateZAME_Part2.cpp -o library/CalculateZAME_Part2.o -c -I./include -O2 -I$RootMacrosBase/
+echo $RootMacrosBase/CompileRootMacro source/RooDoubleSidedCBShape.cpp library/RooDoubleSidedCBShape.o -c -I./include
+$RootMacrosBase/CompileRootMacro source/RooDoubleSidedCBShape.cpp library/RooDoubleSidedCBShape.o -c -I./include
+echo $RootMacrosBase/CompileRootMacro source/RooqqZZ_JHU.cxx library/RooqqZZ_JHU.o -c -I./include
+$RootMacrosBase/CompileRootMacro source/RooqqZZ_JHU.cxx library/RooqqZZ_JHU.o -c -I./include
+echo $RootMacrosBase/CompileRootMacro source/RooMeow.cpp library/RooMeow.o -c -I./include
+$RootMacrosBase/CompileRootMacro source/RooMeow.cpp library/RooMeow.o -c -I./include
+echo $RootMacrosBase/CompileRootMacro source/RooModifiedBreitWigner.cpp library/RooModifiedBreitWigner.o -c -I./include
+$RootMacrosBase/CompileRootMacro source/RooModifiedBreitWigner.cpp library/RooModifiedBreitWigner.o -c -I./include
+# echo g++ source/HybridCalculator.cpp -o library/HybridCalculator.o -c -I./include -I$RootMacrosBase
+# g++ source/HybridCalculator.cpp -o library/HybridCalculator.o -c -I./include -I$RootMacrosBase
 
 
 

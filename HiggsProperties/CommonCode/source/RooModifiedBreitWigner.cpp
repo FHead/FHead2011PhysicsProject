@@ -55,7 +55,7 @@ void RooModifiedBreitWigner::SetSpectra(std::vector<double> mass, std::vector<do
    BrZZ = brzz;
 
    std::cout << "[RooModifiedBreitWigner][SetSpectra] Info: array sizes = "
-      << Mass.size() << " " << Width.size() << " " << BrGG.size() << " " << BrZZ.size() << endl;
+      << Mass.size() << " " << Width.size() << " " << BrGG.size() << " " << BrZZ.size() << std::endl;
 }
 //---------------------------------------------------------------------------
 double RooModifiedBreitWigner::GetValue(double x, const std::vector<double> &X, const std::vector<double> &Y) const

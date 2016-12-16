@@ -47,7 +47,7 @@ Double_t RooMeow::evaluate() const
    if(Top < 1e-6 || Bottom < 1e-6)
       return 1e-6;
 
-   cout << "Evaluate: " << Top << " " << Bottom << endl;
+   std::cout << "Evaluate: " << Top << " " << Bottom << std::endl;
 
    return Top / Bottom;
 }

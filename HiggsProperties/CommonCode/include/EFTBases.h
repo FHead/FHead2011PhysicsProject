@@ -10,6 +10,7 @@ class HiggsBasis;
 class WarsawBasis;
 class LoopBasis;
 class LoopBasis2;
+class ExtendedAVVBasis;
 
 std::ostream &operator <<(std::ostream &out, AVVBasis &A);
 std::ostream &operator <<(std::ostream &out, HiggsBasis &H);
@@ -113,6 +114,39 @@ public:
    LoopBasis2();
    LoopBasis2(double L[8]);
    LoopBasis2(const InterpretationCoefficients &C);
+   void Print(std::ostream &out);
+};
+
+class ExtendedAVVBasis
+{
+public:
+   double A1ZZ;
+   double A2ZZ;
+   double A3ZZ;
+   double A4ZZ;
+   double A1ZV;
+   double A2ZV;
+   double A3ZV;
+   double A4ZV;
+   double A1ZA;
+   double A2ZA;
+   double A3ZA;
+   double A4ZA;
+   double A1VV;
+   double A2VV;
+   double A3VV;
+   double A4VV;
+   double A1VA;
+   double A2VA;
+   double A3VA;
+   double A4VA;
+   double A1AA;
+   double A2AA;
+   double A3AA;
+   double A4AA;
+public:
+   ExtendedAVVBasis();
+   ExtendedAVVBasis(double A[24]);
    void Print(std::ostream &out);
 };
 

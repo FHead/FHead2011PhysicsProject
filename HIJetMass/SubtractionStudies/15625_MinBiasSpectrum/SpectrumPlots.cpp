@@ -79,7 +79,9 @@ int main(int argc, char *argv[])
 
       HN.Fill(0);
 
-      double EventRho = GetRho(MRho.EtaMax, MRho.Rho, 0);
+      double EventRho = -1;
+      if(MRho.EtaMax->size() > 0 && MRho.Rho->size() > 0)
+         EventRho = GetRho(MRho.EtaMax, MRho.Rho, 0);
 
       rho = EventRho;
 

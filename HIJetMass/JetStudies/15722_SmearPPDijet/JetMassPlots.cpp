@@ -43,9 +43,9 @@ double GetPresample();
 
 int main(int argc, char *argv[])
 {
-   if(argc != 11 && argc != 12 && argc != 13)
+   if(argc != 11 && argc != 12 && argc != 14)
    {
-      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax RhoMultiplier GhostDistance Smear MBMultiplier Range ReuseRate Mod10" << endl;
+      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax RhoMultiplier GhostDistance Smear MBMultiplier Range ReuseRate Mod ModBase" << endl;
       return -1;
    }
 
@@ -61,42 +61,45 @@ int main(int argc, char *argv[])
    double MBMultiplier = atof(argv[9]);
    double Range = atof(argv[10]);
 
+   bool IsData = IsDataFromTag(Tag);
+   bool IsPP = IsPPFromTag(Tag);
+
+   if(IsData == true)
+      cerr << "I'd be glad to run on data for this study" << endl;
+
    int ReuseRate = 1;
    if(argc >= 12)
       ReuseRate = atoi(argv[11]);
 
-   int Mod10 = -1;   // -1 = don't use
+   int Mod = -1;   // -1 = don't use
+   int ModBase = -1;
    if(argc >= 13)
-      Mod10 = atoi(argv[12]);
+   {
+      Mod = atoi(argv[12]);
+      ModBase = atoi(argv[13]);
+   }
 
    DataHelper DHFile("SimpleFitParameters.dh");
 
    DataHelper RhoDHFile("RhoDatabase.dh");
    string RhoTag = "AA6Dijet";
-   double CentralityMin = 0;
-   double CentralityMax = 10;
+
+   if(IsData == true)
+      RhoTag = "AAData";
 
    double CentralityA[100] = {0};
    double CentralityB[100] = {0};
    double CentralityC[100] = {0};
    double CentralityIntegral[100] = {0};
    double MaxCentralityIntegral = 0;
-   for(int i = 0; i < 100; i++)
+   for(int i = 0; i < 99; i++)
    {
-      CentralityA[i] = RhoDHFile[RhoTag][Form("C%02d_A")].GetDouble();
-      CentralityB[i] = RhoDHFile[RhoTag][Form("C%02d_B")].GetDouble();
-      CentralityC[i] = RhoDHFile[RhoTag][Form("C%02d_C")].GetDouble();
+      CentralityA[i] = RhoDHFile[RhoTag][Form("C%02d_A", i)].GetDouble();
+      CentralityB[i] = RhoDHFile[RhoTag][Form("C%02d_B", i)].GetDouble();
+      CentralityC[i] = RhoDHFile[RhoTag][Form("C%02d_C", i)].GetDouble();
       CentralityIntegral[i] = CentralityA[i] * CentralityC[i] * sqrt(2 * PI);
       if(CentralityIntegral[i] > MaxCentralityIntegral)
          MaxCentralityIntegral = CentralityIntegral[i];
-   }
-
-   bool IsData = IsDataFromTag(Tag);
-   bool IsPP = IsPPFromTag(Tag);
-
-   if(IsData == true)
-   {
-      cerr << "I'd be glad to run on data for this study" << endl;
    }
 
    TFile InputFile(Input.c_str());
@@ -204,7 +207,7 @@ int main(int argc, char *argv[])
    {
       if(ReuseRate <= 1 || ReuseCount % ReuseRate == 0)
          iEntry = iEntry + 1;
-      if(Mod10 >= 0 && Mod10 < 10 && iEntry % 10 != Mod10)
+      if(Mod >= 0 && Mod < ModBase && iEntry % 50 != Mod)
          continue;
 
       if(EntryCount <= 250 || iEntry % (EntryCount / 300) == 0)
@@ -263,11 +266,14 @@ int main(int argc, char *argv[])
          bool CentralityDone = false;
          while(CentralityDone == false)
          {
-            Centrality = int(DrawRandom(0, 100));
+            Centrality = int(DrawRandom(0, 80));
             if(DrawRandom(0, 1) < CentralityIntegral[Centrality] / MaxCentralityIntegral)
                CentralityDone = true;
          }
-         Rho = DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]) * RhoMultiplier;
+         do
+         {
+            Rho = DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]) * RhoMultiplier;
+         } while(Rho < 0);
          
          TreeRho = Rho;
          TreeCentrality = Centrality;

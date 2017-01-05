@@ -13,6 +13,7 @@ using namespace fastjet;
 #include "TH2D.h"
 
 #include "Code/TauHelperFunctions2.h"
+#include "ProgressBar.h"
 
 #include "Messenger.h"
 #include "BasicUtilities.h"
@@ -23,7 +24,7 @@ double GetDPhi(double Phi1, double Phi2);
 
 int main()
 {
-   TFile File("HiForestAOD_999.root");
+   TFile File("HiForest_2.root");
 
    HiEventTreeMessenger MHiEvent(File);
    JetTreeMessenger MJet(File);
@@ -53,8 +54,15 @@ int main()
    int Count = 0;
 
    int EntryCount = MHiEvent.Tree->GetEntries();
+   ProgressBar Bar(cout, EntryCount);
+   Bar.SetStyle(2);
+
    for(int iE = 0; iE < EntryCount; iE++)
    {
+      Bar.Update(iE);
+      if(EntryCount < 500 || (iE % (EntryCount / 300)) == 0)
+         Bar.Print();
+
       MHiEvent.GetEntry(iE);
       MJet.GetEntry(iE);
       MPF.GetEntry(iE);
@@ -97,7 +105,9 @@ int main()
 
       for(int i = 0; i < (int)SDJets.size(); i++)
       {
-         if(SDJets[i].perp() < 10)
+         if(SDJets[i].perp() < 50)
+            continue;
+         if(SDJets[i].eta() < -2 || SDJets[i].eta() > 2)
             continue;
 
          vector<Node *> Nodes;
@@ -160,6 +170,10 @@ int main()
       // if(Count >= 20)
       //    break;
    }
+
+   Bar.Update(EntryCount);
+   Bar.Print();
+   Bar.PrintLine();
 
    OutputTree.Write();
 

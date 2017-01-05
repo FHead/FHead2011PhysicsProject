@@ -9,12 +9,17 @@ using namespace fastjet;
 
 #include "TFile.h"
 #include "TTree.h"
+#include "TH1D.h"
+#include "TH2D.h"
 
 #include "Code/TauHelperFunctions2.h"
 
 #include "Messenger.h"
 #include "BasicUtilities.h"
 #include "CATree.h"
+
+int main();
+double GetDPhi(double Phi1, double Phi2);
 
 int main()
 {
@@ -45,6 +50,8 @@ int main()
    OutputTree.Branch("SDPhi", &SDPhi, "SDPhi/D");
    OutputTree.Branch("SDMass", &SDMass, "SDMass/D");
 
+   int Count = 0;
+
    int EntryCount = MHiEvent.Tree->GetEntries();
    for(int iE = 0; iE < EntryCount; iE++)
    {
@@ -65,6 +72,7 @@ int main()
       double GhostArea = 0.0005;
       AreaDefinition AreaDef(active_area_explicit_ghosts, GhostedAreaSpec(6.0, 1, GhostArea));
       ClusterSequenceArea Sequence(Particles, Definition, AreaDef);
+      // ClusterSequence Sequence(Particles, Definition);
       vector<PseudoJet> Jets = Sequence.inclusive_jets();
 
       vector<PseudoJet> NewJets(Jets.size());
@@ -73,7 +81,7 @@ int main()
          double rho = GetRho(MRho.EtaMax, MRho.Rho, Jets[i].eta());
          double rhom = GetRho(MRho.EtaMax, MRho.RhoM, Jets[i].eta());
          contrib::ConstituentSubtractor Subtractor(rho, rhom);
-         // Subtractor.set_alpha(1);  // optional
+         Subtractor.set_alpha(1);  // optional
          // subtractor.set_max_deltaR(2);  // optional
          NewJets[i] = Subtractor(Jets[i]);
       }
@@ -118,19 +126,39 @@ int main()
          Phi = Groomed->P.GetPhi();
          Mass = Groomed->P.GetMass();
 
-         contrib::SoftDrop SD(0.0, 0.1);
-         PseudoJet SDJet = SD(SDJets[i]);
+         // contrib::SoftDrop SD(0.0, 0.1);
+         // PseudoJet SDJet = SD(NewJets[i]);
 
-         SDPT = SDJet.perp();
-         SDEta = SDJet.eta();
-         SDPhi = SDJet.phi();
-         SDMass = SDJet.m();
+         // SDPT = SDJet.perp();
+         // SDEta = SDJet.eta();
+         // SDPhi = SDJet.phi();
+         // SDMass = SDJet.m();
          // sd_jet.structure_of<contrib::SoftDrop>().mu();
 
          OutputTree.Fill();
 
+         if(JetPT > 80 && PT / JetPT > 0.99 && abs(Eta) < 2 && Count < 10)
+         {
+            Count = Count + 1;
+
+            TH2D H1(Form("H1_%d", Count), "", 100, -0.5, 0.5, 100, -0.5, 0.5);
+            TH2D H2(Form("H2_%d", Count), "", 100, -0.5, 0.5, 100, -0.5, 0.5);
+
+            vector<PseudoJet> Constituents = Jets[i].constituents();
+            for(int j = 0; j < (int)Constituents.size(); j++)
+               H1.Fill(Constituents[j].eta() - Jets[i].eta(), GetDPhi(Constituents[j].phi(), Jets[i].phi()), Constituents[j].perp());
+            for(int j = 0; j < (int)Candidates.size(); j++)
+               H2.Fill(Candidates[j].eta() - NewJets[i].eta(), GetDPhi(Candidates[j].phi(), NewJets[i].phi()), Candidates[j].perp());
+
+            H1.Write();
+            H2.Write();
+         }
+
          delete Nodes[0];
       }
+
+      // if(Count >= 20)
+      //    break;
    }
 
    OutputTree.Write();
@@ -142,6 +170,15 @@ int main()
    return 0;
 }
 
+double GetDPhi(double Phi1, double Phi2)
+{
+   double DPhi = Phi1 - Phi2;
+   while(DPhi < -PI)
+      DPhi = DPhi + 2 * PI;
+   while(DPhi >= +PI)
+      DPhi = DPhi - 2 * PI;
+   return DPhi;
+}
 
 
 

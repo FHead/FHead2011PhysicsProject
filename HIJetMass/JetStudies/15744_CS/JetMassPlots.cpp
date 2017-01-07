@@ -237,7 +237,9 @@ int main(int argc, char *argv[])
 
       for(int iJ = 0; iJ < MJet.JetCount; iJ++)
       {
-         if(MJet.JetEta[iJ] < -1.3 || MJet.JetEta[iJ] > 1.3)
+         if(MJet.JetEta[iJ] < -1.5 || MJet.JetEta[iJ] > 1.5)
+            continue;
+         if(MJet.JetPT[iJ] < 50)
             continue;
 
          FourVector JetP;
@@ -284,14 +286,14 @@ int main(int argc, char *argv[])
          HRho.Fill(Rho);
 
          // Step 1 - get all PF candidates within range
-         vector<FourVector> Candidates;
+         vector<PseudoJet> Candidates;
          FourVector TotalStuffInJet;
          for(int i = 0; i < MPF.ID->size(); i++)
          {
             FourVector P;
             P.SetPtEtaPhi((*MPF.PT)[i], (*MPF.Eta)[i], (*MPF.Phi)[i]);
             if(GetDR(P, JetP) < Range)
-               Candidates.push_back(P);
+               Candidates.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
             if(GetDR(P, JetP) < 0.4)
                TotalStuffInJet = TotalStuffInJet + P;
          }
@@ -320,7 +322,7 @@ int main(int argc, char *argv[])
 
             FourVector P;
             P.SetPtEtaPhi(PT, MJet.JetEta[iJ] + DEta, MJet.JetPhi[iJ] + DPhi);
-            Candidates.push_back(P);
+            Candidates.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
 
             if(GetDR(P.GetEta(), P.GetPhi(), MJet.JetEta[iJ], MJet.JetPhi[iJ]) < 0.4)
                TotalPTInJet = TotalPTInJet + P.GetPT();
@@ -328,16 +330,10 @@ int main(int argc, char *argv[])
          TreeTotalPTInJet = TotalPTInJet;
          
          // Step 3 - do pileup subtraction algorithm - via fastjet
-         vector<PseudoJet> Particles;
-         for(int i = 0; i < (int)Candidates.size(); i++)
-         {
-            FourVector P = Candidates[i];
-            Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
-         }
          JetDefinition Definition(antikt_algorithm, 0.4);
          double GhostArea = GhostDistance * GhostDistance;
          AreaDefinition AreaDef(active_area_explicit_ghosts, GhostedAreaSpec(6.0, 1, GhostArea));
-         ClusterSequenceArea Sequence(Particles, Definition, AreaDef);
+         ClusterSequenceArea Sequence(Candidates, Definition, AreaDef);
          vector<PseudoJet> JetsWithGhosts = Sequence.inclusive_jets();
 
          vector<PseudoJet> CSJets(JetsWithGhosts.size());
@@ -406,6 +402,8 @@ int main(int argc, char *argv[])
             P[3] = Constituents[i].pz();
             GoodCandidatesBest.push_back(P);
          }
+
+         // cout << GoodCandidates.size() << " " << GoodCandidatesBest.size() << endl;
 
          HJetPTComparison.Fill(MJet.JetPT[iJ], NewJetP.GetPT());
 

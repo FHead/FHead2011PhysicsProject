@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
       {
          if(MJet.JetEta[iJ] < -1.5 || MJet.JetEta[iJ] > 1.5)
             continue;
-         if(MJet.JetPT[iJ] < 50)
+         if(MJet.JetPT[iJ] < 10)
             continue;
 
          FourVector JetP;
@@ -275,6 +275,7 @@ int main(int argc, char *argv[])
             if(DrawRandom(0, 1) < CentralityIntegral[Centrality] / MaxCentralityIntegral)
                CentralityDone = true;
          }
+
          do
          {
             Rho = DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]) * RhoMultiplier;

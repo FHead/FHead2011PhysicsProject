@@ -19,12 +19,18 @@ using namespace fastjet;
 #include "BasicUtilities.h"
 #include "CATree.h"
 
-int main();
+int main(int argc, char *argv[]);
 double GetDPhi(double Phi1, double Phi2);
 
-int main()
+int main(int argc, char *argv[])
 {
-   TFile File("HiForest_2.root");
+   if(argc != 3)
+   {
+      cerr << "Usage: " << argv[0] << " Input Output" << endl;
+      return -1;
+   }
+
+   TFile File(argv[1]);
 
    HiEventTreeMessenger MHiEvent(File);
    JetTreeMessenger MJet(File);
@@ -35,7 +41,7 @@ int main()
    if(MHiEvent.Tree == NULL)
       return -1;
 
-   TFile OutputFile("OutputIV.root", "RECREATE");
+   TFile OutputFile(argv[2], "RECREATE");
 
    TTree OutputTree("T", "T");
 

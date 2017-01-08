@@ -61,7 +61,7 @@ int main()
 
    int Count = 0;
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
+   int EntryCount = MHiEvent.Tree->GetEntries();
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(2);
 
@@ -87,7 +87,7 @@ int main()
          Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
       }
       JetDefinition Definition(antikt_algorithm, 0.4);
-      double GhostArea = 0.0005;
+      double GhostArea = 0.005;
       AreaDefinition AreaDef(active_area_explicit_ghosts, GhostedAreaSpec(6.0, 1, GhostArea));
       ClusterSequenceArea Sequence(Particles, Definition, AreaDef);
       // ClusterSequence Sequence(Particles, Definition);

@@ -9,3 +9,6 @@ CompileRootMacro CSCheckPartII.cpp RunCheckPartII -I ../../CommonCode/include ..
 CompileRootMacro CSCheckPartIII.cpp RunCheckPartIII -I ../../CommonCode/include ../../CommonCode/library/* \
    `$FASTJET/fastjet-config --libs` `$FASTJET/fastjet-config --cxxflags` \
    -I$FASTCONTRIB/include $FASTCONTRIB/lib/*.a
+CompileRootMacro CSCheckPartIV.cpp RunCheckPartIV -I ../../CommonCode/include ../../CommonCode/library/* \
+   `$FASTJET/fastjet-config --libs` `$FASTJET/fastjet-config --cxxflags` \
+   -I$FASTCONTRIB/include $FASTCONTRIB/lib/*.a

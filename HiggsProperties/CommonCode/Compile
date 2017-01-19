@@ -114,6 +114,22 @@ echo g++ source/CalculateME_Part45.cpp -o library/CalculateME_Part45.o -c -I./in
 g++ source/CalculateME_Part45.cpp -o library/CalculateME_Part45.o -c -I./include -O2 -I$RootMacrosBase/
 echo g++ source/CalculateME_Part46.cpp -o library/CalculateME_Part46.o -c -I./include -O2 -I$RootMacrosBase/
 g++ source/CalculateME_Part46.cpp -o library/CalculateME_Part46.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part47.cpp -o library/CalculateME_Part47.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part47.cpp -o library/CalculateME_Part47.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part48.cpp -o library/CalculateME_Part48.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part48.cpp -o library/CalculateME_Part48.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part49.cpp -o library/CalculateME_Part49.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part49.cpp -o library/CalculateME_Part49.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part50.cpp -o library/CalculateME_Part50.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part50.cpp -o library/CalculateME_Part50.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part51.cpp -o library/CalculateME_Part51.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part51.cpp -o library/CalculateME_Part51.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part52.cpp -o library/CalculateME_Part52.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part52.cpp -o library/CalculateME_Part52.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part53.cpp -o library/CalculateME_Part53.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part53.cpp -o library/CalculateME_Part53.o -c -I./include -O2 -I$RootMacrosBase/
+echo g++ source/CalculateME_Part54.cpp -o library/CalculateME_Part54.o -c -I./include -O2 -I$RootMacrosBase/
+g++ source/CalculateME_Part54.cpp -o library/CalculateME_Part54.o -c -I./include -O2 -I$RootMacrosBase/
 echo g++ source/CalculateZAME_Part1.cpp -o library/CalculateZAME_Part1.o -c -I./include -O2 -I$RootMacrosBase/
 g++ source/CalculateZAME_Part1.cpp -o library/CalculateZAME_Part1.o -c -I./include -O2 -I$RootMacrosBase/
 echo g++ source/CalculateZAME_Part2.cpp -o library/CalculateZAME_Part2.o -c -I./include -O2 -I$RootMacrosBase/

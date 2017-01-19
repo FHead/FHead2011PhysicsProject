@@ -390,6 +390,15 @@ double CalculateSpin1XVV_EEEE_RI_15762(LeptonVectors &Leptons, ExtendedAVVBasis 
 double CalculateSpin1XVV_EEEE_IR_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
 double CalculateSpin1XVV_EEEE_II_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
 //---------------------------------------------------------------------------
+double CalculateSpin2XVV_EEMM_RR_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin2XVV_EEMM_RI_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin2XVV_EEMM_IR_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin2XVV_EEMM_II_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin2XVV_EEEE_RR_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin2XVV_EEEE_RI_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin2XVV_EEEE_IR_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin2XVV_EEEE_II_15764(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+//---------------------------------------------------------------------------
 
 
 

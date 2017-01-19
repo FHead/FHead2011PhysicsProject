@@ -372,6 +372,24 @@ double CalculateA1LQZZIA3AAISignal4e(LeptonVectors &Leptons);
 //---------------------------------------------------------------------------
 double CalculateARARWithZPrime15714(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
 //---------------------------------------------------------------------------
+double CalculateXVV_EEMM_RR_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateXVV_EEMM_RI_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateXVV_EEMM_IR_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateXVV_EEMM_II_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateXVV_EEEE_RR_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateXVV_EEEE_RI_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateXVV_EEEE_IR_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateXVV_EEEE_II_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+//---------------------------------------------------------------------------
+double CalculateSpin1XVV_EEMM_RR_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin1XVV_EEMM_RI_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin1XVV_EEMM_IR_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin1XVV_EEMM_II_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin1XVV_EEEE_RR_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin1XVV_EEEE_RI_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin1XVV_EEEE_IR_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+double CalculateSpin1XVV_EEEE_II_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P);
+//---------------------------------------------------------------------------
 
 
 

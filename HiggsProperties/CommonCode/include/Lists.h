@@ -9,7 +9,7 @@ using namespace std;
 #include "AngleConversion.h"
 #include "CalculateME.h"
 //---------------------------------------------------------------------------
-#include "Code/TauHelperFunctions2.h"
+#include "Code/TauHelperFunctions3.h"
 //---------------------------------------------------------------------------
 vector<string> GetHLLSignalSuffixList();
 vector<string> GetVffSignalSuffixList();

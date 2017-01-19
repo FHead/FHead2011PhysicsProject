@@ -8,7 +8,7 @@
 #include <ostream>
 #include <iostream>
 //----------------------------------------------------------------------------
-#include "Code/TauHelperFunctions2.h"
+#include "Code/TauHelperFunctions3.h"
 //----------------------------------------------------------------------------
 struct EventParameters;
 struct ZAEventParameters;
@@ -25,12 +25,12 @@ EventParameters ConvertVectorsToAngles(const LeptonVectors &Leptons,
 LeptonVectors ConvertAnglesToVectorsRoberto(const EventParameters &Angles);
 LeptonVectors ConvertAnglesToVectorsRoberto(const EventParameters &Angles, double HiggsPT, double HiggsEta);
 ZALeptonVectors ConvertAnglesToVectorsRoberto(const ZAEventParameters &Angles);
-EventParameters ConvertVectorsToAnglesRoberto(const LeptonVectors &Leptons);
-ZAEventParameters ConvertVectorsToAnglesRoberto(const ZALeptonVectors &Leptons);
+EventParameters ConvertVectorsToAnglesRoberto(LeptonVectors &Leptons);
+ZAEventParameters ConvertVectorsToAnglesRoberto(ZALeptonVectors &Leptons);
 std::ostream &operator <<(std::ostream &out, const EventParameters &Parameters);
-std::ostream &operator <<(std::ostream &out, const LeptonVectors &Leptons);
+std::ostream &operator <<(std::ostream &out, LeptonVectors &Leptons);
 std::ostream &operator <<(std::ostream &out, const ZAEventParameters &Parameters);
-std::ostream &operator <<(std::ostream &out, const ZALeptonVectors &Leptons);
+std::ostream &operator <<(std::ostream &out, ZALeptonVectors &Leptons);
 void MultiplyFront(double A[3][3], double B[3][3]);
 void MultiplyFrontX(double A[3][3], double B[3][3]);
 void MultiplyFrontZ(double A[3][3], double B[3][3]);

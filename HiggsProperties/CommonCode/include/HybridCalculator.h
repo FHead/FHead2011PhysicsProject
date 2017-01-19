@@ -2,7 +2,7 @@
 #ifndef HybridCalculator_H_KASJDGKASIKGJAHNIWJHNISDHIFASDF
 #define HybridCalculator_H_KASJDGKASIKGJAHNIWJHNISDHIFASDF
 //----------------------------------------------------------------------------
-#include "TauHelperFunctions2.h"
+#include "TauHelperFunctions3.h"
 //----------------------------------------------------------------------------
 #include "AngleConversion.h"
 //----------------------------------------------------------------------------

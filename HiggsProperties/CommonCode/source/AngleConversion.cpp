@@ -5,7 +5,7 @@
 #include <ostream>
 #include <iostream>
 //----------------------------------------------------------------------------
-#include "Code/TauHelperFunctions2.h"
+#include "Code/TauHelperFunctions3.h"
 //----------------------------------------------------------------------------
 #include "AngleConversion.h"
 #include "Constants.h"
@@ -316,7 +316,7 @@ LeptonVectors ConvertAnglesToVectors(const EventParameters &Angles, double Higgs
    return Result;
 }
 //----------------------------------------------------------------------------
-EventParameters ConvertVectorsToAngles(const LeptonVectors &Leptons, bool CenterFrame)
+EventParameters ConvertVectorsToAngles(LeptonVectors &Leptons, bool CenterFrame)
 {
    // Some short-hand notation
    FourVector L11 = Leptons.Lepton11;
@@ -637,7 +637,7 @@ ZALeptonVectors ConvertAnglesToVectorsRoberto(const ZAEventParameters &Angles)
    return Result;
 }
 //----------------------------------------------------------------------------
-EventParameters ConvertVectorsToAnglesRoberto(const LeptonVectors &Leptons)
+EventParameters ConvertVectorsToAnglesRoberto(LeptonVectors &Leptons)
 {
    FourVector L11 = Leptons.Lepton11;
    FourVector L12 = Leptons.Lepton12;
@@ -733,7 +733,7 @@ EventParameters ConvertVectorsToAnglesRoberto(const LeptonVectors &Leptons)
    return Result;
 }
 //----------------------------------------------------------------------------
-ZAEventParameters ConvertVectorsToAnglesRoberto(const ZALeptonVectors &Leptons)
+ZAEventParameters ConvertVectorsToAnglesRoberto(ZALeptonVectors &Leptons)
 {
    FourVector L1 = Leptons.Lepton1;
    FourVector L2 = Leptons.Lepton2;
@@ -827,7 +827,7 @@ std::ostream &operator <<(std::ostream &out, const EventParameters &Value)
    return out;
 }
 //----------------------------------------------------------------------------
-std::ostream &operator <<(std::ostream &out, const LeptonVectors &Leptons)
+std::ostream &operator <<(std::ostream &out, LeptonVectors &Leptons)
 {
    out << "Vectors of the 4 leptons = " << std::endl;
    out << "   L11 = " << Leptons.Lepton11 << " " << Leptons.Lepton11.GetPT() << " " << Leptons.Lepton11.GetEta() << std::endl;
@@ -854,7 +854,7 @@ std::ostream &operator <<(std::ostream &out, const ZAEventParameters &Value)
    return out;
 }
 //----------------------------------------------------------------------------
-std::ostream &operator <<(std::ostream &out, const ZALeptonVectors &Leptons)
+std::ostream &operator <<(std::ostream &out, ZALeptonVectors &Leptons)
 {
    out << "Vectors of the leptons and photon = " << std::endl;
    out << "   L1 =     " << Leptons.Lepton1 << std::endl;

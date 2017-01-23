@@ -89,6 +89,156 @@ void BuildCATree(std::vector<Node *> &Nodes)
    }
 }
 
+void BuildCATree2(std::vector<Node *> &Nodes)
+{
+   std::vector<std::pair<double, int>> NodeEta(Nodes.size());
+   for(int i = 0; i < (int)Nodes.size(); i++)
+      NodeEta[i] = std::pair<double, int>(Nodes[i]->P.GetEta(), i);
+   std::sort(NodeEta.begin(), NodeEta.end());
+
+   while(Nodes.size() > 1)
+   {
+      NodePair Closest = FindClosestPair(Nodes, NodeEta);
+
+      int ID1 = Closest.ID1;
+      int ID2 = Closest.ID2;
+      if(ID1 > ID2)
+         std::swap(ID1, ID2);
+
+      // Now make a new node
+      Node *NewNode = new Node(Nodes[ID1], Nodes[ID2]);
+      Nodes[ID1] = NewNode;
+      Nodes.erase(Nodes.begin() + ID2);
+
+      NodeEta.pop_back();
+      for(int i = 0; i < (int)Nodes.size(); i++)
+         NodeEta[i] = std::pair<double, int>(Nodes[i]->P.GetEta(), i);
+      std::sort(NodeEta.begin(), NodeEta.end());
+   }
+}
+
+NodePair FindClosestPair(std::vector<Node *> &Nodes, std::vector<std::pair<double, int>> &NodeEta)
+{
+   if(NodeEta.size() < 2)
+   {
+      NodePair Nonsense;
+      Nonsense.ID1 = -1;
+      Nonsense.ID2 = -1;
+      Nonsense.N1 = NULL;
+      Nonsense.N2 = NULL;
+      Nonsense.DR2 = -1;
+      Nonsense.DEta = 0;
+      Nonsense.DPhi = 0;
+      return Nonsense;
+   }
+
+   if(NodeEta.size() <= 6)
+   {
+      // brute-force
+
+      int IndexL = 0, IndexR = 1;
+      double BestDR2 = -1;
+
+      for(int i = 0; i < (int)NodeEta.size(); i++)
+      {
+         for(int j = i + 1; j < (int)NodeEta.size(); j++)
+         {
+            double DR = GetDR(Nodes[NodeEta[i].second]->P, Nodes[NodeEta[j].second]->P);
+            double DR2 = DR * DR;
+
+            if(DR2 < BestDR2 || BestDR2 < 0)
+            {
+               IndexL = NodeEta[i].second;
+               IndexR = NodeEta[j].second;
+               BestDR2 = DR2;
+            }
+         }
+      }
+
+      NodePair Result;
+      Result.ID1 = IndexL;
+      Result.ID2 = IndexR;
+      Result.N1 = Nodes[IndexL];
+      Result.N2 = Nodes[IndexR];
+      Result.DR2 = BestDR2;
+      // Result.DEta = GetDEta(Nodes[N1]->P, Nodes[N2]->P);
+      // Result.DPhi = GetDPhi(Nodes[N1]->P, Nodes[N2]->P);
+      return Result;
+   }
+
+   // recursion
+   int Size = NodeEta.size();
+   std::vector<std::pair<double, int>> NodeEtaLeft(NodeEta.begin(), NodeEta.begin() + Size / 2);
+   std::vector<std::pair<double, int>> NodeEtaRight(NodeEta.begin() + Size / 2, NodeEta.end());
+   
+   NodePair LeftPair = FindClosestPair(Nodes, NodeEtaLeft);
+   NodePair RightPair = FindClosestPair(Nodes, NodeEtaRight);
+
+   double BestDR = std::sqrt(std::min(LeftPair.DR2, RightPair.DR2));
+
+   int Begin = -1, End = -1;
+   for(int i = 0; i < Size / 2; i++)
+   {
+      if(NodeEta[Size/2-1].first - NodeEta[i].first <= BestDR)
+      {
+         Begin = i;
+         break;
+      }
+   }
+   for(int i = Size / 2; i < Size; i++)
+   {
+      if(NodeEta[i].first - NodeEta[Size/2].first > BestDR)
+      {
+         End = i;
+         break;
+      }
+   }
+   if(Begin == -1)
+      Begin = 0;
+   if(End == -1)
+      End = Size - 1;
+
+   int IndexL = Size / 2, IndexR = Size / 2 + 1;
+   double BestDistance2 = -1;
+
+   for(int i = Begin; i < Size / 2; i++)
+   {
+      for(int j = Size / 2; j <= End; j++)
+      {
+         if(NodeEta[j].first - NodeEta[i].first > BestDR)
+            continue;
+
+         double DR = GetDR(Nodes[NodeEta[i].second]->P, Nodes[NodeEta[j].second]->P);
+         double DR2 = DR * DR;
+
+         if(DR2 < BestDistance2 || BestDistance2 < 0)
+         {
+            IndexL = NodeEta[i].second;
+            IndexR = NodeEta[j].second;
+            BestDistance2 = DR2;
+         }
+      }
+   }
+
+   if(BestDistance2 > BestDR * BestDR)
+   {
+      if(LeftPair.DR2 < RightPair.DR2)
+         return LeftPair;
+      else
+         return RightPair;
+   }
+
+   NodePair Result;
+   Result.ID1 = IndexL;
+   Result.ID2 = IndexR;
+   Result.N1 = Nodes[IndexL];
+   Result.N2 = Nodes[IndexR];
+   Result.DR2 = BestDistance2;
+   // Result.DEta = GetDEta(Nodes[IndexL]->P, Nodes[IndexR]->P);
+   // Result.DPhi = GetDPhi(Nodes[IndexL]->P, Nodes[IndexR]->P);
+   return Result;
+}
+
 Node *FindSDNode(Node *HeadNode, double ZCut, double Beta, double R0)
 {
    if(HeadNode == NULL)

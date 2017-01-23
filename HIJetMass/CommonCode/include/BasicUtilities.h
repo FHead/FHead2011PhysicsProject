@@ -12,6 +12,7 @@ double GetRho(std::vector<double> *EtaMax, std::vector<double> *Rho, double Eta)
 double GetCentrality(int Bin);
 bool IsDataFromTag(std::string Tag);
 bool IsPPFromTag(std::string Tag);
+bool IsPAFromTag(std::string Tag);
 template<class T, class U>
    std::vector<int> DRMatching(int BaseN, T BaseEta, T BasePhi,
       int TargetN, U TargetEta, U TargetPhi);

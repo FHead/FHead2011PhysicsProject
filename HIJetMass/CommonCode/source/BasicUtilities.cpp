@@ -52,6 +52,17 @@ bool IsPPFromTag(std::string Tag)
    return false;
 }
 
+bool IsPAFromTag(std::string Tag)
+{
+   if(Tag.find("PA") != std::string::npos)
+      return true;
+   if(Tag.find("pa") != std::string::npos)
+      return true;
+   if(Tag.find("pA") != std::string::npos)
+      return true;
+   return false;
+}
+
 template<class T, class U>
    std::vector<int> DRMatching(int BaseN, T BaseEta, T BasePhi,
       int TargetN, U TargetEta, U TargetPhi)

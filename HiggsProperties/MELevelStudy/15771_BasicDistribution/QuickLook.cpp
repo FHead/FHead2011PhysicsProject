@@ -17,6 +17,15 @@ int main(int argc, char *argv[])
    string FileName = "ddbar_PDF_to_2e2mu_LO_ForEff_13TeV_10to25GeV_1.root";
    string Tag = "ddbar_PDF_to_2e2mu_LO_ForEff_13TeV_10to25GeV_1";
 
+   if(argc != 3)
+   {
+      cerr << "Usage: " << argv[0] << " FileName Tag" << endl;
+      return -1;
+   }
+
+   FileName = argv[1];
+   Tag = argv[2];
+
    PdfFileHelper PdfFile("QuickLook_" + Tag + ".pdf");
 
    vector<string> Title(7);

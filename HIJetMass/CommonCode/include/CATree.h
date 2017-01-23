@@ -1,9 +1,13 @@
 #include <vector>
+#include <map>
 
-#include "Code/TauHelperFunctions2.h"
+#include "Code/TauHelperFunctions3.h"
 
 class Node;
+struct NodePair;
 void BuildCATree(std::vector<Node *> &Nodes);
+void BuildCATree2(std::vector<Node *> &Nodes);
+NodePair FindClosestPair(std::vector<Node *> &Nodes, std::vector<std::pair<double, int>> &NodeEta);
 Node *FindSDNode(Node *HeadNode, double ZCut = 0.1, double Beta = 0, double R0 = 0.4);
 
 class Node
@@ -20,5 +24,17 @@ public:
    Node(Node *n1, Node *n2);
    ~Node();
 };
+
+struct NodePair
+{
+   int ID1;
+   int ID2;
+   Node *N1;
+   Node *N2;
+   double DR2;
+   double DEta;
+   double DPhi;
+};
+
 
 

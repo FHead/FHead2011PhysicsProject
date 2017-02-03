@@ -21,4 +21,8 @@ MEArray GetHEFTFunctionListEE();
 MEArray GetHEFTFunctionListEM_ZAAZSeparate();
 MEArray GetHEFTFunctionListEE_ZAAZSeparate();
 //---------------------------------------------------------------------------
+typedef vector<vector<double (*)(LeptonVectors &, ZPrimeParameters &)> > MEArrayZPrime;
+MEArrayZPrime GetSpin0XVVFunctionListEM();
+MEArrayZPrime GetSpin0XVVFunctionListEE();
+//---------------------------------------------------------------------------
 #endif

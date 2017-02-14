@@ -90,6 +90,7 @@ public:
    void SetRecursiveMaxToleranceM1(std::vector<double> Value);
    void SetRecursiveMaxToleranceM2(std::vector<double> Value);
    void SetUseSmartCenter(bool Decision);
+   void SetZPrimeParameter(ZPrimeParameters &P);
 public:
    void PrintSettings();
    void PrintSettings(std::ostream &out);

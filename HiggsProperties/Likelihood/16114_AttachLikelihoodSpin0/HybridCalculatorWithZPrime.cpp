@@ -68,9 +68,9 @@ HybridCalculator::HybridCalculator()
 
    ZP.VMass = 9.46;
    ZP.VWidth = 1;
-   ZP.G1VL = 0.073348;
+   ZP.G1VL = -0.073348;
    ZP.G1VR = 0.073348;
-   ZP.G2VL = 0.073348;
+   ZP.G2VL = -0.073348;
    ZP.G2VR = 0.073348;
 }
 //----------------------------------------------------------------------------
@@ -132,6 +132,8 @@ HybridCalculator &HybridCalculator::operator =(const HybridCalculator &other)
    RecursiveMassIntegralM2Window = other.RecursiveMassIntegralM2Window;
 
    UseSmartCenter = other.UseSmartCenter;
+
+   ZP = other.ZP;
 
    return *this;
 }
@@ -636,6 +638,14 @@ void HybridCalculator::SetUseSmartCenter(bool Decision)
       std::cerr << "[HybridCalculator] Smart center set to " << TextBool(Decision) << std::endl;
 
    UseSmartCenter = Decision;
+}
+//----------------------------------------------------------------------------
+void HybridCalculator::SetZPrimeParameter(ZPrimeParameters &P)
+{
+   if(Verbosity >= VerboseLevel_Normal)
+      std::cerr << "[HybridCalculator] ZPrime parameter set." << std::endl;
+
+   ZP = P;
 }
 //----------------------------------------------------------------------------
 void HybridCalculator::PrintSettings()

@@ -471,7 +471,7 @@ EventParameters ConvertVectorsToAngles(LeptonVectors &Leptons, bool CenterFrame)
    return Result;
 }
 //----------------------------------------------------------------------------
-LeptonVectors ConvertAnglesToVectorsRoberto(const EventParameters &Angles)
+LeptonVectors ConvertAnglesToVectorsRoberto(const EventParameters Angles)
 {
    // Collect information
    double HMass = Angles.HMass;
@@ -637,7 +637,7 @@ ZALeptonVectors ConvertAnglesToVectorsRoberto(const ZAEventParameters &Angles)
    return Result;
 }
 //----------------------------------------------------------------------------
-EventParameters ConvertVectorsToAnglesRoberto(LeptonVectors &Leptons)
+EventParameters ConvertVectorsToAnglesRoberto(LeptonVectors Leptons)
 {
    FourVector L11 = Leptons.Lepton11;
    FourVector L12 = Leptons.Lepton12;

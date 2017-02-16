@@ -22,10 +22,10 @@ LeptonVectors ConvertAnglesToVectors(const EventParameters &Angles, double Higgs
    bool FrameChoice = 0);
 EventParameters ConvertVectorsToAngles(const LeptonVectors &Leptons,
    bool FrameChoice = 0);
-LeptonVectors ConvertAnglesToVectorsRoberto(const EventParameters &Angles);
+LeptonVectors ConvertAnglesToVectorsRoberto(const EventParameters Angles);
 LeptonVectors ConvertAnglesToVectorsRoberto(const EventParameters &Angles, double HiggsPT, double HiggsEta);
 ZALeptonVectors ConvertAnglesToVectorsRoberto(const ZAEventParameters &Angles);
-EventParameters ConvertVectorsToAnglesRoberto(LeptonVectors &Leptons);
+EventParameters ConvertVectorsToAnglesRoberto(LeptonVectors Leptons);
 ZAEventParameters ConvertVectorsToAnglesRoberto(ZALeptonVectors &Leptons);
 std::ostream &operator <<(std::ostream &out, const EventParameters &Parameters);
 std::ostream &operator <<(std::ostream &out, LeptonVectors &Leptons);

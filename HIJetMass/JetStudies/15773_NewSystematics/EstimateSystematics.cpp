@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 #include "TFile.h"
@@ -59,6 +60,12 @@ int main(int argc, char *argv[])
    TH1D HNominal_P3("HNominal_P3", ";mass/pt;a.u.", BIN, 0, 0.4);
    TH1D HNominal_P4("HNominal_P4", ";mass/pt;a.u.", BIN, 0, 0.4);
    TH1D HNominal_P5("HNominal_P5", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HNominalInt_P0("HNominalInt_P0", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HNominalInt_P1("HNominalInt_P1", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HNominalInt_P2("HNominalInt_P2", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HNominalInt_P3("HNominalInt_P3", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HNominalInt_P4("HNominalInt_P4", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HNominalInt_P5("HNominalInt_P5", ";mass/pt;a.u.", BIN, 0, 0.4);
 
    TH1D HModified_P0("HModified_P0", ";mass/pt;a.u.", BIN, 0, 0.4);
    TH1D HModified_P1("HModified_P1", ";mass/pt;a.u.", BIN, 0, 0.4);
@@ -66,95 +73,189 @@ int main(int argc, char *argv[])
    TH1D HModified_P3("HModified_P3", ";mass/pt;a.u.", BIN, 0, 0.4);
    TH1D HModified_P4("HModified_P4", ";mass/pt;a.u.", BIN, 0, 0.4);
    TH1D HModified_P5("HModified_P5", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HModifiedInt_P0("HModifiedInt_P0", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HModifiedInt_P1("HModifiedInt_P1", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HModifiedInt_P2("HModifiedInt_P2", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HModifiedInt_P3("HModifiedInt_P3", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HModifiedInt_P4("HModifiedInt_P4", ";mass/pt;a.u.", BIN, 0, 0.4);
+   TH1D HModifiedInt_P5("HModifiedInt_P5", ";mass/pt;a.u.", BIN, 0, 0.4);
 
    if(Type == "Normal")
    {
-      T1->Draw("JetMassPT>>HNominal_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
-      T1->Draw("JetMassPT>>HNominal_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
-      T1->Draw("JetMassPT>>HNominal_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
-      T1->Draw("JetMassPT>>HNominal_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
-      T1->Draw("JetMassPT>>HNominal_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
-      T1->Draw("JetMassPT>>HNominal_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominalInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominalInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominalInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominalInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominalInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominalInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominal_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominal_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominal_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominal_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominal_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominal_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500)");
 
-      T2->Draw("JetMassPT>>HModified_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
-      T2->Draw("JetMassPT>>HModified_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
-      T2->Draw("JetMassPT>>HModified_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
-      T2->Draw("JetMassPT>>HModified_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
-      T2->Draw("JetMassPT>>HModified_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
-      T2->Draw("JetMassPT>>HModified_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T2->Draw("JetMassPT>>HModifiedInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
+      T2->Draw("JetMassPT>>HModifiedInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
+      T2->Draw("JetMassPT>>HModifiedInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
+      T2->Draw("JetMassPT>>HModifiedInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
+      T2->Draw("JetMassPT>>HModifiedInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
+      T2->Draw("JetMassPT>>HModifiedInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T2->Draw("JetMassPT>>HModified_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140)");
+      T2->Draw("JetMassPT>>HModified_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160)");
+      T2->Draw("JetMassPT>>HModified_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180)");
+      T2->Draw("JetMassPT>>HModified_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200)");
+      T2->Draw("JetMassPT>>HModified_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300)");
+      T2->Draw("JetMassPT>>HModified_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500)");
    }
    if(Type == "PT")
    {
-      T1->Draw("JetMassPT>>HNominal_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
-      T1->Draw("JetMassPT>>HNominal_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
-      T1->Draw("JetMassPT>>HNominal_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
-      T1->Draw("JetMassPT>>HNominal_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
-      T1->Draw("JetMassPT>>HNominal_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
-      T1->Draw("JetMassPT>>HNominal_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominalInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominalInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominalInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominalInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominalInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominalInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominal_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominal_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominal_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominal_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominal_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominal_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500)");
 
-      T2->Draw("JetMassPT>>HModified_P0", "Baseline * (NewJetPT * 0.9 > 120 && NewJetPT * 0.9 < 140)");
-      T2->Draw("JetMassPT>>HModified_P1", "Baseline * (NewJetPT * 0.9 > 140 && NewJetPT * 0.9 < 160)");
-      T2->Draw("JetMassPT>>HModified_P2", "Baseline * (NewJetPT * 0.9 > 160 && NewJetPT * 0.9 < 180)");
-      T2->Draw("JetMassPT>>HModified_P3", "Baseline * (NewJetPT * 0.9 > 180 && NewJetPT * 0.9 < 200)");
-      T2->Draw("JetMassPT>>HModified_P4", "Baseline * (NewJetPT * 0.9 > 200 && NewJetPT * 0.9 < 300)");
-      T2->Draw("JetMassPT>>HModified_P5", "Baseline * (NewJetPT * 0.9 > 300 && NewJetPT * 0.9 < 500)");
+      T2->Draw("JetMassPT>>HModifiedInt_P0", "Baseline * (NewJetPT * 0.9 > 120 && NewJetPT * 0.9 < 140)");
+      T2->Draw("JetMassPT>>HModifiedInt_P1", "Baseline * (NewJetPT * 0.9 > 140 && NewJetPT * 0.9 < 160)");
+      T2->Draw("JetMassPT>>HModifiedInt_P2", "Baseline * (NewJetPT * 0.9 > 160 && NewJetPT * 0.9 < 180)");
+      T2->Draw("JetMassPT>>HModifiedInt_P3", "Baseline * (NewJetPT * 0.9 > 180 && NewJetPT * 0.9 < 200)");
+      T2->Draw("JetMassPT>>HModifiedInt_P4", "Baseline * (NewJetPT * 0.9 > 200 && NewJetPT * 0.9 < 300)");
+      T2->Draw("JetMassPT>>HModifiedInt_P5", "Baseline * (NewJetPT * 0.9 > 300 && NewJetPT * 0.9 < 500)");
+      T2->Draw("JetMassPT>>HModified_P0", "BaselineCut * (NewJetPT * 0.9 > 120 && NewJetPT * 0.9 < 140)");
+      T2->Draw("JetMassPT>>HModified_P1", "BaselineCut * (NewJetPT * 0.9 > 140 && NewJetPT * 0.9 < 160)");
+      T2->Draw("JetMassPT>>HModified_P2", "BaselineCut * (NewJetPT * 0.9 > 160 && NewJetPT * 0.9 < 180)");
+      T2->Draw("JetMassPT>>HModified_P3", "BaselineCut * (NewJetPT * 0.9 > 180 && NewJetPT * 0.9 < 200)");
+      T2->Draw("JetMassPT>>HModified_P4", "BaselineCut * (NewJetPT * 0.9 > 200 && NewJetPT * 0.9 < 300)");
+      T2->Draw("JetMassPT>>HModified_P5", "BaselineCut * (NewJetPT * 0.9 > 300 && NewJetPT * 0.9 < 500)");
    }
    if(Type == "Eta")
    {
-      T1->Draw("JetMassPT>>HNominal_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140) * (1 + (abs(NewJetEta) > 0.5))");
-      T1->Draw("JetMassPT>>HNominal_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160) * (1 + (abs(NewJetEta) > 0.5))");
-      T1->Draw("JetMassPT>>HNominal_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180) * (1 + (abs(NewJetEta) > 0.5))");
-      T1->Draw("JetMassPT>>HNominal_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200) * (1 + (abs(NewJetEta) > 0.5))");
-      T1->Draw("JetMassPT>>HNominal_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300) * (1 + (abs(NewJetEta) > 0.5))");
-      T1->Draw("JetMassPT>>HNominal_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominalInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominalInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominalInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominalInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominalInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominalInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominal_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominal_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominal_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominal_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominal_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300) * (1 + (abs(NewJetEta) > 0.5))");
+      T1->Draw("JetMassPT>>HNominal_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500) * (1 + (abs(NewJetEta) > 0.5))");
 
-      T2->Draw("JetMassPT>>HModified_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140) * (1 + (abs(NewJetEta) < 0.5))");
-      T2->Draw("JetMassPT>>HModified_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160) * (1 + (abs(NewJetEta) < 0.5))");
-      T2->Draw("JetMassPT>>HModified_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180) * (1 + (abs(NewJetEta) < 0.5))");
-      T2->Draw("JetMassPT>>HModified_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200) * (1 + (abs(NewJetEta) < 0.5))");
-      T2->Draw("JetMassPT>>HModified_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300) * (1 + (abs(NewJetEta) < 0.5))");
-      T2->Draw("JetMassPT>>HModified_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModifiedInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModifiedInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModifiedInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModifiedInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModifiedInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModifiedInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModified_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModified_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModified_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModified_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModified_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300) * (1 + (abs(NewJetEta) < 0.5))");
+      T2->Draw("JetMassPT>>HModified_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500) * (1 + (abs(NewJetEta) < 0.5))");
    }
    if(Type == "JER")
    {
-      T1->Draw("JetMassPT>>HNominal_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
-      T1->Draw("JetMassPT>>HNominal_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
-      T1->Draw("JetMassPT>>HNominal_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
-      T1->Draw("JetMassPT>>HNominal_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
-      T1->Draw("JetMassPT>>HNominal_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
-      T1->Draw("JetMassPT>>HNominal_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominalInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominalInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominalInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominalInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominalInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominalInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominal_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominal_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominal_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominal_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominal_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominal_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500)");
 
-      T2->Draw("JetMassPT>>HModified_P0", "Baseline * (NewJetPT * Smear > 120 && NewJetPT * Smear < 140)");
-      T2->Draw("JetMassPT>>HModified_P1", "Baseline * (NewJetPT * Smear > 140 && NewJetPT * Smear < 160)");
-      T2->Draw("JetMassPT>>HModified_P2", "Baseline * (NewJetPT * Smear > 160 && NewJetPT * Smear < 180)");
-      T2->Draw("JetMassPT>>HModified_P3", "Baseline * (NewJetPT * Smear > 180 && NewJetPT * Smear < 200)");
-      T2->Draw("JetMassPT>>HModified_P4", "Baseline * (NewJetPT * Smear > 200 && NewJetPT * Smear < 300)");
-      T2->Draw("JetMassPT>>HModified_P5", "Baseline * (NewJetPT * Smear > 300 && NewJetPT * Smear < 500)");
+      T2->Draw("JetMassPT>>HModifiedInt_P0", "Baseline * (NewJetPT * Smear > 120 && NewJetPT * Smear < 140)");
+      T2->Draw("JetMassPT>>HModifiedInt_P1", "Baseline * (NewJetPT * Smear > 140 && NewJetPT * Smear < 160)");
+      T2->Draw("JetMassPT>>HModifiedInt_P2", "Baseline * (NewJetPT * Smear > 160 && NewJetPT * Smear < 180)");
+      T2->Draw("JetMassPT>>HModifiedInt_P3", "Baseline * (NewJetPT * Smear > 180 && NewJetPT * Smear < 200)");
+      T2->Draw("JetMassPT>>HModifiedInt_P4", "Baseline * (NewJetPT * Smear > 200 && NewJetPT * Smear < 300)");
+      T2->Draw("JetMassPT>>HModifiedInt_P5", "Baseline * (NewJetPT * Smear > 300 && NewJetPT * Smear < 500)");
+      T2->Draw("JetMassPT>>HModified_P0", "BaselineCut * (NewJetPT * Smear > 120 && NewJetPT * Smear < 140)");
+      T2->Draw("JetMassPT>>HModified_P1", "BaselineCut * (NewJetPT * Smear > 140 && NewJetPT * Smear < 160)");
+      T2->Draw("JetMassPT>>HModified_P2", "BaselineCut * (NewJetPT * Smear > 160 && NewJetPT * Smear < 180)");
+      T2->Draw("JetMassPT>>HModified_P3", "BaselineCut * (NewJetPT * Smear > 180 && NewJetPT * Smear < 200)");
+      T2->Draw("JetMassPT>>HModified_P4", "BaselineCut * (NewJetPT * Smear > 200 && NewJetPT * Smear < 300)");
+      T2->Draw("JetMassPT>>HModified_P5", "BaselineCut * (NewJetPT * Smear > 300 && NewJetPT * Smear < 500)");
    }
    if(Type == "Smear")
    {
-      T1->Draw("JetMassPT/NewJetPT>>HNominal_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
-      T1->Draw("JetMassPT/NewJetPT>>HNominal_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
-      T1->Draw("JetMassPT/NewJetPT>>HNominal_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
-      T1->Draw("JetMassPT/NewJetPT>>HNominal_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
-      T1->Draw("JetMassPT/NewJetPT>>HNominal_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
-      T1->Draw("JetMassPT/NewJetPT>>HNominal_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominalInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominalInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominalInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominalInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominalInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominalInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominal_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominal_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominal_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominal_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominal_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominal_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500)");
 
       T2->SetAlias("SmearChange", "(exp(-ExcessPT*ExcessPT/(2*RMS*RMS*0.9*0.9)) / exp(-ExcessPT*ExcessPT/(2*RMS*RMS)))");
-      T2->Draw("JetMassPT>>HModified_P0", "Baseline * SmearChange * (NewJetPT > 120 && NewJetPT < 140)");
-      T2->Draw("JetMassPT>>HModified_P1", "Baseline * SmearChange * (NewJetPT > 140 && NewJetPT < 160)");
-      T2->Draw("JetMassPT>>HModified_P2", "Baseline * SmearChange * (NewJetPT > 160 && NewJetPT < 180)");
-      T2->Draw("JetMassPT>>HModified_P3", "Baseline * SmearChange * (NewJetPT > 180 && NewJetPT < 200)");
-      T2->Draw("JetMassPT>>HModified_P4", "Baseline * SmearChange * (NewJetPT > 200 && NewJetPT < 300)");
-      T2->Draw("JetMassPT>>HModified_P5", "Baseline * SmearChange * (NewJetPT > 300 && NewJetPT < 500)");
+      T2->Draw("JetMassPT>>HModifiedInt_P0", "Baseline * SmearChange * (NewJetPT > 120 && NewJetPT < 140)");
+      T2->Draw("JetMassPT>>HModifiedInt_P1", "Baseline * SmearChange * (NewJetPT > 140 && NewJetPT < 160)");
+      T2->Draw("JetMassPT>>HModifiedInt_P2", "Baseline * SmearChange * (NewJetPT > 160 && NewJetPT < 180)");
+      T2->Draw("JetMassPT>>HModifiedInt_P3", "Baseline * SmearChange * (NewJetPT > 180 && NewJetPT < 200)");
+      T2->Draw("JetMassPT>>HModifiedInt_P4", "Baseline * SmearChange * (NewJetPT > 200 && NewJetPT < 300)");
+      T2->Draw("JetMassPT>>HModifiedInt_P5", "Baseline * SmearChange * (NewJetPT > 300 && NewJetPT < 500)");
+      T2->Draw("JetMassPT>>HModified_P0", "BaselineCut * SmearChange * (NewJetPT > 120 && NewJetPT < 140)");
+      T2->Draw("JetMassPT>>HModified_P1", "BaselineCut * SmearChange * (NewJetPT > 140 && NewJetPT < 160)");
+      T2->Draw("JetMassPT>>HModified_P2", "BaselineCut * SmearChange * (NewJetPT > 160 && NewJetPT < 180)");
+      T2->Draw("JetMassPT>>HModified_P3", "BaselineCut * SmearChange * (NewJetPT > 180 && NewJetPT < 200)");
+      T2->Draw("JetMassPT>>HModified_P4", "BaselineCut * SmearChange * (NewJetPT > 200 && NewJetPT < 300)");
+      T2->Draw("JetMassPT>>HModified_P5", "BaselineCut * SmearChange * (NewJetPT > 300 && NewJetPT < 500)");
+   }
+   if(Type == "DR")
+   {
+      T1->Draw("JetMassPT>>HNominalInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominalInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominalInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominalInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominalInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominalInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T1->Draw("JetMassPT>>HNominal_P0", "BaselineCut * (NewJetPT > 120 && NewJetPT < 140)");
+      T1->Draw("JetMassPT>>HNominal_P1", "BaselineCut * (NewJetPT > 140 && NewJetPT < 160)");
+      T1->Draw("JetMassPT>>HNominal_P2", "BaselineCut * (NewJetPT > 160 && NewJetPT < 180)");
+      T1->Draw("JetMassPT>>HNominal_P3", "BaselineCut * (NewJetPT > 180 && NewJetPT < 200)");
+      T1->Draw("JetMassPT>>HNominal_P4", "BaselineCut * (NewJetPT > 200 && NewJetPT < 300)");
+      T1->Draw("JetMassPT>>HNominal_P5", "BaselineCut * (NewJetPT > 300 && NewJetPT < 500)");
+
+      T2->Draw("JetMassPT>>HModifiedInt_P0", "Baseline * (NewJetPT > 120 && NewJetPT < 140)");
+      T2->Draw("JetMassPT>>HModifiedInt_P1", "Baseline * (NewJetPT > 140 && NewJetPT < 160)");
+      T2->Draw("JetMassPT>>HModifiedInt_P2", "Baseline * (NewJetPT > 160 && NewJetPT < 180)");
+      T2->Draw("JetMassPT>>HModifiedInt_P3", "Baseline * (NewJetPT > 180 && NewJetPT < 200)");
+      T2->Draw("JetMassPT>>HModifiedInt_P4", "Baseline * (NewJetPT > 200 && NewJetPT < 300)");
+      T2->Draw("JetMassPT>>HModifiedInt_P5", "Baseline * (NewJetPT > 300 && NewJetPT < 500)");
+      T2->Draw("JetMassPT>>HModified_P0", "Baseline * ModifiedDRCut * (NewJetPT > 120 && NewJetPT < 140)");
+      T2->Draw("JetMassPT>>HModified_P1", "Baseline * ModifiedDRCut * (NewJetPT > 140 && NewJetPT < 160)");
+      T2->Draw("JetMassPT>>HModified_P2", "Baseline * ModifiedDRCut * (NewJetPT > 160 && NewJetPT < 180)");
+      T2->Draw("JetMassPT>>HModified_P3", "Baseline * ModifiedDRCut * (NewJetPT > 180 && NewJetPT < 200)");
+      T2->Draw("JetMassPT>>HModified_P4", "Baseline * ModifiedDRCut * (NewJetPT > 200 && NewJetPT < 300)");
+      T2->Draw("JetMassPT>>HModified_P5", "Baseline * ModifiedDRCut * (NewJetPT > 300 && NewJetPT < 500)");
    }
 
-   HNominal_P0.Scale(1 / HNominal_P0.Integral());
-   HNominal_P1.Scale(1 / HNominal_P1.Integral());
-   HNominal_P2.Scale(1 / HNominal_P2.Integral());
-   HNominal_P3.Scale(1 / HNominal_P3.Integral());
-   HNominal_P4.Scale(1 / HNominal_P4.Integral());
-   HNominal_P5.Scale(1 / HNominal_P5.Integral());
+   HNominal_P0.Scale(1 / HNominalInt_P0.Integral());
+   HNominal_P1.Scale(1 / HNominalInt_P1.Integral());
+   HNominal_P2.Scale(1 / HNominalInt_P2.Integral());
+   HNominal_P3.Scale(1 / HNominalInt_P3.Integral());
+   HNominal_P4.Scale(1 / HNominalInt_P4.Integral());
+   HNominal_P5.Scale(1 / HNominalInt_P5.Integral());
 
    PdfFile.AddPlot(HNominal_P0);
    PdfFile.AddPlot(HNominal_P1);
@@ -163,12 +264,12 @@ int main(int argc, char *argv[])
    PdfFile.AddPlot(HNominal_P4);
    PdfFile.AddPlot(HNominal_P5);
 
-   HModified_P0.Scale(1 / HModified_P0.Integral());
-   HModified_P1.Scale(1 / HModified_P1.Integral());
-   HModified_P2.Scale(1 / HModified_P2.Integral());
-   HModified_P3.Scale(1 / HModified_P3.Integral());
-   HModified_P4.Scale(1 / HModified_P4.Integral());
-   HModified_P5.Scale(1 / HModified_P5.Integral());
+   HModified_P0.Scale(1 / HModifiedInt_P0.Integral());
+   HModified_P1.Scale(1 / HModifiedInt_P1.Integral());
+   HModified_P2.Scale(1 / HModifiedInt_P2.Integral());
+   HModified_P3.Scale(1 / HModifiedInt_P3.Integral());
+   HModified_P4.Scale(1 / HModifiedInt_P4.Integral());
+   HModified_P5.Scale(1 / HModifiedInt_P5.Integral());
 
    PdfFile.AddPlot(HModified_P0);
    PdfFile.AddPlot(HModified_P1);
@@ -475,6 +576,8 @@ void SetAlias(TTree *Tree, int SD)
    Tree->SetAlias("rng", "sin(2*pi*rndm)*sqrt(-2*log(rndm))");
    Tree->SetAlias("Smear", "(rng*0.10+1)");
    Tree->SetAlias("ExcessPT", "(TotalPTInJet-Rho*0.4*0.4*3.1415926535)");
+   
+   Tree->SetAlias("X", "(Centrality/100)");
    Tree->SetAlias("RMS", "(19.15-23.28*X+4.567e-7*X*X-467.4*X*X*X+2110*X*X*X*X-2993*X*X*X*X*X+227.9*X*X*X*X*X*X+2019*X*X*X*X*X*X*X+876.3*X*X*X*X*X*X*X*X-3027*X*X*X*X*X*X*X*X*X+1239*X*X*X*X*X*X*X*X*X*X)");
 
    string TreeRMS = "(";
@@ -488,21 +591,31 @@ void SetAlias(TTree *Tree, int SD)
       TreeRMS = TreeRMS + Form("(Centrality>=%d&&Centrality<%d)*%f", i, i + 1, HTemp.GetRMS());
    }
    TreeRMS = TreeRMS + ")";
+
+   cout << TreeRMS << endl;
    
    Tree->SetAlias("RMS0", TreeRMS.c_str());
    Tree->SetAlias("SmearWeight", "(exp(-ExcessPT*ExcessPT/(2*RMS*RMS)) / exp(-ExcessPT*ExcessPT/(2*RMS0*RMS0)))");
 
    if(SD == 0)
    {
-      Tree->SetAlias("Baseline", "MCWeight * SmearWeight * (JetShift < 0.1 && NewJetDR > 0.0 && abs(NewJetEta) < 1.3)");
-      Tree->SetAlias("BaselineCut", "MCWeight * SmearWeight * (JetShift < 0.1 && NewJetDR > 0.1 && abs(NewJetEta) < 1.3)");
-      Tree->SetAlias("JetMassPT", "NewJetSDMass/NewJetPT");
+      Tree->SetAlias("Baseline",
+         "MCWeight * (JetShift < 0.1 && NewJetDR > 0.0 && abs(NewJetEta) < 1.3)");
+      Tree->SetAlias("BaselineCut",
+         "MCWeight * SmearWeight * (JetShift < 0.1 && NewJetDR > 0.1 && abs(NewJetEta) < 1.3)");
+      Tree->SetAlias("ModifiedDRCut", "(NewJetDR > 0.09)");
+      Tree->SetAlias("JetMassPT",
+         "NewJetSDMass/NewJetPT");
    }
    if(SD == 7)
    {
-      Tree->SetAlias("Baseline", "MCWeight * SmearWeight * (JetShift < 0.1 && NewJetDR2 > 0.0 && abs(NewJetEta) < 1.3)");
-      Tree->SetAlias("BaselineCut", "MCWeight * SmearWeight * (JetShift < 0.1 && NewJetDR2 > 0.1 && abs(NewJetEta) < 1.3)");
-      Tree->SetAlias("JetMassPT", "NewJetSDMass2/NewJetPT");
+      Tree->SetAlias("Baseline",
+         "MCWeight * SmearWeight * (JetShift < 0.1 && NewJetDR2 > 0.0 && abs(NewJetEta) < 1.3)");
+      Tree->SetAlias("BaselineCut",
+         "MCWeight * SmearWeight * (JetShift < 0.1 && NewJetDR2 > 0.1 && abs(NewJetEta) < 1.3)");
+      Tree->SetAlias("ModifiedDRCut", "(NewJetDR2 > 0.09)");
+      Tree->SetAlias("JetMassPT",
+         "NewJetSDMass2/NewJetPT");
    }
 }
 

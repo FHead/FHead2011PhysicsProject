@@ -18,7 +18,7 @@ using namespace std;
 using namespace fastjet;
 
 #include "Code/DrawRandom.h"
-#include "Code/TauHelperFunctions2.h"
+#include "Code/TauHelperFunctions3.h"
 #include "ProgressBar.h"
 
 #include "BasicUtilities.h"
@@ -32,6 +32,8 @@ using namespace fastjet;
 int main(int argc, char *argv[]);
 double GetModifiedPT(double Eta, double Rho, DataHelper &DHFile);
 double GetModifiedPT2(double Eta, double Rho, DataHelper &DHFile);
+double GetModifiedPTData(double Eta, double Rho, DataHelper &DHFile);
+double GetModifiedPTData2(double Eta, double Rho, DataHelper &DHFile);
 double GetPT(double Eta, double Rho, DataHelper &DHFile);
 double PresampleFactor(double PT);
 double Evaluate(double Eta, double Rho, double PT, DataHelper &DHFile);
@@ -210,16 +212,16 @@ int main(int argc, char *argv[])
 
    for(int iEntry = 0, ReuseCount = 1; iEntry < EntryCount; ReuseCount++)
    {
-      if(ReuseRate <= 1 || ReuseCount % ReuseRate == 0)
-         iEntry = iEntry + 1;
-      if(Mod >= 0 && Mod < ModBase && iEntry % ModBase != Mod)
-         continue;
-
       if(EntryCount <= 250 || iEntry % (EntryCount / 300) == 0)
       {
          Bar.Update(iEntry);
          Bar.Print();
       }
+
+      if(ReuseRate <= 1 || ReuseCount % ReuseRate == 0)
+         iEntry = iEntry + 1;
+      if(Mod >= 0 && Mod < ModBase && iEntry % ModBase != Mod)
+         continue;
 
       HN.Fill(0);
 
@@ -234,7 +236,7 @@ int main(int argc, char *argv[])
       if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
          continue;
       TreePTHat = MSDJet.PTHat;
-      
+
       HPTHatSelected.Fill(MSDJet.PTHat);
 
       for(int iJ = 0; iJ < MJet.JetCount; iJ++)
@@ -282,7 +284,7 @@ int main(int argc, char *argv[])
          {
             Rho = DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]) * RhoMultiplier;
          } while(Rho < 0);
-         
+
          TreeRho = Rho;
          TreeCentrality = Centrality;
 
@@ -317,7 +319,13 @@ int main(int argc, char *argv[])
                DPhi = DrawRandom(-Range, Range);
             } while(DEta * DEta + DPhi * DPhi > Range * Range);
 
-            double PT = GetModifiedPT2(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
+            double PT = 1;
+            if(Centrality < 10)
+               PT = GetModifiedPTData(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
+            else if(Centrality < 30)
+               PT = GetModifiedPTData2(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
+            else
+               PT = GetPT(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
             if(PT >= TotalPT)
                PT = TotalPT;
             TotalPT = TotalPT - PT;
@@ -331,7 +339,7 @@ int main(int argc, char *argv[])
                TotalPTInJet = TotalPTInJet + P.GetPT();
          }
          TreeTotalPTInJet = TotalPTInJet;
-         
+
          // Step 3 - do pileup subtraction algorithm - via fastjet
          JetDefinition Definition(antikt_algorithm, 0.4);
          double GhostArea = GhostDistance * GhostDistance;
@@ -426,8 +434,8 @@ int main(int argc, char *argv[])
          for(int i = 0; i < (int)GoodCandidatesBest.size(); i++)
             NodesBest.push_back(new Node(GoodCandidatesBest[i]));
 
-         BuildCATree(Nodes);
-         BuildCATree(NodesBest);
+         BuildCATree2(Nodes);
+         BuildCATree2(NodesBest);
          Node *Groomed = FindSDNode(Nodes[0]);
          Node *GroomedBest = FindSDNode(NodesBest[0]);
          Node *Groomed2 = FindSDNode(Nodes[0], 0.5, 1.5);
@@ -568,7 +576,7 @@ int main(int argc, char *argv[])
 double GetModifiedPT(double Eta, double Rho, DataHelper &DHFile)
 {
    double P[7] = {0};
-   
+
    P[0] = 0.9749;
    P[1] = 0.7382;
    P[2] = -0.8869;
@@ -576,7 +584,7 @@ double GetModifiedPT(double Eta, double Rho, DataHelper &DHFile)
    P[4] = -0.05973;
    P[5] = 0.004686;
    P[6] = -0.0001403;
-   
+
    bool Good = false;
 
    double PT = 0;
@@ -664,6 +672,74 @@ double GetModifiedPT2(double Eta, double Rho, DataHelper &DHFile)
          Factor = P[0] - P[1] * exp(-(PT - P[2]) * (PT - P[2]) / (2 * P[3] * P[3]));
 
       Factor = Factor / P[0];
+
+      if(DrawRandom(0, 1) < Factor)
+         Good = true;
+   } while(Good == false);
+
+   return PT;
+}
+
+double GetModifiedPTData(double Eta, double Rho, DataHelper &DHFile)
+{
+   double P[4] = {0};
+
+   P[0] = 0.9442;
+   P[1] = 0.7242;
+   P[2] = 1.85;
+   P[3] = 0.9561;
+
+   bool Good = false;
+
+   double PT = 0;
+
+   do
+   {
+      PT = GetPT(Eta, Rho, DHFile);
+
+      double Factor = 1;
+
+      if(PT < 1)
+         Factor = PT * P[0];
+      else
+         Factor = 1.57 - P[1] * exp(-(PT - P[2]) * (PT - P[2]) / (2 * P[3] * P[3]));
+
+      Factor = Factor / 1.57;
+
+      if(DrawRandom(0, 1) < Factor)
+         Good = true;
+   } while(Good == false);
+
+   return PT;
+}
+
+double GetModifiedPTData2(double Eta, double Rho, DataHelper &DHFile)
+{
+   double P[6] = {0};
+
+   P[0] = 0.3202;
+   P[1] = 0.9087;
+   P[2] = 1.342;
+   P[3] = 0.3497;
+   P[4] = 1.916;
+   P[5] = 0.8441;
+
+   bool Good = false;
+
+   double PT = 0;
+
+   do
+   {
+      PT = GetPT(Eta, Rho, DHFile);
+
+      double Factor = 1;
+
+      if(PT < 1)
+         Factor = P[0] + P[1] * PT;
+      else
+         Factor = P[2] - P[3] * exp(-(PT - P[4]) * (PT - P[4]) / (2 * P[5] * P[5]));
+
+      Factor = Factor / P[2];
 
       if(DrawRandom(0, 1) < Factor)
          Good = true;

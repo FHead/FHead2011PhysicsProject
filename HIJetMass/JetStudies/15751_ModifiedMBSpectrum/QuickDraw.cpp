@@ -32,14 +32,14 @@ int main(int argc, char *argv[])
 
 void QuickDraw(double PTMin, double PTMax, double CentralityMin, double CentralityMax, bool UseSmearWeight)
 {
-   string Baseline1 = Form("Centrality >= %f && Centrality < %f && JetPT >= %f && JetPT < %f && SubJetDR > 0.1 && SubJetDR < 1.0 && abs(JetEta) < 1.3 && min(SubJet1PT,SubJet2PT)/(SubJet1PT+SubJet2PT) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
-   string Baseline2 = Form("SmearWeight * (Centrality >= %f && Centrality < %f && BestJetPT >= %f && BestJetPT < %f && BestJetDR > 0.1 && BestJetDR < 1.0 && abs(BestJetEta) < 1.3 && BestJetZG > 0.00 && MatchedDR < 0.10 && JetPT > 0)", CentralityMin * 100, CentralityMax * 100, PTMin, PTMax);
-   string Baseline3 = Form("Centrality >= %f && Centrality < %f && MatchPT >= %f && MatchPT < %f && SubJetDR0 > 0.1 && SubJetDR0 < 1.0 && abs(JetEta) < 1.3 && min(SubJet1PT0,SubJet2PT0)/(SubJet1PT0+SubJet2PT0) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
-   string Baseline4 = Form("Centrality >= %f && Centrality < %f && JetPT >= %f && JetPT < %f && SubJetDR > 0.1 && SubJetDR < 1.0 && abs(Eta) < 1.3 && min(SubJet1PT,SubJet2PT)/(SubJet1PT+SubJet2PT) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
+   string Baseline1 = Form("Centrality >= %f && Centrality < %f && JetPT >= %f && JetPT < %f && SubJetDR > 0.0 && SubJetDR < 1.0 && abs(JetEta) < 1.3 && min(SubJet1PT,SubJet2PT)/(SubJet1PT+SubJet2PT) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
+   string Baseline2 = Form("SmearWeight * (Centrality >= %f && Centrality < %f && BestJetPT >= %f && BestJetPT < %f && BestJetDR > 0.0 && BestJetDR < 1.0 && abs(BestJetEta) < 1.3 && BestJetZG > 0.00 && MatchedDR < 0.10 && JetPT > 0)", CentralityMin * 100, CentralityMax * 100, PTMin, PTMax);
+   string Baseline3 = Form("Centrality >= %f && Centrality < %f && MatchPT >= %f && MatchPT < %f && SubJetDR0 > 0.0 && SubJetDR0 < 1.0 && abs(JetEta) < 1.3 && min(SubJet1PT0,SubJet2PT0)/(SubJet1PT0+SubJet2PT0) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
+   string Baseline4 = Form("Centrality >= %f && Centrality < %f && JetPT >= %f && JetPT < %f && SubJetDR > 0.0 && SubJetDR < 1.0 && abs(Eta) < 1.3 && min(SubJet1PT,SubJet2PT)/(SubJet1PT+SubJet2PT) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
    
-   string Baseline72 = Form("SmearWeight * (Centrality >= %f && Centrality < %f && BestJetPT >= %f && BestJetPT < %f && BestJetDR2 > 0.10 && BestJetDR2 < 1.0 && abs(BestJetEta) < 1.3 && BestJetZG2 > 0.00 && MatchedDR < 0.10 && JetPT > 0)", CentralityMin * 100, CentralityMax * 100, PTMin, PTMax);
-   string Baseline73 = Form("Centrality >= %f && Centrality < %f && MatchPT >= %f && MatchPT < %f && SubJetDR7 > 0.10 && SubJetDR7 < 1.0 && abs(JetEta) < 1.3 && min(SubJet1PT7,SubJet2PT7)/(SubJet1PT7+SubJet2PT7) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
-   string Baseline74 = Form("Centrality >= %f && Centrality < %f && JetPT >= %f && JetPT < %f && SubJetDR7 > 0.10 && SubJetDR7 < 1.0 && abs(Eta) < 1.3 && min(SubJet1PT7,SubJet2PT7)/(SubJet1PT7+SubJet2PT7) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
+   string Baseline72 = Form("SmearWeight * (Centrality >= %f && Centrality < %f && BestJetPT >= %f && BestJetPT < %f && BestJetDR2 > 0.00 && BestJetDR2 < 1.0 && abs(BestJetEta) < 1.3 && BestJetZG2 > 0.00 && MatchedDR < 0.10 && JetPT > 0)", CentralityMin * 100, CentralityMax * 100, PTMin, PTMax);
+   string Baseline73 = Form("Centrality >= %f && Centrality < %f && MatchPT >= %f && MatchPT < %f && SubJetDR7 > 0.00 && SubJetDR7 < 1.0 && abs(JetEta) < 1.3 && min(SubJet1PT7,SubJet2PT7)/(SubJet1PT7+SubJet2PT7) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
+   string Baseline74 = Form("Centrality >= %f && Centrality < %f && JetPT >= %f && JetPT < %f && SubJetDR7 > 0.00 && SubJetDR7 < 1.0 && abs(Eta) < 1.3 && min(SubJet1PT7,SubJet2PT7)/(SubJet1PT7+SubJet2PT7) > 0.00", CentralityMin, CentralityMax, PTMin, PTMax);
 
    if(UseSmearWeight == false)
       Baseline2 = Form("(Centrality >= %f && Centrality < %f && BestJetPT >= %f && BestJetPT < %f && BestJetDR > 0 && abs(BestJetEta) < 1.3)", CentralityMin * 100, CentralityMax * 100, PTMin, PTMax);

@@ -48,13 +48,16 @@ int main(int argc, char *argv[])
    double Centrality;
    OutputTree.Branch("Centrality", &Centrality, "Centrality/D");
 
-   double JetPT, PT, Eta, Phi, Mass;
+   double JetPT, PT, Eta, Phi, Mass, GroomedPT, Mass7, GroomedPT7;
    double SDPT, SDEta, SDPhi, SDMass;
    OutputTree.Branch("JetPT", &JetPT, "JetPT/D");
    OutputTree.Branch("PT", &PT, "PT/D");
    OutputTree.Branch("Eta", &Eta, "Eta/D");
    OutputTree.Branch("Phi", &Phi, "Phi/D");
    OutputTree.Branch("Mass", &Mass, "Mass/D");
+   OutputTree.Branch("Mass7", &Mass7, "Mass7/D");
+   OutputTree.Branch("GroomedPT", &GroomedPT, "GroomedPT/D");
+   OutputTree.Branch("GroomedPT7", &GroomedPT7, "GroomedPT7/D");
    OutputTree.Branch("SDPT", &SDPT, "SDPT/D");
    OutputTree.Branch("SDEta", &SDEta, "SDEta/D");
    OutputTree.Branch("SDPhi", &SDPhi, "SDPhi/D");
@@ -64,6 +67,11 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SubJet1PT", &SubJet1PT, "SubJet1PT/D");
    OutputTree.Branch("SubJet2PT", &SubJet2PT, "SubJet2PT/D");
    OutputTree.Branch("SubJetDR", &SubJetDR, "SubJetDR/D");
+   
+   double SubJet1PT7, SubJet2PT7, SubJetDR7;
+   OutputTree.Branch("SubJet1PT7", &SubJet1PT7, "SubJet1PT7/D");
+   OutputTree.Branch("SubJet2PT7", &SubJet2PT7, "SubJet2PT7/D");
+   OutputTree.Branch("SubJetDR7", &SubJetDR7, "SubJetDR7/D");
 
    int Count = 0;
 
@@ -147,12 +155,17 @@ int main(int argc, char *argv[])
          BuildCATree(Nodes);
 
          Node *Groomed = FindSDNode(Nodes[0]);
+         Node *Groomed7 = FindSDNode(Nodes[0], 0.5, 1.5);
 
          JetPT = SDJets[i].perp();
          PT = Groomed->P.GetPT();
          Eta = Groomed->P.GetEta();
          Phi = Groomed->P.GetPhi();
          Mass = Groomed->P.GetMass();
+         GroomedPT = Groomed->P.GetPT();
+
+         Mass7 = Groomed7->P.GetMass();
+         GroomedPT7 = Groomed7->P.GetPT();
 
          if(Groomed->N > 1)
          {
@@ -165,6 +178,19 @@ int main(int argc, char *argv[])
             SubJet1PT = 0;
             SubJet2PT = 0;
             SubJetDR = -1;
+         }
+         
+         if(Groomed7->N > 1)
+         {
+            SubJet1PT7 = Groomed7->Child1->P.GetPT();
+            SubJet2PT7 = Groomed7->Child2->P.GetPT();
+            SubJetDR7 = GetDR(Groomed7->Child1->P, Groomed7->Child2->P);
+         }
+         else
+         {
+            SubJet1PT7 = 0;
+            SubJet2PT7 = 0;
+            SubJetDR7 = -1;
          }
 
          // contrib::SoftDrop SD(0.0, 0.1);

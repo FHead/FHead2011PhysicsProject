@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "fastjet/ClusterSequence.hh"
+#include "fastjet/ClusterSequenceArea.hh"
 using namespace fastjet;
 
 #include "TTree.h"
@@ -47,10 +48,11 @@ int main(int argc, char *argv[])
 
    TTree OutputTree("T", "T");
 
-   double TreeJetPT, TreeJetEta, TreeJetPhi;
+   double TreeJetPT, TreeJetEta, TreeJetPhi, TreeJetSDPT;
    OutputTree.Branch("JetPT", &TreeJetPT, "JetPT/D");
    OutputTree.Branch("JetEta", &TreeJetEta, "JetEta/D");
    OutputTree.Branch("JetPhi", &TreeJetPhi, "JetPhi/D");
+   OutputTree.Branch("JetSDPT", &TreeJetSDPT, "JetSDPT/D");
    
    double TreeSubJet1PT, TreeSubJet1Eta, TreeSubJet1Phi;
    double TreeSubJet2PT, TreeSubJet2Eta, TreeSubJet2Phi;
@@ -69,16 +71,19 @@ int main(int argc, char *argv[])
    OutputTree.Branch("Centrality", &TreeCentrality, "Centrality/D");
    OutputTree.Branch("PTHat", &TreePTHat, "PTHat/D");
 
-   double TreeMatchDR, TreeMatchPT;
+   double TreeMatchDR, TreeMatchPT, TreeMatchArea;
    OutputTree.Branch("MatchDR", &TreeMatchDR, "MatchDR/D");
    OutputTree.Branch("MatchPT", &TreeMatchPT, "MatchPT/D");
+   OutputTree.Branch("MatchArea", &TreeMatchArea, "MatchArea/D");
 
-   double TreeSubJetDR0, TreeSDMass0;
-   double TreeSubJetDR7, TreeSDMass7;
+   double TreeSubJetDR0, TreeSDMass0, TreeSDPT0;
+   double TreeSubJetDR7, TreeSDMass7, TreeSDPT7;
    OutputTree.Branch("SubJetDR0", &TreeSubJetDR0, "SubJetDR0/D");
    OutputTree.Branch("SDMass0", &TreeSDMass0, "SDMass0/D");
+   OutputTree.Branch("SDPT0", &TreeSDPT0, "SDPT0/D");
    OutputTree.Branch("SubJetDR7", &TreeSubJetDR7, "SubJetDR7/D");
    OutputTree.Branch("SDMass7", &TreeSDMass7, "SDMass7/D");
+   OutputTree.Branch("SDPT7", &TreeSDPT7, "SDPT7/D");
    
    double TreeSubJet1PT0, TreeSubJet1Eta0, TreeSubJet1Phi0;
    double TreeSubJet2PT0, TreeSubJet2Eta0, TreeSubJet2Phi0;
@@ -129,6 +134,9 @@ int main(int argc, char *argv[])
       ClusterSequence Sequence(Particles, Definition);
       vector<PseudoJet> Jets = Sequence.inclusive_jets();
 
+      ClusterSequenceArea SequenceArea(Particles, Definition, GhostedAreaSpec(6.0, 1, 0.001));
+      vector<PseudoJet> JetsWithGhost = SequenceArea.inclusive_jets();
+
       for(int iJ = 0; iJ < MSDJet.JetCount; iJ++)
       {
          TreeJetPT = MSDJet.JetPT[iJ];
@@ -141,6 +149,12 @@ int main(int argc, char *argv[])
          TreeSubJet2PT = HSDJet.RecoSubJet2[iJ].GetPT();
          TreeSubJet2Eta = HSDJet.RecoSubJet2[iJ].GetEta();
          TreeSubJet2Phi = HSDJet.RecoSubJet2[iJ].GetPhi();
+
+         FourVector P1, P2;
+         P1.SetPtEtaPhi(TreeSubJet1PT, TreeSubJet1Eta, TreeSubJet1Phi);
+         P2.SetPtEtaPhi(TreeSubJet2PT, TreeSubJet2Eta, TreeSubJet2Phi);
+
+         TreeJetSDPT = (P1 + P2).GetPT();
 
          TreeSubJetDR = HSDJet.RecoSubJetDR[iJ];
          TreeSDMass = MSDJet.JetM[iJ];
@@ -157,10 +171,26 @@ int main(int argc, char *argv[])
             }
          }
 
+         int BestJetWithGhost = 0;
+         double BestDRWithGhost = -1;
+         for(int i = 0; i < (int)JetsWithGhost.size(); i++)
+         {
+            double DR = GetDR(MSDJet.JetEta[iJ], MSDJet.JetPhi[iJ], JetsWithGhost[i].eta(), JetsWithGhost[i].phi());
+            if(BestDRWithGhost < 0 || DR < BestDRWithGhost)
+            {
+               BestJetWithGhost = i;
+               BestDRWithGhost = DR;
+            }
+         }
+
          if(BestDR >= 0)
          {
             TreeMatchDR = BestDR;
             TreeMatchPT = Jets[BestJet].perp();
+            if(JetsWithGhost[BestJetWithGhost].has_area())
+               TreeMatchArea = JetsWithGhost[BestJetWithGhost].area();
+            else
+               TreeMatchArea = -1;
 
             vector<PseudoJet> Constituents = Jets[BestJet].constituents();
             vector<Node *> Nodes;
@@ -183,6 +213,7 @@ int main(int argc, char *argv[])
             {
                TreeSubJetDR0 = GetDR(Groomed0->Child1->P, Groomed0->Child2->P);
                TreeSDMass0 = Groomed0->P.GetMass();
+               TreeSDPT0 = Groomed0->P.GetPT();
          
                TreeSubJet1PT0 = Groomed0->Child1->P.GetPT();
                TreeSubJet1Eta0 = Groomed0->Child1->P.GetEta();
@@ -198,6 +229,7 @@ int main(int argc, char *argv[])
             {
                TreeSubJetDR7 = GetDR(Groomed7->Child1->P, Groomed7->Child2->P);
                TreeSDMass7 = Groomed7->P.GetMass();
+               TreeSDPT7 = Groomed7->P.GetPT();
                
                TreeSubJet1PT7 = Groomed7->Child1->P.GetPT();
                TreeSubJet1Eta7 = Groomed7->Child1->P.GetEta();

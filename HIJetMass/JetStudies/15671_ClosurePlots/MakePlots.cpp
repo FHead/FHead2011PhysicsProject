@@ -155,8 +155,9 @@ int main()
          TH1D C("C", ";Jet SD Mass / Jet PT", 40, 0, 0.3);
 
          T1->Draw("SDMass[7]/NewJetPT>>A", Form("MCWeight * (JetPT > %f && JetPT < %f && abs(JetEta) < 1.3 && SDRecoDR[7] > 0.1 && Centrality < %f && Centrality > %f && JetShift < 0.05)", PTEdge[iPT], PTEdge[iPT+1], CEdge[iC+1], CEdge[iC]), "");
-         // T8->Draw("BestJetSDMass2/BestJetPT>>B", Form("MCWeight *  SmearWeightInJet2%d * PTWeightToEmbeddedCentral * (BestJetPT > %f && BestJetPT < %f && abs(BestJetEta) < 1.3 && BestJetDR2 > 0.1 && JetShift < 0.2)", iC, PTEdge[iPT], PTEdge[iPT+1]), "same");
-         T8->Draw("BestJetSDMass2/BestJetPT>>B", Form("MCWeight *  SmearWeightInJet2%d * PTWeightToEmbeddedCentral * GroomWeight * (BestJetPT > %f && BestJetPT < %f && abs(BestJetEta) < 1.3 && BestJetDR2 > 0.1 && JetShift < 0.2)", iC, PTEdge[iPT], PTEdge[iPT+1]), "same");
+         T8->Draw("BestJetSDMass2/BestJetPT>>B", Form("MCWeight *  SmearWeightInJet2%d * PTWeightToEmbeddedCentral * (BestJetPT > %f && BestJetPT < %f && abs(BestJetEta) < 1.3 && BestJetDR2 > 0.1 && JetShift < 0.2)", iC, PTEdge[iPT], PTEdge[iPT+1]), "same");
+         // T8->Draw("BestJetSDMass2/BestJetPT>>B", Form("MCWeight *  SmearWeightInJet2%d * PTWeightToEmbeddedCentral * GroomWeight * (BestJetPT > %f && BestJetPT < %f && abs(BestJetEta) < 1.3 && BestJetDR2 > 0.1 && JetShift < 0.2)", iC, PTEdge[iPT], PTEdge[iPT+1]), "same");
+         // T8->Draw("BestJetSDMass2/BestJetPT>>B", Form("MCWeight *  SmearWeightInJet2%d * PTWeightToEmbeddedCentral * (BestJetPT > %f && BestJetPT < %f && abs(BestJetEta) < 1.3 && BestJetDR2 > 0.1 && JetShift < 0.2) * (1 - 0.4 * (NewJetSDPT2/NewJetPT > 0.99))", iC, PTEdge[iPT], PTEdge[iPT+1]), "same");
          T4->Draw("SDMass[7]/NewJetPT>>C", Form("MCWeight * (JetPT > %f && JetPT < %f && abs(JetEta) < 1.3 && SDRecoDR[7] > 0.1 && JetShift < 0.05)", PTEdge[iPT], PTEdge[iPT+1]), "");
 
          A.Scale(1 / A.Integral() / (0.3 / 40));

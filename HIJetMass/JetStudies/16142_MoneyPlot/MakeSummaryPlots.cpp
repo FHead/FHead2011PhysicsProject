@@ -19,6 +19,7 @@ using namespace std;
 #define TYPE_MASS 1
 #define TYPE_ZG 0
 #define TYPE_DR -1
+#define TYPE_DR0 -2
 
 int main();
 void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, double BinMax, bool IsMC, bool IsPT, int Type, string SD);
@@ -54,6 +55,8 @@ int main()
             FileName2 = "Graphs_SD" + SD + "_MC_PTHat100.root";
             OutputBase = "Plots/MCClosure" + SD;
             IsMC = true;
+
+            continue;
          }
 
          TFile FGraphs1(FileName1.c_str());
@@ -62,7 +65,7 @@ int main()
          double PTBinEdge[] = {120, 140, 160, 180, 200, 300, 500};
          double CBinEdge[] = {0, 10, 30, 50, 80, 100};
 
-         for(int i = 1; i < 6; i++)
+         for(int i = 1; i < 5; i++)
          {
             vector<TGraphAsymmErrors *> Gs(16);
             if(i == 1)
@@ -187,6 +190,129 @@ int main()
             }
 
             DoGraph(Gs, OutputBase + Form("_DRPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_DR, SD);
+         
+            if(i == 1)
+            {
+               Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassData0_0_%d"    , i));
+               Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassDataSys0_0_%d" , i));
+               Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmear0_0_%d"   , i));
+               Gs[3]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmearSys0_0_%d", i));
+               Gs[4]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassData0_1_%d"    , i));
+               Gs[5]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassDataSys0_1_%d" , i));
+               Gs[6]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmear0_1_%d"   , i));
+               Gs[7]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmearSys0_1_%d", i));
+               Gs[8]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassData0_2_%d"    , i));
+               Gs[9]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassDataSys0_2_%d" , i));
+               Gs[10] = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmear0_2_%d"   , i));
+               Gs[11] = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmearSys0_2_%d", i));
+               Gs[12] = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassData0_3_%d"    , i));
+               Gs[13] = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassDataSys0_3_%d" , i));
+               Gs[14] = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmear0_3_%d"   , i));
+               Gs[15] = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmearSys0_3_%d", i));
+            }
+            else
+            {
+               Gs[0]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassData0_0_%d"    , i));
+               Gs[1]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassDataSys0_0_%d" , i));
+               Gs[2]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmear0_0_%d"   , i));
+               Gs[3]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys0_0_%d", i));
+               Gs[4]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassData0_1_%d"    , i));
+               Gs[5]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassDataSys0_1_%d" , i));
+               Gs[6]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmear0_1_%d"   , i));
+               Gs[7]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys0_1_%d", i));
+               Gs[8]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassData0_2_%d"    , i));
+               Gs[9]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassDataSys0_2_%d" , i));
+               Gs[10] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmear0_2_%d"   , i));
+               Gs[11] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys0_2_%d", i));
+               Gs[12] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassData0_3_%d"    , i));
+               Gs[13] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassDataSys0_3_%d" , i));
+               Gs[14] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmear0_3_%d"   , i));
+               Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys0_3_%d", i));
+            }
+
+            DoGraph(Gs, OutputBase + Form("_0PrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_MASS, SD);
+
+            if(i == 1)
+            {
+               Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGData0_0_%d"    , i));
+               Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGDataSys0_0_%d" , i));
+               Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmear0_0_%d"   , i));
+               Gs[3]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmearSys0_0_%d", i));
+               Gs[4]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGData0_1_%d"    , i));
+               Gs[5]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGDataSys0_1_%d" , i));
+               Gs[6]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmear0_1_%d"   , i));
+               Gs[7]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmearSys0_1_%d", i));
+               Gs[8]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGData0_2_%d"    , i));
+               Gs[9]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGDataSys0_2_%d" , i));
+               Gs[10] = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmear0_2_%d"   , i));
+               Gs[11] = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmearSys0_2_%d", i));
+               Gs[12] = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGData0_3_%d"    , i));
+               Gs[13] = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGDataSys0_3_%d" , i));
+               Gs[14] = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmear0_3_%d"   , i));
+               Gs[15] = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmearSys0_3_%d", i));
+            }
+            else
+            {
+               Gs[0]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGData0_0_%d"    , i));
+               Gs[1]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGDataSys0_0_%d" , i));
+               Gs[2]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmear0_0_%d"   , i));
+               Gs[3]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys0_0_%d", i));
+               Gs[4]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGData0_1_%d"    , i));
+               Gs[5]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGDataSys0_1_%d" , i));
+               Gs[6]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmear0_1_%d"   , i));
+               Gs[7]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys0_1_%d", i));
+               Gs[8]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGData0_2_%d"    , i));
+               Gs[9]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGDataSys0_2_%d" , i));
+               Gs[10] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmear0_2_%d"   , i));
+               Gs[11] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys0_2_%d", i));
+               Gs[12] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGData0_3_%d"    , i));
+               Gs[13] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGDataSys0_3_%d" , i));
+               Gs[14] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmear0_3_%d"   , i));
+               Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys0_3_%d", i));
+            }
+
+            DoGraph(Gs, OutputBase + Form("_ZG0PrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD);
+
+            if(i == 1)
+            {
+               Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRData0_0_%d"    , i));
+               Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRDataSys0_0_%d" , i));
+               Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmear0_0_%d"   , i));
+               Gs[3]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmearSys0_0_%d", i));
+               Gs[4]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRData0_1_%d"    , i));
+               Gs[5]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRDataSys0_1_%d" , i));
+               Gs[6]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmear0_1_%d"   , i));
+               Gs[7]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmearSys0_1_%d", i));
+               Gs[8]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRData0_2_%d"    , i));
+               Gs[9]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRDataSys0_2_%d" , i));
+               Gs[10] = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmear0_2_%d"   , i));
+               Gs[11] = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmearSys0_2_%d", i));
+               Gs[12] = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRData0_3_%d"    , i));
+               Gs[13] = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRDataSys0_3_%d" , i));
+               Gs[14] = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmear0_3_%d"   , i));
+               Gs[15] = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmearSys0_3_%d", i));
+            }
+            else
+            {
+               Gs[0]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRData0_0_%d"    , i));
+               Gs[1]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRDataSys0_0_%d" , i));
+               Gs[2]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmear0_0_%d"   , i));
+               Gs[3]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys0_0_%d", i));
+               Gs[4]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRData0_1_%d"    , i));
+               Gs[5]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRDataSys0_1_%d" , i));
+               Gs[6]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmear0_1_%d"   , i));
+               Gs[7]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys0_1_%d", i));
+               Gs[8]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRData0_2_%d"    , i));
+               Gs[9]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRDataSys0_2_%d" , i));
+               Gs[10] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmear0_2_%d"   , i));
+               Gs[11] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys0_2_%d", i));
+               Gs[12] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRData0_3_%d"    , i));
+               Gs[13] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRDataSys0_3_%d" , i));
+               Gs[14] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmear0_3_%d"   , i));
+               Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys0_3_%d", i));
+            }
+
+            DoGraph(Gs, OutputBase + Form("_DR0PrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_DR0, SD);
          }
 
          for(int i = 0; i < 4; i++)
@@ -210,7 +336,7 @@ int main()
             Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys_%d_4", i));
 
             DoGraph(Gs, OutputBase + Form("_PrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_MASS, SD);
-            
+
             Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGData_%d_1"    , i));
             Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGDataSys_%d_1" , i));
             Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmear_%d_1"   , i));
@@ -229,7 +355,7 @@ int main()
             Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys_%d_4", i));
 
             DoGraph(Gs, OutputBase + Form("_ZGPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_ZG, SD);
-            
+
             Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRData_%d_1"    , i));
             Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRDataSys_%d_1" , i));
             Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmear_%d_1"   , i));
@@ -248,6 +374,63 @@ int main()
             Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys_%d_4", i));
 
             DoGraph(Gs, OutputBase + Form("_DRPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_DR, SD);
+            
+            Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassData0_%d_1"    , i));
+            Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassDataSys0_%d_1" , i));
+            Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmear0_%d_1"   , i));
+            Gs[3]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("MassSmearSys0_%d_1", i));
+            Gs[4]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassData0_%d_2"    , i));
+            Gs[5]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassDataSys0_%d_2" , i));
+            Gs[6]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmear0_%d_2"   , i));
+            Gs[7]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys0_%d_2", i));
+            Gs[8]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassData0_%d_3"    , i));
+            Gs[9]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassDataSys0_%d_3" , i));
+            Gs[10] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmear0_%d_3"   , i));
+            Gs[11] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys0_%d_3", i));
+            Gs[12] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassData0_%d_4"    , i));
+            Gs[13] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassDataSys0_%d_4" , i));
+            Gs[14] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmear0_%d_4"   , i));
+            Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("MassSmearSys0_%d_4", i));
+
+            DoGraph(Gs, OutputBase + Form("_0PrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_MASS, SD);
+
+            Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGData0_%d_1"    , i));
+            Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGDataSys0_%d_1" , i));
+            Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmear0_%d_1"   , i));
+            Gs[3]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("ZGSmearSys0_%d_1", i));
+            Gs[4]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGData0_%d_2"    , i));
+            Gs[5]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGDataSys0_%d_2" , i));
+            Gs[6]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmear0_%d_2"   , i));
+            Gs[7]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys0_%d_2", i));
+            Gs[8]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGData0_%d_3"    , i));
+            Gs[9]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGDataSys0_%d_3" , i));
+            Gs[10] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmear0_%d_3"   , i));
+            Gs[11] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys0_%d_3", i));
+            Gs[12] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGData0_%d_4"    , i));
+            Gs[13] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGDataSys0_%d_4" , i));
+            Gs[14] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmear0_%d_4"   , i));
+            Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("ZGSmearSys0_%d_4", i));
+
+            DoGraph(Gs, OutputBase + Form("_ZG0PrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_ZG, SD);
+
+            Gs[0]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRData0_%d_1"    , i));
+            Gs[1]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRDataSys0_%d_1" , i));
+            Gs[2]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmear0_%d_1"   , i));
+            Gs[3]  = (TGraphAsymmErrors *)FGraphs1.Get(Form("DRSmearSys0_%d_1", i));
+            Gs[4]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRData0_%d_2"    , i));
+            Gs[5]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRDataSys0_%d_2" , i));
+            Gs[6]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmear0_%d_2"   , i));
+            Gs[7]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys0_%d_2", i));
+            Gs[8]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRData0_%d_3"    , i));
+            Gs[9]  = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRDataSys0_%d_3" , i));
+            Gs[10] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmear0_%d_3"   , i));
+            Gs[11] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys0_%d_3", i));
+            Gs[12] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRData0_%d_4"    , i));
+            Gs[13] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRDataSys0_%d_4" , i));
+            Gs[14] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmear0_%d_4"   , i));
+            Gs[15] = (TGraphAsymmErrors *)FGraphs2.Get(Form("DRSmearSys0_%d_4", i));
+
+            DoGraph(Gs, OutputBase + Form("_DR0PrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_DR0, SD);
          }
 
          FGraphs2.Close();
@@ -297,6 +480,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       BinCount = ZGBINCOUNT;
    if(Type == TYPE_DR)
       BinCount = DRBINCOUNT;
+   if(Type == TYPE_DR0)
+      BinCount = DRBINCOUNT;
 
    Division(G1Data, G1Smear, G1Ratio, BinCount);
    Division(G1DataSys, G1SmearSys, G1RatioSys, BinCount);
@@ -328,16 +513,16 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    double WorldMax = 500;
    double MassMin = 0;
    double MassMax = 0.26;
-   double RatioMin = 0;
-   double RatioMax = 2;
+   double RatioMin = 0.25;
+   double RatioMax = 4;
    if(Type == TYPE_ZG)
    {
       WorldMin = 1e-3;
       WorldMax = 10;
       MassMin = 0;
       MassMax = 0.5;
-      RatioMin = 0;
-      RatioMax = 2;
+      RatioMin = 0.25;
+      RatioMax = 4;
    }
    if(Type == TYPE_DR)
    {
@@ -345,8 +530,17 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       WorldMax = 15;
       MassMin = 0.1;
       MassMax = 0.5;
-      RatioMin = 0;
-      RatioMax = 2;
+      RatioMin = 0.25;
+      RatioMax = 4;
+   }
+   if(Type == TYPE_DR0)
+   {
+      WorldMin = 1e-3;
+      WorldMax = 15;
+      MassMin = 0.0;
+      MassMax = 0.5;
+      RatioMin = 0.25;
+      RatioMax = 4;
    }
 
    TGraph GLine;
@@ -397,7 +591,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    GSmear.SetLineColor(G1Smear->GetLineColor());
    if(G1SmearSys)  GSmear.SetFillColor(G1SmearSys->GetFillColor());
    else            GSmear.SetFillColor(kWhite);
-   
+
    Pad1->cd();
    HWorld.Draw("");
    if(G1SmearSys)   G1SmearSys->Draw("2");
@@ -448,16 +642,16 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G1Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   // Pad5->SetLogy();
+   Pad5->SetLogy();
    Pad5->Update();
-   
+
    Pad6->cd();
    HWorldRatio.Draw("");
    if(G2SmearSys)   G2RatioSys.Draw("2");
    G2Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   // Pad6->SetLogy();
+   Pad6->SetLogy();
    Pad6->Update();
 
    Pad7->cd();
@@ -466,7 +660,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G3Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   // Pad7->SetLogy();
+   Pad7->SetLogy();
    Pad7->Update();
 
    Pad8->cd();
@@ -475,13 +669,13 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G4Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   // Pad8->SetLogy();
+   Pad8->SetLogy();
    Pad8->Update();
 
    Canvas.cd();
 
    string Scale = "G";
-   if(Type == TYPE_ZG || Type == TYPE_DR)
+   if(Type == TYPE_ZG || Type == TYPE_DR || Type == TYPE_DR0)
       Scale = "";
    TGaxis LeftAxis1(Border / TotalWidth, (Border + RatioHeight) / TotalHeight, Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight,
          WorldMin, WorldMax, 50510, Scale.c_str());
@@ -493,14 +687,18 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d z_{g}}");
    if(Type == TYPE_DR)
       LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #Delta R}");
+   if(Type == TYPE_DR0)
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #Delta R}");
    LeftAxis1.SetTextFont(42);
    LeftAxis1.SetLabelFont(42);
    LeftAxis1.CenterTitle(true);
    LeftAxis1.SetTitleOffset(0.85);
    LeftAxis1.Draw();
 
+   // TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
+   //       RatioMin, RatioMax, 1005, "");
    TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
-         RatioMin, RatioMax, 1005, "");
+         RatioMin, RatioMax, 1005, "G");
    LeftAxis2.SetName("LeftAxis2");
    LeftAxis2.SetLineWidth(0);
    LeftAxis2.SetTitle("#frac{PbPb}{smeared pp}");
@@ -520,6 +718,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       BottomAxis1.SetTitle("z_{g}");
    if(Type == TYPE_DR)
       BottomAxis1.SetTitle("#Delta R");
+   if(Type == TYPE_DR0)
+      BottomAxis1.SetTitle("#Delta R");
    BottomAxis1.SetTextFont(42);
    BottomAxis1.SetLabelFont(42);
    BottomAxis1.CenterTitle(true);
@@ -534,6 +734,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_ZG)
       BottomAxis2.SetTitle("z_{g}");
    if(Type == TYPE_DR)
+      BottomAxis2.SetTitle("#Delta R");
+   if(Type == TYPE_DR0)
       BottomAxis2.SetTitle("#Delta R");
    BottomAxis2.SetTextFont(42);
    BottomAxis2.SetLabelFont(42);
@@ -550,6 +752,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       BottomAxis3.SetTitle("z_{g}");
    if(Type == TYPE_DR)
       BottomAxis3.SetTitle("#Delta R");
+   if(Type == TYPE_DR0)
+      BottomAxis3.SetTitle("#Delta R");
    BottomAxis3.SetTextFont(42);
    BottomAxis3.SetLabelFont(42);
    BottomAxis3.CenterTitle(true);
@@ -564,6 +768,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_ZG)
       BottomAxis4.SetTitle("z_{g}");
    if(Type == TYPE_DR)
+      BottomAxis4.SetTitle("#Delta R");
+   if(Type == TYPE_DR0)
       BottomAxis4.SetTitle("#Delta R");
    BottomAxis4.SetTextFont(42);
    BottomAxis4.SetLabelFont(42);

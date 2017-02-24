@@ -38,6 +38,11 @@ bool PassPairingUpsilon(LeptonVectors &Leptons);
 bool PassPairingLooseA(LeptonVectors &Leptons);
 bool PassPairingSuperBaseA(LeptonVectors &Leptons);
 bool PassPairingSuperBaseB(LeptonVectors &Leptons);
+bool PassPairingLowerBase(LeptonVectors &Leptons);
+bool PassPairingEvenLowerBase(LeptonVectors &Leptons);
+bool PassPairingDRLL(LeptonVectors &Leptons);
+bool PassPairingVeryLowBase(LeptonVectors &Leptons);
+bool PassPairingDRLLTight(LeptonVectors &Leptons);
 vector<bool> PassPairingCuts(LeptonVectors &Leptons);
 //---------------------------------------------------------------------------
 #endif

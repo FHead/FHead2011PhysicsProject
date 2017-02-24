@@ -324,6 +324,60 @@ bool PassPairingSuperBaseB(LeptonVectors &Leptons)
    return true;
 }
 //---------------------------------------------------------------------------
+bool PassPairingLowerBase(LeptonVectors &Leptons)
+{
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 2)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton12).GetMass() < 2)   return false;
+   if((Leptons.Lepton11 + Leptons.Lepton22).GetMass() < 2)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 2)   return false;
+
+   return true;
+}
+//---------------------------------------------------------------------------
+bool PassPairingEvenLowerBase(LeptonVectors &Leptons)
+{
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 1)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton12).GetMass() < 1)   return false;
+   if((Leptons.Lepton11 + Leptons.Lepton22).GetMass() < 1)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 1)   return false;
+
+   return true;
+}
+//---------------------------------------------------------------------------
+bool PassPairingDRLL(LeptonVectors &Leptons)
+{
+   if(GetDR(Leptons.Lepton11, Leptons.Lepton12) < 0.2)   return false;
+   if(GetDR(Leptons.Lepton11, Leptons.Lepton21) < 0.2)   return false;
+   if(GetDR(Leptons.Lepton11, Leptons.Lepton22) < 0.2)   return false;
+   if(GetDR(Leptons.Lepton12, Leptons.Lepton21) < 0.2)   return false;
+   if(GetDR(Leptons.Lepton12, Leptons.Lepton22) < 0.2)   return false;
+   if(GetDR(Leptons.Lepton21, Leptons.Lepton22) < 0.2)   return false;
+
+   return true;
+}
+//---------------------------------------------------------------------------
+bool PassPairingVeryLowBase(LeptonVectors &Leptons)
+{
+   if((Leptons.Lepton11 + Leptons.Lepton12).GetMass() < 0.2)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton12).GetMass() < 0.2)   return false;
+   if((Leptons.Lepton11 + Leptons.Lepton22).GetMass() < 0.2)   return false;
+   if((Leptons.Lepton21 + Leptons.Lepton22).GetMass() < 0.2)   return false;
+
+   return true;
+}
+//---------------------------------------------------------------------------
+bool PassPairingDRLLTight(LeptonVectors &Leptons)
+{
+   if(GetDR(Leptons.Lepton11, Leptons.Lepton12) < 0.4)   return false;
+   if(GetDR(Leptons.Lepton11, Leptons.Lepton21) < 0.4)   return false;
+   if(GetDR(Leptons.Lepton11, Leptons.Lepton22) < 0.4)   return false;
+   if(GetDR(Leptons.Lepton12, Leptons.Lepton21) < 0.4)   return false;
+   if(GetDR(Leptons.Lepton12, Leptons.Lepton22) < 0.4)   return false;
+   if(GetDR(Leptons.Lepton21, Leptons.Lepton22) < 0.4)   return false;
+
+   return true;
+}
+//---------------------------------------------------------------------------
 vector<bool> PassPairingCuts(LeptonVectors &Leptons)
 {
    bool LeptonLoose = PassPairingLeptonLoose(Leptons);
@@ -338,6 +392,11 @@ vector<bool> PassPairingCuts(LeptonVectors &Leptons)
    bool SmallEta = PassPairingLeptonSmallEta(Leptons);
    bool SuperBaseA = PassPairingSuperBaseA(Leptons);
    bool SuperBaseB = PassPairingSuperBaseB(Leptons);
+   bool LowerBase = PassPairingLowerBase(Leptons);
+   bool EvenLowerBase = PassPairingEvenLowerBase(Leptons);
+   bool DRLL = PassPairingDRLL(Leptons);
+   bool VeryLowBase = PassPairingVeryLowBase(Leptons);
+   bool DRLLTight = PassPairingDRLLTight(Leptons);
 
    vector<bool> Result;
    Result.push_back(LeptonTight && TightA && Base);
@@ -353,6 +412,13 @@ vector<bool> PassPairingCuts(LeptonVectors &Leptons)
    Result.push_back(LeptonTight && Base && Upsilon && SmallEta);
    Result.push_back(SuperBaseA);
    Result.push_back(SuperBaseA && SuperBaseB);
+   Result.push_back(LeptonLoose && LowerBase);
+   Result.push_back(LeptonLoose && EvenLowerBase);
+   Result.push_back(LeptonLoose && EvenLowerBase && DRLL);
+   Result.push_back(LeptonLoose && VeryLowBase && DRLL);
+   Result.push_back(LeptonLoose && VeryLowBase && DRLLTight);
+   Result.push_back(LeptonLoose && VeryLowBase);
+   Result.push_back(LeptonLoose);
    return Result;
 }
 //---------------------------------------------------------------------------

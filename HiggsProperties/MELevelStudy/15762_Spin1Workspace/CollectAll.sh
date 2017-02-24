@@ -1,11 +1,11 @@
-cat Cleaned/Function_EEEE_*R_*R > CalculateME_Part31.cpp
-cat Cleaned/Function_EEEE_*R_*I > CalculateME_Part32.cpp
-cat Cleaned/Function_EEEE_*I_*R > CalculateME_Part33.cpp
-cat Cleaned/Function_EEEE_*I_*I > CalculateME_Part34.cpp
-cat Cleaned/Function_EEMM_*R_*R > CalculateME_Part35.cpp
-cat Cleaned/Function_EEMM_*R_*I > CalculateME_Part36.cpp
-cat Cleaned/Function_EEMM_*I_*R > CalculateME_Part37.cpp
-cat Cleaned/Function_EEMM_*I_*I > CalculateME_Part38.cpp
+cat Cleaned/Function_EEEE_*R_*R > CalculateME_Part39.cpp
+cat Cleaned/Function_EEEE_*R_*I > CalculateME_Part40.cpp
+cat Cleaned/Function_EEEE_*I_*R > CalculateME_Part41.cpp
+cat Cleaned/Function_EEEE_*I_*I > CalculateME_Part42.cpp
+cat Cleaned/Function_EEMM_*R_*R > CalculateME_Part43.cpp
+cat Cleaned/Function_EEMM_*R_*I > CalculateME_Part44.cpp
+cat Cleaned/Function_EEMM_*I_*R > CalculateME_Part45.cpp
+cat Cleaned/Function_EEMM_*I_*I > CalculateME_Part46.cpp
 
 for i in EEMM EEEE
 do
@@ -22,7 +22,7 @@ do
    for j in RR II RI IR
    do
       cat Meow0 > Meow1
-      echo "double CalculateXVV_${i}_${j}_15721(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P)" >> Meow1
+      echo "double CalculateXVVSpin1_${i}_${j}_15762(LeptonVectors &Leptons, ExtendedAVVBasis &A, ZPrimeParameters &P)" >> Meow1
       echo "{" >> Meow1
       echo "   return" >> Meow1
       cat ${i}${j} >> Meow1

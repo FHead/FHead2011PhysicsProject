@@ -1,11 +1,11 @@
-cat Cleaned/Function_EEEE_*R_*R > CalculateME_Part39.cpp
-cat Cleaned/Function_EEEE_*R_*I > CalculateME_Part40.cpp
-cat Cleaned/Function_EEEE_*I_*R > CalculateME_Part41.cpp
-cat Cleaned/Function_EEEE_*I_*I > CalculateME_Part42.cpp
-cat Cleaned/Function_EEMM_*R_*R > CalculateME_Part43.cpp
-cat Cleaned/Function_EEMM_*R_*I > CalculateME_Part44.cpp
-cat Cleaned/Function_EEMM_*I_*R > CalculateME_Part45.cpp
-cat Cleaned/Function_EEMM_*I_*I > CalculateME_Part46.cpp
+cat Cleaned/Function_EEEE_*R_*R > CalculateME_Part47.cpp
+cat Cleaned/Function_EEEE_*R_*I > CalculateME_Part48.cpp
+cat Cleaned/Function_EEEE_*I_*R > CalculateME_Part49.cpp
+cat Cleaned/Function_EEEE_*I_*I > CalculateME_Part50.cpp
+cat Cleaned/Function_EEMM_*R_*R > CalculateME_Part51.cpp
+cat Cleaned/Function_EEMM_*R_*I > CalculateME_Part52.cpp
+cat Cleaned/Function_EEMM_*I_*R > CalculateME_Part53.cpp
+cat Cleaned/Function_EEMM_*I_*I > CalculateME_Part54.cpp
 
 for i in EEMM EEEE
 do

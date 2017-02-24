@@ -1026,7 +1026,7 @@ std::vector<double> HybridCalculator::PassThroughMode(const EventParameters &Tar
    if(PTYDensity != NULL)
       PTYWeight = PTYDensity(Total.GetPT(), Total.GetY(), Total.GetMass2());
 
-   std::cout << "PTY " << PTYWeight << std::endl;
+   // std::cout << "PTY " << PTYWeight << std::endl;
 
    LeptonVectors SwappedLeptons = Leptons.FlipZ1Z2();
 

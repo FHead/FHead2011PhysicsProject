@@ -3,6 +3,18 @@
    OutputTree->SetAlias("MatchedDPhiRaw", "(BestJetPhi-JetPhi)");
    OutputTree->SetAlias("MatchedDPhi", "(MatchedDPhiRaw+(MatchedDPhiRaw<-3.1415926535)*2*3.1415926535-(MatchedDPhiRaw>3.1415926535)*2*3.1415926535)");
    OutputTree->SetAlias("MatchedDR", "sqrt(MatchedDEta*MatchedDEta+MatchedDPhi*MatchedDPhi)");
+   
+   OutputTree->SetAlias("RawJetDPhi", "(JetPhi-NewJetPhi)");
+   OutputTree->SetAlias("JetDPhi", "(RawJetDPhi+2*3.1415926535*(RawJetDPhi<-3.1415926535)-2*3.1415926535*(RawJetDPhi>3.1415926535))");
+   OutputTree->SetAlias("JetDEta", "(JetEta-NewJetEta)");
+   OutputTree->SetAlias("JetShift", "sqrt(JetDPhi*JetDPhi+JetDEta*JetDEta)");
+   OutputTree->SetAlias("RawBestJetDPhi", "(JetPhi-BestJetPhi)");
+   OutputTree->SetAlias("BestJetDPhi", "(RawBestJetDPhi+2*3.1415926535*(RawBestJetDPhi<-3.1415926535)-2*3.1415926535*(RawBestJetDPhi>3.1415926535))");
+   OutputTree->SetAlias("BestJetDEta", "(JetEta-BestJetEta)");
+   OutputTree->SetAlias("BestJetShift", "sqrt(BestJetDPhi*BestJetDPhi+BestJetDEta*BestJetDEta)");
+   OutputTree->SetAlias("ExcessPT", "(TotalPT-Rho*0.8*0.8*3.1415926535)");
+
+   OutputTree->SetAlias("Baseline", "(JetShift < 0.2)");
 
    OutputTree->SetAlias("X", "(Centrality/100)");
    OutputTree->SetAlias("RMS1", "(exp(1.482-26.28*X)+exp(3.337-3.542*X))");

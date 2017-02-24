@@ -14,7 +14,7 @@ do
 
          Source=Cleaned/Function_${k}_${Component1}_${Component2}
 
-         FunctionName=GetXVV_${k}_${Component1}_${Component2}_15721
+         FunctionName=GetSpin1XVV_${k}_${Component1}_${Component2}_15762
 
          echo "void $FunctionName(LeptonVectors &leptons, ZPrimeParameters &P);" >> Header
 

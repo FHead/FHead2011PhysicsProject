@@ -1,7 +1,7 @@
 rm -f Header
 mkdir -p Cleaned
 
-for i in ARxAR ARxAI AIxAR AIxAI
+for i in AIxAI # ARxAR ARxAI AIxAR AIxAI
 do
    for k in EEMM EEEE
    do

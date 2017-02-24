@@ -36,10 +36,12 @@ int main(int argc, char *argv[])
       return -1;
 
    TFile OutputFile(Output.c_str(), "RECREATE");
+
+   TH1D HN("HN", ";;", 1, 0, 1);
  
    vector<TH1D *> HRho;
    for(int i = 0; i < 101; i++)
-      HRho.push_back(new TH1D(Form("HRho%d", i), ";Rho;", 100, 0, 400));
+      HRho.push_back(new TH1D(Form("HRho%d", i), ";Rho;", 4000, 0, 400));
 
    int EntryCount = MHiEvent.Tree->GetEntries();
    for(int iEntry = 0; iEntry < EntryCount; iEntry++)
@@ -52,12 +54,16 @@ int main(int argc, char *argv[])
       if(IsData == true && MSkim.PassBasicFilter() == false)
          continue;
 
+      HN.Fill(0);
+
       int Centrality = int(GetCentrality(MHiEvent.hiBin) * 100);
       if(Centrality < 0)
          Centrality = 0;
 
       HRho[Centrality]->Fill(GetRho(MRho.EtaMax, MRho.Rho, 0));
    }
+
+   HN.Write();
 
    for(int i = 0; i < 101; i++)
    {

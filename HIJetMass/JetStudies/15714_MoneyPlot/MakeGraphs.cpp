@@ -349,7 +349,7 @@ int main(int argc, char *argv[])
    vector<double> SmearTotalDR[5][6];        InitializeVectors(SmearTotalDR, DRBINCOUNT);
    vector<double> SmearTotalDR2[5][6];       InitializeVectors(SmearTotalDR2, DRBINCOUNT);
 
-   for(int iE = 0; iE < SmearEntryCount; iE++)
+   for(int iE = 0; iE < SmearEntryCount * 0.2; iE++)
    {
       TSmear->GetEntry(iE);
 

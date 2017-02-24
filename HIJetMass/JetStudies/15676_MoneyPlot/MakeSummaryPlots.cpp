@@ -31,13 +31,13 @@ int main()
    {
       if(iMC == 0)
       {
-         FileName = "GraphsDataAdjusted.root";
+         FileName = "GraphsDataAdjusted15713.root";
          OutputBase = "DataClosure";
          IsMC = false;
       }
       else
       {
-         FileName = "GraphsMCAdjusted.root";
+         FileName = "GraphsMCAdjusted15713.root";
          OutputBase = "MCClosure";
          IsMC = true;
       }
@@ -161,8 +161,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    double WorldMax = 500;
    double MassMin = 0;
    double MassMax = 0.26;
-   double RatioMin = 0.1;
-   double RatioMax = 10;
+   double RatioMin = 0;
+   double RatioMax = 3;
 
    TGraph GLine;
    GLine.SetPoint(0, MassMin, 1);
@@ -257,7 +257,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G1Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad5->SetLogy();
+   // Pad5->SetLogy();
    Pad5->Update();
 
    Pad6->cd();
@@ -266,7 +266,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G2Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad6->SetLogy();
+   // Pad6->SetLogy();
    Pad6->Update();
 
    Pad7->cd();
@@ -275,7 +275,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G3Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad7->SetLogy();
+   // Pad7->SetLogy();
    Pad7->Update();
 
    Pad8->cd();
@@ -284,7 +284,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G4Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad8->SetLogy();
+   // Pad8->SetLogy();
    Pad8->Update();
 
    Canvas.cd();
@@ -301,7 +301,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    LeftAxis1.Draw();
 
    TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
-         RatioMin, RatioMax, 1005, "G");
+         RatioMin, RatioMax, 1005, "");
    LeftAxis2.SetName("LeftAxis2");
    LeftAxis2.SetLineWidth(0);
    LeftAxis2.SetTitle("#frac{PbPb}{smeared pp}");
@@ -360,7 +360,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    Latex.SetTextAlign(30);
    if(IsMC == false)
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp < 25.8 pb^{-1}");
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp < 28 pb^{-1}");
    else
       Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, Simulation");
 

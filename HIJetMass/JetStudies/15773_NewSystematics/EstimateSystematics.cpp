@@ -257,12 +257,12 @@ int main(int argc, char *argv[])
    HNominal_P4.Scale(1 / HNominalInt_P4.Integral());
    HNominal_P5.Scale(1 / HNominalInt_P5.Integral());
 
-   PdfFile.AddPlot(HNominal_P0);
-   PdfFile.AddPlot(HNominal_P1);
-   PdfFile.AddPlot(HNominal_P2);
-   PdfFile.AddPlot(HNominal_P3);
-   PdfFile.AddPlot(HNominal_P4);
-   PdfFile.AddPlot(HNominal_P5);
+   // PdfFile.AddPlot(HNominal_P0);
+   // PdfFile.AddPlot(HNominal_P1);
+   // PdfFile.AddPlot(HNominal_P2);
+   // PdfFile.AddPlot(HNominal_P3);
+   // PdfFile.AddPlot(HNominal_P4);
+   // PdfFile.AddPlot(HNominal_P5);
 
    HModified_P0.Scale(1 / HModifiedInt_P0.Integral());
    HModified_P1.Scale(1 / HModifiedInt_P1.Integral());
@@ -271,12 +271,12 @@ int main(int argc, char *argv[])
    HModified_P4.Scale(1 / HModifiedInt_P4.Integral());
    HModified_P5.Scale(1 / HModifiedInt_P5.Integral());
 
-   PdfFile.AddPlot(HModified_P0);
-   PdfFile.AddPlot(HModified_P1);
-   PdfFile.AddPlot(HModified_P2);
-   PdfFile.AddPlot(HModified_P3);
-   PdfFile.AddPlot(HModified_P4);
-   PdfFile.AddPlot(HModified_P5);
+   // PdfFile.AddPlot(HModified_P0);
+   // PdfFile.AddPlot(HModified_P1);
+   // PdfFile.AddPlot(HModified_P2);
+   // PdfFile.AddPlot(HModified_P3);
+   // PdfFile.AddPlot(HModified_P4);
+   // PdfFile.AddPlot(HModified_P5);
 
    AddPlots(PdfFile, HNominal_P0, HModified_P0);
    AddPlots(PdfFile, HNominal_P1, HModified_P1);

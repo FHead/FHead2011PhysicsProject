@@ -1,5 +1,5 @@
-Home=/Users/yichen
-WorkspaceBase=/Users/yichen/PhysicsWorkspace/HiggsProperties/
+Home=/home/yichen
+WorkspaceBase=/home/yichen/PhysicsWorkspace/HiggsProperties/
 g++ HybridCalculator.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
    `root-config --cflags` -O3 -c -o HybridCalculator.o
 g++ HybridCalculatorWithZPrime.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \

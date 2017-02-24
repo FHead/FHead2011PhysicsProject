@@ -13,4 +13,4 @@ CompileRootMacro MakeSummaryPlots.cpp RunSummary
 
 mkdir -p PDFPlots
 
-mv Plots/*pdf PDFPlots/
+mv Plots/*pdf PDFPlots\ PTHat80/

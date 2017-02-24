@@ -1,18 +1,20 @@
 void FourPanelComplicated(TTree *T1, TTree *T2, TTree *T3, string XAxis);
-void TidyHistogram(TH1F *A, TH1F *B, TH1F *C, string XAxis);
-void TidyHistogram(TH1F *A, TH1F *B, string XAxis);
-void FourPanel(TCanvas *C, TH1F *A1, TH1F *B1, TH1F *C1,
-   TH1F *A2, TH1F *B2, TH1F *C2,
-   TH1F *A3, TH1F *B3, TH1F *C3,
-   TH1F *A4, TH1F *B4, TH1F *C4);
-void SetupLegend(TLegend &Legend, TH1F *A, TH1F *B, TH1F *C);
+void TidyHistogram(TH1 *A, TH1 *B, TH1 *C, string XAxis);
+void TidyHistogram(TH1 *A, TH1 *B, string XAxis);
+void TidyHistogramNoNormalize(TH1 *A, TH1 *B, TH1 *C, string XAxis);
+void TidyHistogramNoNormalize(TH1 *A, TH1 *B, string XAxis);
+void FourPanel(TCanvas *C, TH1 *A1, TH1 *B1, TH1 *C1,
+   TH1 *A2, TH1 *B2, TH1 *C2,
+   TH1 *A3, TH1 *B3, TH1 *C3,
+   TH1 *A4, TH1 *B4, TH1 *C4);
+void SetupLegend(TLegend &Legend, TH1 *A, TH1 *B, TH1 *C);
 
 void FourPanelComplicated(TTree *T1, TTree *T2, TTree *T3, string XAxis)
 {
-   TH1F *A1, *B1, *C1;
-   TH1F *A2, *B2, *C2;
-   TH1F *A3, *B3, *C3;
-   TH1F *A4, *B4, *C4;
+   TH1 *A1, *B1, *C1;
+   TH1 *A2, *B2, *C2;
+   TH1 *A3, *B3, *C3;
+   TH1 *A4, *B4, *C4;
 
    TCanvas C;
 
@@ -63,13 +65,33 @@ void FourPanelComplicated(TTree *T1, TTree *T2, TTree *T3, string XAxis)
    Legend.Draw();
 }
 
-void TidyHistogram(TH1F *A, TH1F *B, TH1F *C, string XAxis)
+void TidyHistogram(TH1 *A, TH1 *B, TH1 *C, string XAxis)
 {
    B->Scale(1 / B->Integral() * A->Integral());
+   C->Scale(1 / C->Integral() * A->Integral());
+   TidyHistogramNoNormalize(A, B, C, XAxis);
+}
+
+void TidyHistogramNoNormalize(TH1 *A, TH1 *B, string XAxis)
+{
    B->SetLineColor(kRed);
    B->SetMarkerColor(kRed);
    B->SetMarkerStyle(20);
-   C->Scale(1 / C->Integral() * A->Integral());
+   A->GetXaxis()->SetTitle(XAxis.c_str());
+   A->SetLineColor(kBlack);
+   A->SetMarkerColor(kBlack);
+   A->SetMarkerStyle(20);
+   A->SetTitle("");
+   
+   A->SetStats(0);
+   B->SetStats(0);
+}
+
+void TidyHistogramNoNormalize(TH1 *A, TH1 *B, TH1 *C, string XAxis)
+{
+   B->SetLineColor(kRed);
+   B->SetMarkerColor(kRed);
+   B->SetMarkerStyle(20);
    C->SetLineColor(kGreen);
    C->SetMarkerColor(kGreen);
    C->SetMarkerStyle(20);
@@ -84,26 +106,16 @@ void TidyHistogram(TH1F *A, TH1F *B, TH1F *C, string XAxis)
    C->SetStats(0);
 }
 
-void TidyHistogram(TH1F *A, TH1F *B, string XAxis)
+void TidyHistogram(TH1 *A, TH1 *B, string XAxis)
 {
    B->Scale(1 / B->Integral() * A->Integral());
-   B->SetLineColor(kRed);
-   B->SetMarkerColor(kRed);
-   B->SetMarkerStyle(20);
-   A->GetXaxis()->SetTitle(XAxis.c_str());
-   A->SetLineColor(kBlack);
-   A->SetMarkerColor(kBlack);
-   A->SetMarkerStyle(20);
-   A->SetTitle("");
-   
-   A->SetStats(0);
-   B->SetStats(0);
+   TidyHistogramNoNormalize(A, B, XAxis);
 }
 
-void FourPanel(TCanvas *C, TH1F *A1, TH1F *B1, TH1F *C1,
-   TH1F *A2, TH1F *B2, TH1F *C2,
-   TH1F *A3, TH1F *B3, TH1F *C3,
-   TH1F *A4, TH1F *B4, TH1F *C4)
+void FourPanel(TCanvas *C, TH1 *A1, TH1 *B1, TH1 *C1,
+   TH1 *A2, TH1 *B2, TH1 *C2,
+   TH1 *A3, TH1 *B3, TH1 *C3,
+   TH1 *A4, TH1 *B4, TH1 *C4)
 {
    C->Divide(2, 2);
 
@@ -128,7 +140,7 @@ void FourPanel(TCanvas *C, TH1F *A1, TH1F *B1, TH1F *C1,
    C4->Draw("same");
 }
 
-void SetupLegend(TLegend &Legend, TH1F *A, TH1F *B, TH1F *C)
+void SetupLegend(TLegend &Legend, TH1 *A, TH1 *B, TH1 *C)
 {
    Legend.SetTextFont(42);
    Legend.SetTextSize(0.035);

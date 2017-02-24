@@ -58,12 +58,15 @@ int main(int argc, char *argv[])
    T->SetBranchAddress("L3Phi", &Phi3);
    T->SetBranchAddress("L4Phi", &Phi4);
 
-   TH1D HM4l("HM4l", "4l mass;M_{4l} (GeV);", 100, 5, 30);
-   TH1D HM1("HM1", "first pair mass;M_{1} (GeV);", 100, 0, 30);
-   TH1D HM2("HM2", "second pair mass;M_{2} (GeV);", 100, 0, 15);
+   TH1D HM4l("HM4l", "4l mass;M_{4l} (GeV);", 100, 0, 200);
+   TH1D HM4lLow("HM4lLow", "4l mass;M_{4l} (GeV);", 100, 5, 30);
+   TH1D HM1("HM1", "first pair mass;M_{1} (GeV);", 100, 0, 150);
+   TH1D HM1Low("HM1Low", "first pair mass;M_{1} (GeV);", 100, 0, 30);
+   TH1D HM2("HM2", "second pair mass;M_{2} (GeV);", 100, 0, 120);
+   TH1D HM2Low("HM2Low", "second pair mass;M_{2} (GeV);", 100, 0, 15);
    TH1D HPhi0("HPhi0", "#Phi_{0};#Phi_{0};", 100, 0, 2 * PI);
    TH1D HCosTheta0("HCosTheta0", "cos #Theta;cos #Theta;", 100, -1, 1);
-   TH1D HPhi("HPhi", "#phi;#phi;", 100, 0, 2 * PI);
+   TH1D HPhi("HPhi", "#phi;#phi;", 100, -PI * 0.1, 2 * PI + PI * 0.1);
    TH1D HCosTheta1("HCosTheta1", "cos #theta_{1};cos #theta_{1};", 100, -1, 1);
    TH1D HCosTheta2("HCosTheta2", "cos #theta_{2};cos #theta_{2};", 100, -1, 1);
    TH1D HY4l("HY4l", "Rapidity of 4l system;y^{4l};", 100, -10, 10);
@@ -113,8 +116,11 @@ int main(int argc, char *argv[])
       EventParameters Event = ConvertVectorsToAnglesRoberto(Leptons);
 
       HM4l.Fill(Event.HMass);
+      HM4lLow.Fill(Event.HMass);
       HM1.Fill(Event.ZMass);
+      HM1Low.Fill(Event.ZMass);
       HM2.Fill(Event.Z2Mass);
+      HM2Low.Fill(Event.Z2Mass);
       HPhi0.Fill(Event.Phi0);
       HCosTheta0.Fill(cos(Event.Theta0));
       HPhi.Fill(Event.Phi);
@@ -128,10 +134,16 @@ int main(int argc, char *argv[])
 
    PdfFile.AddPlot(HM4l, "", false);
    PdfFile.AddPlot(HM4l, "", true);
+   PdfFile.AddPlot(HM4lLow, "", false);
+   PdfFile.AddPlot(HM4lLow, "", true);
    PdfFile.AddPlot(HM1, "", false);
    PdfFile.AddPlot(HM1, "", true);
+   PdfFile.AddPlot(HM1Low, "", false);
+   PdfFile.AddPlot(HM1Low, "", true);
    PdfFile.AddPlot(HM2, "", false);
    PdfFile.AddPlot(HM2, "", true);
+   PdfFile.AddPlot(HM2Low, "", false);
+   PdfFile.AddPlot(HM2Low, "", true);
    PdfFile.AddPlot(HPhi0, "", false);
    PdfFile.AddPlot(HPhi0, "", true);
    PdfFile.AddPlot(HCosTheta0, "", false);

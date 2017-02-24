@@ -36,7 +36,7 @@ bool SDJetHelper::Initialize(JetTreeMessenger &MJet)
 
    for(int i = 0; i < MJet.JetCount; i++)
    {
-      if((*MJet.JetSubJetPT)[i].size() < 2)
+      if(MJet.JetSubJetPT == NULL || MJet.JetSubJetPT->size() < MJet.JetCount || (*MJet.JetSubJetPT)[i].size() < 2)
       {
          RecoSubJet1[i] = FourVector(0, 0, 0, 0);
          RecoSubJet2[i] = FourVector(0, 0, 0, 0);
@@ -53,7 +53,7 @@ bool SDJetHelper::Initialize(JetTreeMessenger &MJet)
          RecoSubJetDR[i] = GetDR(RecoSubJet1[i], RecoSubJet2[i]);
       }
       
-      if((*MJet.RefGSubJetPT)[i].size() < 2)
+      if(MJet.RefGSubJetPT == NULL || MJet.RefGSubJetPT->size() < MJet.JetCount || (*MJet.RefGSubJetPT)[i].size() < 2)
       {
          GenSubJet1[i] = FourVector(0, 0, 0, 0);
          GenSubJet2[i] = FourVector(0, 0, 0, 0);

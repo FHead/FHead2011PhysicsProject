@@ -47,6 +47,14 @@ bool HiEventTreeMessenger::Initialize()
    else                         Event = 1;
    if(Tree->GetBranch("lumi"))  Tree->SetBranchAddress("lumi", &Lumi);
    else                         Lumi = 1;
+   if(Tree->GetBranch("hiHFplus"))  Tree->SetBranchAddress("hiHFplus", &hiHFplus);
+   else                         hiHFplus = 0;
+   if(Tree->GetBranch("hiHFminus"))  Tree->SetBranchAddress("hiHFminus", &hiHFminus);
+   else                         hiHFminus = 0;
+   if(Tree->GetBranch("hiHFplusEta4"))  Tree->SetBranchAddress("hiHFplusEta4", &hiHFplusEta4);
+   else                         hiHFplusEta4 = 0;
+   if(Tree->GetBranch("hiHFminusEta4"))  Tree->SetBranchAddress("hiHFminusEta4", &hiHFminusEta4);
+   else                         hiHFminusEta4 = 0;
    
    return true;
 }
@@ -224,6 +232,9 @@ bool JetTreeMessenger::Initialize()
    if(Tree->GetBranch("jtphi"))   Tree->SetBranchAddress("jtphi", &JetPhi);
    if(Tree->GetBranch("jtpu"))    Tree->SetBranchAddress("jtpu", &JetPU);
    if(Tree->GetBranch("jtm"))     Tree->SetBranchAddress("jtm", &JetM);
+   if(Tree->GetBranch("jttau1"))  Tree->SetBranchAddress("jttau1", &JetTau1);
+   if(Tree->GetBranch("jttau2"))  Tree->SetBranchAddress("jttau2", &JetTau2);
+   if(Tree->GetBranch("jttau3"))  Tree->SetBranchAddress("jttau3", &JetTau3);
    if(Tree->GetBranch("jtarea"))  Tree->SetBranchAddress("jtarea", &JetArea);
    if(Tree->GetBranch("discr_csvV1"))  Tree->SetBranchAddress("discr_csvV1", &JetCSVV1);
    if(Tree->GetBranch("discr_csvV2"))  Tree->SetBranchAddress("discr_csvV2", &JetCSVV2);
@@ -311,6 +322,17 @@ bool JetTreeMessenger::Initialize()
 
    if(Tree->GetBranch("hcalSum")) Tree->SetBranchAddress("hcalSum", &HcalSum);
    if(Tree->GetBranch("ecalSum")) Tree->SetBranchAddress("ecalSum", &EcalSum);
+
+   if(Tree->GetBranch("jtPfCHF")) Tree->SetBranchAddress("jtPfCHF", &JetPFCHF);
+   if(Tree->GetBranch("jtPfNHF")) Tree->SetBranchAddress("jtPfNHF", &JetPFNHF);
+   if(Tree->GetBranch("jtPfCEF")) Tree->SetBranchAddress("jtPfCEF", &JetPFCEF);
+   if(Tree->GetBranch("jtPfNEF")) Tree->SetBranchAddress("jtPfNEF", &JetPFNEF);
+   if(Tree->GetBranch("jtPfMUF")) Tree->SetBranchAddress("jtPfMUF", &JetPFMUF);
+   if(Tree->GetBranch("jtPfCHM")) Tree->SetBranchAddress("jtPfCHM", &JetPFCHM);
+   if(Tree->GetBranch("jtPfNHM")) Tree->SetBranchAddress("jtPfNHM", &JetPFNHM);
+   if(Tree->GetBranch("jtPfCEM")) Tree->SetBranchAddress("jtPfCEM", &JetPFCEM);
+   if(Tree->GetBranch("jtPfNEM")) Tree->SetBranchAddress("jtPfNEM", &JetPFNEM);
+   if(Tree->GetBranch("jtPfMUM")) Tree->SetBranchAddress("jtPfMUM", &JetPFMUM);
 
    return true;
 }
@@ -475,6 +497,17 @@ bool TriggerTreeMessenger::Initialize()
       {
          Tree->SetBranchAddress(Name[i].c_str(), &Decision[i]);
          Exist[i] = true;
+         
+         if(Tree->GetBranch((Name[i] + "_Prescl").c_str()))
+         {
+            Tree->SetBranchAddress((Name[i] + "_Prescl").c_str(), &Prescale[i]);
+            PrescaleExist[i] = true;
+         }
+         else
+         {
+            Prescale[i] = -1;
+            PrescaleExist[i] = false;
+         }
       }
       else
       {
@@ -613,6 +646,10 @@ void TriggerTreeMessenger::FillTriggerNames()
    Name.push_back("L1_MinimumBiasHF0_OR_BptxAND_Final");
    Name.push_back("L1_MinimumBiasHF0_OR_BptxAND");
    Name.push_back("HLT_PAL1MinimumBiasHF_AND_SinglePixelTrack_v1");
+   Name.push_back("HLT_PAL1MinimumBiasHF_AND_SinglePixelTrack_v2");
+   Name.push_back("HLT_PAL1MinimumBiasHF_AND_SinglePixelTrack_v3");
+   Name.push_back("HLT_PAL1MinimumBiasHF_AND_SinglePixelTrack_v4");
+   Name.push_back("HLT_PAL1MinimumBiasHF_AND_SinglePixelTrack_v5");
 
    Name.push_back("L1_SingleJet12_BptxAND_Initial");
    Name.push_back("L1_SingleJet12_BptxAND_Final");
@@ -624,12 +661,58 @@ void TriggerTreeMessenger::FillTriggerNames()
    Name.push_back("L1_SingleJet36_BptxAND_Final");
    Name.push_back("L1_SingleJet52_BptxAND_Initial");
    Name.push_back("L1_SingleJet52_BptxAND_Final");
+   
+   Name.push_back("L1_SingleJet12_ForEta1p5_BptxAND_Initial");
+   Name.push_back("L1_SingleJet12_ForEta1p5_BptxAND_Final");
+   Name.push_back("L1_SingleJet12_ForEta2p5_BptxAND_Initial");
+   Name.push_back("L1_SingleJet12_ForEta2p5_BptxAND_Final");
+   Name.push_back("L1_SingleJet24_ForEta1p5_BptxAND_Initial");
+   Name.push_back("L1_SingleJet24_ForEta1p5_BptxAND_Final");
+   Name.push_back("L1_SingleJet24_ForEta2p5_BptxAND_Initial");
+   Name.push_back("L1_SingleJet24_ForEta2p5_BptxAND_Final");
+
+   Name.push_back("HLT_PAAK4CaloJet40_Eta5p1_v3");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta5p1_v3");
+   Name.push_back("HLT_PAAK4CaloJet80_Eta5p1_v3");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta1p9toEta5p1_v3");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta1p9toEta5p1_v3");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta2p9toEta5p1_v3");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta5p1_PAL3Mu3_v3");
+   Name.push_back("HLT_PAAK4CaloJet40_Eta5p1_PAL3Mu5_v3");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta5p1_PAL3Mu3_v3");
+   Name.push_back("HLT_PAAK4CaloJet60_Eta5p1_PAL3Mu5_v3");
+   Name.push_back("HLT_PAAK4PFJet40_Eta5p1_v3");
+   Name.push_back("HLT_PAAK4PFJet60_Eta5p1_v3");
+   Name.push_back("HLT_PAAK4PFJet60_Eta5p1_v4");
+   Name.push_back("HLT_PAAK4PFJet80_Eta5p1_v3");
+   Name.push_back("HLT_PAAK4PFJet60_Eta1p9toEta5p1_v3");
+   Name.push_back("HLT_PAAK4PFJet40_Eta1p9toEta5p1_v3");
+   Name.push_back("HLT_PAAK4PFJet40_Eta2p9toEta5p1_v3");
+   Name.push_back("HLT_PADiAK4CaloJetAve40_Eta5p1_v3");
+   Name.push_back("HLT_PADiAK4CaloJetAve60_Eta5p1_v3");
+   Name.push_back("HLT_PADiAK4CaloJetAve80_Eta5p1_v3");
+   Name.push_back("HLT_PADiAK4PFJetAve40_Eta5p1_v3");
+   Name.push_back("HLT_PADiAK4PFJetAve60_Eta5p1_v3");
+   Name.push_back("HLT_PADiAK4PFJetAve80_Eta5p1_v3");
+   Name.push_back("HLT_PASinglePhoton10_Eta3p1_v3");
+   Name.push_back("HLT_PASinglePhoton15_Eta3p1_v3");
+   Name.push_back("HLT_PASinglePhoton20_Eta3p1_v3");
+   Name.push_back("HLT_PASinglePhoton30_Eta3p1_v3");
+   Name.push_back("HLT_PADoublePhoton15_Eta3p1_Mass50_1000_v3");
+   Name.push_back("HLT_PASinglePhoton10_Eta3p1_PAL3Mu3_v3");
+   Name.push_back("HLT_PASinglePhoton10_Eta3p1_PAL3Mu5_v3");
+   Name.push_back("HLT_PASinglePhoton15_Eta3p1_PAL3Mu3_v3");
+   Name.push_back("HLT_PASinglePhoton15_Eta3p1_PAL3Mu5_v3");
+   Name.push_back("HLT_PASinglePhoton20_Eta3p1_PAL3Mu3_v3");
+   Name.push_back("HLT_PASinglePhoton20_Eta3p1_PAL3Mu5_v3");
 
    std::sort(Name.begin(), Name.end());
    std::vector<std::string>::iterator iter = std::unique(Name.begin(), Name.end());
    Name.erase(iter, Name.end());
    Decision.resize(Name.size());
+   Prescale.resize(Name.size());
    Exist.resize(Name.size());
+   PrescaleExist.resize(Name.size());
 }
 
 int TriggerTreeMessenger::FindIndex(std::string Trigger)
@@ -649,6 +732,25 @@ int TriggerTreeMessenger::CheckTrigger(std::string Trigger)
    return CheckTrigger(FindIndex(Trigger));
 }
    
+int TriggerTreeMessenger::CheckTriggerStartWith(std::string Trigger)
+{
+   bool Found = false;
+   int Result = 0;
+
+   for(int i = 0; i < (int)Name.size(); i++)
+   {
+      if(Exist[i] == false || Name[i].find(Trigger) != 0)
+         continue;
+
+      Found = true;
+      Result = Result + CheckTrigger(i);
+   }
+
+   if(Found == true)
+      return Result;
+   return -1;
+}
+   
 int TriggerTreeMessenger::CheckTrigger(int Index)
 {
    if(Index < 0 || Index >= (int)Name.size())
@@ -658,6 +760,38 @@ int TriggerTreeMessenger::CheckTrigger(int Index)
 
    return Decision[Index];
 }
+
+int TriggerTreeMessenger::GetPrescale(std::string Trigger)
+{
+   return GetPrescale(FindIndex(Trigger));
+}
+   
+int TriggerTreeMessenger::GetPrescaleStartWith(std::string Trigger)
+{
+   for(int i = 0; i < (int)Name.size(); i++)
+   {
+      if(Exist[i] == false || Name[i].find(Trigger) != 0)
+         continue;
+      return GetPrescale(i);
+   }
+
+   return -1;
+}
+
+int TriggerTreeMessenger::GetPrescale(int Index)
+{
+   if(Index < 0 || Index >= (int)Name.size())
+      return -1;
+   if(Exist[Index] == false)
+      return -1;
+   if(PrescaleExist[Index] == false)
+      return 1;
+
+   return Prescale[Index];
+}
+
+
+
 
 
 

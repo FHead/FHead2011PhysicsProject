@@ -92,7 +92,7 @@ do
    FileCount=0
    for i in $EOSBase/$Location/*root
    do
-      echo "   " $Executable $i Result/${Tag}_${FileCount}.root $Tag $PTHatMin $PTHatMax "$@"
+      echo "   " $Executable $i Result/${Tag}_${FileCount}.root $Tag $PTHatMin $PTHatMax \$1 \$2 \$3 "$@"
       FileCount=$((FileCount+1))
    done
 
@@ -112,13 +112,16 @@ do
       echo "      | sed \"s#__OUTPUT__#$PWD/Result/${Tag}_${FileCount}.root#g\" \\"
       echo "      | sed \"s#__PTHATMIN__#$PTHatMin#g\" \\"
       echo "      | sed \"s#__PTHATMAX__#$PTHatMax#g\" \\"
-      echo "      | sed \"s#__TAG__#$Tag#g\" | bsub"
+      echo "      | sed \"s#__EXTRA1__#\$1#g\" \\"
+      echo "      | sed \"s#__EXTRA2__#\$2#g\" \\"
+      echo "      | sed \"s#__EXTRA3__#\$3#g\" \\"
+      echo "      | sed \"s#__TAG__#$Tag#g\" | bsub -J ${Tag}"
       FileCount=$((FileCount+1))
    done
 
    echo "}"
    
-   echo "Run$Tag" >> $TempFile1
+   echo "# Run$Tag" >> $TempFile1
    echo "# Submit$Tag" >> $TempFile2
    echo
 
@@ -129,7 +132,10 @@ rm -f $TempFile1 $TempFile2
 mv Total$TempFile RunAll.sh
 
 cp $WorkspaceBase/CommonCode/script/BatchHeaderCopy.txt BatchTemplate.submit
-echo "__EXECUTABLE__ Input.root Output.root __TAG__ __PTHATMIN__ __PTHATMAX__ $@" >> BatchTemplate.submit
+echo "__EXECUTABLE__ Input.root Output.root __TAG__ __PTHATMIN__ __PTHATMAX__ __EXTRA1__ __EXTRA2__ __EXTRA3__ $@" >> BatchTemplate.submit
+
+BaseDirAfterWorkspace=`echo $PWD | tr '/' '\n' | grep -A 999 PhysicsWorkspace | tail -n+2 | tr '\n' '/'`
+echo "# cmsStage Output.root /store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/\`basename __OUTPUT__\`" >> BatchTemplate.submit
 echo "mv Output.root __OUTPUT__" >> BatchTemplate.submit
 
 

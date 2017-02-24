@@ -24,6 +24,10 @@ public:
    unsigned int Run;
    unsigned long long Event;
    unsigned int Lumi;
+   float hiHFplus;
+   float hiHFminus;
+   float hiHFplusEta4;
+   float hiHFminusEta4;
 public:
    HiEventTreeMessenger(TFile &File);
    HiEventTreeMessenger(TTree *HiEventTree);
@@ -79,6 +83,9 @@ public:
    float JetPhi[JETCOUNTMAX];
    float JetPU[JETCOUNTMAX];
    float JetM[JETCOUNTMAX];
+   float JetTau1[JETCOUNTMAX];
+   float JetTau2[JETCOUNTMAX];
+   float JetTau3[JETCOUNTMAX];
    float JetArea[JETCOUNTMAX];
    float JetCSVV1[JETCOUNTMAX];
    float JetCSVV2[JETCOUNTMAX];
@@ -116,8 +123,18 @@ public:
    float GenY[JETCOUNTMAX];
    float GenPhi[JETCOUNTMAX];
    float GenM[JETCOUNTMAX];
-   double HcalSum[JETCOUNTMAX];
-   double EcalSum[JETCOUNTMAX];
+   float HcalSum[JETCOUNTMAX];
+   float EcalSum[JETCOUNTMAX];
+   float JetPFCHF[JETCOUNTMAX];
+   float JetPFNHF[JETCOUNTMAX];
+   float JetPFCEF[JETCOUNTMAX];
+   float JetPFNEF[JETCOUNTMAX];
+   float JetPFMUF[JETCOUNTMAX];
+   int JetPFCHM[JETCOUNTMAX];
+   int JetPFNHM[JETCOUNTMAX];
+   int JetPFCEM[JETCOUNTMAX];
+   int JetPFNEM[JETCOUNTMAX];
+   int JetPFMUM[JETCOUNTMAX];
 public:
    JetTreeMessenger(TFile &File, std::string TreeName = "akCs4PFJetAnalyzer/t");
    JetTreeMessenger(TTree *JetTree);
@@ -174,7 +191,9 @@ public:
    int Lumi;
    std::vector<std::string> Name;
    std::vector<int> Decision;
+   std::vector<int> Prescale;
    std::vector<bool> Exist;
+   std::vector<bool> PrescaleExist;
 public:
    TriggerTreeMessenger(TFile &File, std::string TreeName = "hltanalysis/HltTree");
    TriggerTreeMessenger(TTree *TriggerTree);
@@ -184,7 +203,11 @@ public:
    void FillTriggerNames();
    int FindIndex(std::string Trigger);
    int CheckTrigger(std::string Trigger);
+   int CheckTriggerStartWith(std::string Trigger);
    int CheckTrigger(int Index);
+   int GetPrescale(std::string Trigger);
+   int GetPrescaleStartWith(std::string Trigger);
+   int GetPrescale(int Index);
 };
 
 

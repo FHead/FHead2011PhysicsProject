@@ -59,6 +59,14 @@ int main(int argc, char *argv[])
          OneSignal = true;
    }
 
+   ZPrimeParameters ZP;
+   ZP.VMass = 9.46;
+   ZP.VWidth = 0.054;
+   ZP.G1VL = -0.073348;
+   ZP.G1VR = 0.073348;
+   ZP.G2VL = -0.073348;
+   ZP.G2VR = 0.073348;
+
    StockM4l M4l(StockM4lSeed, 100000);
 
    // Setup calculators
@@ -85,6 +93,7 @@ int main(int argc, char *argv[])
    CalculatorEM.SetIgnoreTip(false);
    CalculatorEM.SetTipRangeFactor(0.05);
    CalculatorEM.SetUseSmartCenter(true);
+   CalculatorEM.SetZPrimeParameter(ZP);
    if(Energy == "14")
       CalculatorEM.SetPTYDensity(GetPTYDensityGG_MZ_CTEQ6l1_14TeV_13432);
    else if(Energy == "13")
@@ -96,8 +105,8 @@ int main(int argc, char *argv[])
 
    MEArrayZPrime MEEM = GetSpin0XVVFunctionListEM();   // ME, 2e2mu = ME,EM = MEEM
    if(OneSignal == false)
-      for(int i = 0; i < 32; i++)
-         for(int j = 0; j < 32; j++)
+      for(int i = 0; i < 72; i++)
+         for(int j = 0; j < 72; j++)
             CalculatorEM.SetMECalculator(MEEM[i][j]);
    else
       CalculatorEM.SetMECalculator(MEEM[0][0]);
@@ -129,6 +138,7 @@ int main(int argc, char *argv[])
    CalculatorEE.SetIgnoreTip(false);
    CalculatorEE.SetTipRangeFactor(0.05);
    CalculatorEE.SetUseSmartCenter(true);
+   CalculatorEE.SetZPrimeParameter(ZP);
    if(Energy == "14")
       CalculatorEE.SetPTYDensity(GetPTYDensityGG_MZ_CTEQ6l1_14TeV_13432);
    else if(Energy == "13")
@@ -209,6 +219,7 @@ int main(int argc, char *argv[])
    // CalculatorEE.TestOutput();
    // CalculatorMM.TestOutput();
 
+   
    // Setup tree
    TFile File(FileName.c_str());
    TTree *Tree = (TTree *)File.Get("MCTree");
@@ -267,11 +278,11 @@ int main(int argc, char *argv[])
          }
       }
 
-      double TempRatio = 125 / Angles.HMass;
-      Angles.HMass = Angles.HMass * TempRatio;
-      Angles.ZMass = Angles.ZMass * TempRatio;
-      Angles.Z2Mass = Angles.Z2Mass * TempRatio;
-      Leptons = ConvertAnglesToVectorsRoberto(Angles);
+      // double TempRatio = 125 / Angles.HMass;
+      // Angles.HMass = Angles.HMass * TempRatio;
+      // Angles.ZMass = Angles.ZMass * TempRatio;
+      // Angles.Z2Mass = Angles.Z2Mass * TempRatio;
+      // Leptons = ConvertAnglesToVectorsRoberto(Angles);
 
       if(l1id == l3id)
          Leptons = Leptons.ReorderLeptons4e();
@@ -336,8 +347,10 @@ int main(int argc, char *argv[])
       cout << setprecision(20);
       cout << FileName << " Central " << iEvent;
       for(int i = 0; i < (int)Integral.size(); i++)
-         cout << " " << Integral[i] * exp(-(m4l - 125) * (m4l - 125) / (2 * 2 * 2)) / m4l
-            * Ratio * Ratio * Ratio * Ratio;
+         cout << " " << Integral[i];
+      // for(int i = 0; i < (int)Integral.size(); i++)
+      //    cout << " " << Integral[i] * exp(-(m4l - 125) * (m4l - 125) / (2 * 2 * 2)) / m4l
+      //       * Ratio * Ratio * Ratio * Ratio;
       cout << endl;
    }
 

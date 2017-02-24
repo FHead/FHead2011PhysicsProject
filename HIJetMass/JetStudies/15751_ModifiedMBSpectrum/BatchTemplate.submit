@@ -22,7 +22,7 @@ OutputName=`basename $DefaultOutput`
 
 OutputBase=/store/cmst3/user/chenyi/BatchOutput/HIJetMass/JetStudies/15751_ModifiedMBSpectrum/Result
 
-Mod=
+Mod=Mod__EXTRA2__
 
 # __EXECUTABLE__ Input.root Output1.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 0.8  __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output1.root ${OutputBase}1/$Mod$OutputName
@@ -48,14 +48,14 @@ Mod=
 # cmsStage -f Output11.root ${OutputBase}11/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output12.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.10 0.20 1.00 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output12.root ${OutputBase}12/$Mod$OutputName
-# __EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 __EXTRA1__ __EXTRA2__ __EXTRA3__
-# cmsStage -f Output13.root ${OutputBase}13/$Mod$OutputName
+__EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 __EXTRA1__ __EXTRA2__ __EXTRA3__
+cmsStage -f Output13.root ${OutputBase}13/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output14.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 0.6 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output14.root ${OutputBase}14/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output15.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.04 0.20 1.00 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output15.root ${OutputBase}15/$Mod$OutputName
-__EXECUTABLE__ Input.root Output16.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.02 0.20 1.00 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
-cmsStage -f Output16.root ${OutputBase}16/$Mod$OutputName
+# __EXECUTABLE__ Input.root Output16.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.02 0.20 1.00 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
+# cmsStage -f Output16.root ${OutputBase}16/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output17.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.6 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output17.root ${OutputBase}17/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output18.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 2.0 __EXTRA1__ __EXTRA2__ __EXTRA3__

@@ -34,12 +34,14 @@ using namespace fastjet;
 #define PTType_Soft 2
 #define PTType_Data 3
 #define PTType_Half 4
+#define PTType_DataData 5
 
 int main(int argc, char *argv[]);
 double GetPFPT(double Eta, double Rho, DataHelper &DHFile, int PTType);
 double GetModifiedPT(double Eta, double Rho, DataHelper &DHFile);
 double GetModifiedPT2(double Eta, double Rho, DataHelper &DHFile);
 double GetModifiedPTData(double Eta, double Rho, DataHelper &DHFile);
+double GetModifiedPTDataData(double Eta, double Rho, DataHelper &DHFile);
 double GetModifiedPTData2(double Eta, double Rho, DataHelper &DHFile);
 double GetPT(double Eta, double Rho, DataHelper &DHFile);
 double PresampleFactor(double PT);
@@ -593,6 +595,8 @@ double GetPFPT(double Eta, double Rho, DataHelper &DHFile, int PTType)
       else
          return GetPT(Eta, Rho, DHFile);
    }
+   if(PTType == PTType_DataData)
+      return GetModifiedPTDataData(Eta, Rho, DHFile);
 
    return 10000;
 }
@@ -731,6 +735,39 @@ double GetModifiedPTData(double Eta, double Rho, DataHelper &DHFile)
       Factor = Factor / 1.57;
 
       if(DrawRandom(0, 1) < Factor)
+         Good = true;
+   } while(Good == false);
+
+   return PT;
+}
+
+double GetModifiedPTDataData(double Eta, double Rho, DataHelper &DHFile)
+{
+   double P[4] = {0};
+
+   P[0] = 0.9442;
+   P[1] = 0.7242;
+   P[2] = 1.85;
+   P[3] = 0.9561;
+
+   bool Good = false;
+
+   double PT = 0;
+
+   do
+   {
+      PT = GetPT(Eta, Rho, DHFile);
+
+      double Factor = 1;
+
+      if(PT < 1)
+         Factor = PT * P[0];
+      else
+         Factor = 1.57 - P[1] * exp(-(PT - P[2]) * (PT - P[2]) / (2 * P[3] * P[3]));
+
+      Factor = Factor / 1.57;
+
+      if(DrawRandom(0, 1) < Factor * Factor)
          Good = true;
    } while(Good == false);
 

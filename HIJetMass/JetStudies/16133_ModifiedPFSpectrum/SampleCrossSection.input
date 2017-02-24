@@ -52,6 +52,14 @@ PTType4_PP6Dijet120      6.147e7
 PTType4_PP6Dijet170      1.108e7
 PTType4_PP6Dijet220      2.477e6
 PTType4_PP6Dijet280      6.160e5
+PTType5_PP8Dijet170      1.223E7
+PTType5_PP8Dijet220      3.031E6
+PTType5_PP8Dijet280      7.746E5
+PTType5_PP6Dijet100      1.511E8
+PTType5_PP6Dijet120      6.147e7
+PTType5_PP6Dijet170      1.108e7
+PTType5_PP6Dijet220      2.477e6
+PTType5_PP6Dijet280      6.160e5
 HerwigDijet100   -1
 AA8Dijet15       5.335E11
 AA8Dijet30       3.378E10

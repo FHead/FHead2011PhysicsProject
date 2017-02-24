@@ -43,8 +43,8 @@ OutputBase=/store/cmst3/user/chenyi/BatchOutput/HIJetMass/JetStudies/15722_Smear
 # cmsStage -f Output11.root ${OutputBase}11/$OutputName
 # __EXECUTABLE__ Input.root Output12.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.10 0.20 1.00 0.8
 # cmsStage -f Output12.root ${OutputBase}12/$OutputName
-__EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 __EXTRA1__ __EXTRA2__ __EXTRA3__
-cmsStage -f Output13.root ${OutputBase}13/Mod__EXTRA2___$OutputName
+# __EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 __EXTRA1__ __EXTRA2__ __EXTRA3__
+# cmsStage -f Output13.root ${OutputBase}13/Mod__EXTRA2___$OutputName
 # __EXECUTABLE__ Input.root Output14.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 0.6
 # cmsStage -f Output14.root ${OutputBase}14/$OutputName
 # __EXECUTABLE__ Input.root Output15.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.04 0.20 1.00 0.8
@@ -59,5 +59,7 @@ cmsStage -f Output13.root ${OutputBase}13/Mod__EXTRA2___$OutputName
 # cmsStage -f Output19.root ${OutputBase}19/$OutputName
 # __EXECUTABLE__ Input.root Output20.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 0.80 0.8
 # cmsStage -f Output20.root ${OutputBase}20/$OutputName
+__EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 __EXTRA1__ __EXTRA2__ __EXTRA3__
+cmsStage -f Output13.root ${OutputBase}13/Mod__EXTRA2___$OutputName
 
 

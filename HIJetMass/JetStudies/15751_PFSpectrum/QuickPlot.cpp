@@ -13,8 +13,8 @@ int main()
 {
    SetThesisStyle();
 
-   TFile File1("Output6.root");
-   TFile File2("Output5.root");
+   TFile File1("Output_PPData_HiForest_0_ModifiedPTData_30_50.root");
+   TFile File2("Output_AAData_HiForest_0_30_50.root");
 
    TH1D *HN1 = (TH1D *)File1.Get("HNPF");
    TH1D *HJ1 = (TH1D *)File1.Get("HJetPF");
@@ -36,7 +36,7 @@ int main()
 
    TH2D HWorld1("HWorld1", ";PT;#", 100, 0, 100, 100, 0.0001, 50);
    TH2D HWorld2("HWorld2", ";PT;#", 100, 0, 15, 100, 0.0001, 50);
-   TH2D HWorld3("HWorld3", ";PT;#", 100, 0, 5, 100, 0, 10);
+   TH2D HWorld3("HWorld3", ";PT;#", 100, 0, 5, 100, 0, 5);
    HWorld1.SetStats(0);
    HWorld2.SetStats(0);
    HWorld3.SetStats(0);

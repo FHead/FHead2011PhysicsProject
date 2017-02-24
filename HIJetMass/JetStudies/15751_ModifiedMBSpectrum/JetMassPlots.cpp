@@ -86,11 +86,13 @@ int main(int argc, char *argv[])
       ModBase = atoi(argv[13]);
    }
 
-   DataHelper DHFile("SimpleFitParameters.dh");
+   string DHFileName = "SimpleFitParameters.dh";
+   if(IsData == true)
+      DHFileName = "SimpleFitParametersData.dh";
+   DataHelper DHFile(DHFileName);
 
    DataHelper RhoDHFile("RhoDatabase.dh");
    string RhoTag = "AA6Dijet";
-
    if(IsData == true)
       RhoTag = "AAData";
 
@@ -125,6 +127,8 @@ int main(int argc, char *argv[])
    JetTreeMessenger MJet(InputFile, JetTreeName);
    JetTreeMessenger MSDJet(InputFile, SoftDropJetTreeName);
    PFTreeMessenger MPF(InputFile);
+   SkimTreeMessenger MSkim(InputFile);
+   TriggerTreeMessenger MHLT(InputFile);
 
    if(MHiEvent.Tree == NULL)
       return -1;
@@ -229,6 +233,16 @@ int main(int argc, char *argv[])
       MJet.GetEntry(iEntry);
       MSDJet.GetEntry(iEntry);
       MPF.GetEntry(iEntry);
+      MHLT.GetEntry(iEntry);
+      MSkim.GetEntry(iEntry);
+
+      if(IsData == true)
+      {
+         if(MSkim.PassBasicFilter() == false)
+            continue;
+         if(MHLT.CheckTrigger("HLT_AK4PFJet80_Eta5p1_v1") == false)
+            continue;
+      }
 
       SDJetHelper HSDJet(MSDJet);
 

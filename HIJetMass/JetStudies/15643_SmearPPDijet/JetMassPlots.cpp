@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
    {
       if(ReuseRate <= 1 || ReuseCount % ReuseRate == 0)
          iEntry = iEntry + 1;
-      if(Mod10 >= 0 && Mod10 < 10 && iEntry % 10 != Mod10)
+      if(Mod10 >= 0 && Mod10 < 50 && iEntry % 50 != Mod10)
          continue;
 
       if(EntryCount <= 250 || iEntry % (EntryCount / 300) == 0)

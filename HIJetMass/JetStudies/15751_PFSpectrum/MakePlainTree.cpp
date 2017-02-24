@@ -23,14 +23,19 @@ int main(int argc, char *argv[])
    string InputFileName = "HiForestAOD_999.root";
    string OutputFileName = "Output_HiForestAOD_999.root";
 
-   if(argc != 3)
+   if(argc != 7)
    {
-      cerr << "Usage: " << argv[0] << " Input Output" << endl;
+      cerr << "Usage: " << argv[0] << " Input Output JetPTMin JetPTMax CentralityMin CentralityMax" << endl;
       return -1;
    }
 
    InputFileName = argv[1];
    OutputFileName = argv[2];
+
+   double JetPTMin = atof(argv[3]);
+   double JetPTMax = atof(argv[4]);
+   double CentralityMin = atof(argv[5]);
+   double CentralityMax = atof(argv[6]);
 
    TFile InputFile(InputFileName.c_str());
 
@@ -57,6 +62,11 @@ int main(int argc, char *argv[])
 
    TH1D HNPF("HNPF", "", 1000, 0, 100);
    TH1D HJetPF("HJetPF", "", 1000, 0, 100);
+   TH1D HJetPF1("HJetPF1", "", 1000, 0, 100);
+   TH1D HJetPF2("HJetPF2", "", 1000, 0, 100);
+   TH1D HJetPF3("HJetPF3", "", 1000, 0, 100);
+   TH1D HJetPF4("HJetPF4", "", 1000, 0, 100);
+   TH1D HJetPF5("HJetPF5", "", 1000, 0, 100);
 
    int EntryCount = MHiEvent.Tree->GetEntries();
    ProgressBar Bar(cout, EntryCount);
@@ -72,7 +82,7 @@ int main(int argc, char *argv[])
       MSDJet.GetEntry(iE);
       MPF.GetEntry(iE);
 
-      if(GetCentrality(MHiEvent.hiBin) > 0.1)
+      if(GetCentrality(MHiEvent.hiBin) < CentralityMin || GetCentrality(MHiEvent.hiBin) > CentralityMax)
          continue;
 
       SDJetHelper HSDJet(MSDJet);
@@ -108,7 +118,7 @@ int main(int argc, char *argv[])
 
          JetPT = MSDJet.JetPT[iJ];
 
-         if(BestDR >= 0 && MSDJet.JetPT[iJ] > 120)
+         if(BestDR >= 0 && MSDJet.JetPT[iJ] > JetPTMin && MSDJet.JetPT[iJ] < JetPTMax)
          {
             HNPF.Fill(0);
 
@@ -123,6 +133,17 @@ int main(int argc, char *argv[])
                   HJetPF.Fill(P.GetPT());
                   TotalP = TotalP + P;
                   TotalPT = TotalPT + P.GetPT();
+
+                  if((*MPF.ID)[i] == 2)
+                     HJetPF1.Fill(P.GetPT());
+                  if((*MPF.ID)[i] == 3)
+                     HJetPF2.Fill(P.GetPT());
+                  if((*MPF.ID)[i] == 4 || (*MPF.ID)[i] == 7)
+                     HJetPF3.Fill(P.GetPT());
+                  if((*MPF.ID)[i] == 1)
+                     HJetPF4.Fill(P.GetPT());
+                  if((*MPF.ID)[i] == 5 || (*MPF.ID)[i] == 6)
+                     HJetPF5.Fill(P.GetPT());
                }
             }
 

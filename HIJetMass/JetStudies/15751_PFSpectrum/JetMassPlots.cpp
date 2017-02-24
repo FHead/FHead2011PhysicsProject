@@ -32,6 +32,7 @@ using namespace fastjet;
 int main(int argc, char *argv[]);
 double GetModifiedPT(double Eta, double Rho, DataHelper &DHFile);
 double GetModifiedPT2(double Eta, double Rho, DataHelper &DHFile);
+double GetModifiedPTData(double Eta, double Rho, DataHelper &DHFile);
 double GetPT(double Eta, double Rho, DataHelper &DHFile);
 double PresampleFactor(double PT);
 double Evaluate(double Eta, double Rho, double PT, DataHelper &DHFile);
@@ -50,9 +51,9 @@ int main(int argc, char *argv[])
 {
    ClusterSequence::set_fastjet_banner_stream(NULL);
 
-   if(argc != 11 && argc != 12 && argc != 14)
+   if(argc != 18)
    {
-      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax RhoMultiplier GhostDistance Smear MBMultiplier Range ReuseRate Mod ModBase" << endl;
+      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax RhoMultiplier GhostDistance Smear MBMultiplier Range ReuseRate Mod ModBase PTMin PTMax CentralityMin CentralityMax" << endl;
       return -1;
    }
 
@@ -74,17 +75,15 @@ int main(int argc, char *argv[])
    if(IsData == true)
       cerr << "I'd be glad to run on data for this study" << endl;
 
-   int ReuseRate = 1;
-   if(argc >= 12)
-      ReuseRate = atoi(argv[11]);
+   int ReuseRate = atoi(argv[11]);
 
-   int Mod = -1;   // -1 = don't use
-   int ModBase = -1;
-   if(argc >= 13)
-   {
-      Mod = atoi(argv[12]);
-      ModBase = atoi(argv[13]);
-   }
+   int Mod = atoi(argv[12]);
+   int ModBase = atoi(argv[13]);
+
+   double JetPTMin = atof(argv[14]);
+   double JetPTMax = atof(argv[15]);
+   double CentralityMin = atof(argv[16]);
+   double CentralityMax = atof(argv[17]);
 
    DataHelper DHFile("SimpleFitParameters.dh");
 
@@ -208,6 +207,16 @@ int main(int argc, char *argv[])
    TH1D HNPF("HNPF", "Jet count;;", 1, 0, 1);
    TH1D HJetPF("HJetPF", "PF candidates in jet;PT;", 1000, 0, 100);
    TH1D HAddedPF("HAddedPF", "Added candidates in jet;PT;", 1000, 0, 100);
+   TH1D HJetPF1("HJetPF1", "PF candidates in jet;PT;", 1000, 0, 100);
+   TH1D HAddedPF1("HAddedPF1", "Added candidates in jet;PT;", 1000, 0, 100);
+   TH1D HJetPF2("HJetPF2", "PF candidates in jet;PT;", 1000, 0, 100);
+   TH1D HAddedPF2("HAddedPF2", "Added candidates in jet;PT;", 1000, 0, 100);
+   TH1D HJetPF3("HJetPF3", "PF candidates in jet;PT;", 1000, 0, 100);
+   TH1D HAddedPF3("HAddedPF3", "Added candidates in jet;PT;", 1000, 0, 100);
+   TH1D HJetPF4("HJetPF4", "PF candidates in jet;PT;", 1000, 0, 100);
+   TH1D HAddedPF4("HAddedPF4", "Added candidates in jet;PT;", 1000, 0, 100);
+   TH1D HJetPF5("HJetPF5", "PF candidates in jet;PT;", 1000, 0, 100);
+   TH1D HAddedPF5("HAddedPF5", "Added candidates in jet;PT;", 1000, 0, 100);
 
    int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
    ProgressBar Bar(cout, EntryCount);
@@ -280,7 +289,7 @@ int main(int argc, char *argv[])
          bool CentralityDone = false;
          while(CentralityDone == false)
          {
-            Centrality = int(DrawRandom(0, 10));
+            Centrality = int(DrawRandom(CentralityMin * 100, CentralityMax * 100));
             if(DrawRandom(0, 1) < CentralityIntegral[Centrality] / MaxCentralityIntegral)
                CentralityDone = true;
          }
@@ -297,6 +306,16 @@ int main(int argc, char *argv[])
 
          TH1D HJetPFCopy("HJetPFCopy", "", 1000, 0, 100);
          TH1D HAddedPFCopy("HAddedPFCopy", "", 1000, 0, 100);
+         TH1D HJetPFCopy1("HJetPFCopy1", "", 1000, 0, 100);
+         TH1D HAddedPFCopy1("HAddedPFCopy1", "", 1000, 0, 100);
+         TH1D HJetPFCopy2("HJetPFCopy2", "", 1000, 0, 100);
+         TH1D HAddedPFCopy2("HAddedPFCopy2", "", 1000, 0, 100);
+         TH1D HJetPFCopy3("HJetPFCopy3", "", 1000, 0, 100);
+         TH1D HAddedPFCopy3("HAddedPFCopy3", "", 1000, 0, 100);
+         TH1D HJetPFCopy4("HJetPFCopy4", "", 1000, 0, 100);
+         TH1D HAddedPFCopy4("HAddedPFCopy4", "", 1000, 0, 100);
+         TH1D HJetPFCopy5("HJetPFCopy5", "", 1000, 0, 100);
+         TH1D HAddedPFCopy5("HAddedPFCopy5", "", 1000, 0, 100);
 
          // Step 1 - get all PF candidates within range
          vector<PseudoJet> Candidates;
@@ -311,6 +330,17 @@ int main(int argc, char *argv[])
             {
                TotalStuffInJet = TotalStuffInJet + P;
                HJetPFCopy.Fill(P.GetPT());
+               
+               if((*MPF.ID)[i] == 2)
+                  HJetPFCopy1.Fill(P.GetPT());
+               if((*MPF.ID)[i] == 3)
+                  HJetPFCopy2.Fill(P.GetPT());
+               if((*MPF.ID)[i] == 4 || (*MPF.ID)[i] == 7)
+                  HJetPFCopy3.Fill(P.GetPT());
+               if((*MPF.ID)[i] == 1)
+                  HJetPFCopy4.Fill(P.GetPT());
+               if((*MPF.ID)[i] == 5 || (*MPF.ID)[i] == 6)
+                  HJetPFCopy5.Fill(P.GetPT());
             }
          }
          TreeTotalStuffInJet = TotalStuffInJet.GetPT();
@@ -330,8 +360,8 @@ int main(int argc, char *argv[])
                DPhi = DrawRandom(-Range, Range);
             } while(DEta * DEta + DPhi * DPhi > Range * Range);
 
-            double PT = GetModifiedPT2(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
-            // double PT = GetPT(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
+            // double PT = GetModifiedPTData(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
+            double PT = GetPT(MJet.JetEta[iJ] + DEta, Rho, DHFile) * MBMultiplier;
             if(PT >= TotalPT)
                PT = TotalPT;
             TotalPT = TotalPT - PT;
@@ -345,6 +375,11 @@ int main(int argc, char *argv[])
             {
                TotalPTInJet = TotalPTInJet + P.GetPT();
                HAddedPFCopy.Fill(P.GetPT());
+               HAddedPFCopy1.Fill(P.GetPT());
+               HAddedPFCopy2.Fill(P.GetPT());
+               HAddedPFCopy3.Fill(P.GetPT());
+               HAddedPFCopy4.Fill(P.GetPT());
+               HAddedPFCopy5.Fill(P.GetPT());
             }
          }
          TreeTotalPTInJet = TotalPTInJet;
@@ -435,11 +470,22 @@ int main(int argc, char *argv[])
             continue;
          }
 
-         if(SDJets[ClosestIndex].perp() > 120 && fabs(SDJets[ClosestIndex].eta()) < 1.3)
+         if(SDJets[ClosestIndex].perp() > JetPTMin && SDJets[ClosestIndex].perp() <= JetPTMax
+            && fabs(SDJets[ClosestIndex].eta()) < 1.3)
          {
             HNPF.Fill(0);
             HJetPF.Add(&HJetPFCopy);
             HAddedPF.Add(&HAddedPFCopy);
+            HJetPF1.Add(&HJetPFCopy1);
+            HAddedPF1.Add(&HAddedPFCopy1);
+            HJetPF2.Add(&HJetPFCopy2);
+            HAddedPF2.Add(&HAddedPFCopy2);
+            HJetPF3.Add(&HJetPFCopy3);
+            HAddedPF3.Add(&HAddedPFCopy3);
+            HJetPF4.Add(&HJetPFCopy4);
+            HAddedPF4.Add(&HAddedPFCopy4);
+            HJetPF5.Add(&HJetPFCopy5);
+            HAddedPF5.Add(&HAddedPFCopy5);
          }
 
          // Step 5 - Run SD algorithm on the subtracted candidates
@@ -659,6 +705,39 @@ double GetModifiedPT2(double Eta, double Rho, DataHelper &DHFile)
          Factor = P[0] - P[1] * exp(-(PT - P[2]) * (PT - P[2]) / (2 * P[3] * P[3]));
 
       Factor = Factor / P[0];
+
+      if(DrawRandom(0, 1) < Factor)
+         Good = true;
+   } while(Good == false);
+
+   return PT;
+}
+
+double GetModifiedPTData(double Eta, double Rho, DataHelper &DHFile)
+{
+   double P[4] = {0};
+
+   P[0] = 0.9442;
+   P[1] = 0.7242;
+   P[2] = 1.85;
+   P[3] = 0.9561;
+
+   bool Good = false;
+
+   double PT = 0;
+
+   do
+   {
+      PT = GetPT(Eta, Rho, DHFile);
+
+      double Factor = 1;
+
+      if(PT < 1)
+         Factor = PT * P[0];
+      else
+         Factor = 1.57 - P[1] * exp(-(PT - P[2]) * (PT - P[2]) / (2 * P[3] * P[3]));
+
+      Factor = Factor / 1.57;
 
       if(DrawRandom(0, 1) < Factor)
          Good = true;

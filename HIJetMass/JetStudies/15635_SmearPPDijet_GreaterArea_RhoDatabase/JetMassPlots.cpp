@@ -111,6 +111,7 @@ int main(int argc, char *argv[])
 
    double TreeJetPT, TreeJetEta, TreeJetPhi, TreeJetSDMass, TreeJetDR, TreeJetMass;
    double TreeNewJetPT, TreeNewJetEta, TreeNewJetPhi, TreeNewJetSDMass, TreeNewJetDR, TreeNewJetMass;
+   double TreeTotalPT, TreeRho;
    OutputTree.Branch("JetPT",        &TreeJetPT,        "JetPT/D");
    OutputTree.Branch("JetEta",       &TreeJetEta,       "JetEta/D");
    OutputTree.Branch("JetPhi",       &TreeJetPhi,       "JetPhi/D");
@@ -123,12 +124,15 @@ int main(int argc, char *argv[])
    OutputTree.Branch("NewJetSDMass", &TreeNewJetSDMass, "NewJetSDMass/D");
    OutputTree.Branch("NewJetDR",     &TreeNewJetDR,     "NewJetDR/D");
    OutputTree.Branch("NewJetMass",   &TreeNewJetMass,   "NewJetMass/D");
+   OutputTree.Branch("TotalPT",      &TreeTotalPT,      "TotalPT/D");
+   OutputTree.Branch("Rho",          &TreeRho,          "Rho/D");
 
    TH1D HN("HN", "Raw event count", 1, 0, 1);
    TH1D HPTHatAll("HPTHatAll", "PTHat", 100, 0, 500);
    TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 500);
 
    TH1D HRho("HRho", "Rho distribution", 100, 0, 400);
+   TH1D HPTAdded("HPTAdded", "PT of added particles", 100, 0, 20);
 
    TH2D HJetPTComparison("HJetPTComparison", ";Jet PT;New Jet PT", 100, 0, 400, 100, 0, 400);
    TH2D HSDMassComparison("HSDMassComparison", ";Jet SD Mass;New Jet SD Mass", 100, 0, 100, 100, 0, 100);
@@ -140,7 +144,7 @@ int main(int argc, char *argv[])
    TH1D HSDMass("HSDMass", "SD Mass, DR > 0.1;SD Mass", 100, 0, 100);
    TH1D HNewSDMass("HNewSDMass", "New SD Mass, New DR > 0.1; New SD Mass", 100, 0, 100);
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(1);
          
@@ -198,6 +202,8 @@ int main(int argc, char *argv[])
          }
          Rho = DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]);
 
+         TreeRho = Rho;
+
          HRho.Fill(Rho);
 
          // Step 1 - get all PF candidates within range
@@ -206,12 +212,13 @@ int main(int argc, char *argv[])
          {
             FourVector P;
             P.SetPtEtaPhi((*MPF.PT)[i], (*MPF.Eta)[i], (*MPF.Phi)[i]);
-            if(GetDR(P, JetP) < 0.4)
+            if(GetDR(P, JetP) < Range)
                Candidates.push_back(P);
          }
 
          // Step 2 - sprinkle underlying event contribution
-         double TotalPT = Rho * Range * Range * PI;
+         double TotalPT = Rho * Range * Range * PI * DrawGaussian(1, 0.186);
+         TreeTotalPT = TotalPT;
          while(TotalPT > 0)
          {
             double DEta = 0;
@@ -227,6 +234,7 @@ int main(int argc, char *argv[])
             if(PT >= TotalPT)
                PT = TotalPT;
             TotalPT = TotalPT - PT;
+            HPTAdded.Fill(PT);
 
             FourVector P;
             P.SetPtEtaPhi(PT, MSDJet.JetEta[iJ] + DEta, MSDJet.JetPhi[iJ] + DPhi);
@@ -235,7 +243,7 @@ int main(int argc, char *argv[])
          
          // Step 3 - do pileup subtraction algorithm
          vector<FourVector> Ghosts;
-         double Delta = 0.04;
+         double Delta = 0.07;
          for(double Eta = -Range; Eta <= Range; Eta = Eta + Delta)
          {
             for(double Phi = -Range; Phi <= Range; Phi = Phi + Delta)
@@ -286,8 +294,8 @@ int main(int argc, char *argv[])
          {
             for(int j = 0; j < (int)Ghosts.size(); j++)
             {
-               double DR = GetDR2(CandidatesEta[i], CandidatesPhi[i], GhostsEta[j], GhostsPhi[j]);
-               Distances[IndexCount] = pair<double, pair<int, int> >(DR, pair<int, int>(i, j));
+               double DR2 = GetDR2(CandidatesEta[i], CandidatesPhi[i], GhostsEta[j], GhostsPhi[j]);
+               Distances[IndexCount] = pair<double, pair<int, int> >(DR2, pair<int, int>(i, j));
                IndexCount = IndexCount + 1;
                if(IndexCount > 5000000)
                   cerr << "Oh no!" << endl;
@@ -421,6 +429,7 @@ int main(int argc, char *argv[])
    HPTHatSelected.Write();
 
    HRho.Write();
+   HPTAdded.Write();
 
    HJetPTComparison.Write();
    HSDMassComparison.Write();

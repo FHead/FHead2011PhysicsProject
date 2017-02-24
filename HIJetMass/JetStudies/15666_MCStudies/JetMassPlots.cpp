@@ -97,17 +97,18 @@ int main(int argc, char *argv[])
    OutputTree.Branch("JetSubJetPT1", &TreeJetSubJetPT1, "JetSubJetPT1/D");
    OutputTree.Branch("JetSubJetPT2", &TreeJetSubJetPT2, "JetSubJetPT2/D");
 
-   double TreeJetSDMass, TreeJetSDZG, TreeJetSDRecoDR;
+   double TreeJetSDMass, TreeJetSDZG, TreeJetSDRecoDR, TreeJetMaxDR;
    OutputTree.Branch("JetSDMass", &TreeJetSDMass, "JetSDMass/D");
    OutputTree.Branch("JetSDZG", &TreeJetSDZG, "JetSDZG/D");
    OutputTree.Branch("JetSDRecoDR", &TreeJetSDRecoDR, "JetSDRecoDR/D");
+   OutputTree.Branch("JetMaxDR", &TreeJetMaxDR, "JetMaxDR/D");
    
    double TreeNewJetPT, TreeNewJetEta, TreeNewJetPhi;
    OutputTree.Branch("NewJetPT", &TreeNewJetPT, "NewJetPT/D");
    OutputTree.Branch("NewJetEta", &TreeNewJetEta, "NewJetEta/D");
    OutputTree.Branch("NewJetPhi", &TreeNewJetPhi, "NewJetPhi/D");
 
-   double TreeSDPT[MAX], TreeSDMass[MAX], TreeSDZG[MAX], TreeSDRecoDR[MAX];
+   double TreeSDPT[MAX], TreeSDMass[MAX], TreeSDZG[MAX], TreeSDRecoDR[MAX], TreeSDMaxDR[MAX];
    double TreeGenSDPT[MAX], TreeGenSDMass[MAX], TreeGenSDZG[MAX], TreeGenSDRecoDR[MAX];
    double TreeSDX1[MAX], TreeSDX2[MAX], TreeSDY1[MAX], TreeSDY2[MAX], TreeSDPT1[MAX], TreeSDPT2[MAX];
    double TreeGenSDPT1[MAX], TreeGenSDPT2[MAX];
@@ -115,6 +116,7 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SDMass", &TreeSDMass, Form("SDMass[%d]/D", MAX));
    OutputTree.Branch("SDZG", &TreeSDZG, Form("SDZG[%d]/D", MAX));
    OutputTree.Branch("SDRecoDR", &TreeSDRecoDR, Form("SDRecoDR[%d]/D", MAX));
+   OutputTree.Branch("SDMaxDR", &TreeSDMaxDR, Form("SDMaxDR[%d]/D", MAX));
    OutputTree.Branch("GenSDPT", &TreeGenSDPT, Form("GenSDPT[%d]/D", MAX));
    OutputTree.Branch("GenSDMass", &TreeGenSDMass, Form("GenSDMass[%d]/D", MAX));
    OutputTree.Branch("GenSDZG", &TreeGenSDZG, Form("GenSDZG[%d]/D", MAX));
@@ -132,7 +134,7 @@ int main(int argc, char *argv[])
    OutputTree.Branch("Rho", &TreeRho, "Rho/D");
    OutputTree.Branch("Centrality", &TreeCentrality, "Centrality/D");
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.1;
+   int EntryCount = MHiEvent.Tree->GetEntries();
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(0);
    for(int iEntry = 0; iEntry < EntryCount; iEntry++)
@@ -196,8 +198,12 @@ int main(int argc, char *argv[])
          P.SetPtEtaPhi((*MGen.PT)[i], (*MGen.Eta)[i], (*MGen.Phi)[i]);
          GenParticles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
       }
-      ClusterSequence GenSequence(Particles, Definition);
+      JetDefinition GenDefinition(antikt_algorithm, 0.4);
+      ClusterSequence GenSequence(GenParticles, GenDefinition);
       vector<PseudoJet> GenJets = GenSequence.inclusive_jets();
+
+      if(GenJets.size() == 0)   // WTF
+         continue;
 
       for(int iJ = 0; iJ < (int)Jets.size(); iJ++)
       {
@@ -242,6 +248,8 @@ int main(int argc, char *argv[])
 
          if(BestIndex < 0)   // something is wrong
             continue;
+         if(BestGenIndex < 0)   // something is wrong!
+            continue;
 
          if(MJet.JetPT[BestIndex] < 50)   // too low - let's not consider them
             continue;
@@ -272,6 +280,7 @@ int main(int argc, char *argv[])
          TreeJetSDMass = MSDJet.JetM[BestSDIndex];
          TreeJetSDZG = -1;
          TreeJetSDRecoDR = -1;
+         TreeJetMaxDR = HSDJet.SubJetMaxDR[BestSDIndex];
 
          if((*MSDJet.JetSubJetPT)[BestSDIndex].size() >= 2)
          {
@@ -347,6 +356,16 @@ int main(int argc, char *argv[])
         
                if(GenSD[i]->N > 1)
                {
+                  double DR11 = GetDR(GenSD[i]->Child1->P, P1);
+                  double DR12 = GetDR(GenSD[i]->Child1->P, P2);
+                  double DR21 = GetDR(GenSD[i]->Child2->P, P1);
+                  double DR22 = GetDR(GenSD[i]->Child2->P, P2);
+
+                  if(DR11 + DR22 < DR12 + DR21)
+                     TreeSDMaxDR[i] = std::max(DR11, DR22);
+                  else
+                     TreeSDMaxDR[i] = std::max(DR12, DR21);
+
                   double DeltaEta = GenSD[i]->Child1->P.GetEta() - GenSD[i]->Child2->P.GetEta();
                   double MeanEta = (GenSD[i]->Child1->P.GetEta() + GenSD[i]->Child2->P.GetEta()) / 2;
                   double DeltaPhi = (GenSD[i]->Child1->P.GetPhi() - GenSD[i]->Child2->P.GetPhi());
@@ -390,7 +409,7 @@ int main(int argc, char *argv[])
                TreeSDRecoDR[i] = GetDR(P1, P2);
             }
         
-            if(SD[i]->N > 1)
+            if(GenSD[i]->N > 1)
             {
                FourVector P1 = GenSD[i]->Child1->P;
                FourVector P2 = GenSD[i]->Child2->P;

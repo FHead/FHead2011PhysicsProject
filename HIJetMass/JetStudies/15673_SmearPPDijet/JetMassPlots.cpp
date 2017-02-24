@@ -265,14 +265,14 @@ int main(int argc, char *argv[])
          HRho.Fill(Rho);
 
          // Step 1 - get all PF candidates within range
-         vector<FourVector> Candidates;
+         vector<FourVector> AllCandidates;
          FourVector TotalStuffInJet;
          for(int i = 0; i < MPF.ID->size(); i++)
          {
             FourVector P;
             P.SetPtEtaPhi((*MPF.PT)[i], (*MPF.Eta)[i], (*MPF.Phi)[i]);
             if(GetDR(P, JetP) < Range)
-               Candidates.push_back(P);
+               AllCandidates.push_back(P);
             if(GetDR(P, JetP) < 0.4)
                TotalStuffInJet = TotalStuffInJet + P;
          }
@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
 
             FourVector P;
             P.SetPtEtaPhi(PT, MJet.JetEta[iJ] + DEta, MJet.JetPhi[iJ] + DPhi);
-            Candidates.push_back(P);
+            AllCandidates.push_back(P);
 
             if(GetDR(P.GetEta(), P.GetPhi(), MJet.JetEta[iJ], MJet.JetPhi[iJ]) < 0.4)
                TotalPTInJet = TotalPTInJet + P.GetPT();
@@ -310,86 +310,41 @@ int main(int argc, char *argv[])
          
          // Step 3 - jet clustering
          vector<PseudoJet> Particles;
-         for(int i = 0; i < (int)Candidates.size(); i++)
+         for(int i = 0; i < (int)AllCandidates.size(); i++)
          {
-            FourVector &P = Candidates[i];
+            FourVector &P = AllCandidates[i];
             Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
          }
          JetDefinition Definition(antikt_algorithm, 0.4);
          ClusterSequence Sequence(Particles, Definition);
          vector<PseudoJet> Jets = Sequence.inclusive_jets();
 
-         int LeadingIndex = 0;
-         for(int i = 0; i < (int)Jets.size(); i++)
-            if(Jets[i].perp() > Jets[LeadingIndex].perp())
-               LeadingIndex = i;
+         vector<FourVector> CSCandidates;
 
-         int ClosestIndex = 0;
-         double ClosestDR2 = -1;
-         for(int i = 0; i < (int)Jets.size(); i++)
+         // Step 4 - do pileup subtraction algorithm
+         for(int JetIndex = 0; JetIndex < (int)Jets.size(); JetIndex++)
          {
-            double DR2 = GetDR2(Jets[i].eta(), Jets[i].phi(), MJet.JetEta[iJ], MJet.JetPhi[iJ]);
-            if(ClosestDR2 < 0 || ClosestDR2 > DR2)
+            vector<FourVector> JetCandidates;
+
+            vector<PseudoJet> Constituent = Jets[JetIndex].constituents();
+            for(int i = 0; i < (int)Constituent.size(); i++)
             {
-               ClosestIndex = i;
-               ClosestDR2 = DR2;
+               PseudoJet &J = Constituent[i];
+               JetCandidates.push_back(FourVector(J.e(), J.px(), J.py(), J.pz()));
             }
-         }
 
-         PseudoJet &Jet = Jets[LeadingIndex];
-         FourVector NewJetPBeforeCS(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
-         Jet = Jets[ClosestIndex];
-         FourVector BestJetPBeforeCS(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
+            double JetEta = Jets[JetIndex].eta();
+            double JetPhi = Jets[JetIndex].phi();
 
-         TreeNewJetPTBefore = NewJetPBeforeCS.GetPT();
-         TreeNewJetEtaBefore = NewJetPBeforeCS.GetEta();
-         TreeNewJetPhiBefore = NewJetPBeforeCS.GetPhi();
-         TreeBestJetPTBefore = BestJetPBeforeCS.GetPT();
-         TreeBestJetEtaBefore = BestJetPBeforeCS.GetEta();
-         TreeBestJetPhiBefore = BestJetPBeforeCS.GetPhi();
+            vector<double> CandidatesPT(JetCandidates.size());
+            vector<double> CandidatesEta(JetCandidates.size());
+            vector<double> CandidatesPhi(JetCandidates.size());
 
-         vector<FourVector> NewConstituent, GoodNewCandidates;
-         vector<FourVector> BestConstituent, GoodBestCandidates;
-
-         vector<PseudoJet> Constituents = Jets[LeadingIndex].constituents();
-         for(int i = 0; i < (int)Constituents.size(); i++)
-         {
-            PseudoJet &J = Constituents[i];
-            FourVector P(J.e(), J.px(), J.py(), J.pz());
-            NewConstituent.push_back(P);
-         }
-         Constituents = Jets[ClosestIndex].constituents();
-         for(int i = 0; i < (int)Constituents.size(); i++)
-         {
-            PseudoJet &J = Constituents[i];
-            FourVector P(J.e(), J.px(), J.py(), J.pz());
-            BestConstituent.push_back(P);
-         }
-
-         // Step 3 - do pileup subtraction algorithm
-         for(int JetIndex = 0; JetIndex < 2; JetIndex++)
-         {
-            vector<FourVector> *JetCandidates = NULL;
-            if(JetIndex == 0)   JetCandidates = &NewConstituent;
-            if(JetIndex == 1)   JetCandidates = &BestConstituent;
-
-            vector<FourVector> *GoodCandidates = NULL;
-            if(JetIndex == 0)   GoodCandidates = &GoodNewCandidates;
-            if(JetIndex == 1)   GoodCandidates = &GoodBestCandidates;
-
-            double JetEta, JetPhi;
-            if(JetIndex == 0)   JetEta = NewJetPBeforeCS.GetEta(), JetPhi = NewJetPBeforeCS.GetPhi();
-            if(JetIndex == 1)   JetEta = BestJetPBeforeCS.GetEta(), JetPhi = BestJetPBeforeCS.GetPhi();
-
-            vector<double> CandidatesPT(JetCandidates->size());
-            vector<double> CandidatesEta(JetCandidates->size());
-            vector<double> CandidatesPhi(JetCandidates->size());
-
-            for(int i = 0; i < (int)JetCandidates->size(); i++)
+            for(int i = 0; i < (int)JetCandidates.size(); i++)
             {
-               CandidatesPT[i] = (*JetCandidates)[i].GetPT();
-               CandidatesEta[i] = (*JetCandidates)[i].GetEta();
-               CandidatesPhi[i] = (*JetCandidates)[i].GetPhi();
+               CandidatesPT[i] = JetCandidates[i].GetPT();
+               CandidatesEta[i] = JetCandidates[i].GetEta();
+               CandidatesPhi[i] = JetCandidates[i].GetPhi();
             }
 
             vector<double> GhostsPT;
@@ -412,16 +367,16 @@ int main(int argc, char *argv[])
             for(int i = 0; i < (int)GhostsPT.size(); i++)
                GhostsPT[i] = GhostPT;
 
-            vector<bool> CandidatesAlive(JetCandidates->size());
+            vector<bool> CandidatesAlive(JetCandidates.size());
             vector<bool> GhostsAlive(GhostsPT.size());
 
-            for(int i = 0; i < (int)JetCandidates->size(); i++)
+            for(int i = 0; i < (int)JetCandidates.size(); i++)
                CandidatesAlive[i] = true;
             for(int i = 0; i < (int)GhostsPT.size(); i++)
                GhostsAlive[i] = true;
 
             int IndexCount = 0;
-            for(int i = 0; i < (int)JetCandidates->size(); i++)
+            for(int i = 0; i < (int)JetCandidates.size(); i++)
             {
                for(int j = 0; j < (int)GhostsPT.size(); j++)
                {
@@ -457,11 +412,66 @@ int main(int argc, char *argv[])
                }
             }
 
-            for(int i = 0; i < (int)JetCandidates->size(); i++)
+            for(int i = 0; i < (int)JetCandidates.size(); i++)
             {
                if(CandidatesAlive[i] == true)
-                  GoodCandidates->push_back((*JetCandidates)[i]);
+                  CSCandidates.push_back(JetCandidates[i]);
             }
+         }
+
+         Particles.clear();
+         for(int i = 0; i < (int)CSCandidates.size(); i++)
+         {
+            FourVector &P = CSCandidates[i];
+            Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
+         }
+         JetDefinition Definition2(antikt_algorithm, 0.4);
+         ClusterSequence Sequence2(Particles, Definition);
+         Jets = Sequence.inclusive_jets();
+
+         int LeadingIndex = 0;
+         for(int i = 0; i < (int)Jets.size(); i++)
+            if(Jets[i].perp() > Jets[LeadingIndex].perp())
+               LeadingIndex = i;
+
+         int ClosestIndex = 0;
+         double ClosestDR2 = -1;
+         for(int i = 0; i < (int)Jets.size(); i++)
+         {
+            double DR2 = GetDR2(Jets[i].eta(), Jets[i].phi(), MJet.JetEta[iJ], MJet.JetPhi[iJ]);
+            if(ClosestDR2 < 0 || ClosestDR2 > DR2)
+            {
+               ClosestIndex = i;
+               ClosestDR2 = DR2;
+            }
+         }
+
+         PseudoJet &Jet = Jets[LeadingIndex];
+         FourVector NewJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
+         Jet = Jets[ClosestIndex];
+         FourVector BestJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
+
+         // TreeNewJetPTBefore = NewJetPBeforeCS.GetPT();
+         // TreeNewJetEtaBefore = NewJetPBeforeCS.GetEta();
+         // TreeNewJetPhiBefore = NewJetPBeforeCS.GetPhi();
+         // TreeBestJetPTBefore = BestJetPBeforeCS.GetPT();
+         // TreeBestJetEtaBefore = BestJetPBeforeCS.GetEta();
+         // TreeBestJetPhiBefore = BestJetPBeforeCS.GetPhi();
+
+         vector<FourVector> GoodNewCandidates;
+         vector<FourVector> GoodBestCandidates;
+
+         vector<PseudoJet> Constituent = Jets[LeadingIndex].constituents();
+         for(int i = 0; i < (int)Constituent.size(); i++)
+         {
+            PseudoJet &J = Constituent[i];
+            GoodNewCandidates.push_back(FourVector(J.e(), J.px(), J.py(), J.pz()));
+         }
+         Constituent = Jets[ClosestIndex].constituents();
+         for(int i = 0; i < (int)Constituent.size(); i++)
+         {
+            PseudoJet &J = Constituent[i];
+            GoodBestCandidates.push_back(FourVector(J.e(), J.px(), J.py(), J.pz()));
          }
 
          if(GoodNewCandidates.size() == 0)
@@ -472,11 +482,11 @@ int main(int argc, char *argv[])
             continue;
          }
 
-         FourVector NewJetP, BestJetP;
-         for(int i = 0; i < (int)GoodNewCandidates.size(); i++)
-            NewJetP = NewJetP + GoodNewCandidates[i];
-         for(int i = 0; i < (int)GoodBestCandidates.size(); i++)
-            BestJetP = BestJetP + GoodBestCandidates[i];
+         // FourVector NewJetP, BestJetP;
+         // for(int i = 0; i < (int)GoodNewCandidates.size(); i++)
+         //    NewJetP = NewJetP + GoodNewCandidates[i];
+         // for(int i = 0; i < (int)GoodBestCandidates.size(); i++)
+         //    BestJetP = BestJetP + GoodBestCandidates[i];
 
          HJetPTComparison.Fill(MJet.JetPT[iJ], NewJetP.GetPT());
 
@@ -498,8 +508,8 @@ int main(int argc, char *argv[])
 
          BuildCATree(Nodes);
          BuildCATree(NodesBest);
-         Node *Groomed = FindSDNode(Nodes[0]);
-         Node *GroomedBest = FindSDNode(NodesBest[0]);
+         Node *Groomed = FindSDNode(Nodes[0], 0.1, 0.0);
+         Node *GroomedBest = FindSDNode(NodesBest[0], 0.1, 0.0);
          Node *Groomed2 = FindSDNode(Nodes[0], 0.5, 1.5);
          Node *GroomedBest2 = FindSDNode(NodesBest[0], 0.5, 1.5);
          Node *Groomed3 = FindSDNode(Nodes[0], 0.3, 1.5);

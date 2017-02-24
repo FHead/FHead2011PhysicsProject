@@ -60,20 +60,20 @@ int main(int argc, char *argv[])
    TH1D HModified_P5("HModified_P5", ";mass/pt;a.u.", BIN, 0, 0.4);
 
    T1->SetAlias("Fudge", "((MCWeight < 500) * (1 + 122.874 * exp(-0.5 * ((JetPT-45.0945) / 43.8684)**2)))");
-   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P0", "MCWeight * (JetShift < 0.2 && JetPT > 120 && JetPT < 140 && NewJetDR2 > 0.1 && abs(JetEta) > 0.5)");
-   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P1", "MCWeight * (JetShift < 0.2 && JetPT > 140 && JetPT < 160 && NewJetDR2 > 0.1 && abs(JetEta) > 0.5)");
-   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P2", "MCWeight * (JetShift < 0.2 && JetPT > 160 && JetPT < 180 && NewJetDR2 > 0.1 && abs(JetEta) > 0.5)");
-   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P3", "MCWeight * (JetShift < 0.2 && JetPT > 180 && JetPT < 200 && NewJetDR2 > 0.1 && abs(JetEta) > 0.5)");
-   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P4", "MCWeight * (JetShift < 0.2 && JetPT > 200 && JetPT < 300 && NewJetDR2 > 0.1 && abs(JetEta) > 0.5)");
-   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P5", "MCWeight * (JetShift < 0.2 && JetPT > 300 && JetPT < 500 && NewJetDR2 > 0.1 && abs(JetEta) > 0.5)");
+   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P0", "MCWeight * (JetShift < 0.2 && JetPT > 120 && JetPT < 140 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P1", "MCWeight * (JetShift < 0.2 && JetPT > 140 && JetPT < 160 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P2", "MCWeight * (JetShift < 0.2 && JetPT > 160 && JetPT < 180 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P3", "MCWeight * (JetShift < 0.2 && JetPT > 180 && JetPT < 200 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P4", "MCWeight * (JetShift < 0.2 && JetPT > 200 && JetPT < 300 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
+   T1->Draw("NewJetSDMass2/NewJetPT>>HNominal_P5", "MCWeight * (JetShift < 0.2 && JetPT > 300 && JetPT < 500 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) > 0.5))");
    
    T2->SetAlias("Fudge", "((MCWeight < 500) * (1 + 122.874 * exp(-0.5 * ((JetPT-45.0945) / 43.8684)**2)))");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P0", "MCWeight * (JetShift < 0.2 && JetPT > 120 && JetPT < 140 && NewJetDR2 > 0.1 && abs(JetEta) < 0.5)");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P1", "MCWeight * (JetShift < 0.2 && JetPT > 140 && JetPT < 160 && NewJetDR2 > 0.1 && abs(JetEta) < 0.5)");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P2", "MCWeight * (JetShift < 0.2 && JetPT > 160 && JetPT < 180 && NewJetDR2 > 0.1 && abs(JetEta) < 0.5)");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P3", "MCWeight * (JetShift < 0.2 && JetPT > 180 && JetPT < 200 && NewJetDR2 > 0.1 && abs(JetEta) < 0.5)");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P4", "MCWeight * (JetShift < 0.2 && JetPT > 200 && JetPT < 300 && NewJetDR2 > 0.1 && abs(JetEta) < 0.5)");
-   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P5", "MCWeight * (JetShift < 0.2 && JetPT > 300 && JetPT < 500 && NewJetDR2 > 0.1 && abs(JetEta) < 0.5)");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P0", "MCWeight * (JetShift < 0.2 && JetPT > 120 && JetPT < 140 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P1", "MCWeight * (JetShift < 0.2 && JetPT > 140 && JetPT < 160 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P2", "MCWeight * (JetShift < 0.2 && JetPT > 160 && JetPT < 180 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P3", "MCWeight * (JetShift < 0.2 && JetPT > 180 && JetPT < 200 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P4", "MCWeight * (JetShift < 0.2 && JetPT > 200 && JetPT < 300 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
+   T2->Draw("NewJetSDMass2/NewJetPT>>HModified_P5", "MCWeight * (JetShift < 0.2 && JetPT > 300 && JetPT < 500 && NewJetDR2 > 0.1) * (1 + (abs(JetEta) < 0.5))");
 
    HNominal_P0.Scale(1 / HNominal_P0.Integral());
    HNominal_P1.Scale(1 / HNominal_P1.Integral());
@@ -296,10 +296,10 @@ double GetFlatRMS(PdfFileHelper &PdfFile, TH1D &H1, TH1D &H2)
    H.Fit(&F);
    
    TGraph G1, G2;
-   G1.SetPoint(0, 0,  F.GetParameter(2) * 1.50);
-   G1.SetPoint(1, 1,  F.GetParameter(2) * 1.50);
-   G2.SetPoint(0, 0, -F.GetParameter(2) * 1.50);
-   G2.SetPoint(1, 1, -F.GetParameter(2) * 1.50);
+   G1.SetPoint(0, 0,  F.GetParameter(2) * 1.00);
+   G1.SetPoint(1, 1,  F.GetParameter(2) * 1.00);
+   G2.SetPoint(0, 0, -F.GetParameter(2) * 1.00);
+   G2.SetPoint(1, 1, -F.GetParameter(2) * 1.00);
 
    TCanvas C;
 

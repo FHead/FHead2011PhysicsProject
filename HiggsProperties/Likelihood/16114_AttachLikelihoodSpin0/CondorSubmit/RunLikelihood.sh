@@ -8,7 +8,7 @@ echo $HOSTNAME
 echo "Current PWD = `pwd`"
 cat /proc/sys/kernel/hostname
 
-BaseDir=/home/yichen/PhysicsWorkspace/HiggsProperties/Likelihood/15253_AttachFullEFTLikelihoodZAAZWithPDF/
+BaseDir=/home/yichen/PhysicsWorkspace/HiggsProperties/Likelihood/16114_AttachLikelihoodSpin0/
 WorkDir=`pwd`
 
 echo "Work directory = $WorkDir"

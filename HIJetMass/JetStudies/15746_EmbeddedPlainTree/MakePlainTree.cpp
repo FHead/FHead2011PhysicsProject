@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
    JetTreeMessenger MJet(InputFile, JetTreeName);
    JetTreeMessenger MSDJet(InputFile, SoftDropJetTreeName);
    PFTreeMessenger MPF(InputFile, PFTreeName);
+   RhoTreeMessenger MRho(InputFile);
 
    if(MHiEvent.Tree == NULL)
       return -1;
@@ -67,9 +68,10 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SubJetDR", &TreeSubJetDR, "SubJetDR/D");
    OutputTree.Branch("SDMass", &TreeSDMass, "SDMass/D");
 
-   double TreeCentrality, TreePTHat;
+   double TreeCentrality, TreePTHat, TreeRho;
    OutputTree.Branch("Centrality", &TreeCentrality, "Centrality/D");
    OutputTree.Branch("PTHat", &TreePTHat, "PTHat/D");
+   OutputTree.Branch("Rho", &TreeRho, "Rho/D");
 
    double TreeMatchDR, TreeMatchPT, TreeMatchArea;
    OutputTree.Branch("MatchDR", &TreeMatchDR, "MatchDR/D");
@@ -116,11 +118,13 @@ int main(int argc, char *argv[])
       MJet.GetEntry(iE);
       MSDJet.GetEntry(iE);
       MPF.GetEntry(iE);
+      MRho.GetEntry(iE);
 
       SDJetHelper HSDJet(MSDJet);
 
       TreeCentrality = GetCentrality(MHiEvent.hiBin);
       TreePTHat = MSDJet.PTHat;
+      TreeRho = GetRho(MRho.EtaMax, MRho.Rho, 0);
 
       vector<PseudoJet> Particles;
       for(int iPF = 0; iPF < MPF.ID->size(); iPF++)

@@ -1,4 +1,4 @@
-Home=/Users/yichen/
+Home=/home/yichen
 WorkspaceBase=$Home/PhysicsWorkspace/HiggsProperties
 # g++ HybridCalculator.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
 #    -pedantic -W -Wall -Wno-long-long \

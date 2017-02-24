@@ -23,10 +23,11 @@ int main()
    SetThesisStyle();
 
    vector<pair<double, double>> S = ReadTree("Phto2e2mu_A1UU_18p4GeV_noPDF_ForEff_1.root");
-   vector<pair<double, double>> B = ReadTree("ddbar_PDF_to_2e2mu_LO_ForEff_13TeV_10to25GeV_1.root");
+   // vector<pair<double, double>> B = ReadTree("ddbar_PDF_to_2e2mu_LO_ForEff_13TeV_10to25GeV_1.root");
+   vector<pair<double, double>> B = ReadTree("ddbar_noPDF_to_2e2mu_18p4GeV_GenCuts_1.root");
 
    PdfFileHelper PdfFile("BackgroundScan.pdf");
-   PdfFile.AddTextPage("Check background nomralization");
+   PdfFile.AddTextPage("Check background normalization");
 
    vector<string> Explanation(10);
    Explanation[0] = "Take 100 background events and different number";
@@ -46,7 +47,7 @@ int main()
    double Fraction[] = {0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95};
    for(int iF = 0; iF < 19; iF++)
    {
-      int NB = 100;
+      int NB = 1000;
       int NS = NB / Fraction[iF] - NB;
 
       double TrueFraction = (double)NB / (NS + NB);
@@ -75,10 +76,10 @@ int main()
       }
 
       TGraph GTrue, GBest;
-      GTrue.SetPoint(0, TrueFraction, -100000);
-      GTrue.SetPoint(1, TrueFraction, +100000);
-      GBest.SetPoint(0, MinF, -100000);
-      GBest.SetPoint(1, MinF, +100000);
+      GTrue.SetPoint(0, TrueFraction, -10000000);
+      GTrue.SetPoint(1, TrueFraction, +10000000);
+      GBest.SetPoint(0, MinF, -10000000);
+      GBest.SetPoint(1, MinF, +10000000);
 
       GBest.SetLineColor(kRed);
 
@@ -152,7 +153,7 @@ vector<pair<double, double>> ReadTree(string FileName)
 
    DataHelper DHFile("Normalization.dh");
    double IS = DHFile["0TeV"]["TF1_A1VVR_A1VVR"].GetDouble();
-   double IB = DHFile["0TeV"]["TF2_DDbar"].GetDouble();
+   double IB = DHFile["0TeV"]["TF2_DDbar"].GetDouble() * 2;
 
    int EntryCount = T->GetEntries();
    ProgressBar Bar(cout, EntryCount);

@@ -11,6 +11,8 @@ class WarsawBasis;
 class LoopBasis;
 class LoopBasis2;
 class ExtendedAVVBasis;
+struct FullAVVBasisVerbose;
+union FullAVVBasis;
 
 std::ostream &operator <<(std::ostream &out, AVVBasis &A);
 std::ostream &operator <<(std::ostream &out, HiggsBasis &H);
@@ -148,6 +150,88 @@ public:
    ExtendedAVVBasis();
    ExtendedAVVBasis(double A[24]);
    void Print(std::ostream &out);
+};
+
+struct FullAVVBasisVerbose
+{
+   double A1ZZR;
+   double A1ZZI;
+   double A2ZZR;
+   double A2ZZI;
+   double A3ZZR;
+   double A3ZZI;
+   double A4ZZR;
+   double A4ZZI;
+   double A1ZVR;
+   double A1ZVI;
+   double A2ZVR;
+   double A2ZVI;
+   double A3ZVR;
+   double A3ZVI;
+   double A4ZVR;
+   double A4ZVI;
+   double A1ZAR;
+   double A1ZAI;
+   double A2ZAR;
+   double A2ZAI;
+   double A3ZAR;
+   double A3ZAI;
+   double A4ZAR;
+   double A4ZAI;
+   double A1VZR;
+   double A1VZI;
+   double A2VZR;
+   double A2VZI;
+   double A3VZR;
+   double A3VZI;
+   double A4VZR;
+   double A4VZI;
+   double A1VVR;
+   double A1VVI;
+   double A2VVR;
+   double A2VVI;
+   double A3VVR;
+   double A3VVI;
+   double A4VVR;
+   double A4VVI;
+   double A1VAR;
+   double A1VAI;
+   double A2VAR;
+   double A2VAI;
+   double A3VAR;
+   double A3VAI;
+   double A4VAR;
+   double A4VAI;
+   double A1AZR;
+   double A1AZI;
+   double A2AZR;
+   double A2AZI;
+   double A3AZR;
+   double A3AZI;
+   double A4AZR;
+   double A4AZI;
+   double A1AVR;
+   double A1AVI;
+   double A2AVR;
+   double A2AVI;
+   double A3AVR;
+   double A3AVI;
+   double A4AVR;
+   double A4AVI;
+   double A1AAR;
+   double A1AAI;
+   double A2AAR;
+   double A2AAI;
+   double A3AAR;
+   double A3AAI;
+   double A4AAR;
+   double A4AAI;
+};
+
+union FullAVVBasis
+{
+   double A[72];
+   FullAVVBasisVerbose AVV;
 };
 
 #endif

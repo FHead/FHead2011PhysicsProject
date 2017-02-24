@@ -1,0 +1,40 @@
+
+
+Branch Name | Average Uncompressed Size (Bytes/Event) | Average Compressed Size (Bytes/Event) 
+BranchListIndexes 23.1621 4.76087
+EventAuxiliary 136.073 44.1087
+EventProductProvenance 4184.72 716.391
+EventSelections 76.1028 7.13043
+File MergedWithItself.root Events 506
+GlobalAlgBlkBXVector_gtStage2Digis__RECO. 2435.93 949.433
+GlobalExtBlkBXVector_gtStage2Digis__RECO. 336.377 324.899
+HcalNoiseSummary_hcalnoise__RECO. 3715.47 3670.56
+L1GlobalTriggerReadoutRecord_gtDigis__RECO. 156.294 99.5119
+double_fixedGridRhoAll__RECO. 81.6146 81.6146
+double_fixedGridRhoFastjetAllCalo__RECO. 88.0929 88.0929
+double_fixedGridRhoFastjetAll__RECO. 85.7372 85.7372
+double_fixedGridRhoFastjetCentralCalo__RECO. 90.4486 90.1008
+double_fixedGridRhoFastjetCentralChargedPileUp__RECO. 95.749 92.836
+double_fixedGridRhoFastjetCentralNeutral__RECO. 92.2154 90.4545
+double_fixedGridRhoFastjetCentral__RECO. 88.0929 88.0929
+edmTriggerResults_TriggerResults__HLT. 170.279 109.561
+edmTriggerResults_TriggerResults__RECO. 160.868 107.911
+edmTriggerResults_TriggerResults__SIM. 158.279 106.757
+l1extraL1EmParticles_l1extraParticles_Isolated_RECO. 809.808 807.265
+l1extraL1EmParticles_l1extraParticles_NonIsolated_RECO. 822.905 820.362
+l1extraL1EtMissParticles_l1extraParticles_MET_RECO. 1113.87 1069.93
+l1extraL1EtMissParticles_l1extraParticles_MHT_RECO. 1113.87 1070.46
+l1extraL1HFRingss_l1extraParticles__RECO. 412.601 360.644
+l1extraL1JetParticles_l1extraParticles_Central_RECO. 809.856 807.312
+l1extraL1JetParticles_l1extraParticles_Forward_RECO. 809.856 807.312
+l1extraL1JetParticles_l1extraParticles_IsoTau_RECO. 805.49 802.947
+l1extraL1JetParticles_l1extraParticles_Tau_RECO. 792.393 789.85
+l1extraL1MuonParticles_l1extraParticles__RECO. 1239.33 1233.92
+l1tEGammaBXVector_caloStage2Digis_EGamma_RECO. 1742.97 1680.84
+l1tEtSumBXVector_caloStage2Digis_EtSum_RECO. 1750.62 1324.45
+l1tJetBXVector_caloStage2Digis_Jet_RECO. 1708.83 1603.07
+l1tMuonBXVector_gmtStage2Digis_Muon_RECO. 1675.02 1662.76
+l1tTauBXVector_caloStage2Digis_Tau_RECO. 1953.78 1694.95
+recoBeamHaloSummary_BeamHaloSummary__RECO. 838.98 786.002
+recoBeamSpot_offlineBeamSpot__RECO. 953.425 753.381
+recoCSCHaloData_CSCHaloData__RECO. 1565.83 1556.09

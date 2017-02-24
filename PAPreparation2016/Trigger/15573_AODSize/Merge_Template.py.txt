@@ -1,0 +1,42 @@
+import FWCore.ParameterSet.Config as cms
+from FWCore.ParameterSet.VarParsing import VarParsing
+
+process = cms.Process("PickEvent")
+
+process.load("Configuration.EventContent.EventContent_cff")
+
+process.source = cms.Source ("PoolSource",
+	  fileNames = cms.untracked.vstring (__INPUT__),
+)
+
+process.maxEvents = cms.untracked.PSet(
+	    input = cms.untracked.int32 (-1)
+)
+
+
+process.Out4 = cms.OutputModule("PoolOutputModule",
+   fileName = cms.untracked.string ("__OUTPUTBASE___AOD_l4.root"),
+   outputCommands = process.AODEventContent.outputCommands,
+   compressionLevel = cms.untracked.int32(4)
+)
+
+process.Out7 = cms.OutputModule("PoolOutputModule",
+   fileName = cms.untracked.string ("__OUTPUTBASE___AOD_l7.root"),
+   outputCommands = process.AODEventContent.outputCommands,
+   compressionLevel = cms.untracked.int32(7)
+)
+
+process.MiniOut4 = cms.OutputModule("PoolOutputModule",
+   fileName = cms.untracked.string ("__OUTPUTBASE___MiniAOD_l4.root"),
+   outputCommands = process.MINIAODEventContent.outputCommands,
+   compressionLevel = cms.untracked.int32(4)
+)
+
+process.MiniOut7 = cms.OutputModule("PoolOutputModule",
+   fileName = cms.untracked.string ("__OUTPUTBASE___MiniAOD_l7.root"),
+   outputCommands = process.MINIAODEventContent.outputCommands,
+   compressionLevel = cms.untracked.int32(7)
+)
+
+
+process.end = cms.EndPath(process.Out4 + process.Out7 + process.MiniOut4 + process.MiniOut7)

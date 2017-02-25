@@ -88,7 +88,7 @@ int main()
       bool DoBEM = true, DoBEE = true;
       if(DoEM == false || (DoEM == true && Scenarios[iS].BEM < 0))
          DoBEM = false;
-      if(DoEM == false || (DoEE == true && Scenarios[iS].BEE < 0))
+      if(DoEE == false || (DoEE == true && Scenarios[iS].BEE < 0))
          DoBEE = false;
       
       // Prepare to start looping
@@ -152,6 +152,25 @@ int main()
          if(DoBEE == false)
             ExpectedFEE = 0;
 
+         // evaluate models
+         vector<vector<double>> ValueSEM(Models.size());
+         vector<vector<double>> ValueSEE(Models.size());
+         vector<double> ValueBEM;
+         vector<double> ValueBEE;
+
+         for(int i = 0; i < (int)DatasetEM.size(); i++)
+         {
+            for(int iM = 0; iM < (int)Models.size(); iM++)
+               ValueSEM[iM].push_back(DatasetEM[i].Apply(Models[iM], 0));
+            ValueBEM.push_back(DatasetEM[i].Apply(Models[0], 1));
+         }
+         for(int i = 0; i < (int)DatasetEE.size(); i++)
+         {
+            for(int iM = 0; iM < (int)Models.size(); iM++)
+               ValueSEE[iM].push_back(DatasetEE[i].Apply(Models[iM], 0));
+            ValueBEE.push_back(DatasetEE[i].Apply(Models[0], 1));
+         }
+
          // Calculate fix-B result
          for(int iM = 0; iM < (int)Models.size(); iM++)
          {
@@ -159,21 +178,112 @@ int main()
 
             if(DoEM == true)
                for(int i = 0; i < (int)DatasetEM.size(); i++)
-                  LL = LL + log(DatasetEM[i].Apply(Models[iM], ExpectedFEM));
+                  LL = LL + log(ValueSEM[iM][i] * (1 - ExpectedFEM) + ValueBEM[i] * ExpectedFEM);
             if(DoEE == true)
                for(int i = 0; i < (int)DatasetEE.size(); i++)
-                  LL = LL + log(DatasetEE[i].Apply(Models[iM], ExpectedFEE));
+                  LL = LL + log(ValueSEE[iM][i] * (1 - ExpectedFEE) + ValueBEE[i] * ExpectedFEE);
 
             LLFixB[iM].push_back(LL / (DatasetEM.size() + DatasetEE.size()));
-         
-            // let's put some dummy thing here and upgrade later
-            LLFloatB[iM].push_back(LL / (DatasetEM.size() + DatasetEE.size()));
+            
+            if(DoBEM == false && DoBEE == false)
+               LLFloatB[iM].push_back(LL / (DatasetEM.size() + DatasetEE.size()));
          }
 
          // Calculate float-B result
-         //
-         // See above in fix-B section - placeholder is put there
-      }
+         if(DoBEM == true || DoBEE == true)
+         {
+            for(int iM = 0; iM < (int)Models.size(); iM++)
+            {
+               double LL = 0;
+
+               double FEM = ExpectedFEM;
+               double FEE = ExpectedFEE;
+
+               int PassCount = 10;
+               if(DoBEM != DoBEE)   // only 1D, only 1 pass is needed
+                  PassCount = 1;
+
+               for(int iP = 0; iP < PassCount; iP++)
+               {
+                  if(DoBEM == true)
+                  {
+                     double MinF = 0, MaxF = 1;
+                     double BestF = -1;
+                     double BestLL = 0;
+                     
+                     for(int iT = 0; iT < 5; iT++)
+                     {
+                        double StepSize = (MaxF - MinF) / 5;
+
+                        for(int i = 0; i <= 5; i++)
+                        {
+                           double F = (MaxF - MinF) / 5 * i + MinF;
+                           double CurrentLL = 0;
+                           for(int j = 0; j < (int)ValueSEM[iM].size(); j++)
+                              CurrentLL = CurrentLL + log(ValueSEM[iM][j] * (1 - F) + ValueBEM[j] * F);
+                           for(int j = 0; j < (int)ValueSEE[iM].size(); j++)
+                              CurrentLL = CurrentLL + log(ValueSEE[iM][j] * (1 - FEE) + ValueBEE[j] * FEE);
+
+                           if(CurrentLL == CurrentLL && (BestF < 0 || BestLL < CurrentLL))
+                           {
+                              BestF = F;
+                              BestLL = CurrentLL;
+                           }
+                        }
+
+                        MinF = BestF - StepSize;
+                        MaxF = BestF + StepSize;
+
+                        if(MinF < 0)   MinF = 0;
+                        if(MaxF > 1)   MaxF = 1;
+                     }
+
+                     FEM = BestF;
+                     LL = BestLL;
+                  }
+
+                  if(DoBEE == true)
+                  {
+                     double MinF = 0, MaxF = 1;
+                     double BestF = -1;
+                     double BestLL = 0;
+                     
+                     for(int iT = 0; iT < 5; iT++)
+                     {
+                        double StepSize = (MaxF - MinF) / 5;
+
+                        for(int i = 0; i <= 5; i++)
+                        {
+                           double F = (MaxF - MinF) / 5 * i + MinF;
+                           double CurrentLL = 0;
+                           for(int j = 0; j < (int)ValueSEM[iM].size(); j++)
+                              CurrentLL = CurrentLL + log(ValueSEM[iM][j] * (1 - FEM) + ValueBEM[j] * FEM);
+                           for(int j = 0; j < (int)ValueSEE[iM].size(); j++)
+                              CurrentLL = CurrentLL + log(ValueSEE[iM][j] * (1 - F) + ValueBEE[j] * F);
+
+                           if(CurrentLL == CurrentLL && (BestF < 0 || BestLL < CurrentLL))
+                           {
+                              BestF = F;
+                              BestLL = CurrentLL;
+                           }
+                        }
+
+                        MinF = BestF - StepSize;
+                        MaxF = BestF + StepSize;
+                        
+                        if(MinF < 0)   MinF = 0;
+                        if(MaxF > 1)   MaxF = 1;
+                     }
+
+                     FEE = BestF;
+                     LL = BestLL;
+                  }
+               }
+
+               LLFloatB[iM].push_back(LL / (DatasetEM.size() + DatasetEE.size()));
+            }   // model loop
+         }   // if there is a need for background fraction floating
+      }   // while good
 
       if(LLFixB[0].size() == 0 || LLFloatB[0].size() == 0)   // no result
          continue;
@@ -369,7 +479,7 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
          IS[i][j] = DHFile["0TeV"][Prefix+"1_"+Suffix[i]+"_"+Suffix[j]].GetDouble();
    IB = DHFile["0TeV"][Prefix+"2_DDbar"].GetDouble() * 2;
 
-   int EntryCount = T->GetEntries() * 0.2;
+   int EntryCount = T->GetEntries();
    ProgressBar Bar(cout, EntryCount);
    for(int iE = 0; iE < EntryCount; iE++)
    {
@@ -412,7 +522,7 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
 
 vector<FullAVVBasis> GetModels()
 {
-   vector<FullAVVBasis> Models(5);
+   vector<FullAVVBasis> Models(9);
 
    Models[0].AVV.A1ZZR = 1;
 
@@ -422,8 +532,25 @@ vector<FullAVVBasis> GetModels()
 
    Models[3].AVV.A3VVR = 1;
 
-   Models[4].AVV.A1VVR = 1;
-   Models[4].AVV.A2VVR = 1;
+   Models[4].AVV.A2VAR = 1;
+   Models[4].AVV.A2AVR = 1;
+
+   Models[5].AVV.A2ZVR = 1;
+   Models[5].AVV.A2VZR = 1;
+   
+   Models[6].AVV.A1VVR = 1;
+   Models[6].AVV.A3VVR = 1;
+   
+   Models[7].AVV.A1VVR = 1;
+   Models[7].AVV.A1VZR = 1;
+   Models[7].AVV.A1ZVR = 1;
+   
+   Models[8].AVV.A1VVR = 1;
+   Models[8].AVV.A1VVI = 1;
+   Models[8].AVV.A1VZR = 1;
+   Models[8].AVV.A1ZVR = 1;
+   Models[8].AVV.A1VZI = 1;
+   Models[8].AVV.A1ZVI = 1;
 
    return Models;
 }

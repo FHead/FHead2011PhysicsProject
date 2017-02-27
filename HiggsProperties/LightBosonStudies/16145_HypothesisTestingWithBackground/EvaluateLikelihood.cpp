@@ -20,6 +20,10 @@ using namespace std;
 
 #include "Likelihood.h"
 
+#define MODELCOUNT 9
+#define MAXEVENT 50000
+#define MAXDATASET 50000
+
 struct EventCount;
 int main(int argc, char *argv[]);
 vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM);
@@ -118,15 +122,34 @@ int main(int argc, char *argv[])
          Good = false;
 
       // Likelihood values for datasets
-      vector<vector<double>> LLFixB(Models.size());
-      vector<vector<double>> LLFloatB(Models.size());
+      int DatasetCount = 0;
+      double *LLFixB[MODELCOUNT];
+      double *LLFloatB[MODELCOUNT];
 
+      for(int i = 0; i < MODELCOUNT; i++)
+      {
+         LLFixB[i] = new double[MAXDATASET];
+         LLFloatB[i] = new double[MAXDATASET];
+      }
+      
+      // Event likelihood placeholder
+      double *ValueSEM[MODELCOUNT];
+      double *ValueSEE[MODELCOUNT];
+      double ValueBEM[MAXEVENT] = {0};
+      double ValueBEE[MAXEVENT] = {0};
+
+      for(int i = 0; i < MODELCOUNT; i++)
+      {
+         ValueSEM[i] = new double[MAXEVENT];
+         ValueSEE[i] = new double[MAXEVENT];
+      }
+      
       // Looping over all events
       while(Good == true)
       {
-         // Get a different set of background events
-         random_shuffle(BEM.begin(), BEM.end());
-         random_shuffle(BEE.begin(), BEE.end());
+         // Get a different set of background events - takes a lot of time!
+         // random_shuffle(BEM.begin(), BEM.end());
+         // random_shuffle(BEE.begin(), BEE.end());
 
          // Draw random numbers based on poisson distribution
          EventCount ActualCount;
@@ -134,6 +157,18 @@ int main(int argc, char *argv[])
          if(Scenarios[iS].BEM > 0)  ActualCount.BEM = DrawPoisson(Scenarios[iS].BEM);
          if(Scenarios[iS].SEE > 0)  ActualCount.SEE = DrawPoisson(Scenarios[iS].SEE);
          if(Scenarios[iS].BEE > 0)  ActualCount.BEE = DrawPoisson(Scenarios[iS].BEE);
+
+         if(ActualCount.SEM + ActualCount.BEM >= MAXEVENT || ActualCount.SEE + ActualCount.BEE >= MAXEVENT)
+         {
+            cerr << "Warning!  Dataset larger than MAXEVENT!  Recompile with larger array!" << endl;
+            return -1;
+         }
+
+         if(DatasetCount >= MAXDATASET)
+         {
+            cerr << "Warning!  Too many datasets!  Recompile with larger array!" << endl;
+            return -1;
+         }
 
          // Not enough events for this coming run
          if(ActualCount.SEM > 0 && SEMIndex + ActualCount.SEM > (int)SEM.size())
@@ -144,17 +179,8 @@ int main(int argc, char *argv[])
          if(Good == false)
             break;
       
-         // Get dataset
-         vector<Likelihood> DatasetEM;
-         vector<Likelihood> DatasetEE;
-
-         DatasetEM.insert(DatasetEM.end(), SEM.begin() + SEMIndex, SEM.begin() + SEMIndex + ActualCount.SEM);
-         DatasetEM.insert(DatasetEM.end(), BEM.begin(), BEM.begin() + ActualCount.BEM);
-         DatasetEE.insert(DatasetEE.end(), SEE.begin() + SEEIndex, SEE.begin() + SEEIndex + ActualCount.SEE);
-         DatasetEE.insert(DatasetEE.end(), BEE.begin(), BEE.begin() + ActualCount.BEE);
-
-         SEMIndex = SEMIndex + ActualCount.SEM;
-         SEEIndex = SEEIndex + ActualCount.SEE;
+         int DatasetEMSize = ActualCount.SEM + ActualCount.BEM;
+         int DatasetEESize = ActualCount.SEE + ActualCount.BEE;
 
          // What's the expected background fraction?
          double ExpectedFEM = Scenarios[iS].BEM / (Scenarios[iS].BEM + Scenarios[iS].SEM);
@@ -165,41 +191,53 @@ int main(int argc, char *argv[])
          if(DoBEE == false)
             ExpectedFEE = 0;
 
-         // evaluate models
-         vector<vector<double>> ValueSEM(Models.size());
-         vector<vector<double>> ValueSEE(Models.size());
-         vector<double> ValueBEM;
-         vector<double> ValueBEE;
-
-         for(int i = 0; i < (int)DatasetEM.size(); i++)
+         // Get dataset and evaluate models
+         for(int i = 0; i < ActualCount.SEM; i++)
          {
             for(int iM = 0; iM < (int)Models.size(); iM++)
-               ValueSEM[iM].push_back(DatasetEM[i].Apply(Models[iM], 0));
-            ValueBEM.push_back(DatasetEM[i].Apply(Models[0], 1));
+               ValueSEM[iM][i] = SEM[SEMIndex+i].Apply(Models[iM], 0);
+            ValueBEM[i] = SEM[SEMIndex+i].Apply(Models[0], 1);
          }
-         for(int i = 0; i < (int)DatasetEE.size(); i++)
+         for(int i = 0; i < ActualCount.BEM; i++)
+         {
+            int I = (int)(DrawRandom() * BEM.size());
+            for(int iM = 0; iM < (int)Models.size(); iM++)
+               ValueSEM[iM][(int)ActualCount.SEM+i] = BEM[I].Apply(Models[iM], 0);
+            ValueBEM[(int)ActualCount.SEM+i] = BEM[I].Apply(Models[0], 1);
+         }
+         for(int i = 0; i < ActualCount.SEE; i++)
          {
             for(int iM = 0; iM < (int)Models.size(); iM++)
-               ValueSEE[iM].push_back(DatasetEE[i].Apply(Models[iM], 0));
-            ValueBEE.push_back(DatasetEE[i].Apply(Models[0], 1));
+               ValueSEE[iM][i] = SEE[SEEIndex+i].Apply(Models[iM], 0);
+            ValueBEE[i] = SEE[SEEIndex+i].Apply(Models[0], 1);
          }
-
+         for(int i = 0; i < ActualCount.BEE; i++)
+         {
+            int I = (int)(DrawRandom() * BEE.size());
+            for(int iM = 0; iM < (int)Models.size(); iM++)
+               ValueSEE[iM][(int)ActualCount.SEE+i] = BEE[I].Apply(Models[iM], 0);
+            ValueBEE[(int)ActualCount.SEE+i] = BEE[I].Apply(Models[0], 1);
+         }
+         
+         SEMIndex = SEMIndex + ActualCount.SEM;
+         SEEIndex = SEEIndex + ActualCount.SEE;
+         
          // Calculate fix-B result
          for(int iM = 0; iM < (int)Models.size(); iM++)
          {
             double LL = 0;
 
             if(DoEM == true)
-               for(int i = 0; i < (int)DatasetEM.size(); i++)
+               for(int i = 0; i < DatasetEMSize; i++)
                   LL = LL + log(ValueSEM[iM][i] * (1 - ExpectedFEM) + ValueBEM[i] * ExpectedFEM);
             if(DoEE == true)
-               for(int i = 0; i < (int)DatasetEE.size(); i++)
+               for(int i = 0; i < DatasetEESize; i++)
                   LL = LL + log(ValueSEE[iM][i] * (1 - ExpectedFEE) + ValueBEE[i] * ExpectedFEE);
 
-            LLFixB[iM].push_back(LL / (DatasetEM.size() + DatasetEE.size()));
+            LLFixB[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
             
             if(DoBEM == false && DoBEE == false)
-               LLFloatB[iM].push_back(LL / (DatasetEM.size() + DatasetEE.size()));
+               LLFloatB[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
          }
 
          // Calculate float-B result
@@ -232,9 +270,9 @@ int main(int argc, char *argv[])
                         {
                            double F = (MaxF - MinF) / 5 * i + MinF;
                            double CurrentLL = 0;
-                           for(int j = 0; j < (int)ValueSEM[iM].size(); j++)
+                           for(int j = 0; j < DatasetEMSize; j++)
                               CurrentLL = CurrentLL + log(ValueSEM[iM][j] * (1 - F) + ValueBEM[j] * F);
-                           for(int j = 0; j < (int)ValueSEE[iM].size(); j++)
+                           for(int j = 0; j < DatasetEESize; j++)
                               CurrentLL = CurrentLL + log(ValueSEE[iM][j] * (1 - FEE) + ValueBEE[j] * FEE);
 
                            if(CurrentLL == CurrentLL && (BestF < 0 || BestLL < CurrentLL))
@@ -269,9 +307,9 @@ int main(int argc, char *argv[])
                         {
                            double F = (MaxF - MinF) / 5 * i + MinF;
                            double CurrentLL = 0;
-                           for(int j = 0; j < (int)ValueSEM[iM].size(); j++)
+                           for(int j = 0; j < DatasetEMSize; j++)
                               CurrentLL = CurrentLL + log(ValueSEM[iM][j] * (1 - FEM) + ValueBEM[j] * FEM);
-                           for(int j = 0; j < (int)ValueSEE[iM].size(); j++)
+                           for(int j = 0; j < DatasetEESize; j++)
                               CurrentLL = CurrentLL + log(ValueSEE[iM][j] * (1 - F) + ValueBEE[j] * F);
 
                            if(CurrentLL == CurrentLL && (BestF < 0 || BestLL < CurrentLL))
@@ -293,12 +331,14 @@ int main(int argc, char *argv[])
                   }
                }
 
-               LLFloatB[iM].push_back(LL / (DatasetEM.size() + DatasetEE.size()));
+               LLFloatB[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
             }   // model loop
          }   // if there is a need for background fraction floating
+
+         DatasetCount = DatasetCount + 1;
       }   // while good
 
-      if(LLFixB[0].size() == 0 || LLFloatB[0].size() == 0)   // no result
+      if(DatasetCount == 0)   // no result
          continue;
 
       // Make plots, and profit!
@@ -319,7 +359,7 @@ int main(int argc, char *argv[])
          double Min = LLFixB[iM][0];
          double Max = LLFixB[iM][0];
 
-         for(int i = 0; i < (int)LLFixB[iM].size(); i++)
+         for(int i = 0; i < DatasetCount; i++)
          {
             if(Min > LLFixB[iM][i])   Min = LLFixB[iM][i];
             if(Max < LLFixB[iM][i])   Max = LLFixB[iM][i];
@@ -331,7 +371,7 @@ int main(int argc, char *argv[])
 
          TH1D H("H", Form(";LL with F fixed (Model %d)", iM), 200, Min, Max);
          
-         for(int i = 0; i < (int)LLFixB[iM].size(); i++)
+         for(int i = 0; i < DatasetCount; i++)
             H.Fill(LLFixB[iM][i]);
 
          H.SetStats(0);
@@ -345,7 +385,7 @@ int main(int argc, char *argv[])
          double Min = LLFloatB[iM][0];
          double Max = LLFloatB[iM][0];
 
-         for(int i = 0; i < (int)LLFloatB[iM].size(); i++)
+         for(int i = 0; i < DatasetCount; i++)
          {
             if(Min > LLFloatB[iM][i])   Min = LLFloatB[iM][i];
             if(Max < LLFloatB[iM][i])   Max = LLFloatB[iM][i];
@@ -357,7 +397,7 @@ int main(int argc, char *argv[])
 
          TH1D H("H", Form(";LL with F floated (Model %d);", iM), 200, Min, Max);
          
-         for(int i = 0; i < (int)LLFloatB[iM].size(); i++)
+         for(int i = 0; i < DatasetCount; i++)
             H.Fill(LLFloatB[iM][i]);
 
          H.SetStats(0);
@@ -373,7 +413,7 @@ int main(int argc, char *argv[])
             double Min = LLFixB[iM1][0] - LLFixB[iM2][0];
             double Max = LLFixB[iM1][0] - LLFixB[iM2][0];
 
-            for(int i = 0; i < (int)LLFixB[iM1].size(); i++)
+            for(int i = 0; i < DatasetCount; i++)
             {
                if(Min > LLFixB[iM1][i] - LLFixB[iM2][i])   Min = LLFixB[iM1][i] - LLFixB[iM2][i];
                if(Max < LLFixB[iM1][i] - LLFixB[iM2][i])   Max = LLFixB[iM1][i] - LLFixB[iM2][i];
@@ -385,7 +425,7 @@ int main(int argc, char *argv[])
 
             TH1D H("H", Form(";LL with F fixed (Model %d - Model %d);", iM1, iM2), 200, Min, Max);
 
-            for(int i = 0; i < (int)LLFixB[iM1].size(); i++)
+            for(int i = 0; i < DatasetCount; i++)
                H.Fill(LLFixB[iM1][i] - LLFixB[iM2][i]);
 
             H.SetStats(0);
@@ -402,7 +442,7 @@ int main(int argc, char *argv[])
             double Min = LLFloatB[iM1][0] - LLFloatB[iM2][0];
             double Max = LLFloatB[iM1][0] - LLFloatB[iM2][0];
 
-            for(int i = 0; i < (int)LLFloatB[iM1].size(); i++)
+            for(int i = 0; i < DatasetCount; i++)
             {
                if(Min > LLFloatB[iM1][i] - LLFloatB[iM2][i])   Min = LLFloatB[iM1][i] - LLFloatB[iM2][i];
                if(Max < LLFloatB[iM1][i] - LLFloatB[iM2][i])   Max = LLFloatB[iM1][i] - LLFloatB[iM2][i];
@@ -414,7 +454,7 @@ int main(int argc, char *argv[])
 
             TH1D H("H", Form(";LL with F floated (Model %d - Model %d);", iM1, iM2), 200, Min, Max);
 
-            for(int i = 0; i < (int)LLFloatB[iM1].size(); i++)
+            for(int i = 0; i < DatasetCount; i++)
                H.Fill(LLFloatB[iM1][i] - LLFloatB[iM2][i]);
 
             H.SetStats(0);
@@ -424,13 +464,13 @@ int main(int argc, char *argv[])
       }
 
       // Export result into text files
-      for(int i = 0; i < (int)LLFixB[0].size(); i++)
+      for(int i = 0; i < DatasetCount; i++)
       {
          for(int iM = 0; iM < (int)Models.size(); iM++)
             out_fix << LLFixB[iM][i] << " ";
          out_fix << endl;
       }
-      for(int i = 0; i < (int)LLFloatB[0].size(); i++)
+      for(int i = 0; i < DatasetCount; i++)
       {
          for(int iM = 0; iM < (int)Models.size(); iM++)
             out_float << LLFloatB[iM][i] << " ";
@@ -440,6 +480,16 @@ int main(int argc, char *argv[])
       // Close files
       out_float.close();
       out_fix.close();
+
+      // Clean up
+      for(int i = 0; i < MODELCOUNT; i++)
+      {
+         delete[] LLFixB[i];
+         delete[] LLFloatB[i];
+
+         delete[] ValueSEM[i];
+         delete[] ValueSEE[i];
+      }
    }
 
    PdfFile.AddTimeStampPage();
@@ -535,7 +585,7 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
 
 vector<FullAVVBasis> GetModels()
 {
-   vector<FullAVVBasis> Models(9);
+   vector<FullAVVBasis> Models(MODELCOUNT);
 
    Models[0].AVV.A1ZZR = 1;
 

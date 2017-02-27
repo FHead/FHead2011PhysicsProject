@@ -230,8 +230,11 @@ struct FullAVVBasisVerbose
 
 union FullAVVBasis
 {
+public:
    double A[72];
    FullAVVBasisVerbose AVV;
+public:
+   FullAVVBasis();
 };
 
 #endif

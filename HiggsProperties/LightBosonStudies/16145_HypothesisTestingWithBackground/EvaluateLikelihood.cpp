@@ -501,6 +501,7 @@ int main(int argc, char *argv[])
 vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
 {
    vector<Likelihood> Result;
+   Result.reserve(100000);
 
    TFile F(FileName.c_str());
 

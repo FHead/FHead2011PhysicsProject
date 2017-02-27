@@ -1,6 +1,6 @@
 CompileRootMacro Likelihood.cpp Likelihood.o -std=c++11 -c \
    -I../../CommonCode/include
-CompileRootMacro EvaluateLikelihood.cpp Run -std=c++11 \
+CompileRootMacro EvaluateLikelihood.cpp RunLikelihood -std=c++11 \
    -I ../../CommonCode/include \
    ../../CommonCode/library/Cuts.o \
    ../../CommonCode/library/Lists.o \

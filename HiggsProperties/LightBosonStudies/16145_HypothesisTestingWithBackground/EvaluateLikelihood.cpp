@@ -21,7 +21,7 @@ using namespace std;
 #include "Likelihood.h"
 
 struct EventCount;
-int main();
+int main(int argc, char *argv[]);
 vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM);
 vector<FullAVVBasis> GetModels();
 
@@ -40,23 +40,34 @@ struct EventCount
    }
 };
 
-int main()
+int main(int argc, char *argv[])
 {
    SetThesisStyle();
 
-   char Cut = 'F';
+   if(argc != 5)
+   {
+      cerr << "Usage: " << argv[0] << "SignalEM BackgroundEM Cut Tag" << endl;
+      return -1;
+   }
 
    // Basic inputs
+   char Cut = 'F';
    string Tag = "A1UU_F";
+   string SEMFileName = "Phto2e2mu_A1UU_18p4GeV_noPDF_ForEff_1.root";
+   string BEMFileName = "ddbar_noPDF_to_2e2mu_18p4GeV_GenCuts_1.root";
+
+   SEMFileName = argv[1];
+   BEMFileName = argv[2];
+   Cut = argv[3][0];
+   Tag = argv[4];
 
    // Setup scenarios
    vector<EventCount> Scenarios;
-   Scenarios.push_back(EventCount(5, 5, -1, -1));
    Scenarios.push_back(EventCount(10, 10, -1, -1));
-   Scenarios.push_back(EventCount(20, 20, -1, -1));
    Scenarios.push_back(EventCount(50, 50, -1, -1));
-   Scenarios.push_back(EventCount(100, 100, -1, -1));
    Scenarios.push_back(EventCount(200, 200, -1, -1));
+   Scenarios.push_back(EventCount(1000, 1000, -1, -1));
+   Scenarios.push_back(EventCount(5000, 5000, -1, -1));
 
    // Get models to play with
    vector<FullAVVBasis> Models = GetModels();
@@ -64,8 +75,8 @@ int main()
    // Read events
    vector<Likelihood> SEM, BEM, SEE, BEE;
 
-   SEM = ReadTree("Phto2e2mu_A1UU_18p4GeV_noPDF_ForEff_1.root", Cut, true);
-   BEM = ReadTree("ddbar_noPDF_to_2e2mu_18p4GeV_GenCuts_1.root", Cut, true);
+   SEM = ReadTree(SEMFileName, Cut, true);
+   BEM = ReadTree(BEMFileName, Cut, true);
 
    // output pdf
    PdfFileHelper PdfFile("ResultHypothesisTesting_" + Tag + ".pdf");
@@ -96,9 +107,9 @@ int main()
 
       int SEMIndex = 0, SEEIndex = 0;
 
-      if(Scenarios[iS].BEM > 0 && Scenarios[iS].BEM * 10 > (int)BEM.size())
+      if(Scenarios[iS].BEM > 0 && Scenarios[iS].BEM * 5 > (int)BEM.size())
          Good = false;
-      if(Scenarios[iS].BEE > 0 && Scenarios[iS].BEE * 10 > (int)BEE.size())
+      if(Scenarios[iS].BEE > 0 && Scenarios[iS].BEE * 5 > (int)BEE.size())
          Good = false;
 
       // Likelihood values for datasets

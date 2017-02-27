@@ -63,11 +63,16 @@ int main(int argc, char *argv[])
 
    // Setup scenarios
    vector<EventCount> Scenarios;
-   Scenarios.push_back(EventCount(10, 10, -1, -1));
-   Scenarios.push_back(EventCount(50, 50, -1, -1));
-   Scenarios.push_back(EventCount(200, 200, -1, -1));
-   Scenarios.push_back(EventCount(1000, 1000, -1, -1));
-   Scenarios.push_back(EventCount(5000, 5000, -1, -1));
+   Scenarios.push_back(EventCount(10, -1, -1, -1));
+   Scenarios.push_back(EventCount(50, -1, -1, -1));
+   Scenarios.push_back(EventCount(200, -1, -1, -1));
+   Scenarios.push_back(EventCount(1000, -1, -1, -1));
+   Scenarios.push_back(EventCount(5000, -1, -1, -1));
+   // Scenarios.push_back(EventCount(10, 10, -1, -1));
+   // Scenarios.push_back(EventCount(50, 50, -1, -1));
+   // Scenarios.push_back(EventCount(200, 200, -1, -1));
+   // Scenarios.push_back(EventCount(1000, 1000, -1, -1));
+   // Scenarios.push_back(EventCount(5000, 5000, -1, -1));
 
    // Get models to play with
    vector<FullAVVBasis> Models = GetModels();

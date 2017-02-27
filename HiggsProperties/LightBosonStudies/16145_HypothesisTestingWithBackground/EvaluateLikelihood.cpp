@@ -145,16 +145,13 @@ int main(int argc, char *argv[])
             break;
       
          // Get dataset
-         vector<Likelihood> DatasetEM, DatasetEE;
+         vector<Likelihood> DatasetEM;
+         vector<Likelihood> DatasetEE;
 
-         for(int i = 0; i < ActualCount.SEM; i++)
-            DatasetEM.push_back(SEM[SEMIndex+i]);
-         for(int i = 0; i < ActualCount.SEE; i++)
-            DatasetEE.push_back(SEE[SEEIndex+i]);
-         for(int i = 0; i < ActualCount.BEM; i++)
-            DatasetEM.push_back(BEM[i]);
-         for(int i = 0; i < ActualCount.BEE; i++)
-            DatasetEE.push_back(BEE[i]);
+         DatasetEM.insert(DatasetEM.end(), SEM.begin() + SEMIndex, SEM.begin() + SEMIndex + ActualCount.SEM);
+         DatasetEM.insert(DatasetEM.end(), BEM.begin(), BEM.begin() + ActualCount.BEM);
+         DatasetEE.insert(DatasetEE.end(), SEE.begin() + SEEIndex, SEE.begin() + SEEIndex + ActualCount.SEE);
+         DatasetEE.insert(DatasetEE.end(), BEE.begin(), BEE.begin() + ActualCount.BEE);
 
          SEMIndex = SEMIndex + ActualCount.SEM;
          SEEIndex = SEEIndex + ActualCount.SEE;

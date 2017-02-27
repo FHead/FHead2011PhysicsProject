@@ -32,18 +32,35 @@ struct Triplet
 
 int main(int argc, char *argv[])
 {
+   string Model1 = "A1UU";
+   string Model2 = "A2UU";
+   string Scenario = "1";
+   string Cut = "F";
+   string File1 = "LikelihoodFixed_A1UU_F_1_Scenario1";
+   string File2 = "LikelihoodFixed_A2UU_F_1_Scenario1";
+
+   if(argc != 7)
+   {
+      cerr << "Usage: " << argv[0] << " Model1 Model2 Cut Scenario File1 File2" << endl;
+      return -1;
+   }
+
+   Model1 = argv[1];
+   Model2 = argv[2];
+   Cut = argv[3];
+   Scenario = argv[4];
+   File1 = argv[5];
+   File2 = argv[6];
+   
    SetThesisStyle();
 
-   PdfFileHelper PdfFile("ResultDoubleFile_A1UU_A1UUpA3UU_F.pdf");
-   PdfFile.AddTextPage("A1UU (black) vs A1UU+A3UU (red)");
-
-   string File1 = "LikelihoodFixed_A1UU_F_1_Scenario1";
-   string File2 = "LikelihoodFixed_A1UUpA3UU_F_1_Scenario1";
+   PdfFileHelper PdfFile("PDF/ResultDoubleFile_" + Model1 + "_" + Model2 + "_" + Cut + "_Scenario" + Scenario + ".pdf");
+   PdfFile.AddTextPage(Model1 + " (black) vs " + Model2 + " (red)");
 
    vector<vector<double>> L1 = ReadLikelihood(File1);
    vector<vector<double>> L2 = ReadLikelihood(File2);
 
-   ofstream out("NiceResult.txt");
+   ofstream out("ModelComparison/NiceResult_" + Model1 + "_" + Model2 + "_" + Cut + "_Scenario" + Scenario + ".txt");
 
    // Single model likelihood distributions
    for(int iM = 0; iM < MODELCOUNT; iM++)
@@ -140,10 +157,6 @@ int main(int argc, char *argv[])
             HM1.Fill(L1[i][iM1] - L1[i][iM2]);
          for(int i = 0; i < (int)L2.size(); i++)
             HM2.Fill(L2[i][iM1] - L2[i][iM2]);
-         // for(int i = 0; i < (int)L1D.size(); i++)
-         //    HM1.Fill(L1D[i]);
-         // for(int i = 0; i < (int)L2D.size(); i++)
-         //    HM2.Fill(L2D[i]);
 
          HM1.SetStats(0);
          HM1.SetLineColor(kBlack);

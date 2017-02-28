@@ -67,15 +67,25 @@ int main(int argc, char *argv[])
 
    // Setup scenarios
    vector<EventCount> Scenarios;
+   Scenarios.push_back(EventCount(5, -1, -1, -1));
    Scenarios.push_back(EventCount(10, -1, -1, -1));
+   Scenarios.push_back(EventCount(20, -1, -1, -1));
    Scenarios.push_back(EventCount(50, -1, -1, -1));
+   Scenarios.push_back(EventCount(100, -1, -1, -1));
    Scenarios.push_back(EventCount(200, -1, -1, -1));
+   Scenarios.push_back(EventCount(500, -1, -1, -1));
    Scenarios.push_back(EventCount(1000, -1, -1, -1));
+   Scenarios.push_back(EventCount(2000, -1, -1, -1));
    Scenarios.push_back(EventCount(5000, -1, -1, -1));
+   Scenarios.push_back(EventCount(5, 5, -1, -1));
    Scenarios.push_back(EventCount(10, 10, -1, -1));
+   Scenarios.push_back(EventCount(20, 20, -1, -1));
    Scenarios.push_back(EventCount(50, 50, -1, -1));
+   Scenarios.push_back(EventCount(100, 100, -1, -1));
    Scenarios.push_back(EventCount(200, 200, -1, -1));
+   Scenarios.push_back(EventCount(500, 500, -1, -1));
    Scenarios.push_back(EventCount(1000, 1000, -1, -1));
+   Scenarios.push_back(EventCount(2000, 2000, -1, -1));
    Scenarios.push_back(EventCount(5000, 5000, -1, -1));
 
    // Get models to play with

@@ -2,9 +2,9 @@
 
 # ./a.out Model1 Model2 Cut Scenario File1 File2
 
-for Cut in F
+for Cut in F P
 do
-   for Scenario in 0 1 2 3 4
+   for Scenario in `seq 0 9`
    do
       for Model1 in A1UU A2UA A2UU A2UZ A3UU A1UURIpA1UZRI A1UUpA3UU A1UURpA1UZR
       do

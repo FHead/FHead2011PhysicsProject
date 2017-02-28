@@ -11,6 +11,7 @@ using namespace std;
 
 #include "PlotHelper3.h"
 #include "SetStyle.h"
+#include "DataHelper.h"
 
 #define MODELCOUNT 9
 
@@ -51,6 +52,11 @@ int main(int argc, char *argv[])
    Scenario = argv[4];
    File1 = argv[5];
    File2 = argv[6];
+         
+   if(Model1 > Model2)
+      swap(Model1, Model2);
+
+   DataHelper DHFile("ResultDatabase.dh");
    
    SetThesisStyle();
 
@@ -59,6 +65,12 @@ int main(int argc, char *argv[])
 
    vector<vector<double>> L1 = ReadLikelihood(File1);
    vector<vector<double>> L2 = ReadLikelihood(File2);
+
+   if(L1[0].size() == 0 || L2[0].size() == 0)
+   {
+      cerr << "Oh No Empty!" << endl;
+      return 0;
+   }
 
    ofstream out("ModelComparison/NiceResult_" + Model1 + "_" + Model2 + "_" + Cut + "_Scenario" + Scenario + ".txt");
 
@@ -284,10 +296,34 @@ int main(int argc, char *argv[])
             << " " << L1DMedianResult << " " << L1DSigmaPlusResult << " " << L1DSigmaMinusResult
             << " " << L2DMedianResult << " " << L1DSigmaPlusResult << " " << L1DSigmaMinusResult
             << " " << ModelP << endl;
+
+         string State = Model1 + " " + Model2 + " Cut" + Cut + " S" + Scenario + " " + Form("[%d %d]", iM1, iM2);
+
+         DHFile[State]["L1DMedian Center"] = L1DMedianResult.Center;
+         DHFile[State]["L1DMedian High"]   = L1DMedianResult.High;
+         DHFile[State]["L1DMedian Low"]    = L1DMedianResult.Low;
+         DHFile[State]["L1DPlus Center"]   = L1DSigmaPlusResult.Center;
+         DHFile[State]["L1DPlus High"]     = L1DSigmaPlusResult.High;
+         DHFile[State]["L1DPlus Low"]      = L1DSigmaPlusResult.Low;
+         DHFile[State]["L1DMinus Center"]  = L1DSigmaMinusResult.Center;
+         DHFile[State]["L1DMinus High"]    = L1DSigmaMinusResult.High;
+         DHFile[State]["L1DMinus Low"]     = L1DSigmaMinusResult.Low;
+         DHFile[State]["L2DMedian Center"] = L2DMedianResult.Center;
+         DHFile[State]["L2DMedian High"]   = L2DMedianResult.High;
+         DHFile[State]["L2DMedian Low"]    = L2DMedianResult.Low;
+         DHFile[State]["L2DPlus Center"]   = L2DSigmaPlusResult.Center;
+         DHFile[State]["L2DPlus High"]     = L2DSigmaPlusResult.High;
+         DHFile[State]["L2DPlus Low"]      = L2DSigmaPlusResult.Low;
+         DHFile[State]["L2DMinus Center"]  = L2DSigmaMinusResult.Center;
+         DHFile[State]["L2DMinus High"]    = L2DSigmaMinusResult.High;
+         DHFile[State]["L2DMinus Low"]     = L2DSigmaMinusResult.Low;
+         DHFile[State]["Model PValue"]     = ModelP;
       }
    }
 
    out.close();
+
+   DHFile.SaveToFile("ResultDatabase.dh");
 
    return 0;
 }

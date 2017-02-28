@@ -137,6 +137,10 @@ int main(int argc, char *argv[])
 
    TTree OutputTree("OutputTree", "OutputTree");
 
+   bool PassFilter, PassHLT;
+   OutputTree.Branch("PassFilter", &PassFilter, "PassFilter/O");
+   OutputTree.Branch("PassHLT", &PassHLT, "PassHLT/O");
+
    double TreeJetPT, TreeJetEta, TreeJetPhi, TreeJetSDMass, TreeJetDR, TreeJetMass;
    double TreeNewJetPT, TreeNewJetEta, TreeNewJetPhi, TreeNewJetSDMass, TreeNewJetDR, TreeNewJetZG, TreeNewJetMass, TreeNewJetSDPT;
    double TreeBestJetPT, TreeBestJetEta, TreeBestJetPhi, TreeBestJetSDMass, TreeBestJetDR, TreeBestJetZG, TreeBestJetMass, TreeBestJetSDPT;
@@ -236,12 +240,14 @@ int main(int argc, char *argv[])
       MHLT.GetEntry(iEntry);
       MSkim.GetEntry(iEntry);
 
+      PassFilter = true;
+      PassHLT = true;
       if(IsData == true)
       {
          if(MSkim.PassBasicFilter() == false)
-            continue;
+            PassFilter = false;
          if(MHLT.CheckTrigger("HLT_AK4PFJet80_Eta5p1_v1") == false)
-            continue;
+            PassHLT = false;
       }
 
       SDJetHelper HSDJet(MSDJet);

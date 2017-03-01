@@ -477,3 +477,9 @@ std::ostream &operator <<(std::ostream &out, LoopBasis2 &L)
    L.Print(out);
    return out;
 }
+   
+FullAVVBasis::FullAVVBasis()
+{
+   for(int i = 0; i < 72; i++)
+      A[i] = 0;
+}

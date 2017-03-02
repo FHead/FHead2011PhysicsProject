@@ -1,15 +1,15 @@
 Home=/home/yichen
 WorkspaceBase=/home/yichen/PhysicsWorkspace/HiggsProperties/
 g++ HybridCalculator.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
-   `root-config --cflags` -O3 -c -o HybridCalculator.o
+   -g `root-config --cflags` -O3 -c -o HybridCalculator.o
 g++ HybridCalculatorWithZPrime.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
-   `root-config --cflags` -O3 -c -o HybridCalculatorWithZPrime.o
+   -g `root-config --cflags` -O3 -c -o HybridCalculatorWithZPrime.o
 g++ LeptonResponse.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
-   `root-config --cflags` -O3 -c -o LeptonResponse.o
+   -g `root-config --cflags` -O3 -c -o LeptonResponse.o
 g++ PTYFunctions.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
-   `root-config --cflags` -O3 -c -o PTYFunctions.o
+   -g `root-config --cflags` -O3 -c -o PTYFunctions.o
 g++ StockM4l.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
-   `root-config --cflags` -O3 -c -o StockM4l.o
+   -g `root-config --cflags` -O3 -c -o StockM4l.o
 g++ CalculateBranch.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
    $RootMacrosBase/Code/library/DrawRandom2.o \
    $RootMacrosBase/Code/library/TauHelperFunctions3.o \
@@ -57,7 +57,7 @@ g++ CalculateBranch.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
    $WorkspaceBase/CommonCode/library/VolumeElement.o \
    $WorkspaceBase/CommonCode/library/Lists.o \
    `root-config --glibs` `root-config --cflags` -O3 \
-   HybridCalculatorWithZPrime.o LeptonResponse.o PTYFunctions.o StockM4l.o \
+   -g HybridCalculatorWithZPrime.o LeptonResponse.o PTYFunctions.o StockM4l.o \
    -o RunSignal
 g++ CalculateBranchBackground.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/include \
    $RootMacrosBase/Code/library/DrawRandom2.o \
@@ -97,10 +97,10 @@ g++ CalculateBranchBackground.cpp -I$RootMacrosBase -I$WorkspaceBase/CommonCode/
    $WorkspaceBase/CommonCode/library/MEFunctions.o \
    $WorkspaceBase/CommonCode/library/VolumeElement.o \
    $WorkspaceBase/CommonCode/library/Constants.o \
-   `root-config --glibs` `root-config --cflags` -O3 \
+   -g `root-config --glibs` `root-config --cflags` -O3 \
    HybridCalculator.o LeptonResponse.o PTYFunctions.o StockM4l.o \
    -o RunBackground
 g++ AttachBranches.cpp -I$RootMacrosBase \
-   `root-config --glibs` `root-config --cflags` -O3 \
+   -g `root-config --glibs` `root-config --cflags` -O3 \
    -o AttachBranch
 

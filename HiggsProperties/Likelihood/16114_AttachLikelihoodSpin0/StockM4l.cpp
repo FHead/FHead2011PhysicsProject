@@ -19,6 +19,9 @@ double StockM4l::operator [](int index)
 
 void StockM4l::Initialize(int Seed, int Size)
 {
+   if(Seed < 0)
+      return;
+
    RandomMT Generator(Seed);
 
    M4l.resize(Size);

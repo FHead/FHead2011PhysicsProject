@@ -178,6 +178,11 @@ bool PassPairingLeptonLoose(LeptonVectors &Leptons)
    if(Leptons.Lepton21.GetPT() < 2)   return false;
    if(Leptons.Lepton22.GetPT() < 2)   return false;
 
+   if(Leptons.Lepton11.GetAbsEta() < 2.4)   return false;
+   if(Leptons.Lepton12.GetAbsEta() < 2.4)   return false;
+   if(Leptons.Lepton21.GetAbsEta() < 2.4)   return false;
+   if(Leptons.Lepton22.GetAbsEta() < 2.4)   return false;
+
    return true;
 }
 //---------------------------------------------------------------------------

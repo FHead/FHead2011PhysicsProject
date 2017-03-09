@@ -404,25 +404,25 @@ vector<bool> PassPairingCuts(LeptonVectors &Leptons)
    bool DRLLTight = PassPairingDRLLTight(Leptons);
 
    vector<bool> Result;
-   Result.push_back(LeptonTight && TightA && Base);
-   Result.push_back(LeptonTight && TightB && Base);
-   Result.push_back(LeptonTight && TightC && Base);
-   Result.push_back(LeptonTight && (TightA || TightB || TightC) && Base);
-   Result.push_back(LeptonTight && (TightA || TightB || TightC) && Base && Upsilon);
-   Result.push_back(LeptonLoose && Base);
-   Result.push_back(LeptonTight && LooseA && Base);
-   Result.push_back(LeptonTight && Base);
-   Result.push_back(LeptonTighter && TightA && Base);
-   Result.push_back(LeptonTight && Base && Upsilon);
-   Result.push_back(LeptonTight && Base && Upsilon && SmallEta);
-   Result.push_back(SuperBaseA);
-   Result.push_back(SuperBaseA && SuperBaseB);
-   Result.push_back(LeptonLoose && LowerBase);
-   Result.push_back(LeptonLoose && EvenLowerBase);
-   Result.push_back(LeptonLoose && EvenLowerBase && DRLL);
-   Result.push_back(LeptonLoose && VeryLowBase && DRLL);
-   Result.push_back(LeptonLoose && VeryLowBase && DRLLTight);
-   Result.push_back(LeptonLoose && VeryLowBase);
+   Result.push_back(LeptonTight && TightA && Base);                                  // A
+   Result.push_back(LeptonTight && TightB && Base);                                  // B
+   Result.push_back(LeptonTight && TightC && Base);                                  // C
+   Result.push_back(LeptonTight && (TightA || TightB || TightC) && Base);            // D
+   Result.push_back(LeptonTight && (TightA || TightB || TightC) && Base && Upsilon); // E
+   Result.push_back(LeptonLoose && Base);                                            // F
+   Result.push_back(LeptonTight && LooseA && Base);                                  // G
+   Result.push_back(LeptonTight && Base);                                            // H
+   Result.push_back(LeptonTighter && TightA && Base);                                // I
+   Result.push_back(LeptonTight && Base && Upsilon);                                 // J
+   Result.push_back(LeptonTight && Base && Upsilon && SmallEta);                     // K
+   Result.push_back(SuperBaseA);                                                     // L
+   Result.push_back(SuperBaseA && SuperBaseB);                                       // M
+   Result.push_back(LeptonLoose && LowerBase);                                       // N
+   Result.push_back(LeptonLoose && EvenLowerBase);                                   // O
+   Result.push_back(LeptonLoose && EvenLowerBase && DRLL);                           // P
+   Result.push_back(LeptonLoose && VeryLowBase && DRLL);                             // Q
+   Result.push_back(LeptonLoose && VeryLowBase && DRLLTight);                        // R
+   Result.push_back(LeptonLoose && VeryLowBase);                                     // S
    Result.push_back(LeptonLoose);
    return Result;
 }

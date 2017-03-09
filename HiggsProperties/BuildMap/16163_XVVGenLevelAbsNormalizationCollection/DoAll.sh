@@ -6,8 +6,8 @@ do
       echo "   $j"
       cat SResult/* | grep ^T$j | ./a.out ${i}TeV
       cat SResult/* | grep ^V$j | ./a.out ${i}TeV
-      cat BResult/* | grep ^T$j | ./a.out ${i}TeV
-      cat BResult/* | grep ^V$j | ./a.out ${i}TeV
+      # cat BResult/* | grep ^T$j | ./a.out ${i}TeV
+      # cat BResult/* | grep ^V$j | ./a.out ${i}TeV
    done
 done
 

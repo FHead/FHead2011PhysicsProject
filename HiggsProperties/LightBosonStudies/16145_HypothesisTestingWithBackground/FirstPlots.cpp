@@ -30,7 +30,7 @@ int main()
 
    string Cuts[2] = {"F", "P"};
 
-   double Events[5] = {10, 50, 200, 1000, 5000};
+   double Events[10] = {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
 
    DataHelper DHFile("ResultDatabase.dh");
 
@@ -76,7 +76,7 @@ int main()
             if(ModelList[iM1] > ModelList[iM2])
                StatePrefix = ModelList[iM2] + " " + ModelList[iM1] + " Cut" + Cuts[iC] + " ";
             
-            for(int iS = 0; iS < 5; iS++)
+            for(int iS = 0; iS < 10; iS++)
             {
                string State = StatePrefix + Form("S%d", iS) + StateSuffix;
                
@@ -106,7 +106,7 @@ int main()
                   DHFile[State]["L2DMinus High"].GetDouble() - DHFile[State]["L2DMinus Center"].GetDouble());
                GModelP.SetPoint(iS, Events[iS], DHFile[State]["Model PValue"].GetDouble());
                
-               State = StatePrefix + Form("S%d", iS + 5) + StateSuffix;
+               State = StatePrefix + Form("S%d", iS + 10) + StateSuffix;
                
                GLD1B.SetPoint(iS, Events[iS], DHFile[State]["L1DMedian Center"].GetDouble());
                GLD1B.SetPointError(iS, 0, 0,

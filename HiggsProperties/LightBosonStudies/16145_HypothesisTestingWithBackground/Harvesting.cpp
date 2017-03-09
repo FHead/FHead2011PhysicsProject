@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
    string Model2 = "A2UU";
    string Scenario = "1";
    string Cut = "F";
-   string File1 = "LikelihoodFixed_A1UU_F_1_Scenario1";
-   string File2 = "LikelihoodFixed_A2UU_F_1_Scenario1";
+   string File1 = "CombinedLikelihoodFixed_A1UU_F_1_Scenario1";
+   string File2 = "CombinedLikelihoodFixed_A2UU_F_1_Scenario1";
 
    if(argc != 7)
    {

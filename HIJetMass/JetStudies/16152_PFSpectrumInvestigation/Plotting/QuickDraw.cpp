@@ -59,12 +59,12 @@ void QuickDraw(double PTMin, double PTMax, double CentralityMin, double Centrali
    CommonAlias(TE, PTMin, PTMax, CentralityMin, CentralityMax);
    CommonAlias(TF, PTMin, PTMax, CentralityMin, CentralityMax);
 
-   TA->SetAlias("RMS", "(exp(1.25391-27.2957*X)+exp(3.31530-3.53222*X))");
-   TB->SetAlias("RMS", "(exp(1.31146-26.4782*X)+exp(3.33246-3.44030*X))");
-   TC->SetAlias("RMS", "(exp(1.17638-30.6254*X)+exp(3.29809-3.64337*X))");
-   TD->SetAlias("RMS", "(exp(1.41452-23.8596*X)+exp(3.31170-3.42480*X))");
-   TE->SetAlias("RMS", "(exp(1.30743-29.9660*X)+exp(3.31752-3.48047*X))");
-   TF->SetAlias("RMS", "(exp(1.46006-24.6905*X)+exp(3.33067-3.35312*X))");
+   TA->SetAlias("RMS", "(exp(1.26566-27.2855*X)+exp(3.31435-3.53000*X))");
+   TB->SetAlias("RMS", "(exp(1.30996-26.3109*X)+exp(3.33270-3.44079*X))");
+   TC->SetAlias("RMS", "(exp(1.17915-30.2506*X)+exp(3.29775-3.64227*X))");
+   TD->SetAlias("RMS", "(exp(1.40710-24.2910*X)+exp(3.31314-3.42850*X))");
+   TE->SetAlias("RMS", "(exp(1.31166-28.7789*X)+exp(3.31823-3.48239*X))");
+   TF->SetAlias("RMS", "(exp(1.44948-24.8573*X)+exp(3.33122-3.35527*X))");
 
    DoPlot(TA, TB, TC, TD, TE, TF, "BestJetDR",               "Baseline0", 50, 0, 0.5, "DR",         "DR_" + Tag);
    DoPlot(TA, TB, TC, TD, TE, TF, "BestJetSDMass/BestJetPT", "Baseline0", 30, 0, 0.3, "Mass/PT",    "SDMass_" + Tag);
@@ -170,7 +170,7 @@ void DoPlot(TTree *TA, TTree *TB, TTree *TC, TTree *TD, TTree *TE, TTree *TF, st
    HA.Draw();
    HD.Draw("same");
    HE.Draw("same");
-   HF.Draw("same");
+   // HF.Draw("same");
 
    // Canvas.SaveAs(Form("Plots/%s_Clean.png", OutputBase.c_str()));
    // Canvas.SaveAs(Form("Plots/%s_Clean.C",   OutputBase.c_str()));
@@ -212,7 +212,7 @@ void DoPlot(TTree *TA, TTree *TB, TTree *TC, TTree *TD, TTree *TE, TTree *TF, st
    
    HD.Draw("");
    HE.Draw("same");
-   HF.Draw("same");
+   // HF.Draw("same");
    G.Draw("l");
    
    // Canvas.SaveAs(Form("Plots/%s_RatioClean.png", OutputBase.c_str()));

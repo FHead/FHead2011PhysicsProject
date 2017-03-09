@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
    cout << "Running with SD = " << SD << ", MC = " << IsMC << ", Weight max = " << MCWeightMax << endl;
 
    string FileNameData = "AAData_16144.root";
-   string FileNameSmear = "PPDataHighPTJet_15751_2.root";
+   string FileNameSmear = "PPDataHighPTJet_16153.root";
    if(IsMC == true)
    {
       FileNameData = "StraightAA6Dijet.root";
@@ -160,6 +160,7 @@ int main(int argc, char *argv[])
 
    double SmearSDRecoDR, SmearSDZG, SmearSDMass, SmearSDPT, SmearNewJetPT, SmearNewJetEta, SmearNewJetPhi;
    double SmearMCWeight = 1, SmearPTInJet, SmearRho, SmearTotalPT, SmearCentrality;
+   bool PassFilter = true, PassHLT = true;
    if(SD == 7)
    {
       TSmear->SetBranchAddress("BestJetDR2", &SmearSDRecoDR);
@@ -183,15 +184,21 @@ int main(int argc, char *argv[])
    TSmear->SetBranchAddress("Rho", &SmearRho);
    TSmear->SetBranchAddress("TotalPT", &SmearTotalPT);
    TSmear->SetBranchAddress("Centrality", &SmearCentrality);
+   if(IsMC == false)
+   {
+      TSmear->SetBranchAddress("PassFilter", &PassFilter);
+      TSmear->SetBranchAddress("PassHLT", &PassHLT);
+   }
 
-   TFile FDataSystematics(Form("CombinedSystematics_Data16141_%d.root", SD));
-   TFile FSmearSystematics(Form("CombinedSystematics_All16141_%d.root", SD));
-   // TFile FSmearSystematics("CombinedSystematics_All15713.root");
+   // TFile FDataSystematics(Form("CombinedSystematics_Data16141_%d.root", SD));
+   // TFile FSmearSystematics(Form("CombinedSystematics_All16141_%d.root", SD));
+   TFile FDataSystematics(Form("CombinedSystematics_Data16163_%d.root", SD));
+   TFile FSmearSystematics(Form("CombinedSystematics_All16163_%d.root", SD));
 
    TFile OutputFile(Form("Graphs_%s.root", Tag.c_str()), "RECREATE");
 
    int DataEntryCount = TData->GetEntries() * 1.00;
-   int SmearEntryCount = TSmear->GetEntries() * 0.40;
+   int SmearEntryCount = TSmear->GetEntries() * 1.00;
 
    ProgressBar BarData(cout, DataEntryCount);
    ProgressBar BarSmear(cout, SmearEntryCount);
@@ -262,6 +269,8 @@ int main(int argc, char *argv[])
          BarSmear.Print();
 
       TSmear->GetEntry(iE);
+      if(PassFilter == false || PassHLT == false)
+         continue;
 
       int iC = GetBin(SmearCentrality / 100, CBinEdge, 5);
       int iPT = GetBin(SmearNewJetPT, PTBinEdge, 6);
@@ -277,8 +286,6 @@ int main(int argc, char *argv[])
       double TargetRMS, SmearRMS, Dummy;
       GMBRMS->GetPoint((int)SmearCentrality, Dummy, TargetRMS);
       GSmearRMS->GetPoint((int)SmearCentrality, Dummy, SmearRMS);
-      // if(SmearCentrality > 30)
-      //    TargetRMS = TargetRMS * 1.2;
 
       double ExcessPT = SmearPTInJet - SmearRho * 0.4 * 0.4 * PI;
       double SmearWeight = exp(-ExcessPT * ExcessPT / (2 * TargetRMS * TargetRMS)) / exp(-ExcessPT * ExcessPT / (2 * SmearRMS * SmearRMS));
@@ -330,6 +337,8 @@ int main(int argc, char *argv[])
          BarSmear.Print();
 
       TSmear->GetEntry(iE);
+      if(PassFilter == false || PassHLT == false)
+         continue;
 
       int iC = GetBin(SmearCentrality / 100, CBinEdge, 5);
       int iPT = GetBin(SmearNewJetPT, PTBinEdge, 6);
@@ -346,8 +355,6 @@ int main(int argc, char *argv[])
       double TargetRMS, SmearRMS, Dummy;
       GMBRMS->GetPoint((int)SmearCentrality, Dummy, TargetRMS);
       GSmearRMS->GetPoint((int)SmearCentrality, Dummy, SmearRMS);
-      // if(SmearCentrality > 30)
-      //    TargetRMS = TargetRMS * 1.2;
 
       double ExcessPT = SmearPTInJet - SmearRho * 0.4 * 0.4 * PI;
       double SmearWeight = exp(-ExcessPT * ExcessPT / (2 * TargetRMS * TargetRMS)) / exp(-ExcessPT * ExcessPT / (2 * SmearRMS * SmearRMS));
@@ -359,6 +366,7 @@ int main(int argc, char *argv[])
    BarSmear.PrintLine();
 
    // Step 3 - build the graphs!
+   double DataPreCutGrandTotal[5][6] = {{0}};
    double DataGrandTotal[5][6] = {{0}};
    double Data0GrandTotal[5][6] = {{0}};
    vector<double> DataCountMass[5][6];       InitializeVectors(DataCountMass, MASSBINCOUNT);
@@ -426,9 +434,10 @@ int main(int argc, char *argv[])
       double UpWeight = DataError[iC][iPT]->GetErrorYhigh(SysBin);
       double DownWeight = -DataError[iC][iPT]->GetErrorYlow(SysBin);
 
+      if(DataSDRecoDR > 0.0)
+         DataPreCutGrandTotal[iC][iPT] = DataPreCutGrandTotal[iC][iPT] + TotalWeight;
       if(DataSDRecoDR > 0.1)
       {
-         DataGrandTotal    [iC][iPT]         = DataGrandTotal    [iC][iPT]         + TotalWeight;
          DataCountMass     [iC][iPT][iMassB] = DataCountMass     [iC][iPT][iMassB] + TotalWeight;
          DataTotalMassX    [iC][iPT][iMassB] = DataTotalMassX    [iC][iPT][iMassB] + SDMassRatio * TotalWeight;
          DataTotalMass     [iC][iPT][iMassB] = DataTotalMass     [iC][iPT][iMassB] + TotalWeight;
@@ -443,10 +452,10 @@ int main(int argc, char *argv[])
          DataTotalDRX      [iC][iPT][iDRB]   = DataTotalDRX      [iC][iPT][iDRB]   + DataSDRecoDR * TotalWeight;
          DataTotalDR       [iC][iPT][iDRB]   = DataTotalDR       [iC][iPT][iDRB]   + TotalWeight;
          DataTotalDR2      [iC][iPT][iDRB]   = DataTotalDR2      [iC][iPT][iDRB]   + TotalWeight * TotalWeight;
+         DataGrandTotal    [iC][iPT]         = DataGrandTotal    [iC][iPT]         + TotalWeight;
       }
-      if(DataSDRecoDR > 0.0)
+      if(DataSDRecoDR > 0.1 && DataSDRecoDR < 0.15)
       {
-         Data0GrandTotal    [iC][iPT]         = Data0GrandTotal    [iC][iPT]         + TotalWeight;
          Data0CountMass     [iC][iPT][iMassB] = Data0CountMass     [iC][iPT][iMassB] + TotalWeight;
          Data0TotalMassX    [iC][iPT][iMassB] = Data0TotalMassX    [iC][iPT][iMassB] + SDMassRatio * TotalWeight;
          Data0TotalMass     [iC][iPT][iMassB] = Data0TotalMass     [iC][iPT][iMassB] + TotalWeight;
@@ -461,12 +470,14 @@ int main(int argc, char *argv[])
          Data0TotalDRX      [iC][iPT][iDRB0]  = Data0TotalDRX      [iC][iPT][iDRB0]  + DataSDRecoDR * TotalWeight;
          Data0TotalDR       [iC][iPT][iDRB0]  = Data0TotalDR       [iC][iPT][iDRB0]  + TotalWeight;
          Data0TotalDR2      [iC][iPT][iDRB0]  = Data0TotalDR2      [iC][iPT][iDRB0]  + TotalWeight * TotalWeight;
+         Data0GrandTotal    [iC][iPT]         = Data0GrandTotal    [iC][iPT]         + TotalWeight;
       }
    }
    BarData.Update(DataEntryCount);
    BarData.Print();
    BarData.PrintLine();
 
+   double SmearPreCutGrandTotal[5][6] = {{0}};
    double SmearGrandTotal[5][6] = {{0}};
    double Smear0GrandTotal[5][6] = {{0}};
    vector<double> SmearCountMass[5][6];       InitializeVectors(SmearCountMass, MASSBINCOUNT);
@@ -499,13 +510,15 @@ int main(int argc, char *argv[])
    vector<double> Smear0TotalDR2[5][6];       InitializeVectors(Smear0TotalDR2, DRBINCOUNT);
 
    BarSmear.Update(0);
-   for(int iE = 0; iE < SmearEntryCount * 0.2; iE = iE + SmearJump)
+   for(int iE = 0; iE < SmearEntryCount; iE = iE + SmearJump)
    {
       BarSmear.Update(iE);
       if(SmearEntryCount < 200 || (iE % (SmearEntryCount / 300)) == 0)
          BarSmear.Print();
 
       TSmear->GetEntry(iE);
+      if(PassFilter == false || PassHLT == false)
+         continue;
 
       int iC = GetBin(SmearCentrality / 100, CBinEdge, 5);
       int iPT = GetBin(SmearNewJetPT, PTBinEdge, 6);
@@ -541,13 +554,17 @@ int main(int argc, char *argv[])
 
       double CentralityWeight = DataCentralityBins[iPT][SmearCentrality] / SmearCentralityBins[iPT][SmearCentrality];
 
+      // JetWeight = 1;
+      // CentralityWeight = 1;
+
       double TotalWeight = SmearMCWeight * SmearWeight * JetWeight * CentralityWeight;
       double UpWeight = SmearError[iC][iPT]->GetErrorYhigh(SysBin);
       double DownWeight = -SmearError[iC][iPT]->GetErrorYlow(SysBin);
 
+      if(SmearSDRecoDR > 0.0)
+         SmearPreCutGrandTotal[iC][iPT] = SmearPreCutGrandTotal[iC][iPT] + TotalWeight;
       if(SmearSDRecoDR > 0.1)
       {
-         SmearGrandTotal    [iC][iPT]         = SmearGrandTotal    [iC][iPT]         + TotalWeight;
          SmearCountMass     [iC][iPT][iMassB] = SmearCountMass     [iC][iPT][iMassB] + TotalWeight;
          SmearTotalMassX    [iC][iPT][iMassB] = SmearTotalMassX    [iC][iPT][iMassB] + SDMassRatio * TotalWeight;
          SmearTotalMass     [iC][iPT][iMassB] = SmearTotalMass     [iC][iPT][iMassB] + TotalWeight;
@@ -562,10 +579,10 @@ int main(int argc, char *argv[])
          SmearTotalDRX      [iC][iPT][iDRB]   = SmearTotalDRX      [iC][iPT][iDRB]   + SmearSDRecoDR * TotalWeight;
          SmearTotalDR       [iC][iPT][iDRB]   = SmearTotalDR       [iC][iPT][iDRB]   + TotalWeight;
          SmearTotalDR2      [iC][iPT][iDRB]   = SmearTotalDR2      [iC][iPT][iDRB]   + TotalWeight * TotalWeight;
+         SmearGrandTotal    [iC][iPT]         = SmearGrandTotal    [iC][iPT]         + TotalWeight;
       }
-      if(SmearSDRecoDR > 0.0)
+      if(SmearSDRecoDR > 0.1 && SmearSDRecoDR < 0.15)
       {
-         Smear0GrandTotal    [iC][iPT]         = Smear0GrandTotal    [iC][iPT]         + TotalWeight;
          Smear0CountMass     [iC][iPT][iMassB] = Smear0CountMass     [iC][iPT][iMassB] + TotalWeight;
          Smear0TotalMassX    [iC][iPT][iMassB] = Smear0TotalMassX    [iC][iPT][iMassB] + SDMassRatio * TotalWeight;
          Smear0TotalMass     [iC][iPT][iMassB] = Smear0TotalMass     [iC][iPT][iMassB] + TotalWeight;
@@ -580,6 +597,7 @@ int main(int argc, char *argv[])
          Smear0TotalDRX      [iC][iPT][iDRB0]  = Smear0TotalDRX      [iC][iPT][iDRB0]  + SmearSDRecoDR * TotalWeight;
          Smear0TotalDR       [iC][iPT][iDRB0]  = Smear0TotalDR       [iC][iPT][iDRB0]  + TotalWeight;
          Smear0TotalDR2      [iC][iPT][iDRB0]  = Smear0TotalDR2      [iC][iPT][iDRB0]  + TotalWeight * TotalWeight;
+         Smear0GrandTotal    [iC][iPT]         = Smear0GrandTotal    [iC][iPT]         + TotalWeight;
       }
    }
    BarSmear.Update(SmearEntryCount);
@@ -647,12 +665,15 @@ int main(int argc, char *argv[])
 
          for(int i = 0; i < MASSBINCOUNT; i++)
          {
+            // double Factor = 1 / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / DataGrandTotal[iC][iPT];
+
             double MassBinSize = MassBinEdge[i+1] - MassBinEdge[i];
             double MassX = DataTotalMassX[iC][iPT][i] / DataCountMass[iC][iPT][i];
-            double Mass = DataTotalMass[iC][iPT][i] / MassBinSize / DataGrandTotal[iC][iPT];
-            double MassRMS = sqrt(DataTotalMass2[iC][iPT][i]) / DataGrandTotal[iC][iPT] / MassBinSize;
-            double MassUp = DataTotalMassUp[iC][iPT][i] / MassBinSize / DataGrandTotal[iC][iPT];
-            double MassDown = DataTotalMassDown[iC][iPT][i] / MassBinSize / DataGrandTotal[iC][iPT];
+            double Mass = DataTotalMass[iC][iPT][i] / MassBinSize * Factor;
+            double MassRMS = sqrt(DataTotalMass2[iC][iPT][i]) / MassBinSize * Factor;
+            double MassUp = DataTotalMassUp[iC][iPT][i] / MassBinSize * Factor;
+            double MassDown = DataTotalMassDown[iC][iPT][i] / MassBinSize * Factor;
 
             GMassData.SetPoint(i, MassX, Mass);
             GMassData.SetPointError(i, MassX - MassBinEdge[i], MassBinEdge[i+1] - MassX, MassRMS, MassRMS);
@@ -661,20 +682,26 @@ int main(int argc, char *argv[])
          }
          for(int i = 0; i < ZGBINCOUNT; i++)
          {
+            // double Factor = 1 / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / DataGrandTotal[iC][iPT];
+
             double ZGBinSize = ZGBinEdge[i+1] - ZGBinEdge[i];
             double ZGX = DataTotalZGX[iC][iPT][i] / DataCountZG[iC][iPT][i];
-            double ZG = DataTotalZG[iC][iPT][i] / ZGBinSize / DataGrandTotal[iC][iPT];
-            double ZGRMS = sqrt(DataTotalZG2[iC][iPT][i]) / DataGrandTotal[iC][iPT] / ZGBinSize;
+            double ZG = DataTotalZG[iC][iPT][i] / ZGBinSize * Factor;
+            double ZGRMS = sqrt(DataTotalZG2[iC][iPT][i]) / ZGBinSize * Factor;
 
             GZGData.SetPoint(i, ZGX, ZG);
             GZGData.SetPointError(i, ZGX - ZGBinEdge[i], ZGBinEdge[i+1] - ZGX, ZGRMS, ZGRMS);
          }
          for(int i = 0; i < DRBINCOUNT; i++)
          {
+            // double Factor = 1 / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / DataGrandTotal[iC][iPT];
+
             double DRBinSize = DRBinEdge[i+1] - DRBinEdge[i];
             double DRX = DataTotalDRX[iC][iPT][i] / DataCountDR[iC][iPT][i];
-            double DR = DataTotalDR[iC][iPT][i] / DRBinSize / DataGrandTotal[iC][iPT];
-            double DRRMS = sqrt(DataTotalDR2[iC][iPT][i]) / DataGrandTotal[iC][iPT] / DRBinSize;
+            double DR = DataTotalDR[iC][iPT][i] / DRBinSize * Factor;
+            double DRRMS = sqrt(DataTotalDR2[iC][iPT][i]) / DRBinSize * Factor;
 
             GDRData.SetPoint(i, DRX, DR);
             GDRData.SetPointError(i, DRX - DRBinEdge[i], DRBinEdge[i+1] - DRX, DRRMS, DRRMS);
@@ -682,12 +709,15 @@ int main(int argc, char *argv[])
         
          for(int i = 0; i < MASSBINCOUNT; i++)
          {
+            // double Factor = 1 / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / Data0GrandTotal[iC][iPT];
+
             double MassBinSize = MassBinEdge[i+1] - MassBinEdge[i];
             double MassX = Data0TotalMassX[iC][iPT][i] / Data0CountMass[iC][iPT][i];
-            double Mass = Data0TotalMass[iC][iPT][i] / MassBinSize / Data0GrandTotal[iC][iPT];
-            double MassRMS = sqrt(Data0TotalMass2[iC][iPT][i]) / Data0GrandTotal[iC][iPT] / MassBinSize;
-            double MassUp = Data0TotalMassUp[iC][iPT][i] / MassBinSize / Data0GrandTotal[iC][iPT];
-            double MassDown = Data0TotalMassDown[iC][iPT][i] / MassBinSize / Data0GrandTotal[iC][iPT];
+            double Mass = Data0TotalMass[iC][iPT][i] / MassBinSize * Factor;
+            double MassRMS = sqrt(Data0TotalMass2[iC][iPT][i]) / MassBinSize * Factor;
+            double MassUp = Data0TotalMassUp[iC][iPT][i] / MassBinSize * Factor;
+            double MassDown = Data0TotalMassDown[iC][iPT][i] / MassBinSize * Factor;
 
             GMassData0.SetPoint(i, MassX, Mass);
             GMassData0.SetPointError(i, MassX - MassBinEdge[i], MassBinEdge[i+1] - MassX, MassRMS, MassRMS);
@@ -696,20 +726,26 @@ int main(int argc, char *argv[])
          }
          for(int i = 0; i < ZGBINCOUNT; i++)
          {
+            // double Factor = 1 / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / Data0GrandTotal[iC][iPT];
+
             double ZGBinSize = ZGBinEdge[i+1] - ZGBinEdge[i];
             double ZGX = Data0TotalZGX[iC][iPT][i] / Data0CountZG[iC][iPT][i];
-            double ZG = Data0TotalZG[iC][iPT][i] / ZGBinSize / Data0GrandTotal[iC][iPT];
-            double ZGRMS = sqrt(Data0TotalZG2[iC][iPT][i]) / Data0GrandTotal[iC][iPT] / ZGBinSize;
+            double ZG = Data0TotalZG[iC][iPT][i] / ZGBinSize * Factor;
+            double ZGRMS = sqrt(Data0TotalZG2[iC][iPT][i]) / ZGBinSize * Factor;
 
             GZGData0.SetPoint(i, ZGX, ZG);
             GZGData0.SetPointError(i, ZGX - ZGBinEdge[i], ZGBinEdge[i+1] - ZGX, ZGRMS, ZGRMS);
          }
          for(int i = 0; i < DRBINCOUNT; i++)
          {
+            // double Factor = 1 / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / Data0GrandTotal[iC][iPT];
+
             double DRBinSize = DR0BinEdge[i+1] - DR0BinEdge[i];
             double DRX = Data0TotalDRX[iC][iPT][i] / Data0CountDR[iC][iPT][i];
-            double DR = Data0TotalDR[iC][iPT][i] / DRBinSize / Data0GrandTotal[iC][iPT];
-            double DRRMS = sqrt(Data0TotalDR2[iC][iPT][i]) / Data0GrandTotal[iC][iPT] / DRBinSize;
+            double DR = Data0TotalDR[iC][iPT][i] / DRBinSize * Factor;
+            double DRRMS = sqrt(Data0TotalDR2[iC][iPT][i]) / DRBinSize * Factor;
 
             GDRData0.SetPoint(i, DRX, DR);
             GDRData0.SetPointError(i, DRX - DR0BinEdge[i], DR0BinEdge[i+1] - DRX, DRRMS, DRRMS);
@@ -717,12 +753,15 @@ int main(int argc, char *argv[])
   
          for(int i = 0; i < MASSBINCOUNT; i++)
          {
+            // double Factor = 1 / SmearGrandTotal[iC][iPT] * DataGrandTotal[iC][iPT] / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / SmearGrandTotal[iC][iPT];
+
             double MassBinSize = MassBinEdge[i+1] - MassBinEdge[i];
             double MassX = SmearTotalMassX[iC][iPT][i] / SmearCountMass[iC][iPT][i];
-            double Mass = SmearTotalMass[iC][iPT][i] / MassBinSize / SmearGrandTotal[iC][iPT];
-            double MassRMS = sqrt(SmearTotalMass2[iC][iPT][i]) / SmearGrandTotal[iC][iPT] / MassBinSize;
-            double MassUp = SmearTotalMassUp[iC][iPT][i] / MassBinSize / SmearGrandTotal[iC][iPT];
-            double MassDown = SmearTotalMassDown[iC][iPT][i] / MassBinSize / SmearGrandTotal[iC][iPT];
+            double Mass = SmearTotalMass[iC][iPT][i] / MassBinSize * Factor;
+            double MassRMS = sqrt(SmearTotalMass2[iC][iPT][i]) / MassBinSize * Factor;
+            double MassUp = SmearTotalMassUp[iC][iPT][i] / MassBinSize * Factor;
+            double MassDown = SmearTotalMassDown[iC][iPT][i] / MassBinSize * Factor;
 
             GMassSmear.SetPoint(i, MassX, Mass);
             GMassSmear.SetPointError(i, MassX - MassBinEdge[i], MassBinEdge[i+1] - MassX, MassRMS, MassRMS);
@@ -731,20 +770,26 @@ int main(int argc, char *argv[])
          }
          for(int i = 0; i < ZGBINCOUNT; i++)
          {
+            // double Factor = 1 / SmearGrandTotal[iC][iPT] * DataGrandTotal[iC][iPT] / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / SmearGrandTotal[iC][iPT];
+
             double ZGBinSize = ZGBinEdge[i+1] - ZGBinEdge[i];
             double ZGX = SmearTotalZGX[iC][iPT][i] / SmearCountZG[iC][iPT][i];
-            double ZG = SmearTotalZG[iC][iPT][i] / ZGBinSize / SmearGrandTotal[iC][iPT];
-            double ZGRMS = sqrt(SmearTotalZG2[iC][iPT][i]) / SmearGrandTotal[iC][iPT] / ZGBinSize;
+            double ZG = SmearTotalZG[iC][iPT][i] / ZGBinSize * Factor;
+            double ZGRMS = sqrt(SmearTotalZG2[iC][iPT][i]) / ZGBinSize * Factor;
 
             GZGSmear.SetPoint(i, ZGX, ZG);
             GZGSmear.SetPointError(i, ZGX - ZGBinEdge[i], ZGBinEdge[i+1] - ZGX, ZGRMS, ZGRMS);
          }
          for(int i = 0; i < DRBINCOUNT; i++)
          {
+            // double Factor = 1 / SmearGrandTotal[iC][iPT] * DataGrandTotal[iC][iPT] / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / SmearGrandTotal[iC][iPT];
+            
             double DRBinSize = DRBinEdge[i+1] - DRBinEdge[i];
             double DRX = SmearTotalDRX[iC][iPT][i] / SmearCountDR[iC][iPT][i];
-            double DR = SmearTotalDR[iC][iPT][i] / DRBinSize / SmearGrandTotal[iC][iPT];
-            double DRRMS = sqrt(SmearTotalDR2[iC][iPT][i]) / SmearGrandTotal[iC][iPT] / DRBinSize;
+            double DR = SmearTotalDR[iC][iPT][i] / DRBinSize * Factor;
+            double DRRMS = sqrt(SmearTotalDR2[iC][iPT][i]) / DRBinSize * Factor;
 
             GDRSmear.SetPoint(i, DRX, DR);
             GDRSmear.SetPointError(i, DRX - DRBinEdge[i], DRBinEdge[i+1] - DRX, DRRMS, DRRMS);
@@ -752,12 +797,15 @@ int main(int argc, char *argv[])
 
          for(int i = 0; i < MASSBINCOUNT; i++)
          {
+            // double Factor = 1 / Smear0GrandTotal[iC][iPT] * Data0GrandTotal[iC][iPT] / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / Smear0GrandTotal[iC][iPT];
+
             double MassBinSize = MassBinEdge[i+1] - MassBinEdge[i];
             double MassX = Smear0TotalMassX[iC][iPT][i] / Smear0CountMass[iC][iPT][i];
-            double Mass = Smear0TotalMass[iC][iPT][i] / MassBinSize / Smear0GrandTotal[iC][iPT];
-            double MassRMS = sqrt(Smear0TotalMass2[iC][iPT][i]) / Smear0GrandTotal[iC][iPT] / MassBinSize;
-            double MassUp = Smear0TotalMassUp[iC][iPT][i] / MassBinSize / Smear0GrandTotal[iC][iPT];
-            double MassDown = Smear0TotalMassDown[iC][iPT][i] / MassBinSize / Smear0GrandTotal[iC][iPT];
+            double Mass = Smear0TotalMass[iC][iPT][i] / MassBinSize * Factor;
+            double MassRMS = sqrt(Smear0TotalMass2[iC][iPT][i]) / MassBinSize * Factor;
+            double MassUp = Smear0TotalMassUp[iC][iPT][i] / MassBinSize * Factor;
+            double MassDown = Smear0TotalMassDown[iC][iPT][i] / MassBinSize * Factor;
 
             GMassSmear0.SetPoint(i, MassX, Mass);
             GMassSmear0.SetPointError(i, MassX - MassBinEdge[i], MassBinEdge[i+1] - MassX, MassRMS, MassRMS);
@@ -766,20 +814,26 @@ int main(int argc, char *argv[])
          }
          for(int i = 0; i < ZGBINCOUNT; i++)
          {
+            // double Factor = 1 / Smear0GrandTotal[iC][iPT] * Data0GrandTotal[iC][iPT] / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / Smear0GrandTotal[iC][iPT];
+
             double ZGBinSize = ZGBinEdge[i+1] - ZGBinEdge[i];
             double ZGX = Smear0TotalZGX[iC][iPT][i] / Smear0CountZG[iC][iPT][i];
-            double ZG = Smear0TotalZG[iC][iPT][i] / ZGBinSize / Smear0GrandTotal[iC][iPT];
-            double ZGRMS = sqrt(Smear0TotalZG2[iC][iPT][i]) / Smear0GrandTotal[iC][iPT] / ZGBinSize;
+            double ZG = Smear0TotalZG[iC][iPT][i] / ZGBinSize * Factor;
+            double ZGRMS = sqrt(Smear0TotalZG2[iC][iPT][i]) / ZGBinSize * Factor;
 
             GZGSmear0.SetPoint(i, ZGX, ZG);
             GZGSmear0.SetPointError(i, ZGX - ZGBinEdge[i], ZGBinEdge[i+1] - ZGX, ZGRMS, ZGRMS);
          }
          for(int i = 0; i < DRBINCOUNT; i++)
          {
+            // double Factor = 1 / Smear0GrandTotal[iC][iPT] * Data0GrandTotal[iC][iPT] / DataPreCutGrandTotal[iC][iPT];
+            double Factor = 1 / Smear0GrandTotal[iC][iPT];
+
             double DRBinSize = DR0BinEdge[i+1] - DR0BinEdge[i];
             double DRX = Smear0TotalDRX[iC][iPT][i] / Smear0CountDR[iC][iPT][i];
-            double DR = Smear0TotalDR[iC][iPT][i] / DRBinSize / Smear0GrandTotal[iC][iPT];
-            double DRRMS = sqrt(Smear0TotalDR2[iC][iPT][i]) / Smear0GrandTotal[iC][iPT] / DRBinSize;
+            double DR = Smear0TotalDR[iC][iPT][i] / DRBinSize * Factor;
+            double DRRMS = sqrt(Smear0TotalDR2[iC][iPT][i]) / DRBinSize * Factor;
 
             GDRSmear0.SetPoint(i, DRX, DR);
             GDRSmear0.SetPointError(i, DRX - DR0BinEdge[i], DR0BinEdge[i+1] - DRX, DRRMS, DRRMS);

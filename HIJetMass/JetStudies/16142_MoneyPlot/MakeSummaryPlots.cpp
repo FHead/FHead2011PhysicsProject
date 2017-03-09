@@ -513,25 +513,43 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    double WorldMax = 500;
    double MassMin = 0;
    double MassMax = 0.26;
-   double RatioMin = 0.25;
-   double RatioMax = 4;
-   if(Type == TYPE_ZG)
+   double RatioMin = 0;
+   double RatioMax = 2.5;
+   if(Type == TYPE_ZG && SD == "0")
    {
       WorldMin = 1e-3;
-      WorldMax = 10;
+      WorldMax = 12;
       MassMin = 0;
       MassMax = 0.5;
-      RatioMin = 0.25;
-      RatioMax = 4;
+      RatioMin = 0;
+      RatioMax = 2.5;
    }
-   if(Type == TYPE_DR)
+   if(Type == TYPE_ZG && SD == "7")
+   {
+      WorldMin = 1e-3;
+      WorldMax = 8;
+      MassMin = 0;
+      MassMax = 0.5;
+      RatioMin = 0;
+      RatioMax = 2.5;
+   }
+   if(Type == TYPE_DR && SD == "0")
    {
       WorldMin = 1e-3;
       WorldMax = 15;
       MassMin = 0.1;
       MassMax = 0.5;
-      RatioMin = 0.25;
-      RatioMax = 4;
+      RatioMin = 0;
+      RatioMax = 2.5;
+   }
+   if(Type == TYPE_DR && SD == "7")
+   {
+      WorldMin = 1e-3;
+      WorldMax = 8;
+      MassMin = 0.1;
+      MassMax = 0.5;
+      RatioMin = 0;
+      RatioMax = 2.5;
    }
    if(Type == TYPE_DR0)
    {
@@ -539,8 +557,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       WorldMax = 15;
       MassMin = 0.0;
       MassMax = 0.5;
-      RatioMin = 0.25;
-      RatioMax = 4;
+      RatioMin = 0;
+      RatioMax = 2.5;
    }
 
    TGraph GLine;
@@ -642,7 +660,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G1Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad5->SetLogy();
+   // Pad5->SetLogy();
    Pad5->Update();
 
    Pad6->cd();
@@ -651,7 +669,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G2Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad6->SetLogy();
+   // Pad6->SetLogy();
    Pad6->Update();
 
    Pad7->cd();
@@ -660,7 +678,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G3Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad7->SetLogy();
+   // Pad7->SetLogy();
    Pad7->Update();
 
    Pad8->cd();
@@ -669,7 +687,39 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    G4Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
-   Pad8->SetLogy();
+   // Pad8->SetLogy();
+   Pad8->Update();
+
+   Pad1->cd();
+   HWorld.Draw("axis same");
+   Pad1->Update();
+
+   Pad2->cd();
+   HWorld.Draw("axis same");
+   Pad2->Update();
+
+   Pad3->cd();
+   HWorld.Draw("axis same");
+   Pad3->Update();
+
+   Pad4->cd();
+   HWorld.Draw("axis same");
+   Pad4->Update();
+
+   Pad5->cd();
+   HWorldRatio.Draw("axis same");
+   Pad5->Update();
+
+   Pad6->cd();
+   HWorldRatio.Draw("axis same");
+   Pad6->Update();
+
+   Pad7->cd();
+   HWorldRatio.Draw("axis same");
+   Pad7->Update();
+
+   Pad8->cd();
+   HWorldRatio.Draw("axis same");
    Pad8->Update();
 
    Canvas.cd();
@@ -686,19 +736,19 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_ZG)
       LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d z_{g}}");
    if(Type == TYPE_DR)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #Delta R}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #DeltaR}");
    if(Type == TYPE_DR0)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #Delta R}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #DeltaR}");
    LeftAxis1.SetTextFont(42);
    LeftAxis1.SetLabelFont(42);
    LeftAxis1.CenterTitle(true);
    LeftAxis1.SetTitleOffset(0.85);
    LeftAxis1.Draw();
 
-   // TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
-   //       RatioMin, RatioMax, 1005, "");
    TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
-         RatioMin, RatioMax, 1005, "G");
+         RatioMin, RatioMax, 1005, "");
+   // TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
+   //       RatioMin, RatioMax, 1005, "G");
    LeftAxis2.SetName("LeftAxis2");
    LeftAxis2.SetLineWidth(0);
    LeftAxis2.SetTitle("#frac{PbPb}{smeared pp}");
@@ -717,9 +767,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_ZG)
       BottomAxis1.SetTitle("z_{g}");
    if(Type == TYPE_DR)
-      BottomAxis1.SetTitle("#Delta R");
+      BottomAxis1.SetTitle("#DeltaR");
    if(Type == TYPE_DR0)
-      BottomAxis1.SetTitle("#Delta R");
+      BottomAxis1.SetTitle("#DeltaR");
    BottomAxis1.SetTextFont(42);
    BottomAxis1.SetLabelFont(42);
    BottomAxis1.CenterTitle(true);
@@ -734,9 +784,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_ZG)
       BottomAxis2.SetTitle("z_{g}");
    if(Type == TYPE_DR)
-      BottomAxis2.SetTitle("#Delta R");
+      BottomAxis2.SetTitle("#DeltaR");
    if(Type == TYPE_DR0)
-      BottomAxis2.SetTitle("#Delta R");
+      BottomAxis2.SetTitle("#DeltaR");
    BottomAxis2.SetTextFont(42);
    BottomAxis2.SetLabelFont(42);
    BottomAxis2.CenterTitle(true);
@@ -751,9 +801,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_ZG)
       BottomAxis3.SetTitle("z_{g}");
    if(Type == TYPE_DR)
-      BottomAxis3.SetTitle("#Delta R");
+      BottomAxis3.SetTitle("#DeltaR");
    if(Type == TYPE_DR0)
-      BottomAxis3.SetTitle("#Delta R");
+      BottomAxis3.SetTitle("#DeltaR");
    BottomAxis3.SetTextFont(42);
    BottomAxis3.SetLabelFont(42);
    BottomAxis3.CenterTitle(true);
@@ -768,9 +818,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_ZG)
       BottomAxis4.SetTitle("z_{g}");
    if(Type == TYPE_DR)
-      BottomAxis4.SetTitle("#Delta R");
+      BottomAxis4.SetTitle("#DeltaR");
    if(Type == TYPE_DR0)
-      BottomAxis4.SetTitle("#Delta R");
+      BottomAxis4.SetTitle("#DeltaR");
    BottomAxis4.SetTextFont(42);
    BottomAxis4.SetLabelFont(42);
    BottomAxis4.CenterTitle(true);
@@ -781,11 +831,14 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    Latex.SetTextSize(0.035);
 
    Latex.SetTextAlign(10);
-   Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "CMS Preliminary");
+   if(Type == TYPE_MASS)
+      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "CMS Preliminary");
+   else
+      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "CMS Internal");
 
    Latex.SetTextAlign(30);
    if(IsMC == false)
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp < 28 pb^{-1}");
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp 28 pb^{-1}");
    else
       Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, Simulation");
 
@@ -826,7 +879,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    }
 
    Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "anti-kt R = 0.4");
-   Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "#Delta R_{1,2} > 0.1");
+   Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "#DeltaR_{1,2} > 0.1");
 
    Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "Soft drop");
    if(SD == "7")

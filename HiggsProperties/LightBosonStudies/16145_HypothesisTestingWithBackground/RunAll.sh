@@ -1,6 +1,6 @@
-for Cut in F P
+for ID in `seq 2 10`
 do
-   for ID in 1
+   for Cut in P F
    do
       ./RunLikelihood Trees16141/ggtoPhto2e2mu_A1UU_18p4GeV_noPDF_GenCuts_${ID}.root Trees16143/ddbar_noPDF_to_2e2mu_18p4GeV_GenCuts_${ID}.root $Cut A1UU_${Cut}_${ID}
       ./RunLikelihood Trees16141/ggtoPhto2e2mu_A2UU_18p4GeV_noPDF_GenCuts_${ID}.root Trees16143/ddbar_noPDF_to_2e2mu_18p4GeV_GenCuts_${ID}.root $Cut A2UU_${Cut}_${ID}

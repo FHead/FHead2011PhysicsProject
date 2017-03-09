@@ -11,11 +11,13 @@ mkdir -p BatchResult
 for i in `ls OriginalTrees$D`
 do
    echo $i
-   ./RunSignal OriginalTrees$D/$i 0 9999999 -1 0 | grep $i | cut --delim=' ' --field=3- > BatchResult/${i}_SignalLog
-   ./RunBackground OriginalTrees$D/$i 0 9999999 -1 0 | grep $i | cut --delim=' ' --field=3- > BatchResult/${i}_BackgroundLog
+   
+   cp OriginalTrees$D/$i $D$i
+   
+   time ./RunSignal $D$i 0 9999999 -1 0 | grep $i | cut --delim=' ' --field=3- > BatchResult/${i}_SignalLog
+   time ./RunBackground $D$i 0 9999999 -1 0 | grep $i | cut --delim=' ' --field=3- > BatchResult/${i}_BackgroundLog
 
-   cp OriginalTrees$D/$i .
-   ./AttachBranch BranchCentralSignal BatchResult/${i}_SignalLog $i 
-   ./AttachBranch BranchCentralBackground BatchResult/${i}_BackgroundLog $i 
-   mv $i AttachedTrees$D/
+   time ./AttachBranch BranchCentralSignal BatchResult/${i}_SignalLog $D$i 
+   time ./AttachBranch BranchCentralBackground BatchResult/${i}_BackgroundLog $D$i 
+   mv $D$i AttachedTrees$D/$i
 done

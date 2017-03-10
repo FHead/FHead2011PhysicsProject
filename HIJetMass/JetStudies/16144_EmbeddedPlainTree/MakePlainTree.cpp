@@ -52,6 +52,13 @@ int main(int argc, char *argv[])
 
    TTree OutputTree("T", "T");
 
+   double TreeHF, TreeHFPlus, TreeHFMinus, TreeHFPlusEta4, TreeHFMinusEta4;
+   OutputTree.Branch("HF", &TreeHF, "HF/D");
+   OutputTree.Branch("HFPlus", &TreeHFPlus, "HFPlus/D");
+   OutputTree.Branch("HFMinus", &TreeHFMinus, "HFMinus/D");
+   OutputTree.Branch("HFPlusEta4", &TreeHFPlusEta4, "HFPlusEta4/D");
+   OutputTree.Branch("HFMinusEta4", &TreeHFMinusEta4, "HFMinusEta4/D");
+
    double TreeJetPT, TreeJetEta, TreeJetPhi;
    OutputTree.Branch("JetPT", &TreeJetPT, "JetPT/D");
    OutputTree.Branch("JetEta", &TreeJetEta, "JetEta/D");
@@ -121,8 +128,14 @@ int main(int argc, char *argv[])
       MHLT.GetEntry(iE);
       MSkim.GetEntry(iE);
 
-      if(MHLT.CheckTrigger("HLT_HIPuAK4CaloJet100_Eta5p1_v1") == false)
-         continue;
+      TreeHF = MHiEvent.hiHF;
+      TreeHFPlus = MHiEvent.hiHFplus;
+      TreeHFMinus = MHiEvent.hiHFminus;
+      TreeHFPlusEta4 = MHiEvent.hiHFplusEta4;
+      TreeHFMinusEta4 = MHiEvent.hiHFminusEta4;
+
+      // if(MHLT.CheckTrigger("HLT_HIPuAK4CaloJet100_Eta5p1_v1") == false)
+      //    continue;
       if(MSkim.PassBasicFilter() == false)
          continue;
 

@@ -21,21 +21,37 @@ int main(int argc, char *argv[])
 
    string InputFileName = "HiForestAOD_999.root";
    string OutputFileName = "Output_HiForestAOD_999.root";
+   string Tag = "AA6Dijet100";
+   double PTHatMin = -1000000;
+   double PTHatMax = 1000000;
 
-   if(argc < 3)
+   if(argc < 6)
    {
-      cerr << "Usage: " << argv[0] << " Input Output" << endl;
+      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax" << endl;
       return -1;
    }
 
    InputFileName = argv[1];
    OutputFileName = argv[2];
+   Tag = argv[3];
+   PTHatMin = atof(argv[4]);
+   PTHatMax = atof(argv[5]);
+
+   bool IsPP = IsPPFromTag(Tag);
+   bool IsData = IsDataFromTag(Tag);
 
    TFile InputFile(InputFileName.c_str());
 
    string JetTreeName = "akCs4PFJetAnalyzer/t";
    string SoftDropJetTreeName = "akCsSoftDrop4PFJetAnalyzer/t";
    string PFTreeName = "pfcandAnalyzerCS/pfTree";
+
+   if(IsPP == true)
+   {
+      JetTreeName = "ak4PFJetAnalyzer/t";
+      SoftDropJetTreeName = "akSoftDrop4PFJetAnalyzer/t";
+      PFTreeName = "pfcandAnalyzer/pfTree";
+   }
 
    HiEventTreeMessenger MHiEvent(InputFile);
    JetTreeMessenger MJet(InputFile, JetTreeName);
@@ -49,6 +65,8 @@ int main(int argc, char *argv[])
       return -1;
 
    TFile OutputFile(OutputFileName.c_str(), "RECREATE");
+
+   TH1D HN("HN", ";;", 1, 0, 1);
 
    TTree OutputTree("T", "T");
 
@@ -127,6 +145,8 @@ int main(int argc, char *argv[])
       MRho.GetEntry(iE);
       MHLT.GetEntry(iE);
       MSkim.GetEntry(iE);
+         
+      HN.Fill(0);
 
       TreeHF = MHiEvent.hiHF;
       TreeHFPlus = MHiEvent.hiHFplus;
@@ -134,9 +154,11 @@ int main(int argc, char *argv[])
       TreeHFPlusEta4 = MHiEvent.hiHFplusEta4;
       TreeHFMinusEta4 = MHiEvent.hiHFminusEta4;
 
-      // if(MHLT.CheckTrigger("HLT_HIPuAK4CaloJet100_Eta5p1_v1") == false)
-      //    continue;
-      if(MSkim.PassBasicFilter() == false)
+      if(IsData == true && IsPP == true && MHLT.CheckTrigger("HLT_AK4PFJet80_Eta5p1_v1") == false)
+         continue;
+      if(IsData == true && IsPP == false && MHLT.CheckTrigger("HLT_HIPuAK4CaloJet100_Eta5p1_v1") == false)
+         continue;
+      if(IsData == true && MSkim.PassBasicFilter() == false)
          continue;
 
       SDJetHelper HSDJet(MSDJet);
@@ -144,6 +166,9 @@ int main(int argc, char *argv[])
       TreeCentrality = GetCentrality(MHiEvent.hiBin);
       TreePTHat = MSDJet.PTHat;
       TreeRho = GetRho(MRho.EtaMax, MRho.Rho, 0);
+
+      if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
+         continue;
 
       vector<PseudoJet> Particles;
       for(int iPF = 0; iPF < MPF.ID->size(); iPF++)
@@ -251,6 +276,7 @@ int main(int argc, char *argv[])
    Bar.PrintLine();
 
    OutputTree.Write();
+   HN.Write();
 
    OutputFile.Close();
 

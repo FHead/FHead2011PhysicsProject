@@ -13,18 +13,44 @@ using namespace std;
 #include "PlotHelper3.h"
 
 int main(int argc, char *argv[]);
+void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, string MCFileName);
 void FillHistogram(TH1D &H, string FileName, char SD, bool IsMC, bool IsPP);
 
 int main(int argc, char *argv[])
 {
    SetThesisSmallStyle();
 
-   // Input values
-   bool IsPP = false;
-   bool Is0 = false;
+   // Aux. file
+   PdfFileHelper PdfFile("QualityControl.pdf");
+   PdfFile.AddTextPage("Quality control");
 
-   string DataFileName = "AAData_15.root";
-   string MCFileName = "AA6Dijet220_2.root";
+   // Input values
+   string PPDataFileName = "AAData_15.root";
+   string PPMCFileName = "AA6Dijet220_2.root";
+   string AADataFileName = "AAData_15.root";
+   string AAMCFileName = "AA6Dijet220_2.root";
+
+   // Run everything
+   MakePlot(PdfFile, true, true, PPDataFileName, PPMCFileName);
+   MakePlot(PdfFile, true, false, PPDataFileName, PPMCFileName);
+   MakePlot(PdfFile, false, true, AADataFileName, AAMCFileName);
+   MakePlot(PdfFile, false, false, AADataFileName, AAMCFileName);
+
+   // Clean up
+   PdfFile.AddTimeStampPage();
+   PdfFile.Close();
+
+   return 0;
+}
+
+
+void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, string MCFileName)
+{
+   // Title page
+   string TitlePage = "";
+   TitlePage = TitlePage + "IsPP = " + (IsPP ? "Yes" : "No");
+   TitlePage = TitlePage + ", SD = " + (Is0 ? "0" : "7");
+   PdfFile.AddTextPage(TitlePage);
 
    // Derived settings
    char SD = (Is0 ? '0' : '7');
@@ -33,10 +59,6 @@ int main(int argc, char *argv[])
    int Bin = 50;
    double YMin = 0.02;
    double YMax = (Is0 ? 100 : 2000);
-
-   // Aux. file
-   PdfFileHelper PdfFile("QualityControl.pdf");
-   PdfFile.AddTextPage("Quality control");
 
    // Get histograms
    TH1D HData("HData", ";;", Bin, Min, Max);
@@ -126,15 +148,9 @@ int main(int argc, char *argv[])
    }
 
    PdfFile.AddCanvas(C);
-
-   // Clean up
-   PdfFile.AddTimeStampPage();
-   PdfFile.Close();
-
-   return 0;
 }
-
-void FillHistogram(TH1D &H, string FileName, char SD, bool IsMC, bool IsPP)
+   
+   void FillHistogram(TH1D &H, string FileName, char SD, bool IsMC, bool IsPP)
 {
    TFile F(FileName.c_str());
 

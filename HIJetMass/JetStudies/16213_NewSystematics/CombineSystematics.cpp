@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
       FileNames.push_back(Form("OutputFile_Ghost_%d.root", SD));
       FileNames.push_back(Form("OutputFile_JER_%d.root", SD));
       FileNames.push_back(Form("OutputFile_JetEta_%d.root", SD));
-      FileNames.push_back(Form("OutputFile_MB_%d.root", SD));
+      FileNames.push_back(Form("OutputFile_MB2_%d.root", SD));
       FileNames.push_back(Form("OutputFile_PTScale_%d.root", SD));
       FileNames.push_back(Form("OutputFile_Rho_%d.root", SD));
       FileNames.push_back(Form("OutputFile_NewSmear_%d.root", SD));

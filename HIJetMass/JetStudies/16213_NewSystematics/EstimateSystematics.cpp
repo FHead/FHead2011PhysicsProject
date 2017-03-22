@@ -29,6 +29,8 @@ using namespace std;
 #define TypeRho 6
 #define TypeGhost 7
 #define TypeMB 8
+#define TypeRange 9
+#define TypeRange2 10
 
 struct Box;
 class TreeMessenger;
@@ -125,15 +127,20 @@ public:
          - 2993 * X * X * X * X * X + 227.9 * X * X * X * X * X * X + 2019 * X * X * X * X * X * X * X
          + 876.3 * X * X * X * X * X * X * X * X - 3027 * X * X * X * X * X * X * X * X * X
          + 1239 * X * X * X * X * X * X * X * X * X * X;
-      double RMS = exp(1.25391 - 27.2957 * X) + exp(3.31530 - 3.53222 * X);
-      if(Type == TypeRho && IsNominal == false)
-         RMS = exp(1.31499 - 21.0415 * X) + exp(3.28132 - 3.5001 * X);
-      else if(Type == TypeGhost && IsNominal == false)
-         RMS = exp(1.15381 - 23.3627 * X) + exp(3.28807 - 3.61712 * X);
-      else if(Type == TypeMB && IsNominal == false)
-         RMS = exp(1.28173 - 24.0914 * X) + exp(3.29664 - 3.57278 * X);
-      else
-         RMS = exp(1.39331 - 24.9821 * X) + exp(3.33588 - 3.5139 * X);
+      
+      double RMS = exp(1.14611 - 27.2452 * X) + exp(3.27512 - 3.59286 * X);   // 1
+      if(Type == TypeRho && IsNominal == false)   // 9
+         RMS = exp(1.14863 - 23.8947 * X) + exp(3.26913 - 3.48024 * X);
+      else if(Type == TypeGhost && IsNominal == false)   // 15
+         RMS = exp(1.14485 - 27.1929 * X) + exp(3.27483 - 3.59216 * X);
+      else if(Type == TypeMB && IsNominal == false)   // 21 & 22
+         RMS = exp(1.07477 - 28.1021 * X) + exp(3.28557 - 3.59269 * X);
+      else if(Type == TypeRange && IsNominal == false)   // 13
+         RMS = exp(1.25321 - 27.3256 * X) + exp(3.3154 - 3.53261 * X);
+      else if(Type == TypeRange2 && IsNominal == true)   // 13
+         RMS = exp(1.25321 - 27.3256 * X) + exp(3.3154 - 3.53261 * X);
+      else if(Type == TypeRange2 && IsNominal == false)   // 17
+         RMS = exp(1.28384 - 29.506 * X) + exp(3.34358 - 3.537 * X);
 
       if(Type == TypeSmear && IsNominal == false)
          RMS = RMS * 0.9;
@@ -240,6 +247,10 @@ int main(int argc, char *argv[])
       Type = TypeGhost;
    if(StringType == "MB")
       Type = TypeMB;
+   if(StringType == "Range")
+      Type = TypeRange;
+   if(StringType == "Range2")
+      Type = TypeRange2;
 
    Tag = Form("%s_%d", Tag.c_str(), SD);
 

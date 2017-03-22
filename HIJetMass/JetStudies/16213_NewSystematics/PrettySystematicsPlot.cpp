@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
    FileNames[0]  = "OutputFile_Ghost_%d.root";      Labels[0]  = "Ghost Area";
    FileNames[1]  = "OutputFile_JER_%d.root";        Labels[1]  = "JER";
    FileNames[2]  = "OutputFile_JetEta_%d.root";     Labels[2]  = "JetEta";
-   FileNames[3]  = "OutputFile_MB_%d.root";         Labels[3]  = "Spectrum";
+   FileNames[3]  = "OutputFile_MB2_%d.root";        Labels[3]  = "Spectrum";
    FileNames[4]  = "OutputFile_PTScale_%d.root";    Labels[4]  = "PTScale";
    FileNames[5]  = "OutputFile_Rho_%d.root";        Labels[5]  = "Rho";
    FileNames[6]  = "OutputFile_NewSmear_%d.root";   Labels[6]  = "Smear";

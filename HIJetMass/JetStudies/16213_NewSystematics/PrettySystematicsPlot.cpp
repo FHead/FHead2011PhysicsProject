@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
 
       TGraph *G = new TGraph;
 
-      for(int j = 0; j < Bin; j++)
+      for(int j = 0; j < SysBin; j++)
       {
-         double BinCenter = (j + 0.5) / Bin * (Max - Min) + Min;
+         double BinCenter = (j + 0.5) / SysBin * (Max - Min) + Min;
          int S = (int)((BinCenter - Min) / (Max - Min) * SysBin);
 
          G->SetPoint(j, BinCenter, 100 * (exp(E->GetErrorYhigh(S)) - 1));
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
    TCanvas C;
 
-   TH2D HWorld("HWorld", ";Mass/PT;%", 100, 0.00, 0.27, 100, 0, 150);
+   TH2D HWorld("HWorld", ";Mass/PT;%", 100, 0.00, 0.27, 100, 0, 40);
    HWorld.SetStats(0);
 
    HWorld.Draw();

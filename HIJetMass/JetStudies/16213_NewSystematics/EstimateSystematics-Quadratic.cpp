@@ -11,6 +11,8 @@ using namespace std;
 #include "TH2D.h"
 #include "TCanvas.h"
 #include "TLegend.h"
+#include "TFitResult.h"
+#include "TMatrixDSym.h"
 
 #include "SetStyle.h"
 #include "Code/DrawRandom.h"
@@ -40,11 +42,14 @@ class TreeMessenger;
 int main(int argc, char *argv[]);
 pair<double, double> GetCentralFlatRMS(PdfFileHelper &PdfFile, vector<double> D, double Left, double Right);
 vector<double> GetSystematics(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, double Left, double Right);
+vector<pair<double, double>> QuadraticError(PdfFileHelper &PdfFile,
+   vector<double> HN, vector<double> HM, vector<double> HN2, vector<double> HM2);
 double GetDR(double eta1, double phi1, double eta2, double phi2);
 double GetBinCenter(int B);
 double GetSysBinCenter(int B);
 int FindBin(double X);
 void Transcribe(vector<double> V, TGraphAsymmErrors *G);
+void TranscribeQuadratic(vector<pair<double, double>> V, TGraphAsymmErrors *G);
 void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<double> N2, vector<double> M2, TGraphAsymmErrors *G);
 
 struct Box
@@ -126,14 +131,16 @@ public:
       MatchedDR = GetDR(JetEta, JetPhi, OriginalJetEta, OriginalJetPhi);
 
       double X = Centrality / 100;
-      double RMST = 19.15 - 23.28 * X + 4.567e-7 * X * X - 467.4 * X * X * X + 2110 * X * X * X * X
-         - 2993 * X * X * X * X * X + 227.9 * X * X * X * X * X * X + 2019 * X * X * X * X * X * X * X
-         + 876.3 * X * X * X * X * X * X * X * X - 3027 * X * X * X * X * X * X * X * X * X
-         + 1239 * X * X * X * X * X * X * X * X * X * X;
+      // double RMST = 19.15 - 23.28 * X + 4.567e-7 * X * X - 467.4 * X * X * X + 2110 * X * X * X * X
+      //    - 2993 * X * X * X * X * X + 227.9 * X * X * X * X * X * X + 2019 * X * X * X * X * X * X * X
+      //    + 876.3 * X * X * X * X * X * X * X * X - 3027 * X * X * X * X * X * X * X * X * X
+      //    + 1239 * X * X * X * X * X * X * X * X * X * X;
+      
+      double RMST = exp(1.14611 - 27.2452 * X) + exp(3.27512 - 3.59286 * X);   // 1
       
       double RMS = exp(1.14611 - 27.2452 * X) + exp(3.27512 - 3.59286 * X);   // 1
       if(Type == TypeRho && IsNominal == false)   // 9
-         RMS = exp(1.14863 - 23.8947 * X) + exp(3.26913 - 3.48024 * X);
+         RMS = exp(1.10327 - 25.3083 * X) + exp(3.27481 - 3.50281 * X);
       else if(Type == TypeGhost && IsNominal == false)   // 15
          RMS = exp(1.14485 - 27.1929 * X) + exp(3.27483 - 3.59216 * X);
       else if(Type == TypeMB && IsNominal == false)   // 21 & 22
@@ -146,7 +153,7 @@ public:
          RMS = exp(1.28384 - 29.506 * X) + exp(3.34358 - 3.537 * X);
 
       if(Type == TypeSmear && IsNominal == false)
-         RMS = RMS * 0.9;
+         RMST = RMST * 0.95;
 
       ExcessPT = TotalPTInJet - 0.4 * 0.4 * PI * Rho;
       Weight = MCWeight * exp(-ExcessPT * ExcessPT / (2 * RMST * RMST)) / exp(-ExcessPT * ExcessPT / (2 * RMS * RMS));
@@ -426,14 +433,18 @@ int main(int argc, char *argv[])
             Cuts[iC].CentralityMin, Cuts[iC].CentralityMax));
    }
 
-   vector<vector<double>> Error(Cuts.size());
+   // vector<vector<double, double>> Error(Cuts.size());
+   vector<vector<pair<double, double>>> Error(Cuts.size());
    for(int iC = 0; iC < (int)Cuts.size(); iC++)
    {
-      Error[iC] = GetSystematics(PdfFile, HN[iC], HM[iC], Left, Right);
-
-      Transcribe(Error[iC], GRatio[iC]);
-
       PdfFile.AddTextPage(Labels[iC]);
+      
+      // Error[iC] = GetSystematics(PdfFile, HN[iC], HM[iC], Left, Right);
+      Error[iC] = QuadraticError(PdfFile, HN[iC], HM[iC], HN2[iC], HM2[iC]);
+
+      // Transcribe(Error[iC], GRatio[iC]);
+      TranscribeQuadratic(Error[iC], GRatio[iC]);
+
       AddPlot(PdfFile, HN[iC], HM[iC], HN2[iC], HM2[iC], GRatio[iC]);
       // PdfFile.AddPlot(GRatio[iC], "apl");
 
@@ -568,6 +579,169 @@ void Transcribe(vector<double> V, TGraphAsymmErrors *G)
    }
 }
 
+void TranscribeQuadratic(vector<pair<double, double>> V, TGraphAsymmErrors *G)
+{
+   if(G == NULL)
+      return;
+
+   for(int i = 0; i < SYSBIN; i++)
+   {
+      double X = GetSysBinCenter(i);
+      int Bin = i;
+
+      double Mean = (V[Bin].first + V[Bin].second) / 2;
+
+      G->SetPoint(i, X, Mean);
+      G->SetPointError(i, 0, 0, Mean - V[Bin].first, V[Bin].second - Mean);
+   }
+}
+
+vector<pair<double, double>> QuadraticError(PdfFileHelper &PdfFile,
+   vector<double> HN, vector<double> HM, vector<double> HN2, vector<double> HM2)
+{
+   vector<double> D, DE;
+   for(int i = 0; i < (int)HN.size(); i++)
+   {
+      // Ratio
+      if(HN[i] > 0 && HM[i] > 0)
+         D.push_back(log(HN[i]) - log(HM[i]));
+      else
+         D.push_back(0);
+      
+      if(HN[i] > 0 && HM[i] > 0)
+         DE.push_back(sqrt(HN2[i] / HN[i] / HN[i] + HM2[i] / HM[i] / HM[i]));
+      else
+         DE.push_back(20);
+
+      // Linear
+      // D.push_back(N[i] - M[i]);
+      // DE.push_back(sqrt(N2[i] + M2[i]));
+   }
+
+   for(int i = 0; i < (int)HN.size(); i++)
+   {
+      if(fabs(D[i]) > log(3))
+      {
+         D[i] = 0;
+         DE[i] = 20;
+      }
+   }
+
+   TH1D H("H", "", BIN, 0.0, 0.4);
+   H.SetStats(0);
+
+   for(int i = 0; i < (int)HN.size(); i++)
+   {
+      H.SetBinContent(i + 1, D[i]);
+      H.SetBinError(i + 1, DE[i]);
+   }
+
+   PdfFile.AddPlot(H);
+
+   TF1 Function("Function", "pol2", 0.0, 0.4);
+
+   TFitResultPtr FitResult = H.Fit(&Function, "S");
+   TMatrixDSym Matrix = FitResult->GetCovarianceMatrix();
+
+   // cout << "Covariance matrix: " << endl;
+   // for(int i = 0; i < 3; i++)
+   // {
+   //    for(int j = 0; j < 3; j++)
+   //       cout << Matrix[i][j] << " ";
+   //    cout << endl;
+   // }
+   // cout << endl;
+
+   double L[3][3] = {{0}};   // Cholesky decomposition:  find L such that L x L^T = M, where L is lower triangle
+
+   L[0][0] = sqrt(Matrix[0][0]);
+   L[1][0] = Matrix[1][0] / L[0][0];
+   L[1][1] = sqrt(Matrix[1][1] - L[1][0] * L[1][0]);
+   L[2][0] = Matrix[2][0] / L[0][0];
+   L[2][1] = (Matrix[2][1] - L[2][0] * L[1][0]) / L[1][1];
+   L[2][2] = sqrt(Matrix[2][2] - L[2][0] * L[2][0] - L[2][1] * L[2][1]);
+
+   // double LLT[3][3] = {{0}};   // Sanity check
+
+   // for(int i = 0; i < 3; i++)
+   //    for(int j = 0; j < 3; j++)
+   //       LLT[i][j] = L[i][0] * L[j][0] + L[i][1] * L[j][1] + L[i][2] * L[j][2];
+   
+   // cout << "L: " << endl;
+   // for(int i = 0; i < 3; i++)
+   // {
+   //    for(int j = 0; j < 3; j++)
+   //       cout << L[i][j] << " ";
+   //    cout << endl;
+   // }
+   // cout << endl;
+
+   // cout << "L x LT: " << endl;
+   // for(int i = 0; i < 3; i++)
+   // {
+   //    for(int j = 0; j < 3; j++)
+   //       cout << LLT[i][j] << " ";
+   //    cout << endl;
+   // }
+   // cout << endl;
+
+   double Mean[3] = {Function.GetParameter(0), Function.GetParameter(1), Function.GetParameter(2)};
+
+   vector<vector<double>> BinResults(160);
+   TH2D HSpread("HSpread", ";Mass / PT;log(Ratio)", SYSBIN, 0.0, 0.4, 500, -1, 1);
+   HSpread.SetStats(0);
+
+   int Trials = 10000;
+   for(int i = 0; i < Trials; i++)
+   {
+      double X[3] = {DrawGaussian(0, 1), DrawGaussian(0, 1), DrawGaussian(0, 1)};
+
+      double Y[3] = {0};
+
+      Y[0] = L[0][0] * X[0] + L[0][1] * X[1] + L[0][2] * X[2] + Mean[0];
+      Y[1] = L[1][0] * X[0] + L[1][1] * X[1] + L[1][2] * X[2] + Mean[1];
+      Y[2] = L[2][0] * X[0] + L[2][1] * X[1] + L[2][2] * X[2] + Mean[2];
+
+      for(int iS = 0; iS < SYSBIN; iS++)
+      {
+         double x = GetSysBinCenter(iS);
+
+         double v = Y[0] + Y[1] * x + Y[2] * x * x;
+
+         BinResults[iS].push_back(fabs(v));
+
+         HSpread.Fill(x, v);
+      }
+   }
+
+   TCanvas C;
+
+   HSpread.Draw("colz");
+   H.Draw("same");
+
+   PdfFile.AddCanvas(C);
+
+   vector<pair<double, double>> Result(160);
+
+   for(int iS = 0; iS < SYSBIN; iS++)
+   {
+      sort(BinResults[iS].begin(), BinResults[iS].end());
+
+      double P = 0.68;
+      int Size = BinResults[iS].size();
+
+      // int Min = (0.5 - P / 2) * Size;
+      // int Max = (0.5 + P / 2) * Size;
+
+      // Result[iS] = pair<double, double>(BinResults[iS][Min], BinResults[iS][Max]);
+
+      int Location = Size * P;
+      Result[iS] = pair<double, double>(-BinResults[iS][Location], BinResults[iS][Location]);
+   }
+
+   return Result;
+}
+
 void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<double> N2, vector<double> M2, TGraphAsymmErrors *G)
 {
    TH1D HN("HN", "", BIN, 0.0, 0.4);
@@ -593,6 +767,8 @@ void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<
    HM.SetLineColor(kRed);
    HN.SetMarkerColor(kBlue);
    HM.SetMarkerColor(kRed);
+
+   G->SetMarkerStyle(0);
 
    TCanvas C;
 
@@ -623,7 +799,7 @@ void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<
    HWorld.SetStats(0);
 
    HWorld.Draw();
-   G->Draw("b");
+   G->Draw("");
    HD.Draw("same");
 
    PdfFile.AddCanvas(C);

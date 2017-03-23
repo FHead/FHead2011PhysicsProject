@@ -72,6 +72,8 @@ int main(int argc, char *argv[])
 
             double el2 = 0, eh2 = 0;
 
+            double totaly = 0;
+
             for(int i = 0; i < (int)FileNames.size(); i++)
             {
                eyl = G[i]->GetErrorYlow(iB);
@@ -79,9 +81,12 @@ int main(int argc, char *argv[])
 
                el2 = el2 + eyl * eyl;
                eh2 = eh2 + eyh * eyh;
+
+               G[i]->GetPoint(iB, x, y);
+               totaly = totaly + y;
             }
 
-            NewGraph.SetPoint(iB, x, y);
+            NewGraph.SetPoint(iB, x, totaly);
             NewGraph.SetPointError(iB, 0, 0, sqrt(el2), sqrt(eh2));
          }
 

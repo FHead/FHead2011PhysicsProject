@@ -28,7 +28,15 @@ AA6Dijet370                     /store/user/mverweij/CS/MC/PbPb//Pythia6_Dijet37
 HydjetMB                        /store/group/phys_heavyions/mverweij/MC/Hydjet/MITForest160707_172612/
 PPDataHighPTJet                 /store/group/cmst3/group/hintt/mverweij/PP5TeV/data/HighPtJet80/crab_HighPtJet80_v2/160525_095945/mergePartialV2/
 AAData                          /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbes_v5/160313_203758/merge
-AADataPrescale                  /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/
+AADataPrescale                  /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/*/
+AADataPrescale0000              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0000/
+AADataPrescale0001              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0001/
+AADataPrescale0002              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0002/
+AADataPrescale0003              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0003/
+AADataPrescale0004              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0004/
+AADataPrescale0005              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0005/
+AADataPrescale0006              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0006/
+AADataPrescale0007              /store/group/cmst3/group/hintt/mverweij/CS/data/HIHardProbes/crab_HIHardProbesPrescale_CSv1_v2/160711_200823/0007/
 AADataMB                        /store/group/phys_heavyions/mverweij/DataPbPb/MB2/MITForest160603_182803/v2
 HydjetMBDragos                  /store/cmst3/user/chenyi/Samples/Hydjet_Quenched_MinBias_5020GeV_750-HINPbPbWinter16DR-NoPU_75X_mcRun2_HeavyIon_forest_v2/
 HydjetMBDragos2                 /store/cmst3/user/chenyi/Samples/Hydjet_Quenched_MinBias_5020GeV_758p2_FOREST_v20/

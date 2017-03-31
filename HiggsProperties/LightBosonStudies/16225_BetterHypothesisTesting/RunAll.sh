@@ -1,8 +1,8 @@
+WORKDIR=~/work/PhysicsWorkspace/HiggsProperties/LightBosonStudies/16225_BetterHypothesisTesting
+
 export SCRAM_ARCH=slc6_amd64_gcc491
 cd ~/work/CMSSW/CMSSW_7_5_8_patch3/src
 eval `scramv1 runtime -sh`
-
-WORKDIR=`pwd`
 
 echo Moving to $WORKDIR
 cd $WORKDIR

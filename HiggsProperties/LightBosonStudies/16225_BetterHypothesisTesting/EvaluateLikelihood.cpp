@@ -493,6 +493,9 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
 
    TTree *T = (TTree *)F.Get("Tree");
 
+   if(T == NULL)
+      return Result;
+
    Likelihood Messenger;
    double L1PT, L1Eta, L1Phi;
    double L2PT, L2Eta, L2Phi;

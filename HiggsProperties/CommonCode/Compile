@@ -8,6 +8,8 @@ echo g++ source/EFTPriors.cpp -o library/EFTPriors.o -c -I./include -I$RootMacro
 g++ source/EFTPriors.cpp -o library/EFTPriors.o -c -I./include -I$RootMacrosBase
 echo g++ source/Lists.cpp -o library/Lists.o -c -I./include -I$RootMacrosBase
 g++ source/Lists.cpp -o library/Lists.o -c -I./include -I$RootMacrosBase
+echo g++ source/FunctionLists.cpp -o library/FunctionLists.o -c -I./include -I$RootMacrosBase
+g++ source/FunctionLists.cpp -o library/FunctionLists.o -c -I./include -I$RootMacrosBase
 echo g++ source/InterpretCoefficient.cpp -o library/InterpretCoefficient.o -c -I./include -I$RootMacrosBase
 g++ source/InterpretCoefficient.cpp -o library/InterpretCoefficient.o -c -I./include -I$RootMacrosBase
 echo g++ source/MEFunctions.cpp -o library/MEFunctions.o -c -I./include -I$RootMacrosBase

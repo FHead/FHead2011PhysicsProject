@@ -28,6 +28,15 @@ AA6Dijet370                     1.088e5
 HydjetMB                        -1
 PPDataHighPTJet                 -1
 AAData                          -1
+AADataPrescale                  -1
+AADataPrescale0000              -1
+AADataPrescale0001              -1
+AADataPrescale0002              -1
+AADataPrescale0003              -1
+AADataPrescale0004              -1
+AADataPrescale0005              -1
+AADataPrescale0006              -1
+AADataPrescale0007              -1
 AADataMB                        -1
 HydjetMBDragos                  -1
 HydjetMBDragos2                 -1

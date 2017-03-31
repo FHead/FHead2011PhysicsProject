@@ -114,6 +114,8 @@ int main(int argc, char *argv[])
       // output text file
       ofstream out_fix("LikelihoodFixed_" + Tag + Form("_Scenario%d", iS));
       ofstream out_float("LikelihoodFloated_" + Tag + Form("_Scenario%d", iS));
+      ofstream out_fix_A2UV("LikelihoodFixedA2UV_" + Tag + Form("_Scenario%d", iS));
+      ofstream out_float_A2UV("LikelihoodFloatedA2UV_" + Tag + Form("_Scenario%d", iS));
 
       // Calculate handy flags on what is there and what is not
       bool DoEM = true, DoEE = true;
@@ -142,23 +144,13 @@ int main(int argc, char *argv[])
       int DatasetCount = 0;
       double *LLFixB[MODELCOUNT];
       double *LLFloatB[MODELCOUNT];
+      double *LLFixBFloatA2UV[MODELCOUNT];
+      double *LLFloatBFloatA2UV[MODELCOUNT];
 
       for(int i = 0; i < MODELCOUNT; i++)
       {
          LLFixB[i] = new double[MAXDATASET];
          LLFloatB[i] = new double[MAXDATASET];
-      }
-      
-      // Event likelihood placeholder
-      double *ValueSEM[MODELCOUNT];
-      double *ValueSEE[MODELCOUNT];
-      double ValueBEM[MAXEVENT] = {0};
-      double ValueBEE[MAXEVENT] = {0};
-
-      for(int i = 0; i < MODELCOUNT; i++)
-      {
-         ValueSEM[i] = new double[MAXEVENT];
-         ValueSEE[i] = new double[MAXEVENT];
       }
       
       // Looping over all events
@@ -265,6 +257,56 @@ int main(int argc, char *argv[])
                double LL = Fit.DoFit(Configuration).BestLL;
 
                LLFloatB[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
+            }   // model loop
+         }   // if there is a need for background fraction floating
+
+         // Calculate fix-B, A2UZ+A2UA floating result
+         for(int iM = 0; iM < (int)Models.size(); iM++)
+         {
+            FitConfiguration Configuration;
+            Configuration.SetAVV(Models[iM]);
+
+            // Ordering: ZZ, ZV, ZA, VV, VA, AA
+            //    each of them A1R A1I A2R A2I A3R A3I A4R A4I
+            Configuration.FloatAVV[1*8+2] = true;   // A2ZVR
+            Configuration.FloatAVV[4*8+2] = true;   // A2VAR
+
+            Configuration.FEM = ExpectedFEM;
+            Configuration.FEE = ExpectedFEE;
+
+            Configuration.FloatFEM = false;
+            Configuration.FloatFEE = false;
+
+            double LL = Fit.DoFit(Configuration).BestLL;
+
+            LLFixBFloatA2UV[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
+            
+            if(DoBEM == false && DoBEE == false)
+               LLFloatBFloatA2UV[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
+         }
+
+         // Calculate float-B result
+         if(DoBEM == true || DoBEE == true)
+         {
+            for(int iM = 0; iM < (int)Models.size(); iM++)
+            {
+               FitConfiguration Configuration;
+               Configuration.SetAVV(Models[iM]);
+
+               // Ordering: ZZ, ZV, ZA, VV, VA, AA
+               //    each of them A1R A1I A2R A2I A3R A3I A4R A4I
+               Configuration.FloatAVV[1*8+2] = true;   // A2ZVR
+               Configuration.FloatAVV[4*8+2] = true;   // A2VAR
+
+               Configuration.FEM = ExpectedFEM;
+               Configuration.FEE = ExpectedFEE;
+
+               if(DoBEM == true)   Configuration.FloatFEM = true;
+               if(DoBEE == true)   Configuration.FloatFEE = true;
+
+               double LL = Fit.DoFit(Configuration).BestLL;
+
+               LLFloatBFloatA2UV[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
             }   // model loop
          }   // if there is a need for background fraction floating
 
@@ -409,19 +451,30 @@ int main(int argc, char *argv[])
             out_float << LLFloatB[iM][i] << " ";
          out_float << endl;
       }
+      for(int i = 0; i < DatasetCount; i++)
+      {
+         for(int iM = 0; iM < (int)Models.size(); iM++)
+            out_fix_A2UV << LLFixBFloatA2UV[iM][i] << " ";
+         out_fix_A2UV << endl;
+      }
+      for(int i = 0; i < DatasetCount; i++)
+      {
+         for(int iM = 0; iM < (int)Models.size(); iM++)
+            out_float_A2UV << LLFloatBFloatA2UV[iM][i] << " ";
+         out_float_A2UV << endl;
+      }
 
       // Close files
       out_float.close();
       out_fix.close();
+      out_float_A2UV.close();
+      out_fix_A2UV.close();
 
       // Clean up
       for(int i = 0; i < MODELCOUNT; i++)
       {
          delete[] LLFixB[i];
          delete[] LLFloatB[i];
-
-         delete[] ValueSEM[i];
-         delete[] ValueSEE[i];
       }
    }
 

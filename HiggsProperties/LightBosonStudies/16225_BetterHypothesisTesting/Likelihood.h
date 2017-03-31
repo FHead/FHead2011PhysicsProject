@@ -1,3 +1,6 @@
+#ifndef Likelihood_h_16225
+#define Likelihood_h_16225
+
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -27,6 +30,7 @@ public:
 };
 
 
+#endif
 
 
 

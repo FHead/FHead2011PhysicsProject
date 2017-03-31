@@ -18,6 +18,7 @@ using namespace std;
 #include "AngleConversion.h"
 #include "Cuts.h"
 
+#include "FitClass.h"
 #include "Likelihood.h"
 
 #define MODELCOUNT 8
@@ -208,31 +209,20 @@ int main(int argc, char *argv[])
             ExpectedFEE = 0;
 
          // Get dataset and evaluate models
+         FitClass Fit;
          for(int i = 0; i < ActualCount.SEM; i++)
-         {
-            for(int iM = 0; iM < (int)Models.size(); iM++)
-               ValueSEM[iM][i] = SEM[SEMIndex+i].Apply(Models[iM], 0);
-            ValueBEM[i] = SEM[SEMIndex+i].Apply(Models[0], 1);
-         }
+            Fit.AddPoint(SEM[SEMIndex+i], true);
          for(int i = 0; i < ActualCount.BEM; i++)
          {
             int I = (int)(DrawRandom() * BEM.size());
-            for(int iM = 0; iM < (int)Models.size(); iM++)
-               ValueSEM[iM][(int)ActualCount.SEM+i] = BEM[I].Apply(Models[iM], 0);
-            ValueBEM[(int)ActualCount.SEM+i] = BEM[I].Apply(Models[0], 1);
+            Fit.AddPoint(BEM[I], true);
          }
          for(int i = 0; i < ActualCount.SEE; i++)
-         {
-            for(int iM = 0; iM < (int)Models.size(); iM++)
-               ValueSEE[iM][i] = SEE[SEEIndex+i].Apply(Models[iM], 0);
-            ValueBEE[i] = SEE[SEEIndex+i].Apply(Models[0], 1);
-         }
+            Fit.AddPoint(SEE[SEEIndex+i], false);
          for(int i = 0; i < ActualCount.BEE; i++)
          {
             int I = (int)(DrawRandom() * BEE.size());
-            for(int iM = 0; iM < (int)Models.size(); iM++)
-               ValueSEE[iM][(int)ActualCount.SEE+i] = BEE[I].Apply(Models[iM], 0);
-            ValueBEE[(int)ActualCount.SEE+i] = BEE[I].Apply(Models[0], 1);
+            Fit.AddPoint(BEE[I], false);
          }
          
          SEMIndex = SEMIndex + ActualCount.SEM;
@@ -241,14 +231,16 @@ int main(int argc, char *argv[])
          // Calculate fix-B result
          for(int iM = 0; iM < (int)Models.size(); iM++)
          {
-            double LL = 0;
+            FitConfiguration Configuration;
+            Configuration.SetAVV(Models[iM]);
 
-            if(DoEM == true)
-               for(int i = 0; i < DatasetEMSize; i++)
-                  LL = LL + log(ValueSEM[iM][i] * (1 - ExpectedFEM) + ValueBEM[i] * ExpectedFEM);
-            if(DoEE == true)
-               for(int i = 0; i < DatasetEESize; i++)
-                  LL = LL + log(ValueSEE[iM][i] * (1 - ExpectedFEE) + ValueBEE[i] * ExpectedFEE);
+            Configuration.FEM = ExpectedFEM;
+            Configuration.FEE = ExpectedFEE;
+
+            Configuration.FloatFEM = false;
+            Configuration.FloatFEE = false;
+
+            double LL = Fit.DoFit(Configuration).BestLL;
 
             LLFixB[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
             
@@ -261,91 +253,16 @@ int main(int argc, char *argv[])
          {
             for(int iM = 0; iM < (int)Models.size(); iM++)
             {
-               double LL = 0;
+               FitConfiguration Configuration;
+               Configuration.SetAVV(Models[iM]);
 
-               double FEM = ExpectedFEM;
-               double FEE = ExpectedFEE;
+               Configuration.FEM = ExpectedFEM;
+               Configuration.FEE = ExpectedFEE;
 
-               int PassCount = 10;
-               if(DoBEM != DoBEE)   // only 1D, only 1 pass is needed
-                  PassCount = 1;
+               if(DoBEM == true)   Configuration.FloatFEM = true;
+               if(DoBEE == true)   Configuration.FloatFEE = true;
 
-               for(int iP = 0; iP < PassCount; iP++)
-               {
-                  if(DoBEM == true)
-                  {
-                     double MinF = 0, MaxF = 1;
-                     double BestF = -1;
-                     double BestLL = 0;
-                     
-                     for(int iT = 0; iT < 5; iT++)
-                     {
-                        double StepSize = (MaxF - MinF) / 5;
-
-                        for(int i = 0; i <= 5; i++)
-                        {
-                           double F = (MaxF - MinF) / 5 * i + MinF;
-                           double CurrentLL = 0;
-                           for(int j = 0; j < DatasetEMSize; j++)
-                              CurrentLL = CurrentLL + log(ValueSEM[iM][j] * (1 - F) + ValueBEM[j] * F);
-                           for(int j = 0; j < DatasetEESize; j++)
-                              CurrentLL = CurrentLL + log(ValueSEE[iM][j] * (1 - FEE) + ValueBEE[j] * FEE);
-
-                           if(CurrentLL == CurrentLL && (BestF < 0 || BestLL < CurrentLL))
-                           {
-                              BestF = F;
-                              BestLL = CurrentLL;
-                           }
-                        }
-
-                        MinF = BestF - StepSize;
-                        MaxF = BestF + StepSize;
-
-                        if(MinF < 0)   MinF = 0;
-                        if(MaxF > 1)   MaxF = 1;
-                     }
-
-                     FEM = BestF;
-                     LL = BestLL;
-                  }
-
-                  if(DoBEE == true)
-                  {
-                     double MinF = 0, MaxF = 1;
-                     double BestF = -1;
-                     double BestLL = 0;
-                     
-                     for(int iT = 0; iT < 5; iT++)
-                     {
-                        double StepSize = (MaxF - MinF) / 5;
-
-                        for(int i = 0; i <= 5; i++)
-                        {
-                           double F = (MaxF - MinF) / 5 * i + MinF;
-                           double CurrentLL = 0;
-                           for(int j = 0; j < DatasetEMSize; j++)
-                              CurrentLL = CurrentLL + log(ValueSEM[iM][j] * (1 - FEM) + ValueBEM[j] * FEM);
-                           for(int j = 0; j < DatasetEESize; j++)
-                              CurrentLL = CurrentLL + log(ValueSEE[iM][j] * (1 - F) + ValueBEE[j] * F);
-
-                           if(CurrentLL == CurrentLL && (BestF < 0 || BestLL < CurrentLL))
-                           {
-                              BestF = F;
-                              BestLL = CurrentLL;
-                           }
-                        }
-
-                        MinF = BestF - StepSize;
-                        MaxF = BestF + StepSize;
-                        
-                        if(MinF < 0)   MinF = 0;
-                        if(MaxF > 1)   MaxF = 1;
-                     }
-
-                     FEE = BestF;
-                     LL = BestLL;
-                  }
-               }
+               double LL = Fit.DoFit(Configuration).BestLL;
 
                LLFloatB[iM][DatasetCount] = LL / (DatasetEMSize + DatasetEESize);
             }   // model loop

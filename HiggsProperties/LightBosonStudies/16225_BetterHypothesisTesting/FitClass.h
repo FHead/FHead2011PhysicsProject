@@ -11,8 +11,8 @@ class FitResult;
 class FitClass
 {
 public:
-   vector<Likelihood> EventsEM;
-   vector<Likelihood> EventsEE;
+   vector<const Likelihood *> EventsEM;
+   vector<const Likelihood *> EventsEE;
 public:
    FitClass();
    double Evaluate(const double *Parameters);
@@ -30,6 +30,7 @@ public:
    FitConfiguration();
    FitConfiguration(FullAVVBasis &A);
    void SetAVV(FullAVVBasis &A);
+   int NumberOfFloats() const;
 };
 
 class FitResult

@@ -28,25 +28,25 @@ double FitClass::Evaluate(const double *Parameters)
    for(int i = 0; i < 8; i++)   A.A[i+7*8] = Parameters[i+4*8];   // AV
    for(int i = 0; i < 8; i++)   A.A[i+8*8] = Parameters[i+5*8];   // AA
 
-   double FEM = Parameters[49];
-   double FEE = Parameters[50];
+   double FEM = Parameters[48];
+   double FEE = Parameters[49];
 
    double LL = 0;
 
    for(int i = 0; i < (int)EventsEM.size(); i++)
-      LL = LL + log(EventsEM[i].Apply(A, FEM));
+      LL = LL + log(EventsEM[i]->Apply(A, FEM));
    for(int i = 0; i < (int)EventsEE.size(); i++)
-      LL = LL + log(EventsEE[i].Apply(A, FEE));
-
+      LL = LL + log(EventsEE[i]->Apply(A, FEE));
+   
    return -2 * LL;
 }
 
 void FitClass::AddPoint(const Likelihood &NewPoint, bool IsEM)
 {
    if(IsEM == true)
-      EventsEM.push_back(NewPoint);
+      EventsEM.push_back(&NewPoint);
    else
-      EventsEE.push_back(NewPoint);
+      EventsEE.push_back(&NewPoint);
 }
 
 FitResult FitClass::DoFit(const FitConfiguration &Configuration)
@@ -61,44 +61,51 @@ FitResult FitClass::DoFit(const FitConfiguration &Configuration)
       "A1AAR", "A1AAI", "A2AAR", "A2AAI", "A3AAR", "A3AAI", "A4AAR", "A4AAI",
    };
 
+   int FloatCount = Configuration.NumberOfFloats();
+
    ROOT::Math::Minimizer *Worker = ROOT::Math::Factory::CreateMinimizer("Minuit", "Migrad");
    // ROOT::Math::Minimizer *Worker = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
 
-   Worker->SetPrintLevel(-2);
-   Worker->SetMaxFunctionCalls(1e9);
-   Worker->SetMaxIterations(1e9);
-   // Worker->SetTolerance(1e-10);
-   Worker->SetStrategy(1);   // 0 = speed, 2 = robustness, 1 is in the middle
-
-   ROOT::Math::Functor Function(this, &FitClass::Evaluate, 50);
-   Worker->SetFunction(Function);
-
-   double StepSize[50] = {0};
-   for(int i = 0; i < 48; i++)
+   if(FloatCount > 0)
    {
-      if(Configuration.FloatAVV[i] == true)
-         StepSize[i] = 0.1;
-      else
-         StepSize[i] = 0.0;
+      Worker->SetPrintLevel(-2);
+      Worker->SetMaxFunctionCalls(1e9);
+      Worker->SetMaxIterations(1e9);
+      // Worker->SetTolerance(1e-10);
+      Worker->SetStrategy(1);   // 0 = speed, 2 = robustness, 1 is in the middle
+
+      ROOT::Math::Functor Function(this, &FitClass::Evaluate, 50);
+      Worker->SetFunction(Function);
+
+      double StepSize[50] = {0};
+      for(int i = 0; i < 48; i++)
+      {
+         if(Configuration.FloatAVV[i] == true)
+            StepSize[i] = 0.1;
+         else
+            StepSize[i] = 0.0;
+      }
+      StepSize[48] = (Configuration.FloatFEM == true) ? 0.1 : 0.0;
+      StepSize[49] = (Configuration.FloatFEE == true) ? 0.1 : 0.0;
+
+      for(int i = 0; i < 48; i++)
+         Worker->SetLimitedVariable(i, ParameterNames[i], Configuration.AVV[i], StepSize[i], -1000, 1000);
+      Worker->SetLimitedVariable(48, "FEM", Configuration.FEM, StepSize[48], 0, 1);
+      Worker->SetLimitedVariable(49, "FEE", Configuration.FEE, StepSize[49], 0, 1);
+
+      Worker->Minimize();
    }
-   StepSize[48] = (Configuration.FloatFEM == true) ? 0.1 : 0.0;
-   StepSize[49] = (Configuration.FloatFEE == true) ? 0.1 : 0.0;
-
-   for(int i = 0; i < 48; i++)
-      Worker->SetLimitedVariable(i, ParameterNames[i], Configuration.AVV[i], StepSize[i], -1000, 1000);
-   Worker->SetLimitedVariable(48, "FEM", Configuration.FEM, StepSize[48], 0, 1);
-   Worker->SetLimitedVariable(49, "FEE", Configuration.FEE, StepSize[49], 0, 1);
-
-   Worker->Minimize();
-
-   const double *Parameters = Worker->X();
-   const double *Errors = Worker->Errors();
 
    double TruthParameters[50] = {0};
    for(int i = 0; i < 48; i++)
       TruthParameters[i] = Configuration.AVV[i];
    TruthParameters[48] = Configuration.FEM;
    TruthParameters[49] = Configuration.FEE;
+
+   double ZeroVector[50] = {0};
+
+   const double *Parameters = (FloatCount > 0) ? Worker->X() : TruthParameters;
+   const double *Errors = (FloatCount > 0) ? Worker->Errors() : ZeroVector;
 
    FitResult Result;
 
@@ -175,6 +182,21 @@ void FitConfiguration::SetAVV(FullAVVBasis &A)
    for(int i = 0; i < 8; i++)   AVV[i+5*8] = A.A[i+8*8];   // AA
 }
 
+int FitConfiguration::NumberOfFloats() const
+{
+   int Result = 0;
+
+   for(int i = 0; i < 48; i++)
+      if(FloatAVV[i] == true)
+         Result = Result + 1;
+
+   if(FloatFEM == true)
+      Result = Result + 1;
+   if(FloatFEE == true)
+      Result = Result + 1;
+
+   return Result;
+}
 
 
 

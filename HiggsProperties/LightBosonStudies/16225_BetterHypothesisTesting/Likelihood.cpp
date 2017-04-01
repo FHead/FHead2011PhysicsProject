@@ -47,7 +47,7 @@ Likelihood &Likelihood::operator =(const Likelihood &L)
    return *this;
 }
 
-double Likelihood::Apply(FullAVVBasis &A, double F)
+double Likelihood::Apply(FullAVVBasis &A, double F) const
 {
    double VSAll = 0;
    double ISAll = 0;

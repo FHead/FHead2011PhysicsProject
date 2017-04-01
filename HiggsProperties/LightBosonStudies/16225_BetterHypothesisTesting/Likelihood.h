@@ -25,7 +25,7 @@ public:
    Likelihood();
    Likelihood(const Likelihood &L);
    Likelihood &operator =(const Likelihood &L);
-   double Apply(FullAVVBasis &A, double F);
+   double Apply(FullAVVBasis &A, double F) const;
    void SetBranchAddress(TTree *T);
 };
 

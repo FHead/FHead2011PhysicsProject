@@ -72,6 +72,16 @@ int main(int argc, char *argv[])
 
    // Setup scenarios
    vector<EventCount> Scenarios;
+   Scenarios.push_back(EventCount(5, -1, -1, -1));
+   Scenarios.push_back(EventCount(10, -1, -1, -1));
+   Scenarios.push_back(EventCount(20, -1, -1, -1));
+   Scenarios.push_back(EventCount(50, -1, -1, -1));
+   Scenarios.push_back(EventCount(100, -1, -1, -1));
+   Scenarios.push_back(EventCount(200, -1, -1, -1));
+   Scenarios.push_back(EventCount(500, -1, -1, -1));
+   Scenarios.push_back(EventCount(1000, -1, -1, -1));
+   Scenarios.push_back(EventCount(2000, -1, -1, -1));
+   Scenarios.push_back(EventCount(5000, -1, -1, -1));
    Scenarios.push_back(EventCount(5, -1, 5, -1));
    Scenarios.push_back(EventCount(10, -1, 10, -1));
    Scenarios.push_back(EventCount(20, -1, 20, -1));
@@ -80,7 +90,7 @@ int main(int argc, char *argv[])
    Scenarios.push_back(EventCount(200, -1, 200, -1));
    Scenarios.push_back(EventCount(500, -1, 500, -1));
    Scenarios.push_back(EventCount(1000, -1, 1000, -1));
-   Scenarios.push_back(EventCount(2000, -1, 200, -1));
+   Scenarios.push_back(EventCount(2000, -1, 2000, -1));
    Scenarios.push_back(EventCount(5000, -1, 5000, -1));
    Scenarios.push_back(EventCount(5, 5, 5, 5));
    Scenarios.push_back(EventCount(10, 10, 10, 10));
@@ -100,9 +110,9 @@ int main(int argc, char *argv[])
    vector<Likelihood> SEM, BEM, SEE, BEE;
 
    SEM = ReadTree(SEMFileName, Cut, true);
-   SEE = ReadTree(SEEFileName, Cut, true);
+   SEE = ReadTree(SEEFileName, Cut, false);
    BEM = ReadTree(BEMFileName, Cut, true);
-   BEE = ReadTree(BEEFileName, Cut, true);
+   BEE = ReadTree(BEEFileName, Cut, false);
 
    // output pdf
    PdfFileHelper PdfFile("ResultHypothesisTesting_" + Tag + ".pdf");
@@ -151,6 +161,8 @@ int main(int argc, char *argv[])
       {
          LLFixB[i] = new double[MAXDATASET];
          LLFloatB[i] = new double[MAXDATASET];
+         LLFixBFloatA2UV[i] = new double[MAXDATASET];
+         LLFloatBFloatA2UV[i] = new double[MAXDATASET];
       }
       
       // Looping over all events
@@ -162,10 +174,10 @@ int main(int argc, char *argv[])
 
          // Draw random numbers based on poisson distribution
          EventCount ActualCount;
-         if(Scenarios[iS].SEM > 0)  ActualCount.SEM = DrawPoisson(Scenarios[iS].SEM);
-         if(Scenarios[iS].BEM > 0)  ActualCount.BEM = DrawPoisson(Scenarios[iS].BEM);
-         if(Scenarios[iS].SEE > 0)  ActualCount.SEE = DrawPoisson(Scenarios[iS].SEE);
-         if(Scenarios[iS].BEE > 0)  ActualCount.BEE = DrawPoisson(Scenarios[iS].BEE);
+         if(Scenarios[iS].SEM > 0)  ActualCount.SEM = DrawPoisson(Scenarios[iS].SEM); else ActualCount.SEM = 0;
+         if(Scenarios[iS].BEM > 0)  ActualCount.BEM = DrawPoisson(Scenarios[iS].BEM); else ActualCount.BEM = 0;
+         if(Scenarios[iS].SEE > 0)  ActualCount.SEE = DrawPoisson(Scenarios[iS].SEE); else ActualCount.SEE = 0;
+         if(Scenarios[iS].BEE > 0)  ActualCount.BEE = DrawPoisson(Scenarios[iS].BEE); else ActualCount.BEE = 0;
 
          if(ActualCount.SEM + ActualCount.BEM >= MAXEVENT || ActualCount.SEE + ActualCount.BEE >= MAXEVENT)
          {
@@ -487,7 +499,7 @@ int main(int argc, char *argv[])
 vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
 {
    vector<Likelihood> Result;
-   Result.reserve(100000);
+   // Result.reserve(100000);
 
    TFile F(FileName.c_str());
 
@@ -532,7 +544,7 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
          IS[i][j] = DHFile["0TeV"][Prefix+"1_"+Suffix[i]+"_"+Suffix[j]].GetDouble();
    IB = DHFile["0TeV"][Prefix+"2_DDbar"].GetDouble() * 2;
 
-   int EntryCount = T->GetEntries();
+   int EntryCount = T->GetEntries() * 0.05;
    ProgressBar Bar(cout, EntryCount);
    for(int iE = 0; iE < EntryCount; iE++)
    {

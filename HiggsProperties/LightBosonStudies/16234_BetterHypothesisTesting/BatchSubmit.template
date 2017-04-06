@@ -1,0 +1,65 @@
+#!/bin/sh
+
+WORKDIR=~/work/PhysicsWorkspace/HiggsProperties/LightBosonStudies/16234_BetterHypothesisTesting
+
+export SCRAM_ARCH=slc6_amd64_gcc491
+cd ~/work/CMSSW/CMSSW_7_5_8_patch3/src
+eval `scramv1 runtime -sh`
+cd -
+
+cp $WORKDIR/RunLikelihood .
+cp $WORKDIR/Normalization.dh .
+
+Model=__MODEL__
+Cut=__CUT__
+ID=__ID__
+SEM=__SEM__
+SEE=__SEE__
+BEM=__BEM__
+BEE=__BEE__
+
+alias eosbox='/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select root://eosuser.cern.ch'
+
+# eosbox ls /eos/user/c/chenyi/MGSample/
+
+EOSHome=/eos/user/c/chenyi/
+Trees16143=$EOSHome/MGSample/16143_FromRoberto_LightBosonBackground/AttachedSpin0XVV//
+Trees16153=$EOSHome/MGSample/16153_FromRoberto_LightBosonBackground/AttachedSpin0XVV//
+Trees16154=$EOSHome/MGSample/16154_FromRoberto_LightBosonSignalBetterNormalization/AttachedSpin0XVV//
+
+echo Start copying files from eosbox space
+
+eosbox cp $Trees16154/ggtoPhto2e2mu_${Model}_18p4GeV_noPDF_GenCuts_${ID}.root SEM.root
+eosbox cp $Trees16154/ggtoPhto4e_${Model}_18p4GeV_noPDF_GenCuts_${ID}.root    SEE.root
+eosbox cp $Trees16143/ddbar_noPDF_to_2e2mu_18p4GeV_GenCuts_${ID}.root         BEM.root
+eosbox cp $Trees16153/ddbar_noPDF_to_4e_18p4GeV_GenCuts_${ID}.root            BEE.root
+
+echo "Model = $Model"
+echo "Cut = $Cut"
+echo "ID = $ID"
+echo "SEM = $SEM"
+echo "BEM = $BEM"
+echo "SEE = $SEE"
+echo "BEE = $BEE"
+
+echo Start running 
+
+Tag=${Model}_${Cut}_${ID}_${SEM}_${SEE}_${BEM}_${BEE}
+
+./RunLikelihood SEM.root SEE.root BEM.root BEE.root $Cut $Tag $SEM $SEE $BEM $BEE
+
+tar zcvf AllLikelihood_${Tag}.tar.gz Likelihood*_${Tag}_Scenario*
+
+mkdir -p $WORKDIR/Result
+mkdir -p $WORKDIR/PDFResult
+
+# cp AllLikelihood_${Model}_${Cut}_${ID}.tar.gz $WORKDIR/Result/
+
+BaseDirAfterWorkspace=`echo $WORKDIR | tr '/' '\n' | grep -A 999 PhysicsWorkspace | tail -n+2 | tr '\n' '/'`
+cmsStage -f AllLikelihood_${Tag}.tar.gz /store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/AllLikelihood_${Tag}.tar.gz
+
+mv ResultHypothesisTesting_${Tag}.pdf $WORKDIR/PDFResult/
+
+
+
+

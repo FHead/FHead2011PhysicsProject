@@ -133,6 +133,12 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SubJet2Eta7", &TreeSubJet2Eta7, "SubJet2Eta7/D");
    OutputTree.Branch("SubJet2Phi7", &TreeSubJet2Phi7, "SubJet2Phi7/D");
 
+   bool TreePassPbPb40, TreePassPbPb60, TreePassPbPb80, TreePassPbPb100;
+   OutputTree.Branch("PassPbPb40", &TreePassPbPb40, "PassPbPb40/O");
+   OutputTree.Branch("PassPbPb60", &TreePassPbPb60, "PassPbPb60/O");
+   OutputTree.Branch("PassPbPb80", &TreePassPbPb80, "PassPbPb80/O");
+   OutputTree.Branch("PassPbPb100", &TreePassPbPb100, "PassPbPb100/O");
+
    int EntryCount = MHiEvent.Tree->GetEntries();
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
@@ -160,11 +166,22 @@ int main(int argc, char *argv[])
       TreeHFMinus = MHiEvent.hiHFminus;
       TreeHFPlusEta4 = MHiEvent.hiHFplusEta4;
       TreeHFMinusEta4 = MHiEvent.hiHFminusEta4;
+         
+      TreePassPbPb40 = MHLT.CheckTrigger("HLT_HIPuAK4CaloJet40_Eta5p1_v1");
+      TreePassPbPb60 = MHLT.CheckTrigger("HLT_HIPuAK4CaloJet60_Eta5p1_v1");
+      TreePassPbPb80 = MHLT.CheckTrigger("HLT_HIPuAK4CaloJet80_Eta5p1_v1");
+      TreePassPbPb100 = MHLT.CheckTrigger("HLT_HIPuAK4CaloJet100_Eta5p1_v1");
 
       if(IsData == true && IsPP == true && MHLT.CheckTrigger("HLT_AK4PFJet80_Eta5p1_v1") == false)
          continue;
-      if(IsData == true && IsPP == false && MHLT.CheckTrigger("HLT_HIPuAK4CaloJet100_Eta5p1_v1") == false)
+      if(IsData == true && IsPP == false)
+      {
+         if(MHLT.CheckTrigger("HLT_HIPuAK4CaloJet40_Eta5p1_v1") == false
+            && MHLT.CheckTrigger("HLT_HIPuAK4CaloJet60_Eta5p1_v1") == false
+            && MHLT.CheckTrigger("HLT_HIPuAK4CaloJet80_Eta5p1_v1") == false
+            && MHLT.CheckTrigger("HLT_HIPuAK4CaloJet100_Eta5p1_v1") == false)
          continue;
+      }
       if(IsData == true && MSkim.PassBasicFilterLoose() == false)
          continue;
 

@@ -68,6 +68,7 @@ public:
    bool Initialize();
    bool GetEntry(int iEntry);
    bool PassBasicFilter();
+   bool PassBasicFilterLoose();
 };
 
 class JetTreeMessenger

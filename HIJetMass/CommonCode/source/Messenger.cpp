@@ -181,6 +181,22 @@ bool SkimTreeMessenger::PassBasicFilter()
    return true;
 }
 
+bool SkimTreeMessenger::PassBasicFilterLoose()
+{
+   if(HBHENoiseRun2Loose == 0)
+      return false;
+   if(PVFilter == 0)
+      return false;
+   if(ClusterCompatibilityFilter == 0)
+      return false;
+   if(HFCoincidenceFilter == 0)
+      return false;
+   if(CollisionEventSelection == 0)
+      return false;
+
+   return true;
+}
+
 bool SkimTreeMessenger::GetEntry(int iEntry)
 {
    if(Tree == NULL)

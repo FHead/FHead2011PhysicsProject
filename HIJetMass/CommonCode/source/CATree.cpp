@@ -286,3 +286,29 @@ Node *FindSDNode(Node *HeadNode, double ZCut, double Beta, double R0)
    return Current;
 }
 
+int NodeDistance(Node *Child, Node *Root)
+{
+   if(Child == NULL || Root == NULL)
+      return -1;
+
+   if(Child == Root)
+      return 0;
+
+   int Count = 0;
+   while(Child != Root)
+   {
+      Child = Child->Parent;
+      Count = Count + 1;
+
+      if(Child == NULL)
+         return -1;
+   }
+
+   return Count;
+}
+
+
+
+
+
+

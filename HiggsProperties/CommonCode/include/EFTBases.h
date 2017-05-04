@@ -13,6 +13,8 @@ class LoopBasis2;
 class ExtendedAVVBasis;
 struct FullAVVBasisVerbose;
 union FullAVVBasis;
+struct PolarSymmetricFullAVVBasisVerbose;
+union PolarSymmetricFullAVVBasis;
 
 std::ostream &operator <<(std::ostream &out, AVVBasis &A);
 std::ostream &operator <<(std::ostream &out, HiggsBasis &H);
@@ -235,6 +237,35 @@ public:
    FullAVVBasisVerbose AVV;
 public:
    FullAVVBasis();
+   FullAVVBasis(PolarSymmetricFullAVVBasis &P);
+};
+
+struct PolarSymmetricFullAVVBasisVerbose
+{
+   double A;
+   double Theta;
+   double PhiD, ThetaD;   // VV, V = V, (ZZ, VV, AA)
+   double PhiO, ThetaO;   // VV', V != V', (ZV, ZA, VA)
+   double ThetaZZ, ThetaVV, ThetaAA, ThetaZV, ThetaZA, ThetaVA;
+   double Psi12ZZ, Psi12VV, Psi12AA, Psi12ZV, Psi12ZA, Psi12VA;
+   double Psi34ZZ, Psi34VV, Psi34AA, Psi34ZV, Psi34ZA, Psi34VA;
+   double ThetaA1ZZ, ThetaA2ZZ, ThetaA3ZZ, ThetaA4ZZ;
+   double ThetaA1VV, ThetaA2VV, ThetaA3VV, ThetaA4VV;
+   double ThetaA1AA, ThetaA2AA, ThetaA3AA, ThetaA4AA;
+   double ThetaA1ZV, ThetaA2ZV, ThetaA3ZV, ThetaA4ZV;
+   double ThetaA1ZA, ThetaA2ZA, ThetaA3ZA, ThetaA4ZA;
+   double ThetaA1VA, ThetaA2VA, ThetaA3VA, ThetaA4VA;
+};
+
+union PolarSymmetricFullAVVBasis
+{
+public:
+   double P[48];
+   PolarSymmetricFullAVVBasisVerbose V;
+public:
+   PolarSymmetricFullAVVBasis();
+   PolarSymmetricFullAVVBasis(FullAVVBasis &AVV);
+   double GetAngle(double X, double Y);
 };
 
 #endif

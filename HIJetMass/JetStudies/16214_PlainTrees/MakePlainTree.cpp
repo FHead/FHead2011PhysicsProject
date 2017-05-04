@@ -139,8 +139,11 @@ int main(int argc, char *argv[])
 
    for(int iE = 0; iE < EntryCount; iE++)
    {
-      Bar.Update(iE);
-      Bar.Print();
+      if(iE < 200 || (iE % (EntryCount / 300)) == 0)
+      {
+         Bar.Update(iE);
+         Bar.Print();
+      }
 
       MHiEvent.GetEntry(iE);
       MJet.GetEntry(iE);
@@ -221,6 +224,11 @@ int main(int argc, char *argv[])
          {
             TreeMatchDR = BestDR;
             TreeMatchPT = Jets[BestJet].perp();
+
+            if(TreeJetPT < 80 && TreeMatchPT < 80)   // no need to store them!
+               continue;
+            if(abs(TreeJetEta) > 1.5)
+               continue;
 
             vector<PseudoJet> Constituents = Jets[BestJet].constituents();
             vector<Node *> Nodes;

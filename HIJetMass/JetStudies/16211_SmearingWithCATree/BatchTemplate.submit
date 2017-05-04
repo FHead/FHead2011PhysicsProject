@@ -48,8 +48,8 @@ Mod=
 # cmsStage -f Output11.root ${OutputBase}11/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output12.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.10 0.20 1.00 0.8 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output12.root ${OutputBase}12/$Mod$OutputName
-# __EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
-# cmsStage -f Output13.root ${OutputBase}13/$Mod$OutputName
+__EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
+cmsStage -f Output13.root ${OutputBase}13/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output14.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 0.6 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output14.root ${OutputBase}14/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output15.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.04 0.20 1.00 0.8 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
@@ -66,7 +66,9 @@ Mod=
 # cmsStage -f Output20.root ${OutputBase}20/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output21.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.05 0.8 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output21.root ${OutputBase}21/$Mod$OutputName
-__EXECUTABLE__ Input.root Output22.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 0.95 0.8 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
-cmsStage -f Output22.root ${OutputBase}22/$Mod$OutputName
+# __EXECUTABLE__ Input.root Output22.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 0.95 0.8 0 __EXTRA1__ __EXTRA2__ __EXTRA3__
+# cmsStage -f Output22.root ${OutputBase}22/$Mod$OutputName
+# __EXECUTABLE__ Input.root Output23.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.10 0.07 0.18 1.00 0.8  0 __EXTRA1__ __EXTRA2__ __EXTRA3__
+# cmsStage -f Output23.root ${OutputBase}23/$Mod$OutputName
 
 

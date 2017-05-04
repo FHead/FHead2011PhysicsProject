@@ -97,11 +97,11 @@ int main(int argc, char *argv[])
       ModBase = atoi(argv[14]);
    }
 
-   DataHelper DHFile("SimpleFitParameters.dh");
+   // DataHelper DHFile("SimpleFitParameters.dh");
+   DataHelper DHFile("SimpleFitParametersMBCymbal.dh");
 
    DataHelper RhoDHFile("RhoDatabase.dh");
-   string RhoTag = "AA6Dijet";
-
+   string RhoTag = "AA6DijetCymbal";
    if(IsData == true)
       RhoTag = "AAData";
 
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(1);
 
-   pair<double, pair<int, int> > *Distances = new pair<double, pair<int, int> >[MAXSIZE];
+   // pair<double, pair<int, int>> *Distances = new pair<double, pair<int, int>>[MAXSIZE];
 
    for(int iEntry = 0, ReuseCount = 1; iEntry < EntryCount; ReuseCount++)
    {
@@ -548,7 +548,7 @@ int main(int argc, char *argv[])
       }
    }
 
-   delete[] Distances;
+   // delete[] Distances;
 
    Bar.Update(EntryCount);
    Bar.Print();

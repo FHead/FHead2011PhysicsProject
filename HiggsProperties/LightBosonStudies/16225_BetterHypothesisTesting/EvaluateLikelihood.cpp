@@ -18,8 +18,10 @@ using namespace std;
 #include "AngleConversion.h"
 #include "Cuts.h"
 
-#include "FitClass.h"
 #include "Likelihood.h"
+#include "ReducedLikelihood.h"
+
+#include "FitClass.h"
 
 #define MODELCOUNT 8
 #define MAXEVENT 50000
@@ -121,6 +123,11 @@ int main(int argc, char *argv[])
    // Loop over scenarios
    for(int iS = 0; iS < (int)Scenarios.size(); iS++)
    {
+      cout << "Now running scenario #" << iS << " with (SEM = " << Scenarios[iS].SEM << ", "
+         << "SEE = " << Scenarios[iS].SEE << ", "
+         << "BEM = " << Scenarios[iS].BEM << ", "
+         << "BEE = " << Scenarios[iS].BEE << ")" << endl;
+
       // output text file
       ofstream out_fix("LikelihoodFixed_" + Tag + Form("_Scenario%d", iS));
       ofstream out_float("LikelihoodFloated_" + Tag + Form("_Scenario%d", iS));
@@ -487,6 +494,8 @@ int main(int argc, char *argv[])
       {
          delete[] LLFixB[i];
          delete[] LLFloatB[i];
+         delete[] LLFixBFloatA2UV[i];
+         delete[] LLFloatBFloatA2UV[i];
       }
    }
 
@@ -544,7 +553,7 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
          IS[i][j] = DHFile["0TeV"][Prefix+"1_"+Suffix[i]+"_"+Suffix[j]].GetDouble();
    IB = DHFile["0TeV"][Prefix+"2_DDbar"].GetDouble() * 2;
 
-   int EntryCount = T->GetEntries() * 0.05;
+   int EntryCount = T->GetEntries() * 1.00;
    ProgressBar Bar(cout, EntryCount);
    for(int iE = 0; iE < EntryCount; iE++)
    {
@@ -567,8 +576,8 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
       if(PassPairingCuts(Leptons)[Cut-'A'] == false)
          continue;
 
-      for(int i = 0; i < 72; i++)
-         for(int j = 0; j < 72; j++)
+      for(int i = 0; i < 36; i++)
+         for(int j = 0; j < 36; j++)
             Messenger.IS[i][j] = IS[i][j];
       Messenger.IB = IB;
 

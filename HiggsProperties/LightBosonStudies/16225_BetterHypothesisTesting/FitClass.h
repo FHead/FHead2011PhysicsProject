@@ -3,6 +3,9 @@
 using namespace std;
 
 #include "Likelihood.h"
+#include "ReducedLikelihood.h"
+
+using namespace RealLikelihood;
 
 class FitClass;
 class FitConfiguration;

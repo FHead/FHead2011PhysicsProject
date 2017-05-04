@@ -9,6 +9,7 @@ cd -
 
 ln -s $WORKDIR/RunLikelihood .
 ln -s $WORKDIR/Normalization.dh .
+ln -s $WORKDIR/Trees* .
 
 Model=__MODEL__
 Cut=__CUT__
@@ -25,10 +26,18 @@ echo "ID = $ID"
    Trees16153/ddbar_noPDF_to_4e_18p4GeV_GenCuts_${ID}.root \
    $Cut ${Model}_${Cut}_${ID}
 
-bzip2 Likelihood*_${Model}_${Cut}_${ID}_Scenario*
+tar zcvf AllLikelihood_${Model}_${Cut}_${ID}.tar.gz Likelihood*_${Model}_${Cut}_${ID}_Scenario*
 
 mkdir -p $WORKDIR/Result
+mkdir -p $WORKDIR/PDFResult
 
-mv Likelihood*_${Model}_${Cut}_${ID}_Scenario*.bz2 $WORKDIR/Result/
-mv ResultHypothesisTesting_${Model}_${Cut}_${ID}.pdf $WORKDIR/Result/
+# cp AllLikelihood_${Model}_${Cut}_${ID}.tar.gz $WORKDIR/Result/
+
+BaseDirAfterWorkspace=`echo $WORKDIR | tr '/' '\n' | grep -A 999 PhysicsWorkspace | tail -n+2 | tr '\n' '/'`
+cmsStage AllLikelihood_${Model}_${Cut}_${ID}.tar.gz /store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/AllLikelihood_${Model}_${Cut}_${ID}.tar.gz
+
+mv ResultHypothesisTesting_${Model}_${Cut}_${ID}.pdf $WORKDIR/PDFResult/
+
+
+
 

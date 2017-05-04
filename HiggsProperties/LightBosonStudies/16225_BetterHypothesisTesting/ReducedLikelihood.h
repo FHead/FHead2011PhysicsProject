@@ -1,5 +1,5 @@
-#ifndef Likelihood_h_16225
-#define Likelihood_h_16225
+#ifndef ReducedLikelihood_h_16225
+#define ReducedLikelihood_h_16225
 
 #include <iostream>
 #include <vector>
@@ -12,15 +12,15 @@ using namespace std;
 #include "Cuts.h"
 #include "Lists.h"
 
-namespace FullLikelihood
+namespace RealLikelihood
 {
    class Likelihood;
-   
+
    class Likelihood
    {
    public:
-      double VS[72][72];
-      double IS[72][72];
+      double VS[36][36];
+      double IS[36][36];
       double VB;
       double IB;
    public:
@@ -31,6 +31,7 @@ namespace FullLikelihood
       void SetBranchAddress(TTree *T);
    };
 }
+
 
 #endif
 

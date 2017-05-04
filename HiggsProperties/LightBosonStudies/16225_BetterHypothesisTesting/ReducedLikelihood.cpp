@@ -1,12 +1,12 @@
-#include "Likelihood.h"
+#include "ReducedLikelihood.h"
 
-using namespace FullLikelihood;
+using namespace RealLikelihood;
 
 Likelihood::Likelihood()
 {
-   for(int i = 0; i < 72; i++)
+   for(int i = 0; i < 36; i++)
    {
-      for(int j = 0; j < 72; j++)
+      for(int j = 0; j < 36; j++)
       {
          VS[i][j] = 0;
          IS[i][j] = 1;
@@ -19,9 +19,9 @@ Likelihood::Likelihood()
 
 Likelihood::Likelihood(const Likelihood &L)
 {
-   for(int i = 0; i < 72; i++)
+   for(int i = 0; i < 36; i++)
    {
-      for(int j = 0; j < 72; j++)
+      for(int j = 0; j < 36; j++)
       {
          VS[i][j] = L.VS[i][j];
          IS[i][j] = L.IS[i][j];
@@ -34,9 +34,9 @@ Likelihood::Likelihood(const Likelihood &L)
 
 Likelihood &Likelihood::operator =(const Likelihood &L)
 {
-   for(int i = 0; i < 72; i++)
+   for(int i = 0; i < 36; i++)
    {
-      for(int j = 0; j < 72; j++)
+      for(int j = 0; j < 36; j++)
       {
          VS[i][j] = L.VS[i][j];
          IS[i][j] = L.IS[i][j];
@@ -54,18 +54,18 @@ double Likelihood::Apply(FullAVVBasis &A, double F) const
    double VSAll = 0;
    double ISAll = 0;
 
-   for(int i = 0; i < 72; i++)
+   for(int i = 0; i < 36; i++)
    {
       if(A.A[i] == 0)
          continue;
 
-      for(int j = 0; j < 72; j++)
+      for(int j = 0; j < 36; j++)
       {
          if(A.A[j] == 0)
             continue;
 
-         VSAll = VSAll + A.A[i] * A.A[j] * VS[i][j];
-         ISAll = ISAll + A.A[i] * A.A[j] * IS[i][j];
+         VSAll = VSAll + A.A[i*2] * A.A[j*2] * VS[i][j];
+         ISAll = ISAll + A.A[i*2] * A.A[j*2] * IS[i][j];
       }
    }
 
@@ -94,30 +94,27 @@ void Likelihood::SetBranchAddress(TTree *T)
 
    vector<string> Suffix = GetXVVSignalSuffixList();
 
-   bool Ignore[72] = {false};
-   for(int i = 0; i < 72; i++)
+   bool Ignore[36] = {false};
+   for(int i = 0; i < 36; i++)
       Ignore[i] = false;
 
-   for(int i = 0; i < 8; i++)   // ZZ
+   for(int i = 0; i < 4; i++)   // ZZ
       Ignore[i] = true;
-   for(int i = 16; i < 24; i++)   // ZA
+   for(int i = 8; i < 12; i++)   // ZA
       Ignore[i] = true;
-   for(int i = 48; i < 56; i++)   // AZ
+   for(int i = 24; i < 28; i++)   // AZ
       Ignore[i] = true;
-   for(int i = 64; i < 72; i++)   // AA
-      Ignore[i] = true;
-
-   for(int i = 1; i < 72; i = i + 2)   // Imaginary
+   for(int i = 32; i < 36; i++)   // AA
       Ignore[i] = true;
 
-   for(int i = 0; i < 72; i++)
+   for(int i = 0; i < 36; i++)
    {
-      for(int j = 0; j < 72; j++)
+      for(int j = 0; j < 36; j++)
       {
          if(Ignore[i] == true || Ignore[j] == true)
-            T->SetBranchStatus(Form("B1_%s_%s", Suffix[i].c_str(), Suffix[j].c_str()), false);
+            T->SetBranchStatus(Form("B1_%s_%s", Suffix[i*2].c_str(), Suffix[j*2].c_str()), false);
          else
-            T->SetBranchAddress(Form("B1_%s_%s", Suffix[i].c_str(), Suffix[j].c_str()), &VS[i][j]);
+            T->SetBranchAddress(Form("B1_%s_%s", Suffix[i*2].c_str(), Suffix[j*2].c_str()), &VS[i][j]);
       }
    }
 

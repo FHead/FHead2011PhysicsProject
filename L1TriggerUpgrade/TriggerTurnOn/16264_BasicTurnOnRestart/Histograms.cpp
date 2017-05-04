@@ -157,15 +157,15 @@ vector<double> ToVector(int N, double X1, double X2, double X3,
    if(N > 25)
       cerr << "[ToVector] Warning!  More than 25 entries is currently not supported!" << endl;
 
-   if(N >= 1)   Result.push_back(X1);
-   if(N >= 2)   Result.push_back(X2);
-   if(N >= 3)   Result.push_back(X3);
-   if(N >= 4)   Result.push_back(X4);
-   if(N >= 5)   Result.push_back(X5);
-   if(N >= 6)   Result.push_back(X6);
-   if(N >= 7)   Result.push_back(X7);
-   if(N >= 8)   Result.push_back(X8);
-   if(N >= 9)   Result.push_back(X9);
+   if(N >= 1)    Result.push_back(X1);
+   if(N >= 2)    Result.push_back(X2);
+   if(N >= 3)    Result.push_back(X3);
+   if(N >= 4)    Result.push_back(X4);
+   if(N >= 5)    Result.push_back(X5);
+   if(N >= 6)    Result.push_back(X6);
+   if(N >= 7)    Result.push_back(X7);
+   if(N >= 8)    Result.push_back(X8);
+   if(N >= 9)    Result.push_back(X9);
    if(N >= 10)   Result.push_back(X10);
    if(N >= 11)   Result.push_back(X11);
    if(N >= 12)   Result.push_back(X12);
@@ -176,7 +176,7 @@ vector<double> ToVector(int N, double X1, double X2, double X3,
    if(N >= 17)   Result.push_back(X17);
    if(N >= 18)   Result.push_back(X18);
    if(N >= 19)   Result.push_back(X19);
-   if(N >= 20)   Result.push_back(X10);
+   if(N >= 20)   Result.push_back(X20);
    if(N >= 21)   Result.push_back(X21);
    if(N >= 22)   Result.push_back(X22);
    if(N >= 23)   Result.push_back(X23);

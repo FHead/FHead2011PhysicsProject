@@ -8,6 +8,7 @@ using namespace std;
 #include "TGraphAsymmErrors.h"
 #include "TGraph.h"
 #include "TF1.h"
+#include "TH2D.h"
 #include "TCanvas.h"
 #include "TLegend.h"
 
@@ -27,6 +28,7 @@ using namespace std;
 #define TypeDR 5
 #define TypeRho 6
 #define TypeGhost 7
+#define TypeMB 8
 
 struct Box;
 class TreeMessenger;
@@ -38,7 +40,7 @@ double GetBinCenter(int B);
 double GetSysBinCenter(int B);
 int FindBin(double X);
 void Transcribe(vector<double> V, TGraphAsymmErrors *G);
-void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<double> N2, vector<double> M2);
+void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<double> N2, vector<double> M2, TGraphAsymmErrors *G);
 
 struct Box
 {
@@ -128,6 +130,8 @@ public:
          RMS = exp(1.31499 - 21.0415 * X) + exp(3.28132 - 3.5001 * X);
       else if(Type == TypeGhost && IsNominal == false)
          RMS = exp(1.15381 - 23.3627 * X) + exp(3.28807 - 3.61712 * X);
+      else if(Type == TypeMB && IsNominal == false)
+         RMS = exp(1.28173 - 24.0914 * X) + exp(3.29664 - 3.57278 * X);
       else
          RMS = exp(1.39331 - 24.9821 * X) + exp(3.33588 - 3.5139 * X);
 
@@ -234,6 +238,8 @@ int main(int argc, char *argv[])
       Type = TypeRho;
    if(StringType == "Ghost")
       Type = TypeGhost;
+   if(StringType == "MB")
+      Type = TypeMB;
 
    Tag = Form("%s_%d", Tag.c_str(), SD);
 
@@ -400,8 +406,8 @@ int main(int argc, char *argv[])
       Transcribe(Error[iC], GRatio[iC]);
 
       PdfFile.AddTextPage(Labels[iC]);
-      AddPlot(PdfFile, HN[iC], HM[iC], HN2[iC], HM2[iC]);
-      PdfFile.AddPlot(GRatio[iC], "apl");
+      AddPlot(PdfFile, HN[iC], HM[iC], HN2[iC], HM2[iC], GRatio[iC]);
+      // PdfFile.AddPlot(GRatio[iC], "apl");
    }
 
    for(int iC = 0; iC < (int)Cuts.size(); iC++)
@@ -522,7 +528,7 @@ void Transcribe(vector<double> V, TGraphAsymmErrors *G)
    }
 }
 
-void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<double> N2, vector<double> M2)
+void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<double> N2, vector<double> M2, TGraphAsymmErrors *G)
 {
    TH1D HN("HN", "", BIN, 0.0, 0.4);
    TH1D HM("HM", "", BIN, 0.0, 0.4);
@@ -563,13 +569,22 @@ void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<
 
    PdfFile.AddCanvas(C);
 
-   TGraph G;
-   G.SetPoint(0, 0, 0);
-   G.SetPoint(1, 10000, 0);
+   TGraph GLine;
+   GLine.SetPoint(0, 0, 0);
+   GLine.SetPoint(1, 10000, 0);
 
    HD.SetStats(0);
    HD.Draw();
-   G.Draw("l");
+   GLine.Draw("l");
+
+   PdfFile.AddCanvas(C);
+
+   TH2D HWorld("HWorld", ";SD Mass / Jet PT;log(Ratio)", 100, 0, 0.4, 100, -0.5, 0.5);
+   HWorld.SetStats(0);
+
+   HWorld.Draw();
+   G->Draw("b");
+   HD.Draw("same");
 
    PdfFile.AddCanvas(C);
 }

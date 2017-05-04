@@ -177,11 +177,11 @@ vector<double> ToVector(int N, double X1, double X2, double X3,
    if(N >= 18)   Result.push_back(X18);
    if(N >= 19)   Result.push_back(X19);
    if(N >= 20)   Result.push_back(X10);
-   if(N >= 21)   Result.push_back(X11);
-   if(N >= 22)   Result.push_back(X12);
-   if(N >= 23)   Result.push_back(X13);
-   if(N >= 24)   Result.push_back(X14);
-   if(N >= 25)   Result.push_back(X15);
+   if(N >= 21)   Result.push_back(X21);
+   if(N >= 22)   Result.push_back(X22);
+   if(N >= 23)   Result.push_back(X23);
+   if(N >= 24)   Result.push_back(X24);
+   if(N >= 25)   Result.push_back(X25);
 
    return Result;
 }

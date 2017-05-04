@@ -189,6 +189,7 @@ int main(int argc, char *argv[])
       MHiEvent.GetEntry(iE);
       MJet.GetEntry(iE);
       MSDJet.GetEntry(iE);
+      MPUJet.GetEntry(iE);
       MPF.GetEntry(iE);
       MRho.GetEntry(iE);
       MHLT.GetEntry(iE);
@@ -330,7 +331,7 @@ int main(int argc, char *argv[])
             TreeMatchDR = BestDR;
             TreeMatchPT = Jets[BestJet].perp();
 
-            if(TreeJetPT < 80 && TreeMatchPT < 80)   // no need to store them!
+            if(TreeJetPT < 40 && TreeMatchPT < 40)   // no need to store them!
                continue;
             if(abs(TreeJetEta) > 1.5)
                continue;

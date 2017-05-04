@@ -37,6 +37,8 @@ int main(int argc, char *argv[])
       if(H == NULL)
          continue;
 
+      H->Rebin(5);
+
       TF1 F("F", "gaus");
 
       F.SetParLimits(1, 0, 400);

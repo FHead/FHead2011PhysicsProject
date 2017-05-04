@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
    FileNames[7]  = "OutputFile_DR_%d.root";         Labels[7]  = "DR";
    FileNames[8]  = "OutputFile_Range_%d.root";      Labels[8]  = "Range";
    FileNames[9]  = "OutputFile_Trigger_%d.root";    Labels[9]  = "Trigger";
-   FileNames[10] = "OutputFile_GluonQuark_%d.root"; Labels[10] = "GluonQuark";
+   FileNames[10] = "OutputFile_QuarkGluon_%d.root"; Labels[10] = "QuarkGluon";
    
    vector<TGraph *> Graphs;
 
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
    TCanvas C;
 
-   TH2D HWorld("HWorld", ";Mass/PT;%", 100, 0.00, 0.27, 100, 0, 40);
+   TH2D HWorld("HWorld", ";Mass/PT;%", 100, 0.00, 0.27, 100, 0, 100);
    HWorld.SetStats(0);
 
    HWorld.Draw();

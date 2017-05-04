@@ -25,19 +25,9 @@ using namespace std;
 #define WEIGHTMIN -15
 #define WEIGHTMAX 25
 
-#define TypeNormal 0
-#define TypePT 1
-#define TypeEta 2
-#define TypeJER 3
-#define TypeSmear 4
-#define TypeDR 5
-#define TypeRho 6
-#define TypeGhost 7
-#define TypeMB 8
-#define TypeRange 9
-#define TypeRange2 10
+#define TypeQuarkGluon 0
 
-#define TypeLinear -1
+#define TypeLinear 0
 #define TypeQuadratic 1
 #define TypeExponential 2
 
@@ -77,21 +67,18 @@ public:
    double JetPT;
    double JetEta;
    double JetPhi;
-   double OriginalJetPT;
-   double OriginalJetEta;
-   double OriginalJetPhi;
    double SDMass;
    double SDZG;
+   double SDPT1;
+   double SDPT2;
    double SDDR;
-   double ExcessPT;
-   double TotalPTInJet;
-   double Rho;
    double MatchedDR;
    double Weight;
+   int FlavorB;
    int Type;
    bool IsNominal;
 public:
-   TreeMessenger(TTree *T, int SD = 0, int type = TypeNormal, bool isnominal = true)
+   TreeMessenger(TTree *T, int SD = 0, int type = TypeQuarkGluon, bool isnominal = true)
    {
       Tree = T;
 
@@ -103,26 +90,25 @@ public:
 
       Tree->SetBranchAddress("MCWeight",     &MCWeight);
       Tree->SetBranchAddress("Centrality",   &Centrality);
-      Tree->SetBranchAddress("NewJetPT",     &JetPT);
-      Tree->SetBranchAddress("NewJetEta",    &JetEta);
-      Tree->SetBranchAddress("NewJetPhi",    &JetPhi);
-      Tree->SetBranchAddress("JetPT",        &OriginalJetPT);
-      Tree->SetBranchAddress("JetEta",       &OriginalJetEta);
-      Tree->SetBranchAddress("JetPhi",       &OriginalJetPhi);
-      Tree->SetBranchAddress("TotalPTInJet", &TotalPTInJet);
-      Tree->SetBranchAddress("Rho",          &Rho);
+      Tree->SetBranchAddress("MatchPT",      &JetPT);
+      Tree->SetBranchAddress("JetEta",       &JetEta);
+      Tree->SetBranchAddress("JetPhi",       &JetPhi);
+      Tree->SetBranchAddress("MatchDR",      &MatchedDR);
+      Tree->SetBranchAddress("FlavorB",      &FlavorB);
 
       if(SD == 0)
       {
-         Tree->SetBranchAddress("NewJetSDMass", &SDMass);
-         Tree->SetBranchAddress("NewJetZG",     &SDZG);
-         Tree->SetBranchAddress("NewJetDR",     &SDDR);
+         Tree->SetBranchAddress("SDMass0",    &SDMass);
+         Tree->SetBranchAddress("SubJet1PT0", &SDPT1);
+         Tree->SetBranchAddress("SubJet2PT0", &SDPT2);
+         Tree->SetBranchAddress("SubJetDR0",  &SDDR);
       }
       else
       {
-         Tree->SetBranchAddress("NewJetSDMass2", &SDMass);
-         Tree->SetBranchAddress("NewJetZG2",     &SDZG);
-         Tree->SetBranchAddress("NewJetDR2",     &SDDR);
+         Tree->SetBranchAddress("SDMass7",    &SDMass);
+         Tree->SetBranchAddress("SubJet1PT7", &SDPT1);
+         Tree->SetBranchAddress("SubJet2PT7", &SDPT2);
+         Tree->SetBranchAddress("SubJetDR7",  &SDDR);
       }
    }
    void GetEntry(int IEntry)
@@ -132,64 +118,19 @@ public:
 
       Tree->GetEntry(IEntry);
 
-      MatchedDR = GetDR(JetEta, JetPhi, OriginalJetEta, OriginalJetPhi);
+      SDZG = min(SDPT1, SDPT2) / (SDPT1 + SDPT2);
 
-      double X = Centrality / 100;
-      // double RMST = 19.15 - 23.28 * X + 4.567e-7 * X * X - 467.4 * X * X * X + 2110 * X * X * X * X
-      //    - 2993 * X * X * X * X * X + 227.9 * X * X * X * X * X * X + 2019 * X * X * X * X * X * X * X
-      //    + 876.3 * X * X * X * X * X * X * X * X - 3027 * X * X * X * X * X * X * X * X * X
-      //    + 1239 * X * X * X * X * X * X * X * X * X * X;
-      
-      double RMST = exp(1.14611 - 27.2452 * X) + exp(3.27512 - 3.59286 * X);   // 1
-      
-      double RMS = exp(1.14611 - 27.2452 * X) + exp(3.27512 - 3.59286 * X);   // 1
-      if(Type == TypeRho && IsNominal == false)   // 9
-         RMS = exp(1.10327 - 25.3083 * X) + exp(3.27481 - 3.50281 * X);
-      else if(Type == TypeGhost && IsNominal == false)   // 15
-         RMS = exp(1.14485 - 27.1929 * X) + exp(3.27483 - 3.59216 * X);
-      else if(Type == TypeMB && IsNominal == false)   // 21 & 22
-         RMS = exp(1.07477 - 28.1021 * X) + exp(3.28557 - 3.59269 * X);
-      else if(Type == TypeRange && IsNominal == false)   // 13
-         RMS = exp(1.25321 - 27.3256 * X) + exp(3.3154 - 3.53261 * X);
-      else if(Type == TypeRange2 && IsNominal == true)   // 13
-         RMS = exp(1.25321 - 27.3256 * X) + exp(3.3154 - 3.53261 * X);
-      else if(Type == TypeRange2 && IsNominal == false)   // 17
-         RMS = exp(1.28384 - 29.506 * X) + exp(3.34358 - 3.537 * X);
-
-      if(Type == TypeSmear && IsNominal == false)
-         RMST = RMST * 0.95;
-
-      ExcessPT = TotalPTInJet - 0.4 * 0.4 * PI * Rho;
-      Weight = MCWeight * exp(-ExcessPT * ExcessPT / (2 * RMST * RMST)) / exp(-ExcessPT * ExcessPT / (2 * RMS * RMS));
-
-      if(Type == TypeEta)
-      {
-         if(IsNominal == true && fabs(JetEta) < 0.5)
-            Weight = Weight * 2;
-         if(IsNominal == false && fabs(JetEta) > 0.5)
-            Weight = Weight * 2;
-      }
-
-      if(Type == TypeJER && IsNominal == false)
-      {
-         double Factor = DrawGaussian(1, 0.05);
-         JetPT = JetPT * Factor;
-         SDMass = SDMass * Factor;
-      }
+      Weight = MCWeight;
    }
    bool InBox(Box B)
    {
-      double Factor = 1;
-      if(IsNominal == false && Type == TypePT)
-         Factor = 0.95;
-
-      if(JetPT * Factor < B.PTMin)
+      if(JetPT < B.PTMin)
          return false;
-      if(JetPT * Factor >= B.PTMax)
+      if(JetPT >= B.PTMax)
          return false;
-      if(Centrality / 100 < B.CentralityMin)
+      if(Centrality < B.CentralityMin)
          return false;
-      if(Centrality / 100 >= B.CentralityMax)
+      if(Centrality >= B.CentralityMax)
          return false;
 
       return true;
@@ -207,23 +148,32 @@ public:
       if(MatchedDR > 0.1)
          return false;
 
+      if(Type == TypeQuarkGluon)
+      {
+         if(IsNominal == true && IsLight() == false)
+            return false;
+         if(IsNominal == false && IsGluon() == false)
+            return false;
+      }
+
       return true;
    }
    bool DRCut()
    {
-      if(Type == TypeDR)
-      {
-         if(IsNominal == true && SDDR < 0.095)
-            return false;
-         if(IsNominal == false && SDDR < 0.105)
-            return false;
-
-         return true;
-      }
-
       if(SDDR < 0.1)
          return false;
-
+      return true;
+   }
+   bool IsLight()
+   {
+      if(FlavorB != 1 && FlavorB != -1 && FlavorB != 2 && FlavorB != -2)
+         return false;
+      return true;
+   }
+   bool IsGluon()
+   {
+      if(FlavorB != 21)
+         return false;
       return true;
    }
 };
@@ -244,27 +194,9 @@ int main(int argc, char *argv[])
    string StringFunctionType = argv[6];
    double Right = atof(argv[7]);
 
-   int Type = TypeNormal;
-   if(StringType == "PT")
-      Type = TypePT;
-   if(StringType == "Eta")
-      Type = TypeEta;
-   if(StringType == "JER")
-      Type = TypeJER;
-   if(StringType == "Smear")
-      Type = TypeSmear;
-   if(StringType == "DR")
-      Type = TypeDR;
-   if(StringType == "Rho")
-      Type = TypeRho;
-   if(StringType == "Ghost")
-      Type = TypeGhost;
-   if(StringType == "MB")
-      Type = TypeMB;
-   if(StringType == "Range")
-      Type = TypeRange;
-   if(StringType == "Range2")
-      Type = TypeRange2;
+   int Type = TypeQuarkGluon;
+   if(StringType == "QuarkGluon")
+      Type = TypeQuarkGluon;
 
    int FunctionType = TypeQuadratic;
    if(StringFunctionType == "Quadratic")
@@ -284,8 +216,8 @@ int main(int argc, char *argv[])
    TFile F1(BaseFile);
    TFile F2(ModifiedFile);
 
-   TTree *T1 = (TTree *)F1.Get("OutputTree");
-   TTree *T2 = (TTree *)F2.Get("OutputTree");
+   TTree *T1 = (TTree *)F1.Get("T");
+   TTree *T2 = (TTree *)F2.Get("T");
 
    TreeMessenger M1(T1, SD, Type, true);
    TreeMessenger M2(T2, SD, Type, false);
@@ -372,7 +304,7 @@ int main(int argc, char *argv[])
          if(M1.DRCut() == true)
          {
             HNW[iC][iWB] = HNW[iC][iWB] + 1;
-            if(log(M1.Weight) < 8.5)   // remove events with huge weight
+            // if(log(M1.Weight) < 8.5)   // remove events with huge weight
             {
                HNInt[iC] = HNInt[iC] + M1.Weight;
                HN[iC][iB] = HN[iC][iB] + M1.Weight;
@@ -414,7 +346,7 @@ int main(int argc, char *argv[])
          if(M2.DRCut() == true)
          {
             HMW[iC][iWB] = HMW[iC][iWB] + 1;
-            if(log(M2.Weight) < 8.5)   // remove events with huge weight
+            // if(log(M2.Weight) < 8.5)   // remove events with huge weight
             {
                HMInt[iC] = HMInt[iC] + M2.Weight;
                HM[iC][iB] = HM[iC][iB] + M2.Weight;
@@ -608,7 +540,7 @@ void TranscribeQuadratic(vector<pair<double, double>> V, TGraphAsymmErrors *G)
       double Mean = (V[Bin].first + V[Bin].second) / 2;
 
       G->SetPoint(i, X, Mean);
-      G->SetPointError(i, 0, 0, Mean - V[Bin].first, V[Bin].second - Mean);
+      G->SetPointError(i, 0, 0, (Mean - V[Bin].first) * 0.5, (V[Bin].second - Mean) * 0.5);
    }
 }
 
@@ -796,13 +728,6 @@ vector<pair<double, double>> QuadraticError(PdfFileHelper &PdfFile,
       Result[iS] = pair<double, double>(-BinResults[iS][Location], BinResults[iS][Location]);
    }
 
-   if(FunctionType == TypeExponential)   // fill in the artificial gap from exponential
-   {
-      for(int iS = SYSBIN - 1; iS > 0; iS--)
-         if(Result[iS].second > Result[iS-1].second)
-            Result[iS-1] = Result[iS];
-   }
-
    return Result;
 }
 
@@ -843,8 +768,8 @@ void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<
    Legend.SetFillStyle(0);
    Legend.SetTextSize(0.035);
    Legend.SetTextFont(42);
-   Legend.AddEntry(&HN, "Nominal", "l");
-   Legend.AddEntry(&HM, "Modified", "l");
+   Legend.AddEntry(&HN, "Quark", "l");
+   Legend.AddEntry(&HM, "Gluon", "l");
    Legend.Draw();
 
    PdfFile.AddCanvas(C);

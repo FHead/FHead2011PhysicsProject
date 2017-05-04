@@ -6,14 +6,15 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-   if(argc != 3)
+   if(argc != 4)
    {
-      cerr << "Usage: " << argv[0] << " FileName Size" << endl;
+      cerr << "Usage: " << argv[0] << " FileName SizeFirstBin SizeRest" << endl;
       return -1;
    }
 
    TFile F(argv[1], "RECREATE");
    double Size = atof(argv[2]);
+   double SizeRest = atof(argv[3]);
 
    for(int iC = 0; iC < 5; iC++)
    {
@@ -28,7 +29,10 @@ int main(int argc, char *argv[])
             double BinCenter = (i + 0.5) / 160 * (0.4 - 0.0);
 
             G->SetPoint(i, BinCenter, 0);
-            G->SetPointError(i, 0, 0, log(1 + Size), log(1 + Size));
+            if(iC == 0 && iPT == 1)
+               G->SetPointError(i, 0, 0, log(1 + Size), log(1 + Size));
+            else
+               G->SetPointError(i, 0, 0, log(1 + SizeRest), log(1 + SizeRest));
          }
 
          G->Write();

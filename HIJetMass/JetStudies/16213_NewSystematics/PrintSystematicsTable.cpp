@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
    double PTBin[] = {120, 140, 160, 180, 200, 300, 500};
 
    cout << "\\begin{table}[htbp!]" << endl;
-   cout << "   \\caption{Summary of systematics in the bulk in different jet PT and centrality bins.}" << endl;
+   cout << "   \\caption{Summary of systematics at 0.15 in different jet PT and centrality bins.}" << endl;
    cout << "   \\centering" << endl;
    cout << "   \\begin{tabular}{|c|c|c|c|c|c|c|c|c|}" << endl;
    cout << "      \\hline" << endl;

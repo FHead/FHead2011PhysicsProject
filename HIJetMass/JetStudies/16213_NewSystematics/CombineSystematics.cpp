@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
       FileNames.push_back(Form("OutputFile_DR_%d.root", SD));
       FileNames.push_back(Form("OutputFile_Range_%d.root", SD));
       FileNames.push_back(Form("OutputFile_Trigger_%d.root", SD));
-      FileNames.push_back(Form("OutputFile_GluonQuark_%d.root", SD));
+      FileNames.push_back(Form("OutputFile_QuarkGluon_%d.root", SD));
    }
    else
    {

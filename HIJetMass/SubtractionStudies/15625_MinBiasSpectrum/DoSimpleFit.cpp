@@ -30,11 +30,13 @@ int main(int argc, char *argv[])
    RhoMin = atof(argv[3]);
    RhoMax = atof(argv[4]);
 
-   DataHelper DHFile("SimpleFitParameters.dh");
+   // DataHelper DHFile("SimpleFitParameters.dh");
+   DataHelper DHFile("SimpleFitParametersMBCymbal.dh");
 
    SetThesisStyle();
 
-   TFile File("Result/HydjetMBDragos_0.root");
+   // TFile File("Result/HydjetMBDragos_0.root");
+   TFile File("CombinedResult/MBCymbal.root");
 
    TTree *Tree = (TTree *)File.Get("Tree");
 
@@ -42,31 +44,38 @@ int main(int argc, char *argv[])
    TF1 F("F", Model.c_str(), 0, 20);
    F.SetParameter(0, 1e6);
    F.SetParameter(1, 50);             F.FixParameter(1, 50);
-   F.SetParameter(2, 0.158);          // F.FixParameter(2, 0.158);
-   F.SetParameter(3, 1.5);
-   F.SetParameter(4, -1);
-   F.SetParameter(5, 4.5);
-   F.SetParameter(6, 0.003);
-   F.SetParameter(7, 0.5);
-   F.SetParameter(8, 0.0003);
-   F.SetParameter(9, 0.3);
+   F.SetParameter(2, 0.135);          // F.FixParameter(2, 0.158);
+   F.SetParameter(3, 2.239);
+   F.SetParameter(4, -1.027);
+   F.SetParameter(5, 2.449);
+   F.SetParameter(6, 0.001346);
+   F.SetParameter(7, 0.559);
+   F.SetParameter(8, 0.0004049);
+   F.SetParameter(9, 0.5874);
 
    TH1D HPT("HPT", ";PT;", 500, 0, 20);
    Tree->Draw("PT>>HPT",
       Form("abs(Eta) < %f && abs(Eta) >= %f && Rho < %f && Rho >= %f", AbsEtaMax, AbsEtaMin, RhoMax, RhoMin));
 
-   F.SetParLimits(6, 0.003, 0.003);
-   F.SetParLimits(7, 0.5, 0.5);
-   F.SetParLimits(8, 0.0003, 0.0003);
-   F.SetParLimits(9, 0.3, 0.3);
+   F.SetParLimits(2, 0.00, 0.25);
+   F.SetParLimits(6, 0.001, 0.002);
+   F.SetParLimits(7, 0.4, 0.7);
+   F.SetParLimits(8, 0.0001, 0.0008);
+   F.SetParLimits(9, 0.1, 10.0);
+   HPT.Fit(&F);
+   HPT.Fit(&F);
    HPT.Fit(&F);
    
-   F.SetParLimits(6, 0.0001, 0.01);
-   F.SetParLimits(7, 0.1, 1.0);
+   F.SetParLimits(2, 0.00, 0.25);
+   F.SetParLimits(6, 0.0, 0.10);
+   F.SetParLimits(7, 0.0, 10.0);
+   HPT.Fit(&F);
    HPT.Fit(&F);
    
-   F.SetParLimits(8, 0.00001, 0.001);
-   F.SetParLimits(9, 0.2, 0.6);
+   F.SetParLimits(2, 0.00, 0.25);
+   F.SetParLimits(8, 0.0000001, 0.001);
+   F.SetParLimits(9, 0.0, 10.6);
+   HPT.Fit(&F);
    HPT.Fit(&F);
    
    TCanvas Canvas;
@@ -101,7 +110,8 @@ int main(int argc, char *argv[])
 
    File.Close();
 
-   DHFile.SaveToFile("SimpleFitParameters.dh");
+   // DHFile.SaveToFile("SimpleFitParameters.dh");
+   DHFile.SaveToFile("SimpleFitParametersMBCymbal.dh");
 
    return 0;
 }

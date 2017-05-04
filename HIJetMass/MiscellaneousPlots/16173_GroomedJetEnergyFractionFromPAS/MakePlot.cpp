@@ -25,10 +25,10 @@ int main(int argc, char *argv[])
    PdfFile.AddTextPage("Quality control");
 
    // Input values
-   string PPDataFileName = "AAData_15.root";
-   string PPMCFileName = "AA6Dijet220_2.root";
-   string AADataFileName = "AAData_15.root";
-   string AAMCFileName = "AA6Dijet220_2.root";
+   string PPDataFileName = "PPData.root";
+   string PPMCFileName = "PPMC.root";
+   string AADataFileName = "AAData.root";
+   string AAMCFileName = "AAMC2.root";
 
    // Run everything
    MakePlot(PdfFile, true, true, PPDataFileName, PPMCFileName);
@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
 
    return 0;
 }
-
 
 void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, string MCFileName)
 {
@@ -59,6 +58,8 @@ void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, 
    int Bin = 50;
    double YMin = 0.02;
    double YMax = (Is0 ? 100 : 2000);
+
+   Min = 0.0;
 
    // Get histograms
    TH1D HData("HData", ";;", Bin, Min, Max);
@@ -107,7 +108,7 @@ void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, 
    C.SetLogy();
 
    HWorld.Draw();
-   HMC.Draw("bar same");
+   HMC.Draw("hist bar same");
    HData.Draw("same");
    HWorld.Draw("axis same");
 
@@ -150,7 +151,7 @@ void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, 
    PdfFile.AddCanvas(C);
 }
    
-   void FillHistogram(TH1D &H, string FileName, char SD, bool IsMC, bool IsPP)
+void FillHistogram(TH1D &H, string FileName, char SD, bool IsMC, bool IsPP)
 {
    TFile F(FileName.c_str());
 
@@ -168,7 +169,7 @@ void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, 
       T->SetBranchAddress("Centrality", &C);
    T->SetBranchAddress(Form("SubJetDR%c", SD), &DR);
 
-   int EntryCount = T->GetEntries();
+   int EntryCount = T->GetEntries() * 0.1;
    for(int iE = 0; iE < EntryCount; iE++)
    {
       T->GetEntry(iE);

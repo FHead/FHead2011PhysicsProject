@@ -13,7 +13,7 @@ using namespace std;
 #include "SetStyle.h"
 #include "DataHelper.h"
 
-#define MODELCOUNT 8
+#define MODELCOUNT 10
 
 struct Triplet;
 int main(int argc, char *argv[]);
@@ -39,10 +39,11 @@ int main(int argc, char *argv[])
    string Cut = "F";
    string File1 = "CombinedLikelihoodFixed_A1UU_F_1_Scenario1";
    string File2 = "CombinedLikelihoodFixed_A2UU_F_1_Scenario1";
+   string Type = "Fixed";
 
-   if(argc != 7)
+   if(argc != 8)
    {
-      cerr << "Usage: " << argv[0] << " Model1 Model2 Cut Scenario File1 File2" << endl;
+      cerr << "Usage: " << argv[0] << " Model1 Model2 Cut Scenario File1 File2 Type" << endl;
       return -1;
    }
 
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
    Scenario = argv[4];
    File1 = argv[5];
    File2 = argv[6];
+   Type = argv[7];
          
    if(Model1 > Model2)
       swap(Model1, Model2);
@@ -60,7 +62,7 @@ int main(int argc, char *argv[])
    
    SetThesisStyle();
 
-   PdfFileHelper PdfFile("PDF/ResultDoubleFile_" + Model1 + "_" + Model2 + "_" + Cut + "_Scenario" + Scenario + ".pdf");
+   PdfFileHelper PdfFile("PDF/ResultDoubleFile_" + Model1 + "_" + Model2 + "_" + Cut + "_Scenario" + Scenario + "_" + Type + ".pdf");
    PdfFile.AddTextPage(Model1 + " (black) vs " + Model2 + " (red)");
 
    vector<vector<double>> L1 = ReadLikelihood(File1);
@@ -72,7 +74,7 @@ int main(int argc, char *argv[])
       return 0;
    }
 
-   ofstream out("ModelComparison/NiceResult_" + Model1 + "_" + Model2 + "_" + Cut + "_Scenario" + Scenario + ".txt");
+   ofstream out("ModelComparison/NiceResult_" + Model1 + "_" + Model2 + "_" + Cut + "_Scenario" + Scenario + "_" + Type + ".txt");
 
    // Single model likelihood distributions
    for(int iM = 0; iM < MODELCOUNT; iM++)
@@ -297,7 +299,7 @@ int main(int argc, char *argv[])
             << " " << L2DMedianResult << " " << L1DSigmaPlusResult << " " << L1DSigmaMinusResult
             << " " << ModelP << endl;
 
-         string State = Model1 + " " + Model2 + " Cut" + Cut + " S" + Scenario + " " + Form("[%d %d]", iM1, iM2);
+         string State = Model1 + " " + Model2 + " Cut" + Cut + " S" + Scenario + " " + Form("[%d %d]", iM1, iM2) + " " + Type;
 
          DHFile[State]["L1DMedian Center"] = L1DMedianResult.Center;
          DHFile[State]["L1DMedian High"]   = L1DMedianResult.High;
@@ -320,6 +322,9 @@ int main(int argc, char *argv[])
          DHFile[State]["Model PValue"]     = ModelP;
       }
    }
+
+   PdfFile.AddTimeStampPage();
+   PdfFile.Close();
 
    out.close();
 

@@ -15,17 +15,18 @@ int main()
 {
    SetThesisStyle();
 
-   string ModelList[9] =
+   string ModelList[10] =
    {
-      "A1ZZ",
       "A1UU",
-      "A2UU",
-      "A3UU",
-      "A2UA",
-      "A2UZ",
+      "A1UUpA2UURI",
       "A1UUpA3UU",
-      "A1UURpA1UZR",
-      "A1UURIpA1UZRI"
+      "A1UZ",
+      "A1UZpA2UA",
+      "A2UA",
+      "A2UApA2UZ",
+      "A2UU",
+      "A2UZ",
+      "A3UU"
    };
 
    string Cuts[2] = {"F", "P"};
@@ -37,15 +38,12 @@ int main()
    PdfFileHelper PdfFile("SummaryPlots.pdf");
    PdfFile.AddTextPage("Some summary plots");
 
-   for(int iC = 0; iC < 2; iC++)
+   for(int iC = 1; iC < 2; iC++)
    {
-      for(int iM1 = 1; iM1 < 9; iM1++)
+      for(int iM1 = 0; iM1 < 10; iM1++)
       {
-         for(int iM2 = iM1 + 1; iM2 < 9; iM2++)
+         for(int iM2 = iM1 + 1; iM2 < 10; iM2++)
          {
-            if(iM1 == 7 && iM2 == 8)
-               continue;
-
             PdfFile.AddTextPage(Form("Models %s vs %s, Cut %s", ModelList[iM1].c_str(), ModelList[iM2].c_str(), Cuts[iC].c_str()));
 
             TGraphAsymmErrors GLD1, GLD1Plus, GLD1Minus;
@@ -71,14 +69,15 @@ int main()
             GModelPB.SetNameTitle("GModelPB", Form("Model p-value, Model %d vs %d, S+B", iM1, iM2));
 
             string StatePrefix = ModelList[iM1] + " " + ModelList[iM2] + " Cut" + Cuts[iC] + " ";
-            string StateSuffix = Form(" [%d %d]", iM1, iM2);
+            string StateSuffixS = Form(" [%d %d] 00", iM1, iM2);
+            string StateSuffixSB = Form(" [%d %d] 10", iM1, iM2);
 
             if(ModelList[iM1] > ModelList[iM2])
                StatePrefix = ModelList[iM2] + " " + ModelList[iM1] + " Cut" + Cuts[iC] + " ";
             
             for(int iS = 0; iS < 10; iS++)
             {
-               string State = StatePrefix + Form("S%d", iS) + StateSuffix;
+               string State = StatePrefix + Form("S%d", iS + 10) + StateSuffixS;
                
                GLD1.SetPoint(iS, Events[iS], DHFile[State]["L1DMedian Center"].GetDouble());
                GLD1.SetPointError(iS, 0, 0,
@@ -106,7 +105,7 @@ int main()
                   DHFile[State]["L2DMinus High"].GetDouble() - DHFile[State]["L2DMinus Center"].GetDouble());
                GModelP.SetPoint(iS, Events[iS], DHFile[State]["Model PValue"].GetDouble());
                
-               State = StatePrefix + Form("S%d", iS + 10) + StateSuffix;
+               State = StatePrefix + Form("S%d", iS + 20) + StateSuffixSB;
                
                GLD1B.SetPoint(iS, Events[iS], DHFile[State]["L1DMedian Center"].GetDouble());
                GLD1B.SetPointError(iS, 0, 0,
@@ -157,6 +156,7 @@ int main()
 
             PdfFile.AddCanvas(C);
 
+            /*
             HWorld.SetTitle("LD1 (S)");
             HWorld.Draw();
             GLD1.Draw("pl");
@@ -192,6 +192,7 @@ int main()
             GUp.Draw("l");
 
             PdfFile.AddCanvas(C);
+            */
          }
       }
    }

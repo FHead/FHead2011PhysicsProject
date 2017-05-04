@@ -26,6 +26,7 @@ echo "ID = $ID"
    Trees16153/ddbar_noPDF_to_4e_18p4GeV_GenCuts_${ID}.root \
    $Cut ${Model}_${Cut}_${ID}
 
+bzip2 Likelihood*_${Model}_${Cut}_${ID}_Scenario*
 tar zcvf AllLikelihood_${Model}_${Cut}_${ID}.tar.gz Likelihood*_${Model}_${Cut}_${ID}_Scenario*
 
 mkdir -p $WORKDIR/Result

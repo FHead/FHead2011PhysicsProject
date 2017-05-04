@@ -15,7 +15,7 @@ fi
 
 mkdir -p $CombinedDirectory
 
-for i in `ls $ResultDirectory | rev | cut -d '_' -f 2- | rev | sort | uniq`
+for i in `ls $ResultDirectory | grep root$ | rev | cut -d '_' -f 2- | rev | sort | uniq`
 do
    hadd -f -k $CombinedDirectory/${i}.root $ResultDirectory/${i}_[0-9]*.root
 done

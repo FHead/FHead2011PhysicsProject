@@ -118,6 +118,8 @@ int main(int argc, char *argv[])
          SDZ = SDJet.structure_of<contrib::SoftDrop>().symmetry();
          SDMu = SDJet.structure_of<contrib::SoftDrop>().mu();
 
+         cout << SDJet.constituents().size() << endl;
+
          OutputTree.Fill();
       }
    }

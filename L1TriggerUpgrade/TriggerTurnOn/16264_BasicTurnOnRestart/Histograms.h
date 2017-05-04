@@ -5,17 +5,24 @@ using namespace std;
 #include "TH1D.h"
 #include "TDirectory.h"
 
+#include "Code/TauHelperFunctions3.h"
+
 class Histograms
 {
 public:
    vector<double> Thresholds;
    vector<TH1D *> HPT;
+   vector<TH1D *> HPTEta10;
+   vector<TH1D *> HPTEtaLarge;
    vector<TH1D *> HEta;
+   vector<TH1D *> HEtaPT20;
+   vector<TH1D *> HEtaPT25;
 public:
    Histograms(int ptbin, double ptmin, double ptmax, int etabin, double etamin, double etamax,
       vector<double> &thresholds, string Label);
    ~Histograms();
    void Fill(double check, double pt, double eta);
+   void Fill(FourVector Check, FourVector P);
    void Write(TDirectory *Directory = NULL);
 };
 

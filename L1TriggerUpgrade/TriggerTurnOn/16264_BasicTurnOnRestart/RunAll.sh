@@ -3,7 +3,7 @@
 mkdir -p Result/
 mkdir -p Result/Combined/
 
-for Sample in `ls Samples/ | grep -v Neutrino`
+for Sample in `ls Samples/ | grep Hgg`
 do
    echo Start processing sample $Sample
    mkdir -p Result/$Sample

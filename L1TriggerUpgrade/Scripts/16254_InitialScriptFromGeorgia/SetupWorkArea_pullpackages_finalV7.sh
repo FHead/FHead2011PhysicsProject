@@ -1,6 +1,6 @@
-cmsrel CMSSW_6_2_0_SLHC12
-cd CMSSW_6_2_0_SLHC12/src
-cmsenv
+# cmsrel CMSSW_6_2_0_SLHC12
+# cd CMSSW_6_2_0_SLHC12/src
+# cmsenv
 
 git cms-addpkg RecoHI/HiJetAlgos    # for the HeavyIons HLT algorithm
 

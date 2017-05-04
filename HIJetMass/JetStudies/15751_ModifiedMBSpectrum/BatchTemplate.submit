@@ -22,10 +22,11 @@ OutputName=`basename $DefaultOutput`
 
 OutputBase=/store/cmst3/user/chenyi/BatchOutput/HIJetMass/JetStudies/15751_ModifiedMBSpectrum/Result
 
-Mod=Mod__EXTRA2__
+#Mod=Mod__EXTRA2__
+Mod=
 
-# __EXECUTABLE__ Input.root Output1.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 0.8  __EXTRA1__ __EXTRA2__ __EXTRA3__
-# cmsStage -f Output1.root ${OutputBase}1/$Mod$OutputName
+__EXECUTABLE__ Input.root Output1.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 0.8  __EXTRA1__ __EXTRA2__ __EXTRA3__
+cmsStage -f Output1.root ${OutputBase}1/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output2.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.50 0.8  __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output2.root ${OutputBase}2/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output3.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 2.00 0.8  __EXTRA1__ __EXTRA2__ __EXTRA3__
@@ -48,8 +49,8 @@ Mod=Mod__EXTRA2__
 # cmsStage -f Output11.root ${OutputBase}11/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output12.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.10 0.20 1.00 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output12.root ${OutputBase}12/$Mod$OutputName
-__EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 __EXTRA1__ __EXTRA2__ __EXTRA3__
-cmsStage -f Output13.root ${OutputBase}13/$Mod$OutputName
+# __EXECUTABLE__ Input.root Output13.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 1.2 __EXTRA1__ __EXTRA2__ __EXTRA3__
+# cmsStage -f Output13.root ${OutputBase}13/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output14.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.00 0.6 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output14.root ${OutputBase}14/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output15.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.04 0.20 1.00 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
@@ -64,5 +65,9 @@ cmsStage -f Output13.root ${OutputBase}13/$Mod$OutputName
 # cmsStage -f Output19.root ${OutputBase}19/$Mod$OutputName
 # __EXECUTABLE__ Input.root Output20.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 0.80 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
 # cmsStage -f Output20.root ${OutputBase}20/$Mod$OutputName
+# __EXECUTABLE__ Input.root Output21.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 1.10 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
+# cmsStage -f Output21.root ${OutputBase}21/$Mod$OutputName
+# __EXECUTABLE__ Input.root Output22.root __TAG__ __PTHATMIN__ __PTHATMAX__ 1.00 0.07 0.20 0.90 0.8 __EXTRA1__ __EXTRA2__ __EXTRA3__
+# cmsStage -f Output22.root ${OutputBase}22/$Mod$OutputName
 
 

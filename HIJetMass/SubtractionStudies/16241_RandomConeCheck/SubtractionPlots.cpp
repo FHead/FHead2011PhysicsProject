@@ -45,6 +45,19 @@ int main(int argc, char *argv[])
    TH2D HSubtractedPTRatioCentrality("HSubtractedPTRatioCentrality", ";Centrality;Subtracted Random Cone PT / PT",
       100, 0, 1, 1000, -2, 2);
 
+   TTree OutputTree("T", "Yay random cone studies!");
+
+   double TreeEta;
+   double TreePhi;
+   double TreeCentrality;
+   double TreeRho;
+   double TreeTotalPT;
+   OutputTree.Branch("Eta", &TreeEta, "Eta/D");
+   OutputTree.Branch("Phi", &TreePhi, "Phi/D");
+   OutputTree.Branch("Centrality", &TreeCentrality, "Centrality/D");
+   OutputTree.Branch("Rho", &TreeRho, "Rho/D");
+   OutputTree.Branch("TotalPT", &TreeTotalPT, "TotalPT/D");
+
    float hiHF;
    int hiBin;
    unsigned int run;
@@ -73,7 +86,7 @@ int main(int argc, char *argv[])
    RhoTree->SetBranchAddress("rho", &Rho);
    RhoTree->SetBranchAddress("rhom", &RhoM);
 
-   int Decision;
+   int Decision = 1;
    if(IsData == true)
       HLTTree->SetBranchAddress(TriggerString.c_str(), &Decision);
 
@@ -118,10 +131,10 @@ int main(int argc, char *argv[])
 
       double EventRho = GetRho(EtaMax, Rho, 0);
 
-      int Tries = 1;
+      int Tries = 10;
       for(int iT = 0; iT < Tries; iT++)
       {
-         double Eta = DrawRandom(-1, 1);
+         double Eta = DrawRandom(-1.3, 1.3);
          double Phi = DrawRandom(0, 2 * PI);
 
          double TotalPT = 0;
@@ -140,11 +153,21 @@ int main(int argc, char *argv[])
 
          HSubtractedPTCentrality.Fill(GetCentrality(hiBin), SubtractedPT);
          HSubtractedPTRatioCentrality.Fill(GetCentrality(hiBin), SubtractedPT / TotalPT);
+
+         TreeEta = Eta;
+         TreePhi = Phi;
+         TreeRho = EventRho;
+         TreeCentrality = GetCentrality(hiBin);
+         TreeTotalPT = TotalPT;
+
+         OutputTree.Fill();
       }
    }
 
    HSubtractedPTCentrality.Write();
    HSubtractedPTRatioCentrality.Write();
+
+   OutputTree.Write();
 
    OutputFile.Close();
 

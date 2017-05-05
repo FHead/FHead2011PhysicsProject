@@ -346,7 +346,7 @@ int main()
    // AddTwoPlots(PdfFile, TkEM_140_PT, TkEM_200_PT, "|eta| < 2.4");
    AddTwoPlots(PdfFile, TkEM_140_PT_Rebin, TkEM_200_PT_Rebin, "|eta| < 2.4");
    // AddTwoPlots(PdfFile, TkEM_140_PTEta10, TkEM_200_PTEta10, "|eta| < 1.0");
-   AddTwoPlots(PdfFile, TkEM_140_PTEta10_Rebin, TkIsoEG_200_PTEta10_Rebin, "|eta| < 1.0");
+   AddTwoPlots(PdfFile, TkEM_140_PTEta10_Rebin, TkEM_200_PTEta10_Rebin, "|eta| < 1.0");
    // AddTwoPlots(PdfFile, TkEM_140_PTEtaLarge, TkEM_200_PTEtaLarge, "|eta| > 1.0");
    AddTwoPlots(PdfFile, TkEM_140_PTEtaLarge_Rebin, TkEM_200_PTEtaLarge_Rebin, "|eta| > 1.0");
    AddTwoPlots(PdfFile, TkEM_140_Eta, TkEM_200_Eta, "PT > 0");

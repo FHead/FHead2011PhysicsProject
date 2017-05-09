@@ -17,7 +17,7 @@ using namespace std;
 #include "fastjet/contrib/SoftDrop.hh"
 using namespace fastjet;
 
-#include "Code/DrawRandom.h"
+#include "Code/DrawRandom2.h"
 #include "Code/TauHelperFunctions3.h"
 #include "ProgressBar.h"
 
@@ -56,6 +56,8 @@ double GetRhoMax(double Rho);
 int GetRhoBin(double Rho);
 string FindState(double Eta, double Rho);
 double GetPresample();
+
+RandomMT Rand(31426);
 
 int main(int argc, char *argv[])
 {
@@ -286,15 +288,17 @@ int main(int argc, char *argv[])
          bool CentralityDone = false;
          while(CentralityDone == false)
          {
-            Centrality = int(DrawRandom(0, 80));
-            if(DrawRandom(0, 1) < CentralityIntegral[Centrality] / MaxCentralityIntegral)
+            Centrality = int(Rand.DrawRandom(0, 80));
+            if(Rand.DrawRandom(0, 1) < CentralityIntegral[Centrality] / MaxCentralityIntegral)
                CentralityDone = true;
          }
 
          do
          {
-            Rho = DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]) * RhoMultiplier;
+            Rho = Rand.DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]) * RhoMultiplier;
          } while(Rho < 0);
+
+         cout << Centrality << " " << Rho << endl;
 
          TreeRho = Rho;
          TreeCentrality = Centrality;
@@ -316,7 +320,7 @@ int main(int argc, char *argv[])
          TreeTotalStuffInJet = TotalStuffInJet.GetPT();
 
          // Step 2 - sprinkle underlying event contribution
-         double TotalPT = Rho * Range * Range * PI * DrawGaussian(1, Smear);
+         double TotalPT = Rho * Range * Range * PI * Rand.DrawGaussian(1, Smear);
          TreeTotalPT = TotalPT;
          double TotalPTInJet = 0;
          while(TotalPT > 0)
@@ -326,8 +330,8 @@ int main(int argc, char *argv[])
 
             do
             {
-               DEta = DrawRandom(-Range, Range);
-               DPhi = DrawRandom(-Range, Range);
+               DEta = Rand.DrawRandom(-Range, Range);
+               DPhi = Rand.DrawRandom(-Range, Range);
             } while(DEta * DEta + DPhi * DPhi > Range * Range);
 
             double PT = GetPFPT(MJet.JetEta[iJ] + DEta, Rho, DHFile, PTType) * MBMultiplier;
@@ -590,7 +594,7 @@ double GetPFPT(double Eta, double Rho, DataHelper &DHFile, int PTType)
       return GetModifiedPTData(Eta, Rho, DHFile);
    if(PTType == PTType_Half)
    {
-      if(DrawRandom(0, 1) < 0.5)
+      if(Rand.DrawRandom(0, 1) < 0.5)
          return GetModifiedPTData(Eta, Rho, DHFile);
       else
          return GetPT(Eta, Rho, DHFile);
@@ -630,7 +634,7 @@ double GetModifiedPT(double Eta, double Rho, DataHelper &DHFile, int PTType)
          Factor = 1;
       Factor = Factor / 2;
 
-      if(DrawRandom(0, 1) < Factor)
+      if(Rand.DrawRandom(0, 1) < Factor)
          Good = true;
    } while(Good == false);
 
@@ -663,7 +667,7 @@ double GetPT(double Eta, double Rho, DataHelper &DHFile)
 
       double Height = EvaluateWithCache(EtaBin, RhoBin, PT, DHFile) / PresampleFactor(PT);
 
-      if(DrawRandom(0, 1) < Height / Max)
+      if(Rand.DrawRandom(0, 1) < Height / Max)
          Accepted = true;
    }
 
@@ -701,7 +705,7 @@ double GetModifiedPT2(double Eta, double Rho, DataHelper &DHFile)
 
       Factor = Factor / P[0];
 
-      if(DrawRandom(0, 1) < Factor)
+      if(Rand.DrawRandom(0, 1) < Factor)
          Good = true;
    } while(Good == false);
 
@@ -734,7 +738,7 @@ double GetModifiedPTData(double Eta, double Rho, DataHelper &DHFile)
 
       Factor = Factor / 1.57;
 
-      if(DrawRandom(0, 1) < Factor)
+      if(Rand.DrawRandom(0, 1) < Factor)
          Good = true;
    } while(Good == false);
 
@@ -767,7 +771,7 @@ double GetModifiedPTDataData(double Eta, double Rho, DataHelper &DHFile)
 
       Factor = Factor / 1.57;
 
-      if(DrawRandom(0, 1) < Factor * Factor)
+      if(Rand.DrawRandom(0, 1) < Factor * Factor)
          Good = true;
    } while(Good == false);
 
@@ -802,7 +806,7 @@ double GetModifiedPTData2(double Eta, double Rho, DataHelper &DHFile)
 
       Factor = Factor / P[2];
 
-      if(DrawRandom(0, 1) < Factor)
+      if(Rand.DrawRandom(0, 1) < Factor)
          Good = true;
    } while(Good == false);
 
@@ -815,9 +819,9 @@ double GetPresample()
    double C2 = 2.272385;    // Integral of second exp
    double Fraction = 0.005;
 
-   if(DrawRandom(0, 1) < C1 / (C1 + Fraction * C2))
-      return DrawExponential(-1.92, 0, 20);
-   return DrawExponential(-0.44, 0, 20);
+   if(Rand.DrawRandom(0, 1) < C1 / (C1 + Fraction * C2))
+      return Rand.DrawExponential(-1.92, 0, 20);
+   return Rand.DrawExponential(-0.44, 0, 20);
 }
 
 double PresampleFactor(double PT)

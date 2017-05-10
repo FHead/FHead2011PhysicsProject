@@ -148,10 +148,13 @@ int main(int argc, char *argv[])
 
    double TreeJetPT, TreeJetEta, TreeJetPhi, TreeJetSDMass, TreeJetDR, TreeJetMass;
    double TreeNewJetPT, TreeNewJetEta, TreeNewJetPhi, TreeNewJetSDMass, TreeNewJetDR, TreeNewJetZG, TreeNewJetMass, TreeNewJetSDPT;
+   double TreeFirstJetPT, TreeFirstJetEta, TreeFirstJetPhi, TreeFirstJetSDMass, TreeFirstJetDR, TreeFirstJetZG, TreeFirstJetMass, TreeFirstJetSDPT;
    double TreeBestJetPT, TreeBestJetEta, TreeBestJetPhi, TreeBestJetSDMass, TreeBestJetDR, TreeBestJetZG, TreeBestJetMass, TreeBestJetSDPT;
    double TreeNewJetSDMass2, TreeNewJetDR2, TreeNewJetZG2, TreeNewJetSDPT2;
+   double TreeFirstJetSDMass2, TreeFirstJetDR2, TreeFirstJetZG2, TreeFirstJetSDPT2;
    double TreeBestJetSDMass2, TreeBestJetDR2, TreeBestJetZG2, TreeBestJetSDPT2;
    double TreeNewJetSDMass3, TreeNewJetDR3, TreeNewJetZG3, TreeNewJetSDPT3;
+   double TreeFirstJetSDMass3, TreeFirstJetDR3, TreeFirstJetZG3, TreeFirstJetSDPT3;
    double TreeBestJetSDMass3, TreeBestJetDR3, TreeBestJetZG3, TreeBestJetSDPT3;
    double TreeTotalPT, TreeRho, TreeTotalPTInJet, TreeTotalStuffInJet;
    double TreePTHat, TreeCentrality;
@@ -169,6 +172,14 @@ int main(int argc, char *argv[])
    OutputTree.Branch("NewJetZG",       &TreeNewJetZG,       "NewJetZG/D");
    OutputTree.Branch("NewJetMass",     &TreeNewJetMass,     "NewJetMass/D");
    OutputTree.Branch("NewJetSDPT",     &TreeNewJetSDPT,     "NewJetSDPT/D");
+   OutputTree.Branch("FirstJetPT",      &TreeFirstJetPT,      "FirstJetPT/D");
+   OutputTree.Branch("FirstJetEta",     &TreeFirstJetEta,     "FirstJetEta/D");
+   OutputTree.Branch("FirstJetPhi",     &TreeFirstJetPhi,     "FirstJetPhi/D");
+   OutputTree.Branch("FirstJetSDMass",  &TreeFirstJetSDMass,  "FirstJetSDMass/D");
+   OutputTree.Branch("FirstJetDR",      &TreeFirstJetDR,      "FirstJetDR/D");
+   OutputTree.Branch("FirstJetZG",      &TreeFirstJetZG,      "FirstJetZG/D");
+   OutputTree.Branch("FirstJetMass",    &TreeFirstJetMass,    "FirstJetMass/D");
+   OutputTree.Branch("FirstJetSDPT",    &TreeFirstJetSDPT,    "FirstJetSDPT/D");
    OutputTree.Branch("BestJetPT",      &TreeBestJetPT,      "BestJetPT/D");
    OutputTree.Branch("BestJetEta",     &TreeBestJetEta,     "BestJetEta/D");
    OutputTree.Branch("BestJetPhi",     &TreeBestJetPhi,     "BestJetPhi/D");
@@ -181,6 +192,10 @@ int main(int argc, char *argv[])
    OutputTree.Branch("NewJetDR2",      &TreeNewJetDR2,      "NewJetDR2/D");
    OutputTree.Branch("NewJetZG2",      &TreeNewJetZG2,      "NewJetZG2/D");
    OutputTree.Branch("NewJetSDPT2",    &TreeNewJetSDPT2,    "NewJetSDPT2/D");
+   OutputTree.Branch("FirstJetSDMass2", &TreeFirstJetSDMass2, "FirstJetSDMass2/D");
+   OutputTree.Branch("FirstJetDR2",     &TreeFirstJetDR2,     "FirstJetDR2/D");
+   OutputTree.Branch("FirstJetZG2",     &TreeFirstJetZG2,     "FirstJetZG2/D");
+   OutputTree.Branch("FirstJetSDPT2",   &TreeFirstJetSDPT2,   "FirstJetSDPT2/D");
    OutputTree.Branch("BestJetSDMass2", &TreeBestJetSDMass2, "BestJetSDMass2/D");
    OutputTree.Branch("BestJetDR2",     &TreeBestJetDR2,     "BestJetDR2/D");
    OutputTree.Branch("BestJetZG2",     &TreeBestJetZG2,     "BestJetZG2/D");
@@ -189,6 +204,10 @@ int main(int argc, char *argv[])
    OutputTree.Branch("NewJetDR3",      &TreeNewJetDR3,      "NewJetDR3/D");
    OutputTree.Branch("NewJetZG3",      &TreeNewJetZG3,      "NewJetZG3/D");
    OutputTree.Branch("NewJetSDPT3",    &TreeNewJetSDPT3,    "NewJetSDPT3/D");
+   OutputTree.Branch("FirstJetSDMass3", &TreeFirstJetSDMass3, "FirstJetSDMass3/D");
+   OutputTree.Branch("FirstJetDR3",     &TreeFirstJetDR3,     "FirstJetDR3/D");
+   OutputTree.Branch("FirstJetZG3",     &TreeFirstJetZG3,     "FirstJetZG3/D");
+   OutputTree.Branch("FirstJetSDPT3",   &TreeFirstJetSDPT3,   "FirstJetSDPT3/D");
    OutputTree.Branch("BestJetSDMass3", &TreeBestJetSDMass3, "BestJetSDMass3/D");
    OutputTree.Branch("BestJetDR3",     &TreeBestJetDR3,     "BestJetDR3/D");
    OutputTree.Branch("BestJetZG3",     &TreeBestJetZG3,     "BestJetZG3/D");
@@ -349,6 +368,8 @@ int main(int argc, char *argv[])
          }
          TreeTotalPTInJet = TotalPTInJet;
 
+         cout << TreeTotalStuffInJet << " " << TreeTotalPTInJet << endl;
+
          // Step 3 - do pileup subtraction algorithm - via fastjet
          JetDefinition Definition(antikt_algorithm, 0.4);
          double GhostArea = GhostDistance * GhostDistance;
@@ -365,15 +386,49 @@ int main(int argc, char *argv[])
             CSJets[i] = Subtractor(JetsWithGhosts[i]);
          }
 
+         int ClosestCSJet = 0;
+         double ClosestCSDR2 = -1;
+         for(int i = 0; i < (int)CSJets.size(); i++)
+         {
+            double DR2 = GetDR2(CSJets[i].eta(), CSJets[i].phi(), MJet.JetEta[iJ], MJet.JetPhi[iJ]);
+            if(ClosestCSDR2 < 0 || ClosestCSDR2 > DR2)
+            {
+               ClosestCSJet = i;
+               ClosestCSDR2 = DR2;
+            }
+         }
+
+         cout << CSJets.size() << " " << CSJets[0].perp() << " " << CSJets[200].perp() << endl;
+         int MaxCSJet = 0;
+         for(int i = 0; i < (int)CSJets.size(); i++)
+            if(CSJets[i].perp() > CSJets[MaxCSJet].perp())
+               MaxCSJet = i;
+         cout << CSJets[MaxCSJet].perp() << endl;
+
          // Step 4 - Clustering and pick the jets
          vector<PseudoJet> CSCandidates;
          for(int i = 0; i < (int)CSJets.size(); i++)
          {
             vector<PseudoJet> Constituents = CSJets[i].constituents();
             CSCandidates.insert(CSCandidates.end(), Constituents.begin(), Constituents.end());
+
+            if(i == (int)CSJets.size() - 1)
+            {
+               for(int j = 0; j < (int)Constituents.size(); j++)
+                  cout << " " << Constituents[j].perp();
+               cout << endl;
+            }
          }
          ClusterSequence NewSequence(CSCandidates, Definition);
-         vector<PseudoJet> SDJets = NewSequence.inclusive_jets();
+         vector<PseudoJet> SDJets = NewSequence.inclusive_jets(10);
+
+         cout << CSCandidates.size() << endl;
+         cout << CSCandidates[0].perp() << " " << CSCandidates[1].perp() << endl;
+
+         cout << "Number of SD Jets " << SDJets.size() << endl;
+         cout << "First SD Jet " << SDJets[0].perp() << endl;
+
+         cout << "First jet " << CSJets[ClosestCSJet].perp() << endl;
 
          if(SDJets.size() == 0)   // Huh?
             continue;
@@ -397,10 +452,14 @@ int main(int argc, char *argv[])
 
          PseudoJet &Jet = SDJets[LeadingIndex];
          FourVector NewJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
+         Jet = CSJets[ClosestCSJet];
+         FourVector FirstJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
          Jet = SDJets[ClosestIndex];
          FourVector BestJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
 
-         vector<FourVector> GoodCandidates, GoodCandidatesBest;
+         cout << NewJetP << endl;
+
+         vector<FourVector> GoodCandidates, GoodCandidatesBest, GoodCandidatesFirst;
 
          vector<PseudoJet> Constituents = SDJets[LeadingIndex].constituents();
          for(int i = 0; i < (int)Constituents.size(); i++)
@@ -411,6 +470,16 @@ int main(int argc, char *argv[])
             P[2] = Constituents[i].py();
             P[3] = Constituents[i].pz();
             GoodCandidates.push_back(P);
+         }
+         Constituents = CSJets[ClosestCSJet].constituents();
+         for(int i = 0; i < (int)Constituents.size(); i++)
+         {
+            FourVector P;
+            P[0] = Constituents[i].e();
+            P[1] = Constituents[i].px();
+            P[2] = Constituents[i].py();
+            P[3] = Constituents[i].pz();
+            GoodCandidatesFirst.push_back(P);
          }
          Constituents = SDJets[ClosestIndex].constituents();
          for(int i = 0; i < (int)Constituents.size(); i++)
@@ -427,9 +496,10 @@ int main(int argc, char *argv[])
 
          HJetPTComparison.Fill(MJet.JetPT[iJ], NewJetP.GetPT());
 
-         if(GoodCandidates.size() == 0 && GoodCandidatesBest.size() == 0)
+         if(GoodCandidates.size() == 0 && GoodCandidatesBest.size() == 0 && GoodCandidatesFirst.size() == 0)
          {
             TreeNewJetPT = -1;
+            TreeFirstJetPT = -1;
             TreeBestJetPT = -1;
             OutputTree.Fill();
             continue;
@@ -439,24 +509,31 @@ int main(int argc, char *argv[])
          vector<Node *> Nodes;
          for(int i = 0; i < (int)GoodCandidates.size(); i++)
             Nodes.push_back(new Node(GoodCandidates[i]));
+         vector<Node *> NodesFirst;
+         for(int i = 0; i < (int)GoodCandidatesFirst.size(); i++)
+            NodesFirst.push_back(new Node(GoodCandidatesFirst[i]));
          vector<Node *> NodesBest;
          for(int i = 0; i < (int)GoodCandidatesBest.size(); i++)
             NodesBest.push_back(new Node(GoodCandidatesBest[i]));
 
          BuildCATree(Nodes);
+         BuildCATree(NodesFirst);
          BuildCATree(NodesBest);
          Node *Groomed = FindSDNode(Nodes[0]);
+         Node *GroomedFirst = FindSDNode(NodesFirst[0]);
          Node *GroomedBest = FindSDNode(NodesBest[0]);
          Node *Groomed2 = FindSDNode(Nodes[0], 0.5, 1.5);
+         Node *GroomedFirst2 = FindSDNode(NodesFirst[0], 0.5, 1.5);
          Node *GroomedBest2 = FindSDNode(NodesBest[0], 0.5, 1.5);
          Node *Groomed3 = FindSDNode(Nodes[0], 0.3, 1.5);
+         Node *GroomedFirst3 = FindSDNode(NodesFirst[0], 0.3, 1.5);
          Node *GroomedBest3 = FindSDNode(NodesBest[0], 0.3, 1.5);
 
          if(Groomed->N > 1)
          {
             HSDMassComparison.Fill(MSDJet.JetM[SDIndex], Groomed->P.GetMass());
             HRecoDRComparison.Fill(HSDJet.RecoSubJetDR[SDIndex],
-               GetDR(Groomed->Child1->P, Groomed->Child2->P));
+                  GetDR(Groomed->Child1->P, Groomed->Child2->P));
 
             HSDMassJetPT.Fill(MSDJet.JetPT[SDIndex], MSDJet.JetM[SDIndex]);
             HNewSDMassNewJetPT.Fill(NewJetP.GetPT(), Groomed->P.GetMass());
@@ -465,7 +542,7 @@ int main(int argc, char *argv[])
          if(HSDJet.RecoSubJetDR[SDIndex] > 0.1 && MSDJet.JetPT[SDIndex] > 120)
             HSDMass.Fill(MSDJet.JetM[SDIndex]);
          if(Groomed->N > 1 && GetDR(Groomed->Child1->P, Groomed->Child2->P) > 0.1
-            && NewJetP.GetPT() > 120)
+               && NewJetP.GetPT() > 120)
             HNewSDMass.Fill(Groomed->P.GetMass());
 
          TreeNewJetPT = NewJetP.GetPT();
@@ -542,9 +619,50 @@ int main(int argc, char *argv[])
          else
             TreeBestJetDR3 = -1, TreeBestJetZG3 = -1;
 
+         cout << BestJetP << endl;
+
+         TreeFirstJetPT = FirstJetP.GetPT();
+         TreeFirstJetEta = FirstJetP.GetEta();
+         TreeFirstJetPhi = FirstJetP.GetPhi();
+         TreeFirstJetSDMass = GroomedFirst->P.GetMass();
+         TreeFirstJetSDMass2 = GroomedFirst2->P.GetMass();
+         TreeFirstJetSDMass3 = GroomedFirst3->P.GetMass();
+         TreeFirstJetSDPT = GroomedFirst->P.GetPT();
+         TreeFirstJetSDPT2 = GroomedFirst2->P.GetPT();
+         TreeFirstJetSDPT3 = GroomedFirst3->P.GetPT();
+         if(GroomedFirst->N > 1)
+         {
+            FourVector P1 = GroomedFirst->Child1->P;
+            FourVector P2 = GroomedFirst->Child2->P;
+            TreeFirstJetDR = GetDR(P1, P2);
+            TreeFirstJetZG = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+         }
+         else
+            TreeFirstJetDR = -1, TreeFirstJetZG = -1;
+         if(GroomedFirst2->N > 1)
+         {
+            FourVector P1 = GroomedFirst2->Child1->P;
+            FourVector P2 = GroomedFirst2->Child2->P;
+            TreeFirstJetDR2 = GetDR(P1, P2);
+            TreeFirstJetZG2 = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+         }
+         else
+            TreeFirstJetDR2 = -1, TreeFirstJetZG2 = -1;
+         if(GroomedFirst3->N > 1)
+         {
+            FourVector P1 = GroomedFirst3->Child1->P;
+            FourVector P2 = GroomedFirst3->Child2->P;
+            TreeFirstJetDR3 = GetDR(P1, P2);
+            TreeFirstJetZG3 = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+         }
+         else
+            TreeFirstJetDR3 = -1, TreeFirstJetZG3 = -1;
+
          // Cleanup
          if(Nodes.size() > 0)
             delete Nodes[0];
+         if(NodesFirst.size() > 0)
+            delete NodesFirst[0];
          if(NodesBest.size() > 0)
             delete NodesBest[0];
 

@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
             Rho = Rand.DrawGaussian(CentralityB[Centrality], CentralityC[Centrality]) * RhoMultiplier;
          } while(Rho < 0);
 
-         cout << Centrality << " " << Rho << endl;
+         // cout << Centrality << " " << Rho << endl;
 
          TreeRho = Rho;
          TreeCentrality = Centrality;
@@ -378,8 +378,8 @@ int main(int argc, char *argv[])
          vector<PseudoJet> CSJets(JetsWithGhosts.size());
          for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
          {
-            contrib::ConstituentSubtractor Subtractor(Rho);
-            Subtractor.set_alpha(1);  // optional
+            contrib::ConstituentSubtractor Subtractor(Rho, 0, 0, -1);
+            // Subtractor.set_alpha(1);  // optional
             // subtractor.set_max_deltaR(2);  // optional
             CSJets[i] = Subtractor(JetsWithGhosts[i]);
          }
@@ -399,7 +399,7 @@ int main(int argc, char *argv[])
          int MaxCSJet = 0;
          for(int i = 0; i < (int)CSJets.size(); i++)
          {
-            cout << "CS Jet " << CSJets[i].perp() << " " << CSJets[i].eta() << " " << CSJets[i].phi() << endl;
+            // cout << "CS Jet " << CSJets[i].perp() << " " << CSJets[i].eta() << " " << CSJets[i].phi() << endl;
             if(CSJets[i].perp() > CSJets[MaxCSJet].perp())
                MaxCSJet = i;
          }
@@ -411,22 +411,24 @@ int main(int argc, char *argv[])
             vector<PseudoJet> Constituents = CSJets[i].constituents();
             CSCandidates.insert(CSCandidates.end(), Constituents.begin(), Constituents.end());
 
+            /*
             if(i == (int)CSJets.size() - 1)
             {
                for(int j = 0; j < (int)Constituents.size(); j++)
                   cout << "CS Candidate " << Constituents[j].perp() << " " << Constituents[j].eta() << " " << Constituents[j].phi() << endl;
             }
+            */
          }
          ClusterSequence NewSequence(CSCandidates, Definition);
          vector<PseudoJet> SDJets = NewSequence.inclusive_jets(10);
 
-         cout << CSCandidates.size() << endl;
-         cout << CSCandidates[0].perp() << " " << CSCandidates[1].perp() << endl;
+         // cout << CSCandidates.size() << endl;
+         // cout << CSCandidates[0].perp() << " " << CSCandidates[1].perp() << endl;
 
-         cout << "Number of SD Jets " << SDJets.size() << endl;
-         cout << "First SD Jet " << SDJets[0].perp() << endl;
+         // cout << "Number of SD Jets " << SDJets.size() << endl;
+         // cout << "First SD Jet " << SDJets[0].perp() << endl;
 
-         cout << "First jet " << CSJets[ClosestCSJet].perp() << endl;
+         // cout << "First jet " << CSJets[ClosestCSJet].perp() << endl;
 
          if(SDJets.size() == 0)   // Huh?
             continue;
@@ -455,8 +457,8 @@ int main(int argc, char *argv[])
          Jet = SDJets[ClosestIndex];
          FourVector BestJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
 
-         cout << "First " << FirstJetP << endl;
-         cout << "New " << NewJetP << endl;
+         // cout << "First " << FirstJetP << endl;
+         // cout << "New " << NewJetP << endl;
 
          vector<FourVector> GoodCandidates, GoodCandidatesBest, GoodCandidatesFirst;
 
@@ -618,8 +620,8 @@ int main(int argc, char *argv[])
          else
             TreeBestJetDR3 = -1, TreeBestJetZG3 = -1;
 
-         cout << "Best " << BestJetP << endl;
-         cout << TreeBestJetDR << " " << TreeBestJetSDMass << endl;
+         // cout << "Best " << BestJetP << endl;
+         // cout << TreeBestJetDR << " " << TreeBestJetSDMass << endl;
 
          TreeFirstJetPT = FirstJetP.GetPT();
          TreeFirstJetEta = FirstJetP.GetEta();
@@ -658,7 +660,7 @@ int main(int argc, char *argv[])
          else
             TreeFirstJetDR3 = -1, TreeFirstJetZG3 = -1;
          
-         cout << TreeFirstJetDR << " " << TreeFirstJetSDMass << endl;
+         // cout << TreeFirstJetDR << " " << TreeFirstJetSDMass << endl;
 
          // Cleanup
          if(Nodes.size() > 0)

@@ -23,7 +23,7 @@ int main()
    PdfFileHelper PdfFile("SmearTreeComparison.pdf");
    PdfFile.AddTextPage("Smear tree comparison");
 
-   TFile F1("Pass1/PP6Dijet120.root");
+   TFile F1("PP6Dijet120.root");
    TFile F2("Smear120.root");
 
    TTree *T1 = (TTree *)F1.Get("OutputTree");

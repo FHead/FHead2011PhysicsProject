@@ -368,8 +368,6 @@ int main(int argc, char *argv[])
          }
          TreeTotalPTInJet = TotalPTInJet;
 
-         cout << TreeTotalStuffInJet << " " << TreeTotalPTInJet << endl;
-
          // Step 3 - do pileup subtraction algorithm - via fastjet
          JetDefinition Definition(antikt_algorithm, 0.4);
          double GhostArea = GhostDistance * GhostDistance;
@@ -398,12 +396,13 @@ int main(int argc, char *argv[])
             }
          }
 
-         cout << CSJets.size() << " " << CSJets[0].perp() << " " << CSJets[200].perp() << endl;
          int MaxCSJet = 0;
          for(int i = 0; i < (int)CSJets.size(); i++)
+         {
+            cout << "CS Jet " << CSJets[i].perp() << " " << CSJets[i].eta() << " " << CSJets[i].phi() << endl;
             if(CSJets[i].perp() > CSJets[MaxCSJet].perp())
                MaxCSJet = i;
-         cout << CSJets[MaxCSJet].perp() << endl;
+         }
 
          // Step 4 - Clustering and pick the jets
          vector<PseudoJet> CSCandidates;
@@ -415,8 +414,7 @@ int main(int argc, char *argv[])
             if(i == (int)CSJets.size() - 1)
             {
                for(int j = 0; j < (int)Constituents.size(); j++)
-                  cout << " " << Constituents[j].perp();
-               cout << endl;
+                  cout << "CS Candidate " << Constituents[j].perp() << " " << Constituents[j].eta() << " " << Constituents[j].phi() << endl;
             }
          }
          ClusterSequence NewSequence(CSCandidates, Definition);
@@ -457,7 +455,8 @@ int main(int argc, char *argv[])
          Jet = SDJets[ClosestIndex];
          FourVector BestJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
 
-         cout << NewJetP << endl;
+         cout << "First " << FirstJetP << endl;
+         cout << "New " << NewJetP << endl;
 
          vector<FourVector> GoodCandidates, GoodCandidatesBest, GoodCandidatesFirst;
 
@@ -619,7 +618,8 @@ int main(int argc, char *argv[])
          else
             TreeBestJetDR3 = -1, TreeBestJetZG3 = -1;
 
-         cout << BestJetP << endl;
+         cout << "Best " << BestJetP << endl;
+         cout << TreeBestJetDR << " " << TreeBestJetSDMass << endl;
 
          TreeFirstJetPT = FirstJetP.GetPT();
          TreeFirstJetEta = FirstJetP.GetEta();
@@ -657,6 +657,8 @@ int main(int argc, char *argv[])
          }
          else
             TreeFirstJetDR3 = -1, TreeFirstJetZG3 = -1;
+         
+         cout << TreeFirstJetDR << " " << TreeFirstJetSDMass << endl;
 
          // Cleanup
          if(Nodes.size() > 0)

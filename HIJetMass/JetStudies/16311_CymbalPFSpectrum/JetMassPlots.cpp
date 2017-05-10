@@ -379,7 +379,7 @@ int main(int argc, char *argv[])
          for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
          {
             contrib::ConstituentSubtractor Subtractor(Rho, 0, 0, -1);
-            // Subtractor.set_alpha(1);  // optional
+            Subtractor.set_alpha(1);  // optional
             // subtractor.set_max_deltaR(2);  // optional
             CSJets[i] = Subtractor(JetsWithGhosts[i]);
          }

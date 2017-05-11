@@ -344,6 +344,8 @@ int main(int argc, char *argv[])
             }
          }
 
+         cout << BestIndex << endl;
+
          if(BestIndex >= 0)
          {
             TreeJ60CaloPUPT = MCaloPUJet.JetPT[BestIndex];

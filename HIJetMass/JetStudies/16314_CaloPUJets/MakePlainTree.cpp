@@ -256,6 +256,7 @@ int main(int argc, char *argv[])
       MJet.GetEntry(iE);
       MSDJet.GetEntry(iE);
       MPUJet.GetEntry(iE);
+      MCaloPUJet.GetEntry(iE);
       MPF.GetEntry(iE);
       MRho.GetEntry(iE);
       MHLT.GetEntry(iE);
@@ -344,17 +345,12 @@ int main(int argc, char *argv[])
             }
          }
 
-         cout << "Number of calo PU jet = " << MCaloPUJet.JetCount << endl;
-         cout << BestIndex << endl;
-
          if(BestIndex >= 0)
          {
             TreeJ60CaloPUPT = MCaloPUJet.JetPT[BestIndex];
             TreeJ60CaloPUEta = MCaloPUJet.JetEta[BestIndex];
             TreeJ60CaloPUPhi = MCaloPUJet.JetPhi[BestIndex];
          }
-
-         cout << TreeJ60CaloPUPT << " " << TreeJ60CaloPUEta << " " << TreeJ60CaloPUPhi << endl;
       }
 
       TreeJ80PT = -1, TreeJ80Eta = -1, TreeJ80Phi = -1;

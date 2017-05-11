@@ -839,6 +839,8 @@ bool TriggerObjectTreeMessenger::Initialize()
    Tree->SetBranchAddress("eta", &Eta);
    Tree->SetBranchAddress("phi", &Phi);
    Tree->SetBranchAddress("mass", &Mass);
+
+   return true;
 }
 
 bool TriggerObjectTreeMessenger::GetEntry(int iEntry)
@@ -847,6 +849,8 @@ bool TriggerObjectTreeMessenger::GetEntry(int iEntry)
       return false;
 
    Tree->GetEntry(iEntry);
+
+   return true;
 }
 
 

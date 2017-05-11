@@ -334,7 +334,7 @@ int main(int argc, char *argv[])
 
          BestIndex = -1;
          BestDR2 = -1;
-         for(int i = 0; i < MPUJet.JetCount; i++)
+         for(int i = 0; i < MCaloPUJet.JetCount; i++)
          {
             double DR2 = GetDR2(TreeJ60Eta, TreeJ60Phi, MCaloPUJet.JetEta[i], MCaloPUJet.JetPhi[i]);
             if(BestDR2 < 0 || BestDR2 > DR2)
@@ -346,9 +346,9 @@ int main(int argc, char *argv[])
 
          if(BestIndex >= 0)
          {
-            TreeJ60CaloPUPT = MPUJet.JetPT[BestIndex];
-            TreeJ60CaloPUEta = MPUJet.JetEta[BestIndex];
-            TreeJ60CaloPUPhi = MPUJet.JetPhi[BestIndex];
+            TreeJ60CaloPUPT = MCaloPUJet.JetPT[BestIndex];
+            TreeJ60CaloPUEta = MCaloPUJet.JetEta[BestIndex];
+            TreeJ60CaloPUPhi = MCaloPUJet.JetPhi[BestIndex];
          }
       }
 
@@ -382,7 +382,7 @@ int main(int argc, char *argv[])
 
          BestIndex = -1;
          BestDR2 = -1;
-         for(int i = 0; i < MPUJet.JetCount; i++)
+         for(int i = 0; i < MCaloPUJet.JetCount; i++)
          {
             double DR2 = GetDR2(TreeJ80Eta, TreeJ80Phi, MCaloPUJet.JetEta[i], MCaloPUJet.JetPhi[i]);
             if(BestDR2 < 0 || BestDR2 > DR2)
@@ -394,9 +394,9 @@ int main(int argc, char *argv[])
 
          if(BestIndex >= 0)
          {
-            TreeJ80CaloPUPT = MPUJet.JetPT[BestIndex];
-            TreeJ80CaloPUEta = MPUJet.JetEta[BestIndex];
-            TreeJ80CaloPUPhi = MPUJet.JetPhi[BestIndex];
+            TreeJ80CaloPUPT = MCaloPUJet.JetPT[BestIndex];
+            TreeJ80CaloPUEta = MCaloPUJet.JetEta[BestIndex];
+            TreeJ80CaloPUPhi = MCaloPUJet.JetPhi[BestIndex];
          }
       }
 
@@ -430,7 +430,7 @@ int main(int argc, char *argv[])
 
          BestIndex = -1;
          BestDR2 = -1;
-         for(int i = 0; i < MPUJet.JetCount; i++)
+         for(int i = 0; i < MCaloPUJet.JetCount; i++)
          {
             double DR2 = GetDR2(TreeJ100Eta, TreeJ100Phi, MCaloPUJet.JetEta[i], MCaloPUJet.JetPhi[i]);
             if(BestDR2 < 0 || BestDR2 > DR2)
@@ -442,9 +442,9 @@ int main(int argc, char *argv[])
 
          if(BestIndex >= 0)
          {
-            TreeJ100CaloPUPT = MPUJet.JetPT[BestIndex];
-            TreeJ100CaloPUEta = MPUJet.JetEta[BestIndex];
-            TreeJ100CaloPUPhi = MPUJet.JetPhi[BestIndex];
+            TreeJ100CaloPUPT = MCaloPUJet.JetPT[BestIndex];
+            TreeJ100CaloPUEta = MCaloPUJet.JetEta[BestIndex];
+            TreeJ100CaloPUPhi = MCaloPUJet.JetPhi[BestIndex];
          }
       }
 

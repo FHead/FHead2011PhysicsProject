@@ -806,6 +806,48 @@ int TriggerTreeMessenger::GetPrescale(int Index)
    return Prescale[Index];
 }
 
+TriggerObjectTreeMessenger::TriggerObjectTreeMessenger(TFile &File, std::string TreeName)
+{
+   Tree = (TTree *)File.Get(TreeName.c_str());
+   Initialize();
+}
+
+TriggerObjectTreeMessenger::TriggerObjectTreeMessenger(TTree *TriggerTree)
+{
+   Initialize(TriggerTree);
+}
+
+bool TriggerObjectTreeMessenger::Initialize(TTree *TriggerTree)
+{
+   Tree = TriggerTree;
+   return Initialize();
+}
+
+bool TriggerObjectTreeMessenger::Initialize()
+{
+   ID = NULL;
+   PT = NULL;
+   Eta = NULL;
+   Phi = NULL;
+   Mass = NULL;
+
+   if(Tree == NULL)
+      return false;
+
+   Tree->SetBranchAddress("TriggerObjID", &ID);
+   Tree->SetBranchAddress("pt", &PT);
+   Tree->SetBranchAddress("eta", &Eta);
+   Tree->SetBranchAddress("phi", &Phi);
+   Tree->SetBranchAddress("mass", &Mass);
+}
+
+bool TriggerObjectTreeMessenger::GetEntry(int iEntry)
+{
+   if(Tree == NULL)
+      return false;
+
+   Tree->GetEntry(iEntry);
+}
 
 
 

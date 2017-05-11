@@ -14,6 +14,7 @@ class JetTreeMessenger;
 class GenParticleTreeMessenger;
 class PFTreeMessenger;
 class TriggerTreeMessenger;
+class TriggerObjectTreeMessenger;
 
 class HiEventTreeMessenger
 {
@@ -211,6 +212,22 @@ public:
    int GetPrescale(int Index);
 };
 
+class TriggerObjectTreeMessenger
+{
+public:
+   TTree *Tree;
+   std::vector<double> *ID;
+   std::vector<double> *PT;
+   std::vector<double> *Eta;
+   std::vector<double> *Phi;
+   std::vector<double> *Mass;
+public:
+   TriggerObjectTreeMessenger(TFile &File, std::string TreeName = "hltobjects/HLT_HIPuAK4CaloJet60_Eta5p1_v");
+   TriggerObjectTreeMessenger(TTree *TriggerTree);
+   bool Initialize(TTree *TriggerTree);
+   bool Initialize();
+   bool GetEntry(int iEntry);
+};
 
 
 

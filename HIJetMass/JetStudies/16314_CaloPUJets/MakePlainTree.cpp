@@ -310,9 +310,13 @@ int main(int argc, char *argv[])
       TreeJ60PFPUPT = -1, TreeJ60PFPUEta = -1, TreeJ60PFPUPhi = -1;
       if(MJ60.ID != NULL && MJ60.ID->size() > 0)
       {
-         TreeJ60PT = (*MJ60.PT)[0];   // I think the first one is always the largest PT - need to double check
-         TreeJ60Eta = (*MJ60.Eta)[0];
-         TreeJ60Phi = (*MJ60.Phi)[0];
+         int Index = 0;
+         for(int i = 1; i < (int)MJ60.ID->size(); i++)
+            if((*MJ60.PT)[i] > (*MJ60.PT)[Index])
+               Index = i;
+         TreeJ60PT = (*MJ60.PT)[Index];
+         TreeJ60Eta = (*MJ60.Eta)[Index];
+         TreeJ60Phi = (*MJ60.Phi)[Index];
 
          int BestIndex = -1;
          double BestDR2 = -1;
@@ -358,9 +362,13 @@ int main(int argc, char *argv[])
       TreeJ80PFPUPT = -1, TreeJ80PFPUEta = -1, TreeJ80PFPUPhi = -1;
       if(MJ80.ID != NULL && MJ80.ID->size() > 0)
       {
-         TreeJ80PT = (*MJ80.PT)[0];   // I think the first one is always the largest PT - need to double check
-         TreeJ80Eta = (*MJ80.Eta)[0];
-         TreeJ80Phi = (*MJ80.Phi)[0];
+         int Index = 0;
+         for(int i = 1; i < (int)MJ80.ID->size(); i++)
+            if((*MJ80.PT)[i] > (*MJ80.PT)[Index])
+               Index = i;
+         TreeJ80PT = (*MJ80.PT)[Index];
+         TreeJ80Eta = (*MJ80.Eta)[Index];
+         TreeJ80Phi = (*MJ80.Phi)[Index];
 
          int BestIndex = -1;
          double BestDR2 = -1;
@@ -406,9 +414,13 @@ int main(int argc, char *argv[])
       TreeJ100PFPUPT = -1, TreeJ100PFPUEta = -1, TreeJ100PFPUPhi = -1;
       if(MJ100.ID != NULL && MJ100.ID->size() > 0)
       {
-         TreeJ100PT = (*MJ100.PT)[0];   // I think the first one is always the largest PT - need to double check
-         TreeJ100Eta = (*MJ100.Eta)[0];
-         TreeJ100Phi = (*MJ100.Phi)[0];
+         int Index = 0;
+         for(int i = 1; i < (int)MJ100.ID->size(); i++)
+            if((*MJ100.PT)[i] > (*MJ100.PT)[Index])
+               Index = i;
+         TreeJ100PT = (*MJ100.PT)[Index];
+         TreeJ100Eta = (*MJ100.Eta)[Index];
+         TreeJ100Phi = (*MJ100.Phi)[Index];
 
          int BestIndex = -1;
          double BestDR2 = -1;

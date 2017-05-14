@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
    Scenarios.push_back(EventCount(10, 10, 10, 10));
    Scenarios.push_back(EventCount(14, 14, 14, 14));
    Scenarios.push_back(EventCount(20, 20, 20, 20));
-   Scenarios.push_back(EventCount(30, 20, 20, 20));
+   Scenarios.push_back(EventCount(30, 30, 30, 30));
    Scenarios.push_back(EventCount(50, 50, 50, 50));
    Scenarios.push_back(EventCount(70, 70, 70, 70));
    Scenarios.push_back(EventCount(100, 100, 100, 100));
@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
    OutputTree.Branch("BEM", &TreeBEM, "BEM/D");
    OutputTree.Branch("BEE", &TreeBEE, "BEE/D");
    for(int i = 0; i < MODELCOUNT; i++)
-      OutputTree.Branch(Form("L%s", ModelNames[i].c_str()), &TreeLikelihood[0], Form("L%s/D", ModelNames[i].c_str()));
+      OutputTree.Branch(Form("L%s", ModelNames[i].c_str()), &TreeLikelihood[i], Form("L%s/D", ModelNames[i].c_str()));
    OutputTree.Branch("Mode", &TreeMode, "Mode/I");
    OutputTree.Branch("Cut", &TreeCut, "Cut/B");
 

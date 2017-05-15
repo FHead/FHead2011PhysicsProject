@@ -386,7 +386,7 @@ int main(int argc, char *argv[])
                   //    << " " << L2DMedianResult << " " << L1DSigmaPlusResult << " " << L1DSigmaMinusResult
                   //    << " " << ModelP << endl;
 
-                  string State = Model1 + " " + Model2 + " Cut" + Cut
+                  string State = Model1 + " " + Model2 + " Cut" + Cuts[iC]
                      + " S(" + Form("%d %d %d %d", Scenario.A, Scenario.B, Scenario.C, Scenario.D) + ") "
                      + Form("[%s %s]", ModelNames[iM1].c_str(), ModelNames[iM2].c_str()) + " " + Type;
 

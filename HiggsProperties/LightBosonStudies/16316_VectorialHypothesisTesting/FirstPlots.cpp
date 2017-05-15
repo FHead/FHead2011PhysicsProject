@@ -31,7 +31,7 @@ int main()
 
    string Cuts[2] = {"F", "P"};
 
-   double Events[10] = {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
+   int Events[15] = {5, 7, 10, 14, 20, 30, 50, 70, 100, 140, 200, 300, 500, 700, 1000};
 
    DataHelper DHFile("ResultDatabase.dh");
 
@@ -44,7 +44,12 @@ int main()
       {
          for(int iM2 = iM1 + 1; iM2 < 10; iM2++)
          {
-            PdfFile.AddTextPage(Form("Models %s vs %s, Cut %s", ModelList[iM1].c_str(), ModelList[iM2].c_str(), Cuts[iC].c_str()));
+            string M1 = ModelList[iM1];
+            string M2 = ModelList[iM2];
+            if(M1 > M2)
+               swap(M1, M2);
+
+            PdfFile.AddTextPage(Form("Models %s vs %s, Cut %s", M1.c_str(), M2.c_str(), Cuts[iC].c_str()));
 
             TGraphAsymmErrors GLD1, GLD1Plus, GLD1Minus;
             TGraphAsymmErrors GLD2, GLD2Plus, GLD2Minus;
@@ -68,16 +73,15 @@ int main()
             GLD2MinusB.SetNameTitle("GLD2MinusB", Form("LD2 (-), Model %d vs %d, S+B", iM1, iM2));
             GModelPB.SetNameTitle("GModelPB", Form("Model p-value, Model %d vs %d, S+B", iM1, iM2));
 
-            string StatePrefix = ModelList[iM1] + " " + ModelList[iM2] + " Cut" + Cuts[iC] + " ";
-            string StateSuffixS = Form(" [%d %d] 00", iM1, iM2);
-            string StateSuffixSB = Form(" [%d %d] 10", iM1, iM2);
+            string StatePrefix = M1 + " " + M2 + " Cut" + Cuts[iC] + " ";
+            string StateSuffixS = Form(" [%s %s] Fixed", M1.c_str(), M2.c_str());
+            string StateSuffixSB = Form(" [%s %s] Floated", M1.c_str(), M2.c_str());
 
-            if(ModelList[iM1] > ModelList[iM2])
-               StatePrefix = ModelList[iM2] + " " + ModelList[iM1] + " Cut" + Cuts[iC] + " ";
-            
-            for(int iS = 0; iS < 10; iS++)
+            for(int iS = 0; iS < 15; iS++)
             {
-               string State = StatePrefix + Form("S%d", iS + 10) + StateSuffixS;
+               string State = StatePrefix + Form("S(%d %d %d %d)", Events[iS], Events[iS], -1, -1) + StateSuffixS;
+
+               cout << State << endl;
                
                GLD1.SetPoint(iS, Events[iS], DHFile[State]["L1DMedian Center"].GetDouble());
                GLD1.SetPointError(iS, 0, 0,
@@ -105,7 +109,7 @@ int main()
                   DHFile[State]["L2DMinus High"].GetDouble() - DHFile[State]["L2DMinus Center"].GetDouble());
                GModelP.SetPoint(iS, Events[iS], DHFile[State]["Model PValue"].GetDouble());
                
-               State = StatePrefix + Form("S%d", iS + 20) + StateSuffixSB;
+               State = StatePrefix + Form("S(%d %d %d %d)", Events[iS], Events[iS], Events[iS], Events[iS]) + StateSuffixSB;
                
                GLD1B.SetPoint(iS, Events[iS], DHFile[State]["L1DMedian Center"].GetDouble());
                GLD1B.SetPointError(iS, 0, 0,
@@ -142,7 +146,7 @@ int main()
             GUp.SetPoint(0, 0, 0.5);
             GUp.SetPoint(1, 1000000000, 0.5);
 
-            TH2D HWorld("HWorld", ";N_{S};p-value", 100, 2.5, 20000, 100, 1e-5, 1);
+            TH2D HWorld("HWorld", ";N_{S};p-value", 100, 2.5, 2000, 100, 1e-5, 1);
             HWorld.SetStats(0);
 
             GModelP.SetMarkerColor(kBlue);

@@ -35,6 +35,7 @@ using namespace fastjet;
 #define PTType_Data 3
 #define PTType_Half 4
 #define PTType_DataData 5
+#define PTType_MC 6
 
 int main(int argc, char *argv[]);
 double GetPFPT(double Eta, double Rho, DataHelper &DHFile, int PTType);
@@ -99,8 +100,11 @@ int main(int argc, char *argv[])
       ModBase = atoi(argv[14]);
    }
 
-   // DataHelper DHFile("SimpleFitParameters.dh");
-   DataHelper DHFile("SimpleFitParametersMBCymbal.dh");
+   string DHFileName = "SimpleFitParametersAADataMBDragos.dh";
+   if(IsData == false)
+      DHFileName = "SimpleFitParametersMBCymbal.dh";
+
+   DataHelper DHFile(DHFileName);
 
    DataHelper RhoDHFile("RhoDatabase.dh");
    string RhoTag = "AA6DijetCymbal";
@@ -723,6 +727,8 @@ double GetPFPT(double Eta, double Rho, DataHelper &DHFile, int PTType)
    }
    if(PTType == PTType_DataData)
       return GetModifiedPTDataData(Eta, Rho, DHFile);
+   if(PTType == PTType_MC)
+      return GetModifiedPT2(Eta, Rho, DHFile);
 
    return 10000;
 }

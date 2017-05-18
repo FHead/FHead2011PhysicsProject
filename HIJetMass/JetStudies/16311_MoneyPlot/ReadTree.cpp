@@ -218,11 +218,11 @@ void SmearTreeMessenger::GetEntry(int iE)
    SysBin = SDMassRatio / (0.40 / 160);
       
    // Temporary fix!
-   if(IsMC == true && UseMCWeight == true)
-   {
-      if(PTHat < 220 && PTHat > 170)
-         MCWeight = MCWeight / 1.08366;
-   }
+   // if(IsMC == true && UseMCWeight == true)
+   // {
+   //    if(PTHat < 220 && PTHat > 170)
+   //       MCWeight = MCWeight / 1.08366;
+   // }
 }
 
 void SmearTreeMessenger::SetMB(TGraph *G)

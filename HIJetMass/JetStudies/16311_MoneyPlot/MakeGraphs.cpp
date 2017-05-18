@@ -97,9 +97,19 @@ int main(int argc, char *argv[])
    {
       FileNameData = "AA6Dijet" + PTHatString + "Cymbal.root";
       FileNameSmear = "PP6Dijet" + PTHatString + ".root";
+
+      if(PTHatMin <= 0)
+      {
+         FileNameData = "AA6DijetCymbal.root";
+         FileNameSmear = "PP6DijetV1.root";
+         PTHatMin = 100;
+      }
    }
    if(IsMC == false && TriggerSelection != TRIGGER_NONE)
       FileNameData = "AADataPrescale16241/AADataPrescale.root";
+      
+   // FileNameData = "AA6Dijet220Cymbal.root";
+   // FileNameSmear = "~/PhysicsWorkspace/HIJetMass/JetStudies/16313_PPSmearingFastJet111/OutputV1.root";
 
    string SmearGraphMB = "AADataMB";
    string SmearGraphSmear = "SmearPPDataInJet2";
@@ -230,14 +240,13 @@ int main(int argc, char *argv[])
    BarSmear.Update(SmearEntryCount);
    BarSmear.Print();
    BarSmear.PrintLine();
-
    
    //////////////////////////////////////////
    // Second step - get centrality weights //
    //////////////////////////////////////////
 
    vector<double> DataCentralityBins[6];
-   InitializeVectors(DataCentralityBins, PTHatMin);
+   InitializeVectors(DataCentralityBins, 100);
 
    BarData.Update(0);
    for(int iE = 0; iE < DataEntryCount; iE++)
@@ -257,7 +266,7 @@ int main(int argc, char *argv[])
 
       if(CBin < 0 || PTBin < 0 || JetBin < 0)
          continue;
-
+   
       DataCentralityBins[PTBin][Centrality] += MData.MCWeight;
    }
    BarData.Update(DataEntryCount);
@@ -349,10 +358,6 @@ int main(int argc, char *argv[])
 
       if(CBin < 0 || PTBin < 0 || JetBin < 0)
          continue;
-
-      double JetWeight = DataPT[CBin][PTBin][JetBin] / SmearPT[CBin][PTBin][JetBin];
-      
-      DataCentralityBins[PTBin][Centrality] += MData.MCWeight * JetWeight;
 
       int iMassB = GetBin(MData.SDMassRatio, MassBinEdge, MASSBINCOUNT);
       int iZGB = GetBin(MData.SDZG, ZGBinEdge, ZGBINCOUNT);
@@ -499,21 +504,21 @@ int main(int argc, char *argv[])
       }
       if(MSmear.SDRecoDR > 0.1 && MSmear.SDRecoDR < 0.15)
       {
-         Smear0CountMass     [CBin][PTBin][iMassB] = TotalWeight;
-         Smear0TotalMassX    [CBin][PTBin][iMassB] = MSmear.SDMassRatio * TotalWeight;
-         Smear0TotalMass     [CBin][PTBin][iMassB] = TotalWeight;
-         Smear0TotalMass2    [CBin][PTBin][iMassB] = TotalWeight * TotalWeight;
-         Smear0TotalMassUp   [CBin][PTBin][iMassB] = TotalWeight * exp(UpWeight);
-         Smear0TotalMassDown [CBin][PTBin][iMassB] = TotalWeight * exp(DownWeight);
-         Smear0CountZG       [CBin][PTBin][iZGB]   = TotalWeight;
-         Smear0TotalZGX      [CBin][PTBin][iZGB]   = MSmear.SDZG * TotalWeight;
-         Smear0TotalZG       [CBin][PTBin][iZGB]   = TotalWeight;
-         Smear0TotalZG2      [CBin][PTBin][iZGB]   = TotalWeight * TotalWeight;
-         Smear0CountDR       [CBin][PTBin][iDRB0]  = TotalWeight;
-         Smear0TotalDRX      [CBin][PTBin][iDRB0]  = MSmear.SDRecoDR * TotalWeight;
-         Smear0TotalDR       [CBin][PTBin][iDRB0]  = TotalWeight;
-         Smear0TotalDR2      [CBin][PTBin][iDRB0]  = TotalWeight * TotalWeight;
-         Smear0GrandTotal    [CBin][PTBin]         = TotalWeight;
+         Smear0CountMass     [CBin][PTBin][iMassB] += TotalWeight;
+         Smear0TotalMassX    [CBin][PTBin][iMassB] += MSmear.SDMassRatio * TotalWeight;
+         Smear0TotalMass     [CBin][PTBin][iMassB] += TotalWeight;
+         Smear0TotalMass2    [CBin][PTBin][iMassB] += TotalWeight * TotalWeight;
+         Smear0TotalMassUp   [CBin][PTBin][iMassB] += TotalWeight * exp(UpWeight);
+         Smear0TotalMassDown [CBin][PTBin][iMassB] += TotalWeight * exp(DownWeight);
+         Smear0CountZG       [CBin][PTBin][iZGB]   += TotalWeight;
+         Smear0TotalZGX      [CBin][PTBin][iZGB]   += MSmear.SDZG * TotalWeight;
+         Smear0TotalZG       [CBin][PTBin][iZGB]   += TotalWeight;
+         Smear0TotalZG2      [CBin][PTBin][iZGB]   += TotalWeight * TotalWeight;
+         Smear0CountDR       [CBin][PTBin][iDRB0]  += TotalWeight;
+         Smear0TotalDRX      [CBin][PTBin][iDRB0]  += MSmear.SDRecoDR * TotalWeight;
+         Smear0TotalDR       [CBin][PTBin][iDRB0]  += TotalWeight;
+         Smear0TotalDR2      [CBin][PTBin][iDRB0]  += TotalWeight * TotalWeight;
+         Smear0GrandTotal    [CBin][PTBin]         += TotalWeight;
       }
    }
    BarSmear.Update(SmearEntryCount);

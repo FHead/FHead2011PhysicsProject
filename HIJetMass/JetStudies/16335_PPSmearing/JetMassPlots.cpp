@@ -364,7 +364,7 @@ int main(int argc, char *argv[])
             {
                if(JetsWithGhosts[i].perp() < 10)
                   continue;
-               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4);
+               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4);
             }
             PdfFile.AddCanvas(Canvas);
          }

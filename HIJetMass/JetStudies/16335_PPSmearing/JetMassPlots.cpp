@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
             continue;
 
          bool WriteJet = false;
-         if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] < MSDJet.PTHat)
+         if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] > MSDJet.PTHat)
             WriteJet = true;
          if(WriteJet == true)
             WriteJetCount = WriteJetCount + 1;

@@ -268,7 +268,7 @@ int main(int argc, char *argv[])
       for(int iJ = 0; iJ < MSDJet.JetCount; iJ++)
       {
          bool WriteJet = false;
-         if(MSDJet.JetPT[iJ] > 200 && GetCentrality(MHiEvent.hiBin) > 0.8 && MSDJet.JetPT[iJ] < MSDJet.PTHat)
+         if(MSDJet.JetPT[iJ] > 200 && GetCentrality(MHiEvent.hiBin) > 0.8 && MSDJet.JetPT[iJ] > MSDJet.PTHat)
             WriteJet = true;
          if(WriteJet == true)
             WriteJetCount = WriteJetCount + 1;
@@ -305,7 +305,7 @@ int main(int argc, char *argv[])
             HCS.SetStats(0);
             for(int i = 0; i < (int)AllCandidates.size(); i++)
                HCS.Fill(AllCandidates[i].eta(), AllCandidates[i].phi(), AllCandidates[i].perp());
-            PdfFile.AddPlot(HCS, "colz");
+            // PdfFile.AddPlot(HCS, "colz");
             
             TCanvas Canvas;
             HCS.Draw("colz");

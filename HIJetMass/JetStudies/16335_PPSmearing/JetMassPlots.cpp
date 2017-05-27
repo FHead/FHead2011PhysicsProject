@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
             TH2D HPP("HPP", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
             HPP.SetStats(0);
             for(int i = 0; i < (int)Candidates.size(); i++)
-               HPP.Fill(Candidates[i].GetEta(), Candidates[i].GetPhi(), Candidates[i].GetPT());
+               HPP.Fill(Candidates[i].eta(), Candidates[i].phi(), Candidates[i].perp());
             PdfFile.AddPlot(HPP, "colz");
          }
 
@@ -340,7 +340,7 @@ int main(int argc, char *argv[])
             TH2D HAA("HAA", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
             HAA.SetStats(0);
             for(int i = 0; i < (int)Candidates.size(); i++)
-               HAA.Fill(Candidates[i].GetEta(), Candidates[i].GetPhi(), Candidates[i].GetPT());
+               HAA.Fill(Candidates[i].eta(), Candidates[i].phi(), Candidates[i].perp());
             PdfFile.AddPlot(HAA, "colz");
          }
 
@@ -356,7 +356,7 @@ int main(int argc, char *argv[])
             TH2D HAA("HAA", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
             HAA.SetStats(0);
             for(int i = 0; i < (int)Candidates.size(); i++)
-               HAA.Fill(Candidates[i].GetEta(), Candidates[i].GetPhi(), Candidates[i].GetPT());
+               HAA.Fill(Candidates[i].eta(), Candidates[i].phi(), Candidates[i].perp());
             TCanvas Canvas;
             HAA.Draw("colz");
             TEllipse Circle;

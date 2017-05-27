@@ -303,8 +303,8 @@ int main(int argc, char *argv[])
          {
             TH2D HCS("HCS", "All PF;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
             HCS.SetStats(0);
-            for(int i = 0; i < (int)Particles.size(); i++)
-               HCS.Fill(Particles[i].eta(), Particles[i].phi(), Particles[i].perp());
+            for(int i = 0; i < (int)AllCandidates.size(); i++)
+               HCS.Fill(AllCandidates[i].eta(), AllCandidates[i].phi(), AllCandidates[i].perp());
             PdfFile.AddPlot(HCS, "colz");
             
             TCanvas Canvas;

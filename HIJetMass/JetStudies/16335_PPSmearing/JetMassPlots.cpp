@@ -375,11 +375,7 @@ int main(int argc, char *argv[])
             TEllipse Circle;
             Circle.SetFillStyle(0);
             for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
-            {
-               if(JetsWithGhosts[i].perp() < 10)
-                  continue;
                Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
-            }
             PdfFile.AddCanvas(Canvas);
          }
 
@@ -438,7 +434,7 @@ int main(int argc, char *argv[])
             {
                if(SDJets[i].perp() < 10)
                   continue;
-               Circle.DrawEllipse(SDJets[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
+               Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
             }
             PdfFile.AddCanvas(Canvas);
          }

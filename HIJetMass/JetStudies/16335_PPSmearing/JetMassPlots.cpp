@@ -269,14 +269,14 @@ int main(int argc, char *argv[])
             WriteJet = true;
          if(WriteJet == true)
             WriteJetCount = WriteJetCount + 1;
-         if(WriteJetCount > 100)
+         if(WriteJetCount > 20)
          {
             WriteJet = false;
             break;
          }
 
          if(WriteJet == true)
-            PdfFile.AddTextPage("Jet");
+            PdfFile.AddTextPage(Form("Jet (%.2f, %.2f, %.2f)", MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ]));
 
          FourVector JetP;
          JetP.SetPtEtaPhi(MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ]);

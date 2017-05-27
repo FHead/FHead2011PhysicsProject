@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
    bool IsData = IsDataFromTag(Tag);
    bool IsPP = IsPPFromTag(Tag);
 
+   bool UseRhoM = true;   // switch to use rho_m or not
+
    if(IsData == true)
       cerr << "I'd be glad to run on data for this study" << endl;
 
@@ -304,7 +306,7 @@ int main(int argc, char *argv[])
          {
             FourVector P;
             P.SetPtEtaPhi((*MPF.PT)[i], (*MPF.Eta)[i], (*MPF.Phi)[i]);
-            P[0] = (*MPF.E)[i];
+            if(UseRhoM == true)   P[0] = (*MPF.E)[i];
             if(GetDR(P, JetP) < Range)
                Candidates.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
             if(GetDR(P, JetP) < 0.4)
@@ -327,7 +329,7 @@ int main(int argc, char *argv[])
          {
             FourVector P;
             P.SetPtEtaPhi((*MMBPF.PT)[i], (*MMBPF.Eta)[i], (*MMBPF.Phi)[i]);
-            P[0] = (*MMBPF.E)[i];
+            if(UseRhoM == true)   P[0] = (*MMBPF.E)[i];
             if(GetDR(P, JetP) < Range)
                Candidates.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
             if(GetDR(P, JetP) < 0.4)
@@ -364,7 +366,7 @@ int main(int argc, char *argv[])
             {
                if(JetsWithGhosts[i].perp() < 10)
                   continue;
-               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4);
+               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4, 0.0, 2 * M_PI, 0.0, "");
             }
             PdfFile.AddCanvas(Canvas);
          }
@@ -372,6 +374,8 @@ int main(int argc, char *argv[])
          vector<PseudoJet> CSJets(JetsWithGhosts.size());
          for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
          {
+            if(UseRhoM == false)
+               RhoM = 0;
             contrib::ConstituentSubtractor Subtractor(Rho, RhoM);
             Subtractor.set_alpha(1);  // optional
             // subtractor.set_max_deltaR(2);  // optional

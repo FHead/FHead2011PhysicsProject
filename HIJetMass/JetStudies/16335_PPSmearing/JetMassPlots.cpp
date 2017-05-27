@@ -261,11 +261,11 @@ int main(int argc, char *argv[])
             continue;
 
          bool WriteJet = false;
+         if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] > MSDJet.PTHat)
+            WriteJet = true;
 
          if(WriteJet == true)
-         {
             PdfFile.AddTextPage("Jet");
-         }
 
          FourVector JetP;
          JetP.SetPtEtaPhi(MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ]);

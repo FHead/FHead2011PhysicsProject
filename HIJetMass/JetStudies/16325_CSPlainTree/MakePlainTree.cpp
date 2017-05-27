@@ -376,6 +376,16 @@ int main(int argc, char *argv[])
                BestDR = DR;
             }
          }
+         
+         if(WriteJet == true)
+         {
+            TH2D HCSJet("HCSJet", "Candidates;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            HCSJet.SetStats(0);
+            vector<PseudoJet> JetCandidates = Jets[BestJet].constituents();
+            for(int i = 0; i < (int)JetCandidates.size(); i++)
+               HCSJet.Fill(JetCandidates[i].eta(), JetCandidates[i].phi(), JetCandidates[i].perp());
+            PdfFile.AddPlot(HCSJet, "colz");
+         }
 
          if(BestDR >= 0)
          {

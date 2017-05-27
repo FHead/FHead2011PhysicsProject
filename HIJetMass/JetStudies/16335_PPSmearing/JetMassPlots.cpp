@@ -373,6 +373,7 @@ int main(int argc, char *argv[])
             TCanvas Canvas;
             HAA.Draw("colz");
             TEllipse Circle;
+            Circle.SetFillStyle(0);
             for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
             {
                if(JetsWithGhosts[i].perp() < 10)
@@ -432,6 +433,7 @@ int main(int argc, char *argv[])
             TCanvas Canvas;
             HCS.Draw("colz");
             TEllipse Circle;
+            Circle.SetFillStyle(0);
             for(int i = 0; i < (int)SDJets.size(); i++)
             {
                if(SDJets[i].perp() < 10)

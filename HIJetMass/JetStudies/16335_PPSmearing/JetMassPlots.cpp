@@ -433,6 +433,8 @@ int main(int argc, char *argv[])
             for(int i = 0; i < (int)SDJets.size(); i++)
                Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
             PdfFile.AddCanvas(Canvas);
+
+            PdfFile.AddTextPage(Form("There are %d SDJets", SDJets.size()));
          }
 
          if(SDJets.size() == 0)   // Huh?

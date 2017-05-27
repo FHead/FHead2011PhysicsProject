@@ -272,6 +272,7 @@ int main(int argc, char *argv[])
          if(WriteJetCount > 20)
          {
             WriteJet = false;
+            iE = EntryCount;
             break;
          }
          

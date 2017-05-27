@@ -204,6 +204,7 @@ int main(int argc, char *argv[])
    
    PdfFileHelper PdfFile("SanityFiles.pdf");
    PdfFile.AddTextPage("Some plots for individual jets");
+   int WriteJetCount = 0;
 
    int MBEntryCount = MMBHiEvent.Tree->GetEntries();
 
@@ -263,6 +264,13 @@ int main(int argc, char *argv[])
          bool WriteJet = false;
          if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] > MSDJet.PTHat)
             WriteJet = true;
+         if(WriteJet == true)
+            WriteJetCount = WriteJetCount + 1;
+         if(WriteJetCount > 100)
+         {
+            WriteJet = false;
+            break;
+         }
 
          if(WriteJet == true)
             PdfFile.AddTextPage("Jet");

@@ -22,6 +22,7 @@ using namespace fastjet;
 #include "Code/TauHelperFunctions3.h"
 #include "ProgressBar.h"
 #include "PlotHelper3.h"
+#include "SetStyle.h"
 
 #include "BasicUtilities.h"
 #include "Messenger.h"
@@ -33,6 +34,8 @@ using namespace fastjet;
 
 int main(int argc, char *argv[])
 {
+   SetThesisStyle();
+
    if(argc != 9 && argc != 10 && argc != 12)
    {
       cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax MinBiasForest GhostDistance Range ReuseRate Mod ModBase" << endl;
@@ -374,7 +377,7 @@ int main(int argc, char *argv[])
             {
                if(JetsWithGhosts[i].perp() < 10)
                   continue;
-               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4, 0.0, 2 * M_PI, 0.0, "");
+               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
             }
             PdfFile.AddCanvas(Canvas);
          }
@@ -419,6 +422,24 @@ int main(int argc, char *argv[])
          }
          ClusterSequence NewSequence(CSCandidates, Definition);
          vector<PseudoJet> SDJets = NewSequence.inclusive_jets();
+
+         if(WriteJet == true)
+         {
+            TH2D HCS("HCS", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            HCS.SetStats(0);
+            for(int i = 0; i < (int)CSCandidates.size(); i++)
+               HCS.Fill(CSCandidates[i].eta(), CSCandidates[i].phi(), CSCandidates[i].perp());
+            TCanvas Canvas;
+            HCS.Draw("colz");
+            TEllipse Circle;
+            for(int i = 0; i < (int)SDJets.size(); i++)
+            {
+               if(SDJets[i].perp() < 10)
+                  continue;
+               Circle.DrawEllipse(SDJets[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
+            }
+            PdfFile.AddCanvas(Canvas);
+         }
 
          if(SDJets.size() == 0)   // Huh?
             continue;

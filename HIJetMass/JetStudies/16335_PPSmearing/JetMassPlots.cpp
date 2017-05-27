@@ -422,7 +422,7 @@ int main(int argc, char *argv[])
 
          if(WriteJet == true)
          {
-            TH2D HCS("HCS", "CS Jets;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            TH2D HCS("HCS", "CS Jets (red: CS, black: reclustered);eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
             HCS.SetStats(0);
             for(int i = 0; i < (int)CSCandidates.size(); i++)
                HCS.Fill(CSCandidates[i].eta(), CSCandidates[i].phi(), CSCandidates[i].perp());
@@ -432,6 +432,9 @@ int main(int argc, char *argv[])
             Circle.SetFillStyle(0);
             for(int i = 0; i < (int)SDJets.size(); i++)
                Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
+            Circle.SetLineColor(kRed);
+            for(int i = 0; i < (int)CSJets.size(); i++)
+               Circle.DrawEllipse(CSJets[i].eta(), CSJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
             PdfFile.AddCanvas(Canvas);
 
             // PdfFile.AddTextPage(Form("There are %d SDJets", SDJets.size()));

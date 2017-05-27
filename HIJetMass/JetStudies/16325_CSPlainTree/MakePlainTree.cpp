@@ -15,6 +15,7 @@ using namespace fastjet;
 
 #include "ProgressBar.h"
 #include "PlotHelper3.h"
+#include "SetStyle.h"
 
 #include "Messenger.h"
 #include "SDJetHelper.h"
@@ -23,6 +24,8 @@ using namespace fastjet;
 
 int main(int argc, char *argv[])
 {
+   SetThesisStyle();
+
    ClusterSequence::set_fastjet_banner_stream(NULL);
 
    string InputFileName = "HiForestAOD_999.root";

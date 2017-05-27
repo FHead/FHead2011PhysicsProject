@@ -8,6 +8,7 @@ using namespace std;
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TFile.h"
+#include "TEllipse.h"
 #include "TProfile.h"
 #include "TProfile2D.h"
 
@@ -20,6 +21,7 @@ using namespace fastjet;
 #include "Code/DrawRandom.h"
 #include "Code/TauHelperFunctions3.h"
 #include "ProgressBar.h"
+#include "PlotHelper3.h"
 
 #include "BasicUtilities.h"
 #include "Messenger.h"
@@ -198,6 +200,9 @@ int main(int argc, char *argv[])
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(1);
    
+   PdfFileHelper PdfFile("SanityFiles.pdf");
+   PdfFile.AddTextPage("Some plots for individual jets");
+
    int MBEntryCount = MMBHiEvent.Tree->GetEntries();
 
    for(int iEntry = 0, ReuseCount = 1; iEntry < EntryCount; ReuseCount++)
@@ -253,6 +258,13 @@ int main(int argc, char *argv[])
          if(MJet.JetPT[iJ] < 10)
             continue;
 
+         bool WriteJet = false;
+
+         if(WriteJet == true)
+         {
+            PdfFile.AddTextPage("Jet");
+         }
+
          FourVector JetP;
          JetP.SetPtEtaPhi(MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ]);
 
@@ -299,6 +311,15 @@ int main(int argc, char *argv[])
                TotalStuffInJet = TotalStuffInJet + P;
          }
          TreeTotalStuffInJet = TotalStuffInJet.GetPT();
+         
+         if(WriteJet == true)
+         {
+            TH2D HPP("HPP", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            HPP.SetStats(0);
+            for(int i = 0; i < (int)Candidates.size(); i++)
+               HPP.Fill(Candidates[i].GetEta(), Candidates[i].GetPhi(), Candidates[i].GetPT());
+            PdfFile.AddPlot(HPP, "colz");
+         }
 
          // Step 2 - sprinkle underlying event contribution from MB
          double TotalPTInJet = 0;
@@ -313,6 +334,15 @@ int main(int argc, char *argv[])
                TotalPTInJet = TotalPTInJet + P.GetPT();
          }
          TreeTotalPTInJet = TotalPTInJet;
+         
+         if(WriteJet == true)
+         {
+            TH2D HAA("HAA", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            HAA.SetStats(0);
+            for(int i = 0; i < (int)Candidates.size(); i++)
+               HAA.Fill(Candidates[i].GetEta(), Candidates[i].GetPhi(), Candidates[i].GetPT());
+            PdfFile.AddPlot(HAA, "colz");
+         }
 
          // Step 3 - do pileup subtraction algorithm - via fastjet
          JetDefinition Definition(antikt_algorithm, 0.4);
@@ -320,6 +350,24 @@ int main(int argc, char *argv[])
          AreaDefinition AreaDef(active_area_explicit_ghosts, GhostedAreaSpec(6.0, 1, GhostArea));
          ClusterSequenceArea Sequence(Candidates, Definition, AreaDef);
          vector<PseudoJet> JetsWithGhosts = Sequence.inclusive_jets();
+
+         if(WriteJet == true)
+         {
+            TH2D HAA("HAA", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            HAA.SetStats(0);
+            for(int i = 0; i < (int)Candidates.size(); i++)
+               HAA.Fill(Candidates[i].GetEta(), Candidates[i].GetPhi(), Candidates[i].GetPT());
+            TCanvas Canvas;
+            HAA.Draw("colz");
+            TEllipse Circle;
+            for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
+            {
+               if(JetsWithGhosts[i].perp() < 10)
+                  continue;
+               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4);
+            }
+            PdfFile.AddCanvas(Canvas);
+         }
 
          vector<PseudoJet> CSJets(JetsWithGhosts.size());
          for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
@@ -608,6 +656,9 @@ int main(int argc, char *argv[])
    Bar.Update(EntryCount);
    Bar.Print();
    Bar.PrintLine();
+
+   PdfFile.AddTimeStampPage();
+   PdfFile.Close();
 
    OutputTree.Write();
 

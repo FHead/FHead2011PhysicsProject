@@ -176,6 +176,7 @@ int main(int argc, char *argv[])
 
    PdfFileHelper PdfFile("SanityCheck.pdf");
    PdfFile.AddTextPage("Some visualizations :D");
+   int WriteJetCount = 0;
 
    for(int iE = 0; iE < EntryCount; iE++)
    {
@@ -264,7 +265,7 @@ int main(int argc, char *argv[])
       for(int iJ = 0; iJ < MSDJet.JetCount; iJ++)
       {
          bool WriteJet = false;
-         if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] < MSDJet.PTHat)
+         if(MSDJet.JetPT[iJ] > 200 && GetCentrality(MHiEvent.hiBin) > 0.8 && MSDJet.JetPT[iJ] < MSDJet.PTHat)
             WriteJet = true;
          if(WriteJet == true)
             WriteJetCount = WriteJetCount + 1;

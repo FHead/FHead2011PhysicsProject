@@ -464,6 +464,16 @@ int main(int argc, char *argv[])
          Jet = SDJets[ClosestIndex];
          FourVector BestJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
 
+         if(WriteJet == true)
+         {
+            TH2D HCSJet("HCSJet", "Candidate in jet;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            HCSJet.SetStats(0);
+            vector<PseudoJet> JetCandidates = SDJets[ClosestIndex].constituents();            
+            for(int i = 0; i < (int)JetCandidates.size(); i++)
+               HCSJet.Fill(JetCandidates[i].eta(), JetCandidates[i].phi(), JetCandidates[i].perp());
+            PdfFile.AddPlot(HCSJet, "colz");
+         }
+
          vector<FourVector> GoodCandidates, GoodCandidatesBest, GoodCandidatesFirst;
 
          vector<PseudoJet> Constituents = SDJets[LeadingIndex].constituents();

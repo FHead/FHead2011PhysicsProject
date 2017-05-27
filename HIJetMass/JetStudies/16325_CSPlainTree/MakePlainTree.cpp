@@ -9,8 +9,12 @@ using namespace fastjet;
 #include "TTree.h"
 #include "TH1D.h"
 #include "TFile.h"
+#include "TH2D.h"
+#include "TCanvas.h"
+#include "TEllipse.h"
 
 #include "ProgressBar.h"
+#include "PlotHelper3.h"
 
 #include "Messenger.h"
 #include "SDJetHelper.h"
@@ -170,6 +174,9 @@ int main(int argc, char *argv[])
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
+   PdfFileHelper PdfFile("SanityCheck.pdf");
+   PdfFile.AddTextPage("Some visualizations :D");
+
    for(int iE = 0; iE < EntryCount; iE++)
    {
       if(iE < 200 || (iE % (EntryCount / 300)) == 0)
@@ -256,6 +263,54 @@ int main(int argc, char *argv[])
 
       for(int iJ = 0; iJ < MSDJet.JetCount; iJ++)
       {
+         bool WriteJet = false;
+         if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] < MSDJet.PTHat)
+            WriteJet = true;
+         if(WriteJet == true)
+            WriteJetCount = WriteJetCount + 1;
+         if(WriteJetCount > 20)
+         {
+            WriteJet = false;
+            break;
+         }
+         
+         if(WriteJet == true)
+            PdfFile.AddTextPage(Form("SD Jet (%.2f, %.2f, %.2f)", MSDJet.JetPT[iJ], MSDJet.JetEta[iJ], MSDJet.JetPhi[iJ]));
+
+         if(WriteJet == true)
+         {
+            TH2D HAA("HAA", "All PF;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            HAA.SetStats(0);
+            for(int i = 0; i < (int)Particles.size(); i++)
+               HAA.Fill(Particles[i].eta(), Particles[i].phi(), Particles[i].perp());
+            PdfFile.AddPlot(HAA, "colz");
+            
+            TCanvas Canvas;
+            HAA.Draw("colz");
+            TEllipse Circle;
+            Circle.SetFillStyle(0);
+            for(int i = 0; i < (int)RawJets.size(); i++)
+               Circle.DrawEllipse(RawJets[i].eta(), RawJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
+            PdfFile.AddCanvas(Canvas);
+         }
+         
+         if(WriteJet == true)
+         {
+            TH2D HCS("HCS", "All PF;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            HCS.SetStats(0);
+            for(int i = 0; i < (int)Particles.size(); i++)
+               HCS.Fill(Particles[i].eta(), Particles[i].phi(), Particles[i].perp());
+            PdfFile.AddPlot(HCS, "colz");
+            
+            TCanvas Canvas;
+            HCS.Draw("colz");
+            TEllipse Circle;
+            Circle.SetFillStyle(0);
+            for(int i = 0; i < (int)Jets.size(); i++)
+               Circle.DrawEllipse(Jets[i].eta(), Jets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
+            PdfFile.AddCanvas(Canvas);
+         }
+
          TreeJetPT = MSDJet.JetPT[iJ];
          TreeJetRawPT = MSDJet.JetRawPT[iJ];
          TreeJetEta = MSDJet.JetEta[iJ];
@@ -385,6 +440,9 @@ int main(int argc, char *argv[])
          OutputTree.Fill();
       }
    }
+
+   PdfFile.AddTimeStampPage();
+   PdfFile.Close();
 
    Bar.Update(EntryCount);
    Bar.Print();

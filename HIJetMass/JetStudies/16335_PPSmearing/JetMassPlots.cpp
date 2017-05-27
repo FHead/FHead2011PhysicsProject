@@ -327,7 +327,7 @@ int main(int argc, char *argv[])
          
          if(WriteJet == true)
          {
-            TH2D HPP("HPP", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            TH2D HPP("HPP", "PP Jet;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
             HPP.SetStats(0);
             for(int i = 0; i < (int)Candidates.size(); i++)
                HPP.Fill(Candidates[i].eta(), Candidates[i].phi(), Candidates[i].perp());
@@ -350,7 +350,7 @@ int main(int argc, char *argv[])
          
          if(WriteJet == true)
          {
-            TH2D HAA("HAA", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            TH2D HAA("HAA", "Embedded in MB;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
             HAA.SetStats(0);
             for(int i = 0; i < (int)Candidates.size(); i++)
                HAA.Fill(Candidates[i].eta(), Candidates[i].phi(), Candidates[i].perp());
@@ -366,7 +366,7 @@ int main(int argc, char *argv[])
 
          if(WriteJet == true)
          {
-            TH2D HAA("HAA", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            TH2D HAA("HAA", "Clustered jets for CS;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
             HAA.SetStats(0);
             for(int i = 0; i < (int)Candidates.size(); i++)
                HAA.Fill(Candidates[i].eta(), Candidates[i].phi(), Candidates[i].perp());
@@ -425,7 +425,7 @@ int main(int argc, char *argv[])
 
          if(WriteJet == true)
          {
-            TH2D HCS("HCS", ";eta;phi", 72, -3, 3, 72, -M_PI, M_PI);
+            TH2D HCS("HCS", "CS Jets;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
             HCS.SetStats(0);
             for(int i = 0; i < (int)CSCandidates.size(); i++)
                HCS.Fill(CSCandidates[i].eta(), CSCandidates[i].phi(), CSCandidates[i].perp());

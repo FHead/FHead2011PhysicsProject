@@ -433,6 +433,7 @@ int main(int argc, char *argv[])
             for(int i = 0; i < (int)SDJets.size(); i++)
                Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
             Circle.SetLineColor(kRed);
+            Circle.SetLineStyle(kDashed);
             for(int i = 0; i < (int)CSJets.size(); i++)
                Circle.DrawEllipse(CSJets[i].eta(), CSJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
             PdfFile.AddCanvas(Canvas);
@@ -460,7 +461,7 @@ int main(int argc, char *argv[])
             }
          }
 
-         PseudoJet &Jet = SDJets[LeadingIndex];
+         PseudoJet Jet = SDJets[LeadingIndex];
          FourVector NewJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
          Jet = CSJets[ClosestCSJet];
          FourVector FirstJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());

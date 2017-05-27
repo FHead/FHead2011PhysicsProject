@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
             continue;
 
          bool WriteJet = false;
-         if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] > MSDJet.PTHat)
+         if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) > 0.8 && MJet.JetPT[iJ] < MSDJet.PTHat)
             WriteJet = true;
          if(WriteJet == true)
             WriteJetCount = WriteJetCount + 1;
@@ -431,11 +431,7 @@ int main(int argc, char *argv[])
             TEllipse Circle;
             Circle.SetFillStyle(0);
             for(int i = 0; i < (int)SDJets.size(); i++)
-            {
-               if(SDJets[i].perp() < 10)
-                  continue;
                Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
-            }
             PdfFile.AddCanvas(Canvas);
          }
 

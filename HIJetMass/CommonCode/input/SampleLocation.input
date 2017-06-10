@@ -51,3 +51,13 @@ AA6Dijet370Cymbal               /store/group/phys_heavyions/mverweij/MCPbPb/Cymb
 AA6Dijet460Cymbal               /store/group/phys_heavyions/mverweij/MCPbPb/CymbalDijetPythia6/Pythia6_Dijet460_pp502_Hydjet_Cymbal_MB/crab_HiForestCymbalDijet460P6V1/170313_101414/merge/
 AA6Dijet540Cymbal               /store/group/phys_heavyions/mverweij/MCPbPb/CymbalDijetPythia6/Pythia6_Dijet540_pp502_Hydjet_Cymbal_MB/crab_HiForestCymbalDijet540P6V1/170313_101455/merge/
 MBCymbal                        /store/cmst3/user/chenyi/Samples/CymbalMB/
+AADataMBDragos                  /store/cmst3/user/chenyi/Samples/HIMinimumBias2/HIMinimumBias2-HIRun2015-PromptReco-v1_forest_csjet_v1/160311_153742/0000
+PP6Dijet50HIReco                root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD50/0.root
+PP6Dijet80HIReco                root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD80/0.root
+PP6Dijet120HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD120/0.root
+PP6Dijet170HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD220/0.root
+PP6Dijet220HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD170/0.root
+PP6Dijet280HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD280/0.root
+PP6Dijet370HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD370/0.root
+PP6Dijet460HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD460/0.root
+PP6Dijet540HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD540/0.root

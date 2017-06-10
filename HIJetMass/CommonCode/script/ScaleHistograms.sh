@@ -1,7 +1,7 @@
 
 WorkspaceBase=~/work/PhysicsWorkspace/HIJetMass/
 InputFolder=$1
-IntermediateFolder=TempResult
+IntermediateFolder=$TMPDIR/TempResult
 OutputFolder=$2
 CrossSectionFile=$3
 CombinationFile=$4

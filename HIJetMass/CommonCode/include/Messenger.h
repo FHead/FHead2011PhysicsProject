@@ -31,6 +31,7 @@ public:
    float hiHFminusEta4;
 public:
    HiEventTreeMessenger(TFile &File);
+   HiEventTreeMessenger(TFile *File);
    HiEventTreeMessenger(TTree *HiEventTree);
    bool Initialize(TTree *HiEventTree);
    bool Initialize();
@@ -46,6 +47,7 @@ public:
    std::vector<double> *RhoM;
 public:
    RhoTreeMessenger(TFile &File);
+   RhoTreeMessenger(TFile *File);
    RhoTreeMessenger(TTree *RhoTree);
    bool Initialize(TTree *RhoTree);
    bool Initialize();
@@ -64,6 +66,7 @@ public:
    int CollisionEventSelection;
 public:
    SkimTreeMessenger(TFile &File);
+   SkimTreeMessenger(TFile *File);
    SkimTreeMessenger(TTree *SkimTree);
    bool Initialize(TTree *SkimTree);
    bool Initialize();
@@ -139,6 +142,7 @@ public:
    int JetPFMUM[JETCOUNTMAX];
 public:
    JetTreeMessenger(TFile &File, std::string TreeName = "akCs4PFJetAnalyzer/t");
+   JetTreeMessenger(TFile *File, std::string TreeName = "akCs4PFJetAnalyzer/t");
    JetTreeMessenger(TTree *JetTree);
    bool Initialize(TTree *JetTree);
    bool Initialize();
@@ -161,6 +165,7 @@ public:
    std::vector<int> *DaughterCount;
 public:
    GenParticleTreeMessenger(TFile &File);
+   GenParticleTreeMessenger(TFile *File);
    GenParticleTreeMessenger(TTree *GenParticleTree);
    bool Initialize(TTree *GenParticleTree);
    bool Initialize();
@@ -178,6 +183,7 @@ public:
    std::vector<float> *Phi;
 public:
    PFTreeMessenger(TFile &File, std::string TreeName = "pfcandAnalyzer/pfTree");
+   PFTreeMessenger(TFile *File, std::string TreeName = "pfcandAnalyzer/pfTree");
    PFTreeMessenger(TTree *PFTree);
    bool Initialize(TTree *PFTree);
    bool Initialize();
@@ -198,6 +204,7 @@ public:
    std::vector<bool> PrescaleExist;
 public:
    TriggerTreeMessenger(TFile &File, std::string TreeName = "hltanalysis/HltTree");
+   TriggerTreeMessenger(TFile *File, std::string TreeName = "hltanalysis/HltTree");
    TriggerTreeMessenger(TTree *TriggerTree);
    bool Initialize(TTree *TriggerTree);
    bool Initialize();
@@ -223,6 +230,7 @@ public:
    std::vector<double> *Mass;
 public:
    TriggerObjectTreeMessenger(TFile &File, std::string TreeName = "hltobjects/HLT_HIPuAK4CaloJet60_Eta5p1_v");
+   TriggerObjectTreeMessenger(TFile *File, std::string TreeName = "hltobjects/HLT_HIPuAK4CaloJet60_Eta5p1_v");
    TriggerObjectTreeMessenger(TTree *TriggerTree);
    bool Initialize(TTree *TriggerTree);
    bool Initialize();

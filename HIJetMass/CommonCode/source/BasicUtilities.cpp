@@ -7,12 +7,13 @@
 
 #include "include/BasicUtilities.h"
 
-double GetRho(std::vector<double> *EtaMax, std::vector<double> *Rho, double Eta)
+double GetRho(std::vector<double> *EtaMax, std::vector<double> *Rho, double Eta, bool SuppressMessage)
 {
    if(EtaMax == NULL || Rho == NULL || EtaMax->size() != Rho->size()
       || EtaMax->size() == 0)
    {
-      std::cerr << "[GetRho] Input is invalid!  Return zero..." << std::endl;
+      if(SuppressMessage == false)
+         std::cerr << "[GetRho] Input is invalid!  Return zero..." << std::endl;
       return 0;
    }
 
@@ -49,6 +50,19 @@ bool IsPPFromTag(std::string Tag)
       return true;
    if(Tag.find("pp") != std::string::npos)
       return true;
+   return false;
+}
+
+bool IsPPHiRecoFromTag(std::string Tag)
+{
+   bool IsPP = IsPPFromTag(Tag);
+
+   if(Tag.find("HiReco") != std::string::npos)
+      return true && IsPP;
+   if(Tag.find("HIReco") != std::string::npos)
+      return true && IsPP;
+   if(Tag.find("hireco") != std::string::npos)
+      return true && IsPP;
    return false;
 }
 

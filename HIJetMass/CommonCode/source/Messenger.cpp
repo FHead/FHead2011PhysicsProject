@@ -21,6 +21,15 @@ HiEventTreeMessenger::HiEventTreeMessenger(TFile &File)
    Initialize();
 }
 
+HiEventTreeMessenger::HiEventTreeMessenger(TFile *File)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get("hiEvtAnalyzer/HiTree");
+   else
+      Tree = NULL;
+   Initialize();
+}
+
 HiEventTreeMessenger::HiEventTreeMessenger(TTree *HiEventTree)
 {
    Initialize(HiEventTree);
@@ -74,6 +83,15 @@ RhoTreeMessenger::RhoTreeMessenger(TFile &File)
    Initialize();
 }
 
+RhoTreeMessenger::RhoTreeMessenger(TFile *File)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get("hiFJRhoAnalyzer/t");
+   else
+      Tree = NULL;
+   Initialize();
+}
+
 RhoTreeMessenger::RhoTreeMessenger(TTree *RhoTree)
 {
    Initialize(RhoTree);
@@ -116,6 +134,15 @@ bool RhoTreeMessenger::GetEntry(int iEntry)
 SkimTreeMessenger::SkimTreeMessenger(TFile &File)
 {
    Tree = (TTree *)File.Get("skimanalysis/HltTree");
+   Initialize();
+}
+
+SkimTreeMessenger::SkimTreeMessenger(TFile *File)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get("skimanalysis/HltTree");
+   else
+      Tree = NULL;
    Initialize();
 }
 
@@ -209,6 +236,15 @@ bool SkimTreeMessenger::GetEntry(int iEntry)
 JetTreeMessenger::JetTreeMessenger(TFile &File, std::string TreeName)
 {
    Tree = (TTree *)File.Get(TreeName.c_str());
+   Initialize();
+}
+
+JetTreeMessenger::JetTreeMessenger(TFile *File, std::string TreeName)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get(TreeName.c_str());
+   else
+      Tree = NULL;
    Initialize();
 }
 
@@ -368,6 +404,15 @@ GenParticleTreeMessenger::GenParticleTreeMessenger(TFile &File)
    Initialize();
 }
 
+GenParticleTreeMessenger::GenParticleTreeMessenger(TFile *File)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get("HiGenParticleAna/hi");
+   else
+      Tree = NULL;
+   Initialize();
+}
+
 GenParticleTreeMessenger::GenParticleTreeMessenger(TTree *GenParticleTree)
 {
    Initialize(GenParticleTree);
@@ -431,6 +476,15 @@ PFTreeMessenger::PFTreeMessenger(TFile &File, std::string TreeName)
    Initialize();
 }
 
+PFTreeMessenger::PFTreeMessenger(TFile *File, std::string TreeName)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get(TreeName.c_str());
+   else
+      Tree = NULL;
+   Initialize();
+}
+
 PFTreeMessenger::PFTreeMessenger(TTree *PFTree)
 {
    Initialize(PFTree);
@@ -479,6 +533,15 @@ bool PFTreeMessenger::GetEntry(int iEntry)
 TriggerTreeMessenger::TriggerTreeMessenger(TFile &File, std::string TreeName)
 {
    Tree = (TTree *)File.Get(TreeName.c_str());
+   Initialize();
+}
+
+TriggerTreeMessenger::TriggerTreeMessenger(TFile *File, std::string TreeName)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get(TreeName.c_str());
+   else
+      Tree = NULL;
    Initialize();
 }
 
@@ -809,6 +872,15 @@ int TriggerTreeMessenger::GetPrescale(int Index)
 TriggerObjectTreeMessenger::TriggerObjectTreeMessenger(TFile &File, std::string TreeName)
 {
    Tree = (TTree *)File.Get(TreeName.c_str());
+   Initialize();
+}
+
+TriggerObjectTreeMessenger::TriggerObjectTreeMessenger(TFile *File, std::string TreeName)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get(TreeName.c_str());
+   else
+      Tree = NULL;
    Initialize();
 }
 

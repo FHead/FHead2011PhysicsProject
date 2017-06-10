@@ -90,11 +90,17 @@ do
    echo
 
    FileCount=0
-   for i in $EOSBase/$Location/*root
-   do
-      echo "   " $Executable $i Result/${Tag}_${FileCount}.root $Tag $PTHatMin $PTHatMax \$1 \$2 \$3 "$@"
+   if [[ $Location == root*root ]]
+   then
+      echo "   " $Executable $Location Result/${Tag}_${FileCount}.root $Tag $PTHatMin $PTHatMax \$1 \$2 \$3 "$@"
       FileCount=$((FileCount+1))
-   done
+   else
+      for i in $EOSBase/$Location/*root
+      do
+         echo "   " $Executable $i Result/${Tag}_${FileCount}.root $Tag $PTHatMin $PTHatMax \$1 \$2 \$3 "$@"
+         FileCount=$((FileCount+1))
+      done
+   fi
 
    echo "}"
    
@@ -104,11 +110,10 @@ do
    echo
 
    FileCount=0
-   for i in $EOSBase/$Location/*root
-   do
-      i=`echo $i | sed "s#$EOSBase/##g"`
+   if [[ $Location == root*root ]]
+   then
       echo "   sed \"s#__EXECUTABLE__#$PWD/$Executable#g\" < BatchTemplate.submit \\"
-      echo "      | sed \"s#__INPUT__#$i#g\" \\"
+      echo "      | sed \"s#__INPUT__#$Location#g\" \\"
       echo "      | sed \"s#__OUTPUT__#$PWD/Result/${Tag}_${FileCount}.root#g\" \\"
       echo "      | sed \"s#__PTHATMIN__#$PTHatMin#g\" \\"
       echo "      | sed \"s#__PTHATMAX__#$PTHatMax#g\" \\"
@@ -117,7 +122,22 @@ do
       echo "      | sed \"s#__EXTRA3__#\$3#g\" \\"
       echo "      | sed \"s#__TAG__#$Tag#g\" | bsub -J ${Tag}"
       FileCount=$((FileCount+1))
-   done
+   else
+      for i in $EOSBase/$Location/*root
+      do
+         i=`echo $i | sed "s#$EOSBase/##g"`
+         echo "   sed \"s#__EXECUTABLE__#$PWD/$Executable#g\" < BatchTemplate.submit \\"
+         echo "      | sed \"s#__INPUT__#$i#g\" \\"
+         echo "      | sed \"s#__OUTPUT__#$PWD/Result/${Tag}_${FileCount}.root#g\" \\"
+         echo "      | sed \"s#__PTHATMIN__#$PTHatMin#g\" \\"
+         echo "      | sed \"s#__PTHATMAX__#$PTHatMax#g\" \\"
+         echo "      | sed \"s#__EXTRA1__#\$1#g\" \\"
+         echo "      | sed \"s#__EXTRA2__#\$2#g\" \\"
+         echo "      | sed \"s#__EXTRA3__#\$3#g\" \\"
+         echo "      | sed \"s#__TAG__#$Tag#g\" | bsub -J ${Tag}"
+         FileCount=$((FileCount+1))
+      done
+   fi
 
    echo "}"
    

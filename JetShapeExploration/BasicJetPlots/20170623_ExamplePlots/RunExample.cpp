@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
       HN.Fill(0);
       HPTHat.Fill(MJet.PTHat);
 
-      if(MJet.PTHat >= PTHatMin && MJet.PTHat < PTHatMAx)
+      if(MJet.PTHat >= PTHatMin && MJet.PTHat < PTHatMax)
          HPTHatSelected.Fill(MJet.PTHat);
    }
 

@@ -89,8 +89,9 @@ int main(int argc, char *argv[])
    Bar.PrintLine();
 
    // Write stuff out
-   HPTHat.Write();
    HN.Write();
+   HPTHat.Write();
+   HPTHatSelected.Write();
 
    // Cleanup
    InputFile->Close();

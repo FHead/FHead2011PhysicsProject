@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
    TH1D HPTHat("HPTHat", "PTHat", 100, 0, 500);
 
    // Loop over events
-   int EntryCount = MHiEvent.Tree->GetEntries();
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.01;
 
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);

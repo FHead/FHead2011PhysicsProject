@@ -8,7 +8,7 @@ cd ~/work/CMSSW/CMSSW_7_5_8_patch3/src
 eval `scramv1 runtime -sh`
 cd - > /dev/null
 
-cmsStage __INPUT__ Input.root
+eos cp /eos/cms/__INPUT__ Input.root
 
 
 

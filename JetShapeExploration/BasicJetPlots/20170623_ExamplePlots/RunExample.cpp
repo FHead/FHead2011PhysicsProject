@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 
    TH1D HN("HN", "Raw event count", 1, 0, 1);
    TH1D HPTHat("HPTHat", "PTHat", 100, 0, 500);
+   TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 500);
 
    // Loop over events
    int EntryCount = MHiEvent.Tree->GetEntries() * 0.01;
@@ -78,6 +79,9 @@ int main(int argc, char *argv[])
       // Fill histograms
       HN.Fill(0);
       HPTHat.Fill(MJet.PTHat);
+
+      if(MJet.PTHat >= PTHatMin && MJet.PTHat < PTHatMAx)
+         HPTHatSelected.Fill(MJet.PTHat);
    }
 
    Bar.Update(EntryCount);

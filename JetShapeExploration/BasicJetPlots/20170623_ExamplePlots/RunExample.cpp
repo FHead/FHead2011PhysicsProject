@@ -54,11 +54,13 @@ int main(int argc, char *argv[])
    TFile OutputFile(Output.c_str(), "RECREATE");
 
    TH1D HN("HN", "Raw event count", 1, 0, 1);
-   TH1D HPTHat("HPTHat", "PTHat", 100, 0, 500);
-   TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 500);
-   TH1D HJetPT("HJetPT", "Jet PT", 100, 0, 500);
-   TH1D HJetEta("HJetEta", "Jet Eta (PT > 50)", 100, -5, 5);
-   TH1D HJetPhi("HJetPhi", "Jet Phi (PT > 50)", 100, -M_PI, M_PI);
+   TH1D HPTHat("HPTHat", ";PTHat;", 100, 0, 500);
+   TH1D HPTHatSelected("HPTHatSelected", ";PTHat;", 100, 0, 500);
+   TH1D HJetPT("HJetPT", ";Jet PT;", 100, 0, 500);
+   TH1D HJetEta("HJetEta", "JetPT > 50;Jet Eta;", 100, -5, 5);
+   TH1D HJetPhi("HJetPhi", "JetPT > 50;Jet Phi;", 100, -M_PI, M_PI);
+   TH1D HJetEtaSmallPT("HJetEtaSmallPT", "JetPT < 50;Jet Eta;", 100, -5, 5);
+   TH1D HJetPhiSmallPT("HJetPhiSmallPT", "JetPT < 50;Jet Phi;", 100, -M_PI, M_PI);
 
    // Loop over events
    int EntryCount = MHiEvent.Tree->GetEntries() * 0.01;
@@ -96,6 +98,11 @@ int main(int argc, char *argv[])
             HJetEta.Fill(MJet.JetEta[iJ]);
             HJetPhi.Fill(MJet.JetPhi[iJ]);
          }
+         else
+         {
+            HJetEtaSmallPT.Fill(MJet.JetEta[iJ]);
+            HJetPhiSmallPT.Fill(MJet.JetPhi[iJ]);
+         }
       }
    }
 
@@ -111,6 +118,8 @@ int main(int argc, char *argv[])
    HJetPT.Write();
    HJetEta.Write();
    HJetPhi.Write();
+   HJetEtaSmallPT.Write();
+   HJetPhiSmallPT.Write();
 
    // Cleanup
    InputFile->Close();

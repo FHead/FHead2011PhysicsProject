@@ -4,7 +4,7 @@ SampleLocation=$1
 SamplePTHat=$2
 Executable=$3
 Parameters=...
-WorkspaceBase=/afs/cern.ch/work/c/chenyi/PhysicsWorkspace/HIJetMass/
+WorkspaceBase=$PhysicsWorkspace/JetShapeExploration/
 EOSBase=/afs/cern.ch/user/c/chenyi/EOS/cms/
 TempFile=JAKSDJGKAHWIEHNDFJNSDLJFHADOSHGAJHEGJHW
 

@@ -1,5 +1,5 @@
 
-WorkspaceBase=~/work/PhysicsWorkspace/HIJetMass/
+WorkspaceBase=$PhysicsWorkspace/JetShapeExploration/
 InputFolder=$1
 IntermediateFolder=$TMPDIR/TempResult
 OutputFolder=$2

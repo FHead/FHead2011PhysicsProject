@@ -28,6 +28,8 @@ int main()
    PdfFile.AddHistogramFromFile(File, "HJetPT", "", true);
    PdfFile.AddHistogramFromFile(File, "HJetEta", "", false);
    PdfFile.AddHistogramFromFile(File, "HJetPhi", "", false);
+   PdfFile.AddHistogramFromFile(File, "HJetEtaSmallPT", "", false);
+   PdfFile.AddHistogramFromFile(File, "HJetPhiSmallPT", "", false);
 
    // Cleanup
    File.Close();

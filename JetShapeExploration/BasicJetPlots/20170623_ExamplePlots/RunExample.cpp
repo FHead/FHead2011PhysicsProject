@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
    }
 
    HiEventTreeMessenger MHiEvent(InputFile);
-   JetTreeMessenger MJet(InputFile, "ak4PFJetAnalyzer/y");
+   JetTreeMessenger MJet(InputFile, "ak4PFJetAnalyzer/t");
    PFTreeMessenger MPF(InputFile, "pfcandAnalyzer/pfTree");
    SkimTreeMessenger MSkim(InputFile);
    TriggerTreeMessenger MHLT(InputFile);

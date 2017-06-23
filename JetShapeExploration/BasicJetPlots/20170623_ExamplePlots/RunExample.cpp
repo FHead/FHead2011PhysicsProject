@@ -56,6 +56,9 @@ int main(int argc, char *argv[])
    TH1D HN("HN", "Raw event count", 1, 0, 1);
    TH1D HPTHat("HPTHat", "PTHat", 100, 0, 500);
    TH1D HPTHatSelected("HPTHatSelected", "PTHat", 100, 0, 500);
+   TH1D HJetPT("HJetPT", "Jet PT", 100, 0, 500);
+   TH1D HJetEta("HJetEta", "Jet Eta (PT > 50)", 100, -5, 5);
+   TH1D HJetPhi("HJetPhi", "Jet Phi (PT > 50)", 100, -M_PI, M_PI);
 
    // Loop over events
    int EntryCount = MHiEvent.Tree->GetEntries() * 0.01;
@@ -80,8 +83,20 @@ int main(int argc, char *argv[])
       HN.Fill(0);
       HPTHat.Fill(MJet.PTHat);
 
-      if(MJet.PTHat >= PTHatMin && MJet.PTHat < PTHatMax)
-         HPTHatSelected.Fill(MJet.PTHat);
+      if(MJet.PTHat < PTHatMin || MJet.PTHat >= PTHatMax)
+         continue;
+
+      HPTHatSelected.Fill(MJet.PTHat);
+
+      for(int iJ = 0; iJ < MJet.JetCount; iJ++)
+      {
+         HJetPT.Fill(MJet.JetPT[iJ]);
+         if(MJet.JetPT[iJ] > 50)
+         {
+            HJetEta.Fill(MJet.JetEta[iJ]);
+            HJetPhi.Fill(MJet.JetPhi[iJ]);
+         }
+      }
    }
 
    Bar.Update(EntryCount);
@@ -92,6 +107,10 @@ int main(int argc, char *argv[])
    HN.Write();
    HPTHat.Write();
    HPTHatSelected.Write();
+
+   HJetPT.Write();
+   HJetEta.Write();
+   HJetPhi.Write();
 
    // Cleanup
    InputFile->Close();

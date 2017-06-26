@@ -35,12 +35,12 @@ int main(int argc, char *argv[])
    };
    const string APaper[16] =
    {
-      "A_{1}^{#Upsilon#Upsilon}(R)", "A_{2}^{#Upsilon#Upsilon}(R)", "A_{3}^{#Upsilon#Upsilon}(R)",
-      "A_{1}^{#UpsilonZ}(R)", "A_{2}^{#UpsilonZ}(R)", "A_{3}^{#UpsilonZ}(R)",
-      "A_{2}^{#UpsilonA}(R)", "A_{3}^{#UpsilonA}(R)",
-      "A_{1}^{#Upsilon#Upsilon}(I)", "A_{2}^{#Upsilon#Upsilon}(I)", "A_{3}^{#Upsilon#Upsilon}(I)",
-      "A_{1}^{#UpsilonZ}(I)", "A_{2}^{#UpsilonZ}(I)", "A_{3}^{#UpsilonZ}(I)",
-      "A_{2}^{#UpsilonA}(I)", "A_{3}^{#UpsilonA}(I)"
+      "A_{1}^{#Upsilon#Upsilon}", "A_{2}^{#Upsilon#Upsilon}", "A_{3}^{#Upsilon#Upsilon}",
+      "A_{1}^{#UpsilonZ}", "A_{2}^{#UpsilonZ}", "A_{3}^{#UpsilonZ}",
+      "A_{2}^{#UpsilonA}", "A_{3}^{#UpsilonA}",
+      "A_{1}^{#Upsilon#Upsilon}", "A_{2}^{#Upsilon#Upsilon}", "A_{3}^{#Upsilon#Upsilon}",
+      "A_{1}^{#UpsilonZ}", "A_{2}^{#UpsilonZ}", "A_{3}^{#UpsilonZ}",
+      "A_{2}^{#UpsilonA}", "A_{3}^{#UpsilonA}"
    };
    const double Scaling[16] =
    {
@@ -95,8 +95,8 @@ int main(int argc, char *argv[])
       TH2D HNormalizationPaper("HNormalizationPaper", Form("Cut %c (Paper)", 'A' + iC), ACount, 0, ACount, ACount, 0, ACount);
       TH2D HAbsNormalizationPaper("HAbsNormalizationPaper", Form("Cut %c (Paper)", 'A' + iC), ACount, 0, ACount, ACount, 0, ACount);
       
-      TH2D HWorldRR("HWorldRR", "", ACount / 2, 0, ACount / 2, ACount / 2, 0, ACount / 2);
-      TH2D HWorldRI("HWorldRI", "", ACount / 2, ACount / 2, ACount, ACount / 2, 0, ACount / 2);
+      TH2D HWorldRR("HWorldRR", ";;", ACount / 2, 0, ACount / 2, ACount / 2, 0, ACount / 2);
+      TH2D HWorldRI("HWorldRI", ";;", ACount / 2, ACount / 2, ACount, ACount / 2, 0, ACount / 2);
 
       HNormalization.SetStats(0);
       HAbsNormalization.SetStats(0);
@@ -184,8 +184,6 @@ int main(int argc, char *argv[])
 
       PdfFile.AddCanvas(C);
 
-      HNormalizationPaper.SetMarkerSize(0.5);
-
       HAbsNormalizationPaper.SetMinimum(HAbsNormalizationPaper.GetMaximum() * 1e-5);
       HAbsNormalizationPaper.Draw("colz");
       HNormalizationPaper.Draw("text30 same");
@@ -218,6 +216,13 @@ int main(int argc, char *argv[])
       }
 
       PdfFile.SetPageNumber(false);
+
+      HNormalizationPaperRR.SetMarkerSize(1.6);
+      HNormalizationPaperRI.SetMarkerSize(1.6);
+      HWorldRR.GetXaxis()->SetLabelSize(0.07);
+      HWorldRR.GetYaxis()->SetLabelSize(0.07);
+      HWorldRI.GetXaxis()->SetLabelSize(0.07);
+      HWorldRI.GetYaxis()->SetLabelSize(0.07);
 
       HWorldRR.Draw();
       HAbsNormalizationPaper.Draw("colz same");

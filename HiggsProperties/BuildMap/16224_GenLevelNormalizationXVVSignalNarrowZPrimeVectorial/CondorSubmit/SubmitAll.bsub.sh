@@ -1,4 +1,4 @@
-for i in `seq 1 200`
+for i in `seq 501 2000`
 do
    cat BatchTemplate.submit | \
       sed "s#__EXECUTABLE__#`pwd`/../Run#g" | \

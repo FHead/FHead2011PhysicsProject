@@ -30,7 +30,8 @@ int main()
 {
    SetThesisStyle();
 
-   vector<Likelihood> S = ReadTree("Phto2e2mu_A1UUpA2UURI_18p4GeV_NoPDF_GenCuts_1.root");
+   // vector<Likelihood> S = ReadTree("Phto2e2mu_A1UUpA2UURI_18p4GeV_NoPDF_GenCuts_1.root");
+   vector<Likelihood> S = ReadTree("Phto2e2mu_A1UU_18p4GeV_NoPDF_GenCuts_1.root");
 
    PdfFileHelper PdfFile("ParameterScan.pdf");
    PdfFile.AddTextPage("Check signal extraction");
@@ -55,7 +56,8 @@ int main()
 
       int Bin = 200;
       TH2D HScan("HScan", Form("NS = %d;A2UUR/A1UU;A2UUI/A1UU", NS[iS]), Bin, -400, 400, Bin, -400, 400);
-      TH2D HScan2("HScan2", Form("NS = %d;A2UUR/A1UU;A2UUI/A1UU", NS[iS]), Bin, 50, 150, Bin, 150, 250);
+      // TH2D HScan2("HScan2", Form("NS = %d;A2UUR/A1UU;A2UUI/A1UU", NS[iS]), Bin, 50, 150, Bin, 150, 250);
+      TH2D HScan2("HScan2", Form("NS = %d;A2UUR/A1UU;A2UUI/A1UU", NS[iS]), Bin, -10, 10, Bin, -10, 10);
 
       for(int i = 1; i <= Bin; i++)
       {

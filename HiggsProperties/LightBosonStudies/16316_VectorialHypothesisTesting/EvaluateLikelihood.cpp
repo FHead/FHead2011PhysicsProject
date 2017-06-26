@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
    int TreeMode;
    char TreeCut;
 
-   string ModelNames[] = {"A1UU", "A1UUpA2UURI", "A1UUpA3UU", "A1UZ", "A1UZpA2UA", "A2UA", "A2UZpA2UA",
+   string ModelNames[] = {"A1UU", "A1UUpA2UURI", "A1UUpA3UU", "A1UZ", "A1UZpA2UA", "A2UA", "A2UApA2UZ",
       "A2UU", "A2UZ", "A3UU"};
 
    OutputTree.Branch("ExpectedSEM", &TreeExpectedSEM, "ExpectedSEM/D");
@@ -470,16 +470,16 @@ vector<FullAVVBasis> GetModels()
    Models[3].AVV.A1ZVR = 1;
    Models[3].AVV.A1VZR = 1;
 
-   Models[4].AVV.A1ZVR = 1;
-   Models[4].AVV.A1VZR = 1;
+   Models[4].AVV.A1ZVR = 10000;
+   Models[4].AVV.A1VZR = 10000;
    Models[4].AVV.A2AVR = 1;
    Models[4].AVV.A2VAR = 1;
    
    Models[5].AVV.A2VAR = 1;
    Models[5].AVV.A2AVR = 1;
    
-   Models[6].AVV.A2ZVR = 1;
-   Models[6].AVV.A2VZR = 1;
+   Models[6].AVV.A2ZVR = 10000;
+   Models[6].AVV.A2VZR = 10000;
    Models[6].AVV.A2AVR = 1;
    Models[6].AVV.A2VAR = 1;
    

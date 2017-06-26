@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
    PdfFileHelper PdfFile("PDF/ResultDoubleFile_" + Model1 + "_" + Model2 + ".pdf");
    PdfFile.AddTextPage(Model1 + " (black) vs " + Model2 + " (red)");
 
-   string ModelNames[] = {"A1UU", "A1UUpA2UURI", "A1UUpA3UU", "A1UZ", "A1UZpA2UA", "A2UA", "A2UZpA2UA",
+   string ModelNames[] = {"A1UU", "A1UUpA2UURI", "A1UUpA3UU", "A1UZ", "A1UZpA2UA", "A2UA", "A2UApA2UZ",
       "A2UU", "A2UZ", "A3UU"};
 
    TFile F1(File1.c_str());

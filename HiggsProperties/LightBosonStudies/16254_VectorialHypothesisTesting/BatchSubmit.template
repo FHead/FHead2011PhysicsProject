@@ -74,7 +74,7 @@ mkdir -p $WORKDIR/PDFResult
 BaseDirAfterWorkspace=`echo $WORKDIR | tr '/' '\n' | grep -A 999 PhysicsWorkspace | tail -n+2 | tr '\n' '/'`
 cmsStage -f AllLikelihood_${Tag}.tar.gz /store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/AllLikelihood_${Tag}.tar.gz
 
-mv ResultHypothesisTesting_${Tag}.pdf $WORKDIR/PDFResult/
+# mv ResultHypothesisTesting_${Tag}.pdf $WORKDIR/PDFResult/
 
 
 

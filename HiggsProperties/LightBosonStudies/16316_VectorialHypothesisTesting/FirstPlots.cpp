@@ -29,6 +29,21 @@ int main()
       "A3UU"
    };
 
+   string ModelListDiscriminant[10] =
+   {
+      "A1UU",
+      "A1UUpA2UURI",
+      "A1UUpA3UU",
+      "A1UZ",
+      "A1UZpA2UA",
+      "A2UA",
+      // "A2UZpA2UA",   // typo!  Now rerunning without the typo
+      "A2UApA2UZ",
+      "A2UU",
+      "A2UZ",
+      "A3UU"
+   };
+
    string Cuts[2] = {"F", "P"};
 
    int Events[15] = {5, 7, 10, 14, 20, 30, 50, 70, 100, 140, 200, 300, 500, 700, 1000};
@@ -38,7 +53,7 @@ int main()
    PdfFileHelper PdfFile("SummaryPlots.pdf");
    PdfFile.AddTextPage("Some summary plots");
 
-   for(int iC = 1; iC < 2; iC++)
+   for(int iC = 0; iC < 2; iC++)
    {
       for(int iM1 = 0; iM1 < 10; iM1++)
       {
@@ -48,6 +63,11 @@ int main()
             string M2 = ModelList[iM2];
             if(M1 > M2)
                swap(M1, M2);
+            
+            string M1D = ModelListDiscriminant[iM1];
+            string M2D = ModelListDiscriminant[iM2];
+            if(M1D > M2D)
+               swap(M1D, M2D);
 
             PdfFile.AddTextPage(Form("Models %s vs %s, Cut %s", M1.c_str(), M2.c_str(), Cuts[iC].c_str()));
 
@@ -74,68 +94,66 @@ int main()
             GModelPB.SetNameTitle("GModelPB", Form("Model p-value, Model %d vs %d, S+B", iM1, iM2));
 
             string StatePrefix = M1 + " " + M2 + " Cut" + Cuts[iC] + " ";
-            string StateSuffixS = Form(" [%s %s] Fixed", M1.c_str(), M2.c_str());
-            string StateSuffixSB = Form(" [%s %s] Floated", M1.c_str(), M2.c_str());
+            string StateSuffixS = Form(" [%s %s] Fixed", M1D.c_str(), M2D.c_str());
+            string StateSuffixSB = Form(" [%s %s] Floated", M1D.c_str(), M2D.c_str());
 
             for(int iS = 0; iS < 15; iS++)
             {
                string State = StatePrefix + Form("S(%d %d %d %d)", Events[iS], Events[iS], -1, -1) + StateSuffixS;
 
-               cout << State << endl;
-               
-               GLD1.SetPoint(iS, Events[iS], DHFile[State]["L1DMedian Center"].GetDouble());
+               GLD1.SetPoint(iS, Events[iS] * 2, DHFile[State]["L1DMedian Center"].GetDouble());
                GLD1.SetPointError(iS, 0, 0,
                   DHFile[State]["L1DMedian Center"].GetDouble() - DHFile[State]["L1DMedian Low"].GetDouble(),
                   DHFile[State]["L1DMedian High"].GetDouble() - DHFile[State]["L1DMedian Center"].GetDouble());
-               GLD1Plus.SetPoint(iS, Events[iS]*1.05, DHFile[State]["L1DPlus Center"].GetDouble());
+               GLD1Plus.SetPoint(iS, Events[iS]*1.05 * 2, DHFile[State]["L1DPlus Center"].GetDouble());
                GLD1Plus.SetPointError(iS, 0, 0,
                   DHFile[State]["L1DPlus Center"].GetDouble() - DHFile[State]["L1DPlus Low"].GetDouble(),
                   DHFile[State]["L1DPlus High"].GetDouble() - DHFile[State]["L1DPlus Center"].GetDouble());
-               GLD1Minus.SetPoint(iS, Events[iS]*0.95, DHFile[State]["L1DMinus Center"].GetDouble());
+               GLD1Minus.SetPoint(iS, Events[iS]*0.95 * 2, DHFile[State]["L1DMinus Center"].GetDouble());
                GLD1Minus.SetPointError(iS, 0, 0,
                   DHFile[State]["L1DMinus Center"].GetDouble() - DHFile[State]["L1DMinus Low"].GetDouble(),
                   DHFile[State]["L1DMinus High"].GetDouble() - DHFile[State]["L1DMinus Center"].GetDouble());
-               GLD2.SetPoint(iS, Events[iS], DHFile[State]["L2DMedian Center"].GetDouble());
+               GLD2.SetPoint(iS, Events[iS] * 2, DHFile[State]["L2DMedian Center"].GetDouble());
                GLD2.SetPointError(iS, 0, 0,
                   DHFile[State]["L2DMedian Center"].GetDouble() - DHFile[State]["L2DMedian Low"].GetDouble(),
                   DHFile[State]["L2DMedian High"].GetDouble() - DHFile[State]["L2DMedian Center"].GetDouble());
-               GLD2Plus.SetPoint(iS, Events[iS]*1.05, DHFile[State]["L2DPlus Center"].GetDouble());
+               GLD2Plus.SetPoint(iS, Events[iS]*1.05 * 2, DHFile[State]["L2DPlus Center"].GetDouble());
                GLD2Plus.SetPointError(iS, 0, 0,
                   DHFile[State]["L2DPlus Center"].GetDouble() - DHFile[State]["L2DPlus Low"].GetDouble(),
                   DHFile[State]["L2DPlus High"].GetDouble() - DHFile[State]["L2DPlus Center"].GetDouble());
-               GLD2Minus.SetPoint(iS, Events[iS]*0.95, DHFile[State]["L2DMinus Center"].GetDouble());
+               GLD2Minus.SetPoint(iS, Events[iS]*0.95 * 2, DHFile[State]["L2DMinus Center"].GetDouble());
                GLD2Minus.SetPointError(iS, 0, 0,
                   DHFile[State]["L2DMinus Center"].GetDouble() - DHFile[State]["L2DMinus Low"].GetDouble(),
                   DHFile[State]["L2DMinus High"].GetDouble() - DHFile[State]["L2DMinus Center"].GetDouble());
-               GModelP.SetPoint(iS, Events[iS], DHFile[State]["Model PValue"].GetDouble());
+               GModelP.SetPoint(iS, Events[iS] * 2, DHFile[State]["Model PValue"].GetDouble());
                
                State = StatePrefix + Form("S(%d %d %d %d)", Events[iS], Events[iS], Events[iS], Events[iS]) + StateSuffixSB;
                
-               GLD1B.SetPoint(iS, Events[iS], DHFile[State]["L1DMedian Center"].GetDouble());
+               GLD1B.SetPoint(iS, Events[iS] * 2, DHFile[State]["L1DMedian Center"].GetDouble());
                GLD1B.SetPointError(iS, 0, 0,
                   DHFile[State]["L1DMedian Center"].GetDouble() - DHFile[State]["L1DMedian Low"].GetDouble(),
                   DHFile[State]["L1DMedian High"].GetDouble() - DHFile[State]["L1DMedian Center"].GetDouble());
-               GLD1PlusB.SetPoint(iS, Events[iS]*1.05, DHFile[State]["L1DPlus Center"].GetDouble());
+               GLD1PlusB.SetPoint(iS, Events[iS]*1.05 * 2, DHFile[State]["L1DPlus Center"].GetDouble());
                GLD1PlusB.SetPointError(iS, 0, 0,
                   DHFile[State]["L1DPlus Center"].GetDouble() - DHFile[State]["L1DPlus Low"].GetDouble(),
                   DHFile[State]["L1DPlus High"].GetDouble() - DHFile[State]["L1DPlus Center"].GetDouble());
-               GLD1MinusB.SetPoint(iS, Events[iS]*0.95, DHFile[State]["L1DMinus Center"].GetDouble());
+               GLD1MinusB.SetPoint(iS, Events[iS]*0.95 * 2, DHFile[State]["L1DMinus Center"].GetDouble());
                GLD1MinusB.SetPointError(iS, 0, 0,
                   DHFile[State]["L1DMinus Center"].GetDouble() - DHFile[State]["L1DMinus Low"].GetDouble(),
                   DHFile[State]["L1DMinus High"].GetDouble() - DHFile[State]["L1DMinus Center"].GetDouble());
-               GLD2B.SetPoint(iS, Events[iS], DHFile[State]["L2DMedian Center"].GetDouble());
+               GLD2B.SetPoint(iS, Events[iS] * 2, DHFile[State]["L2DMedian Center"].GetDouble());
                GLD2B.SetPointError(iS, 0, 0,
                   DHFile[State]["L2DMedian Center"].GetDouble() - DHFile[State]["L2DMedian Low"].GetDouble(),
                   DHFile[State]["L2DMedian High"].GetDouble() - DHFile[State]["L2DMedian Center"].GetDouble());
-               GLD2PlusB.SetPoint(iS, Events[iS]*1.05, DHFile[State]["L2DPlus Center"].GetDouble());
+               GLD2PlusB.SetPoint(iS, Events[iS]*1.05 * 2, DHFile[State]["L2DPlus Center"].GetDouble());
                GLD2PlusB.SetPointError(iS, 0, 0,
                   DHFile[State]["L2DPlus Center"].GetDouble() - DHFile[State]["L2DPlus Low"].GetDouble(),
                   DHFile[State]["L2DPlus High"].GetDouble() - DHFile[State]["L2DPlus Center"].GetDouble());
-               GLD2MinusB.SetPoint(iS, Events[iS]*0.95, DHFile[State]["L2DMinus Center"].GetDouble());
+               GLD2MinusB.SetPoint(iS, Events[iS]*0.95 * 2, DHFile[State]["L2DMinus Center"].GetDouble());
                GLD2MinusB.SetPointError(iS, 0, 0,
                   DHFile[State]["L2DMinus Center"].GetDouble() - DHFile[State]["L2DMinus Low"].GetDouble(),
                   DHFile[State]["L2DMinus High"].GetDouble() - DHFile[State]["L2DMinus Center"].GetDouble());
-               GModelPB.SetPoint(iS, Events[iS], DHFile[State]["Model PValue"].GetDouble());
+               GModelPB.SetPoint(iS, Events[iS] * 2, DHFile[State]["Model PValue"].GetDouble());
             }
 
             TCanvas C;
@@ -146,7 +164,7 @@ int main()
             GUp.SetPoint(0, 0, 0.5);
             GUp.SetPoint(1, 1000000000, 0.5);
 
-            TH2D HWorld("HWorld", ";N_{S};p-value", 100, 2.5, 2000, 100, 1e-5, 1);
+            TH2D HWorld("HWorld", ";N_{S};p-value", 100, 7, 3000, 100, 1e-5, 1);
             HWorld.SetStats(0);
 
             GModelP.SetMarkerColor(kBlue);

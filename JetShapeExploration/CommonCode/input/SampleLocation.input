@@ -52,3 +52,6 @@ PP6Dijet280HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTH
 PP6Dijet370HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD370/0.root
 PP6Dijet460HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD460/0.root
 PP6Dijet540HIReco               root://xrootd.cmsaf.mit.edu//store/user/rbi/PYTHIA_QCD_TuneCUETP8M1_cfi_GEN_SIM_5020GeV_merged//QCD540/0.root
+PPHerwig50to100                 /store/group/cmst3/group/hintt/mverweij/jetsPbPb/Run2/MC/PP/QCD_Pt_50to100_TuneEE5C_502TeV_herwigpp_cff_py/crab_HiForestDijet50PPHerwig_v5/161103_161109/0000/
+PPHerwig100to200                /store/group/cmst3/group/hintt/mverweij/jetsPbPb/Run2/MC/PP/QCD_Pt_100to200_TuneEE5C_502TeV_herwigpp_cff_py/crab_HiForestDijet100PPHerwig_v5/161103_162019/0000/
+PPHerwig200                     /store/group/cmst3/group/hintt/mverweij/jetsPbPb/Run2/MC/PP/QCD_Pt_200_TuneEE5C_502TeV_herwigpp_cff_py/crab_HiForestDijet200PPHerwig_v3/160712_003844/0000/

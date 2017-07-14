@@ -1,18 +1,18 @@
 #!/bin/sh
 
-WORKDIR=~/work/PhysicsWorkspace/HiggsProperties/LightBosonStudies/16254_VectorialHypothesisTesting
+WORKDIR=~/work/PhysicsWorkspace/HiggsProperties/LightBosonStudies/16322_VectorialFitting
 
 export SCRAM_ARCH=slc6_amd64_gcc491
 cd ~/work/CMSSW/CMSSW_7_5_8_patch3/src
 eval `scramv1 runtime -sh`
 cd -
 
-cp $WORKDIR/RunLikelihood .
+cp $WORKDIR/RunFit .
 cp $WORKDIR/Normalization.dh .
 
-Model=__MODEL__
-Cut=__CUT__
-ID=__ID__
+Model=A1UU
+Cut=P
+ID=1
 
 alias eosbox='/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select root://eosuser.cern.ch'
 
@@ -62,19 +62,12 @@ echo Start running
 
 Tag=${Model}_${Cut}_${ID}
 
-./RunLikelihood SEM.root SEE.root BEM.root BEE.root $Cut $Tag
-
-tar zcvf AllLikelihood_${Tag}.tar.gz Likelihood*_${Tag}_Scenario*
-
-mkdir -p $WORKDIR/Result
-mkdir -p $WORKDIR/PDFResult
+./RunFit SEM.root SEE.root BEM.root BEE.root $Cut $Tag
 
 # cp AllLikelihood_${Model}_${Cut}_${ID}.tar.gz $WORKDIR/Result/
 
 BaseDirAfterWorkspace=`echo $WORKDIR | tr '/' '\n' | grep -A 999 PhysicsWorkspace | tail -n+2 | tr '\n' '/'`
-cmsStage -f AllLikelihood_${Tag}.tar.gz /store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/AllLikelihood_${Tag}.tar.gz
-
-# mv ResultHypothesisTesting_${Tag}.pdf $WORKDIR/PDFResult/
+cmsStage -f FitResult_${Tag}.root /store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/FitResult_${Tag}.root
 
 
 

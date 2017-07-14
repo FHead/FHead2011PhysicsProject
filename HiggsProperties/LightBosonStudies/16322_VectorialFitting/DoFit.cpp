@@ -23,19 +23,15 @@ using namespace std;
 
 #include "FitClass.h"
 
-#define MODELCOUNT 10
 #define MAXEVENT 50000
 #define MAXDATASET 50000
 
 #define MODE_FIXB 0
 #define MODE_FLOATB 1
-#define MODE_FIXB_FLOATA2UV 2
-#define MODE_FLOATB_FLOATA2UV 3
 
 struct EventCount;
 int main(int argc, char *argv[]);
 vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM);
-vector<FullAVVBasis> GetModels();
 
 struct EventCount
 {
@@ -58,7 +54,7 @@ int main(int argc, char *argv[])
 
    if(argc != 7)
    {
-      cerr << "Usage: " << argv[0] << "SignalEM SignalEE BackgroundEM BackgroundEE Cut Tag" << endl;
+      cerr << "Usage: " << argv[0] << " SignalEM SignalEE BackgroundEM BackgroundEE Cut Tag" << endl;
       return -1;
    }
 
@@ -79,16 +75,36 @@ int main(int argc, char *argv[])
 
    // Setup scenarios
    vector<EventCount> Scenarios;
-   // Scenarios.push_back(EventCount(5, -1, -1, -1));
-   // Scenarios.push_back(EventCount(10, -1, -1, -1));
-   // Scenarios.push_back(EventCount(20, -1, -1, -1));
-   // Scenarios.push_back(EventCount(50, -1, -1, -1));
-   // Scenarios.push_back(EventCount(100, -1, -1, -1));
-   // Scenarios.push_back(EventCount(200, -1, -1, -1));
-   // Scenarios.push_back(EventCount(500, -1, -1, -1));
-   // Scenarios.push_back(EventCount(1000, -1, -1, -1));
-   // Scenarios.push_back(EventCount(2000, -1, -1, -1));
-   // Scenarios.push_back(EventCount(5000, -1, -1, -1));
+   Scenarios.push_back(EventCount(-1, -1, 5, -1));
+   Scenarios.push_back(EventCount(-1, -1, 7, -1));
+   Scenarios.push_back(EventCount(-1, -1, 10, -1));
+   Scenarios.push_back(EventCount(-1, -1, 14, -1));
+   Scenarios.push_back(EventCount(-1, -1, 20, -1));
+   Scenarios.push_back(EventCount(-1, -1, 30, -1));
+   Scenarios.push_back(EventCount(-1, -1, 50, -1));
+   Scenarios.push_back(EventCount(-1, -1, 70, -1));
+   Scenarios.push_back(EventCount(-1, -1, 100, -1));
+   Scenarios.push_back(EventCount(-1, -1, 140, -1));
+   Scenarios.push_back(EventCount(-1, -1, 200, -1));
+   Scenarios.push_back(EventCount(-1, -1, 300, -1));
+   Scenarios.push_back(EventCount(-1, -1, 500, -1));
+   Scenarios.push_back(EventCount(-1, -1, 700, -1));
+   Scenarios.push_back(EventCount(-1, -1, 1000, -1));
+   Scenarios.push_back(EventCount(5, -1, -1, -1));
+   Scenarios.push_back(EventCount(7, -1, -1, -1));
+   Scenarios.push_back(EventCount(10, -1, -1, -1));
+   Scenarios.push_back(EventCount(14, -1, -1, -1));
+   Scenarios.push_back(EventCount(20, -1, -1, -1));
+   Scenarios.push_back(EventCount(30, -1, -1, -1));
+   Scenarios.push_back(EventCount(50, -1, -1, -1));
+   Scenarios.push_back(EventCount(70, -1, -1, -1));
+   Scenarios.push_back(EventCount(100, -1, -1, -1));
+   Scenarios.push_back(EventCount(140, -1, -1, -1));
+   Scenarios.push_back(EventCount(200, -1, -1, -1));
+   Scenarios.push_back(EventCount(300, -1, -1, -1));
+   Scenarios.push_back(EventCount(500, -1, -1, -1));
+   Scenarios.push_back(EventCount(700, -1, -1, -1));
+   Scenarios.push_back(EventCount(1000, -1, -1, -1));
    Scenarios.push_back(EventCount(5, -1, 5, -1));
    Scenarios.push_back(EventCount(7, -1, 7, -1));
    Scenarios.push_back(EventCount(10, -1, 10, -1));
@@ -120,9 +136,6 @@ int main(int argc, char *argv[])
    Scenarios.push_back(EventCount(700, 700, 700, 700));
    Scenarios.push_back(EventCount(1000, 1000, 1000, 1000));
 
-   // Get models to play with
-   vector<FullAVVBasis> Models = GetModels();
-
    // Read events
    vector<Likelihood> SEM, BEM, SEE, BEE;
 
@@ -132,18 +145,18 @@ int main(int argc, char *argv[])
    BEE = ReadTree(BEEFileName, Cut, false);
 
    // output trees
-   TFile OutputFile(Form("Likelihood_%s.root", Tag.c_str()), "recreate");
+   TFile OutputFile(Form("FitResult_%s.root", Tag.c_str()), "recreate");
 
    TTree OutputTree("OutputTree", "OutputTree");
 
    double TreeExpectedSEM, TreeExpectedSEE, TreeExpectedBEM, TreeExpectedBEE;
    double TreeSEM, TreeSEE, TreeBEM, TreeBEE;
-   double TreeLikelihood[10];
-   int TreeMode;
+   double TreeP[3][3];
+   double TreeE[3][3];
+   int TreeMode, TreeFloatMode;
    char TreeCut;
 
-   string ModelNames[] = {"A1UU", "A1UUpA2UURI", "A1UUpA3UU", "A1UZ", "A1UZpA2UA", "A2UA", "A2UApA2UZ",
-      "A2UU", "A2UZ", "A3UU"};
+   string Component[3] = {"VV", "VZ", "VA"};
 
    OutputTree.Branch("ExpectedSEM", &TreeExpectedSEM, "ExpectedSEM/D");
    OutputTree.Branch("ExpectedSEE", &TreeExpectedSEE, "ExpectedSEE/D");
@@ -153,9 +166,18 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SEE", &TreeSEE, "SEE/D");
    OutputTree.Branch("BEM", &TreeBEM, "BEM/D");
    OutputTree.Branch("BEE", &TreeBEE, "BEE/D");
-   for(int i = 0; i < MODELCOUNT; i++)
-      OutputTree.Branch(Form("L%s", ModelNames[i].c_str()), &TreeLikelihood[i], Form("L%s/D", ModelNames[i].c_str()));
+   for(int i = 0; i < 3; i++)
+   {
+      for(int j = 0; j < 3; j++)
+      {
+         OutputTree.Branch(Form("A%d%s", i + 1, Component[i].c_str()),
+            &TreeP[i][j], Form("A%d%s/D", i + 1, Component[j].c_str()));
+         OutputTree.Branch(Form("E%d%s", i + 1, Component[j].c_str()),
+            &TreeE[i][j], Form("E%d%s/D", i + 1, Component[j].c_str()));
+      }
+   }
    OutputTree.Branch("Mode", &TreeMode, "Mode/I");
+   OutputTree.Branch("FloatMode", &TreeFloatMode, "FloatMode/I");
    OutputTree.Branch("Cut", &TreeCut, "Cut/B");
 
    TreeCut = Cut;
@@ -261,12 +283,35 @@ int main(int argc, char *argv[])
          
          SEMIndex = SEMIndex + ActualCount.SEM;
          SEEIndex = SEEIndex + ActualCount.SEE;
-         
+
+         double AVV[48] = {0};
+         bool FloatAVV[48] = {false};
+
+         AVV[3*8+0] = 1;   // A1VV
+
          // Calculate fix-B result
-         for(int iM = 0; iM < (int)Models.size(); iM++)
+         for(int iM = 0; iM < 9; iM++)
          {
+            if(iM == 0 || iM == 1)   FloatAVV[3*8+2] = true;   // A2VV
+            else                     FloatAVV[3*8+2] = false;
+            if(iM == 0 || iM == 2)   FloatAVV[3*8+4] = true;   // A3VV
+            else                     FloatAVV[3*8+4] = false;
+            if(iM == 0 || iM == 3)   FloatAVV[1*8+0] = true;   // A1ZV
+            else                     FloatAVV[1*8+0] = false;
+            if(iM == 0 || iM == 4)   FloatAVV[1*8+2] = true;   // A2ZV
+            else                     FloatAVV[1*8+2] = false;
+            if(iM == 0 || iM == 5)   FloatAVV[1*8+4] = true;   // A3ZV
+            else                     FloatAVV[1*8+4] = false;
+            if(iM == 0 || iM == 6)   FloatAVV[4*8+0] = true;   // A1AV
+            else                     FloatAVV[4*8+0] = false;
+            if(iM == 0 || iM == 7)   FloatAVV[4*8+2] = true;   // A2AV
+            else                     FloatAVV[4*8+2] = false;
+            if(iM == 0 || iM == 8)   FloatAVV[4*8+4] = true;   // A3AV
+            else                     FloatAVV[4*8+4] = false;
+            
             FitConfiguration Configuration;
-            Configuration.SetAVV(Models[iM]);
+            for(int i = 0; i < 48; i++)   Configuration.AVV[i] = AVV[i];
+            for(int i = 0; i < 48; i++)   Configuration.FloatAVV[i] = FloatAVV[i];
 
             Configuration.FEM = ExpectedFEM;
             Configuration.FEE = ExpectedFEE;
@@ -274,21 +319,48 @@ int main(int argc, char *argv[])
             Configuration.FloatFEM = false;
             Configuration.FloatFEE = false;
 
-            double LL = Fit.DoFit(Configuration).BestLL;
+            FitResult Result = Fit.DoFit(Configuration);
 
-            TreeLikelihood[iM] = LL;
+            TreeP[0][0] = Result.AVV.AVV.A1VVR;   TreeE[0][0] = Result.AVVError.AVV.A1VVR;
+            TreeP[1][0] = Result.AVV.AVV.A2VVR;   TreeE[1][0] = Result.AVVError.AVV.A2VVR;
+            TreeP[2][0] = Result.AVV.AVV.A3VVR;   TreeE[2][0] = Result.AVVError.AVV.A3VVR;
+            TreeP[0][1] = Result.AVV.AVV.A1VZR;   TreeE[0][1] = Result.AVVError.AVV.A1VZR;
+            TreeP[1][1] = Result.AVV.AVV.A2VZR;   TreeE[1][1] = Result.AVVError.AVV.A2VZR;
+            TreeP[2][1] = Result.AVV.AVV.A3VZR;   TreeE[2][1] = Result.AVVError.AVV.A3VZR;
+            TreeP[0][2] = Result.AVV.AVV.A1VAR;   TreeE[0][2] = Result.AVVError.AVV.A1VAR;
+            TreeP[1][2] = Result.AVV.AVV.A2VAR;   TreeE[1][2] = Result.AVVError.AVV.A2VAR;
+            TreeP[2][2] = Result.AVV.AVV.A3VAR;   TreeE[2][2] = Result.AVVError.AVV.A3VAR;
+         
+            TreeMode = MODE_FIXB;
+            TreeFloatMode = iM;
+            OutputTree.Fill();
          }
-
-         TreeMode = MODE_FIXB;
-         OutputTree.Fill();
 
          // Calculate float-B result
          if(DoBEM == true || DoBEE == true)
          {
-            for(int iM = 0; iM < (int)Models.size(); iM++)
+            for(int iM = 0; iM < 9; iM++)
             {
+               if(iM == 0 || iM == 1)   FloatAVV[3*8+2] = true;   // A2VV
+               else                     FloatAVV[3*8+2] = false;
+               if(iM == 0 || iM == 2)   FloatAVV[3*8+4] = true;   // A3VV
+               else                     FloatAVV[3*8+4] = false;
+               if(iM == 0 || iM == 3)   FloatAVV[1*8+0] = true;   // A1ZV
+               else                     FloatAVV[1*8+0] = false;
+               if(iM == 0 || iM == 4)   FloatAVV[1*8+2] = true;   // A2ZV
+               else                     FloatAVV[1*8+2] = false;
+               if(iM == 0 || iM == 5)   FloatAVV[1*8+4] = true;   // A3ZV
+               else                     FloatAVV[1*8+4] = false;
+               if(iM == 0 || iM == 6)   FloatAVV[4*8+0] = true;   // A1AV
+               else                     FloatAVV[4*8+0] = false;
+               if(iM == 0 || iM == 7)   FloatAVV[4*8+2] = true;   // A2AV
+               else                     FloatAVV[4*8+2] = false;
+               if(iM == 0 || iM == 8)   FloatAVV[4*8+4] = true;   // A3AV
+               else                     FloatAVV[4*8+4] = false;
+               
                FitConfiguration Configuration;
-               Configuration.SetAVV(Models[iM]);
+               for(int i = 0; i < 48; i++)   Configuration.AVV[i] = AVV[i];
+               for(int i = 0; i < 48; i++)   Configuration.FloatAVV[i] = FloatAVV[i];
 
                Configuration.FEM = ExpectedFEM;
                Configuration.FEE = ExpectedFEE;
@@ -296,66 +368,22 @@ int main(int argc, char *argv[])
                if(DoBEM == true)   Configuration.FloatFEM = true;
                if(DoBEE == true)   Configuration.FloatFEE = true;
 
-               double LL = Fit.DoFit(Configuration).BestLL;
+               FitResult Result = Fit.DoFit(Configuration);
 
-               TreeLikelihood[iM] = LL;
-            }   // model loop
+               TreeP[0][0] = Result.AVV.AVV.A1VVR;   TreeE[0][0] = Result.AVVError.AVV.A1VVR;
+               TreeP[1][0] = Result.AVV.AVV.A2VVR;   TreeE[1][0] = Result.AVVError.AVV.A2VVR;
+               TreeP[2][0] = Result.AVV.AVV.A3VVR;   TreeE[2][0] = Result.AVVError.AVV.A3VVR;
+               TreeP[0][1] = Result.AVV.AVV.A1VZR;   TreeE[0][1] = Result.AVVError.AVV.A1VZR;
+               TreeP[1][1] = Result.AVV.AVV.A2VZR;   TreeE[1][1] = Result.AVVError.AVV.A2VZR;
+               TreeP[2][1] = Result.AVV.AVV.A3VZR;   TreeE[2][1] = Result.AVVError.AVV.A3VZR;
+               TreeP[0][2] = Result.AVV.AVV.A1VAR;   TreeE[0][2] = Result.AVVError.AVV.A1VAR;
+               TreeP[1][2] = Result.AVV.AVV.A2VAR;   TreeE[1][2] = Result.AVVError.AVV.A2VAR;
+               TreeP[2][2] = Result.AVV.AVV.A3VAR;   TreeE[2][2] = Result.AVVError.AVV.A3VAR;
 
-            TreeMode = MODE_FLOATB;
-            OutputTree.Fill();
-         }   // if there is a need for background fraction floating
-
-         // Calculate fix-B, A2UZ+A2UA floating result
-         for(int iM = 0; iM < (int)Models.size(); iM++)
-         {
-            FitConfiguration Configuration;
-            Configuration.SetAVV(Models[iM]);
-
-            // Ordering: ZZ, ZV, ZA, VV, VA, AA
-            //    each of them A1R A1I A2R A2I A3R A3I A4R A4I
-            Configuration.FloatAVV[1*8+2] = true;   // A2ZVR
-            Configuration.FloatAVV[4*8+2] = true;   // A2VAR
-
-            Configuration.FEM = ExpectedFEM;
-            Configuration.FEE = ExpectedFEE;
-
-            Configuration.FloatFEM = false;
-            Configuration.FloatFEE = false;
-
-            double LL = Fit.DoFit(Configuration).BestLL;
-
-            TreeLikelihood[iM] = LL;
-         }
-
-         TreeMode = MODE_FIXB_FLOATA2UV;
-         OutputTree.Fill();
-
-         // Calculate float-B result
-         if(DoBEM == true || DoBEE == true)
-         {
-            for(int iM = 0; iM < (int)Models.size(); iM++)
-            {
-               FitConfiguration Configuration;
-               Configuration.SetAVV(Models[iM]);
-
-               // Ordering: ZZ, ZV, ZA, VV, VA, AA
-               //    each of them A1R A1I A2R A2I A3R A3I A4R A4I
-               Configuration.FloatAVV[1*8+2] = true;   // A2ZVR
-               Configuration.FloatAVV[4*8+2] = true;   // A2VAR
-
-               Configuration.FEM = ExpectedFEM;
-               Configuration.FEE = ExpectedFEE;
-
-               if(DoBEM == true)   Configuration.FloatFEM = true;
-               if(DoBEE == true)   Configuration.FloatFEE = true;
-
-               double LL = Fit.DoFit(Configuration).BestLL;
-
-               TreeLikelihood[iM] = LL;
-            }   // model loop
-
-            TreeMode = MODE_FLOATB_FLOATA2UV;
-            OutputTree.Fill();
+               TreeMode = MODE_FLOATB;
+               TreeFloatMode = iM;
+               OutputTree.Fill();
+            }
          }   // if there is a need for background fraction floating
       }   // while good
    }
@@ -415,10 +443,13 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
          IS[i][j] = DHFile["0TeV"][Prefix+"1_"+Suffix[i]+"_"+Suffix[j]].GetDouble();
    IB = DHFile["0TeV"][Prefix+"2_DDbar"].GetDouble() * 2;
 
+   // if(Cut == 'P' && IsEM == false)
+   //    IS[32][32] = IS[32][32] / 1.02;
+
    Messenger.SetIS(IS);
    Messenger.SetIB(IB);
 
-   int EntryCount = T->GetEntries() ;
+   int EntryCount = T->GetEntries();
    ProgressBar Bar(cout, EntryCount);
    for(int iE = 0; iE < EntryCount; iE++)
    {
@@ -454,44 +485,6 @@ vector<Likelihood> ReadTree(string FileName, char Cut, bool IsEM)
    return Result;
 }
 
-vector<FullAVVBasis> GetModels()
-{
-   vector<FullAVVBasis> Models(MODELCOUNT);
-
-   Models[0].AVV.A1VVR = 1;
-
-   Models[1].AVV.A1VVR = 0.54484;
-   Models[1].AVV.A2VVR = 67;
-   Models[1].AVV.A2VVI = 100;
-
-   Models[2].AVV.A1VVR = 0.54484;
-   Models[2].AVV.A3VVR = 100;
-
-   Models[3].AVV.A1ZVR = 1;
-   Models[3].AVV.A1VZR = 1;
-
-   Models[4].AVV.A1ZVR = 10000;
-   Models[4].AVV.A1VZR = 10000;
-   Models[4].AVV.A2AVR = 1;
-   Models[4].AVV.A2VAR = 1;
-   
-   Models[5].AVV.A2VAR = 1;
-   Models[5].AVV.A2AVR = 1;
-   
-   Models[6].AVV.A2ZVR = 10000;
-   Models[6].AVV.A2VZR = 10000;
-   Models[6].AVV.A2AVR = 1;
-   Models[6].AVV.A2VAR = 1;
-   
-   Models[7].AVV.A2VVR = 1;
-   
-   Models[8].AVV.A2VZR = 1;
-   Models[8].AVV.A2ZVR = 1;
-   
-   Models[9].AVV.A3VVR = 1;
-
-   return Models;
-}
 
 
 

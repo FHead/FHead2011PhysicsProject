@@ -88,6 +88,7 @@ class Histograms
 public:
    string Tag;
    bool IsPP;
+   TH1D *HPTHat;
    TH1D *HGenPT;
    TH1D *HGenEta;
    TH1D *HGenPhi;
@@ -97,12 +98,14 @@ public:
    Histograms(string tag)
       : Tag(tag)
    {
+      HPTHat = new TH1D(Form("HPTHat_%s", Tag.c_str()), ";PTHat;", 100, 0, 600);
       HGenPT = new TH1D(Form("HGenPT_%s", Tag.c_str()), ";PT;", 100, 0, 20);
       HGenEta = new TH1D(Form("HGenEta_%s", Tag.c_str()), ";Eta;", 100, -2, 2);
       HGenPhi = new TH1D(Form("HGenPhi_%s", Tag.c_str()), ";Phi;", 100, -M_PI, M_PI);
       HGenEta_PT5 = new TH1D(Form("HGenEta_PT5_%s", Tag.c_str()), ";Eta;", 100, -2, 2);
       HGenEtaPhi_PT5 = new TH2D(Form("HGenEtaPhi_PT5_%s", Tag.c_str()), ";Eta;Phi", 100, -2, 2, 100, -M_PI, M_PI);
 
+      BasicStyling(HPTHat);
       BasicStyling(HGenPT);
       BasicStyling(HGenEta);
       BasicStyling(HGenPhi);
@@ -132,6 +135,8 @@ public:
    }
    void FillAll(Messenger &M)
    {
+      HPTHat->Fill(M.PTHat, M.MCWeight);
+
       double TotalWeight = 0;
 
       int EntryCount = M.EntryCount();
@@ -150,6 +155,7 @@ public:
    }
    void Write()
    {
+      HPTHat->Write();
       HGenPT->Write();
       HGenEta->Write();
       HGenPhi->Write();
@@ -180,12 +186,14 @@ public:
    }
    void Scale(double c)
    {
+      HPTHat->Scale(c);
       HGenPT->Scale(c);
       HGenEta->Scale(c);
       HGenPhi->Scale(c);
       HGenEta_PT5->Scale(c);
       HGenEtaPhi_PT5->Scale(c);
 
+      DivideByBinSize(HPTHat);
       DivideByBinSize(HGenPT);
       DivideByBinSize(HGenEta);
       DivideByBinSize(HGenPhi);

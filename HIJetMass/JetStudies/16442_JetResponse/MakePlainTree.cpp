@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
    OutputTree.Branch("GenJetPhi", &GenJetPhi, "GenJetPhi/D");
 
    double MatchJetRawPT, MatchJetEta, MatchJetPhi;
-   OutputTree.Branch("MatchJetPT", &MatchJetPT, "MatchJetPT/D");
+   OutputTree.Branch("MatchJetRawPT", &MatchJetRawPT, "MatchJetRawPT/D");
    OutputTree.Branch("MatchJetEta", &MatchJetEta, "MatchJetEta/D");
    OutputTree.Branch("MatchJetPhi", &MatchJetPhi, "MatchJetPhi/D");
 

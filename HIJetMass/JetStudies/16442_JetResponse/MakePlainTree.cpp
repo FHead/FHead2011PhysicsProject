@@ -494,7 +494,7 @@ int main(int argc, char *argv[])
             SD7SubJet2E   = Groomed7->Child1->P[0];
             SD7SubJet2PT  = Groomed7->Child2->P.GetPT();
             SD7SubJet2Eta = Groomed7->Child2->P.GetEta();
-            SD7SubJet2Ph7 = Groomed7->Child2->P.GetPhi();
+            SD7SubJet2Phi = Groomed7->Child2->P.GetPhi();
          }
          else
             SD7DR = -1;

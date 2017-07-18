@@ -404,7 +404,7 @@ int main(int argc, char *argv[])
                iCS = i, BestCSDR = DR;
          }
 
-         CSJetRawPT = MJet.RawPT[iCS];
+         CSJetRawPT = MJet.JetRawPT[iCS];
          CSJetPT = MJet.JetPT[iCS];
          CSJetEta = MJet.JetEta[iCS];
          CSJetPhi = MJet.JetPhi[iCS];

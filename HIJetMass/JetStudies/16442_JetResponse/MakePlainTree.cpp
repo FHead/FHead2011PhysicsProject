@@ -137,16 +137,18 @@ int main(int argc, char *argv[])
    OutputTree.Branch("GenJetPhi", &GenJetPhi, "GenJetPhi/D");
 
    // Matched jet quantities
-   double MatchJetRawPT, MatchJetEta, MatchJetPhi;
+   double MatchJetRawPT, MatchJetEta, MatchJetPhi, MatchJetBestDR;
    OutputTree.Branch("MatchJetRawPT", &MatchJetRawPT, "MatchJetRawPT/D");
    OutputTree.Branch("MatchJetEta", &MatchJetEta, "MatchJetEta/D");
    OutputTree.Branch("MatchJetPhi", &MatchJetPhi, "MatchJetPhi/D");
+   OutputTree.Branch("MatchJetBestDR", &MatchJetBestDR, "MatchJetBestDR/D");
 
-   double CSJetRawPT, CSJetPT, CSJetEta, CSJetPhi;
+   double CSJetRawPT, CSJetPT, CSJetEta, CSJetPhi, CSJetBestDR;
    OutputTree.Branch("CSJetRawPT", &CSJetRawPT, "CSJetRawPT/D");
    OutputTree.Branch("CSJetPT", &CSJetPT, "CSJetPT/D");
    OutputTree.Branch("CSJetEta", &CSJetEta, "CSJetEta/D");
    OutputTree.Branch("CSJetPhi", &CSJetPhi, "CSJetPhi/D");
+   OutputTree.Branch("CSJetBestDR", &CSJetBestDR, "CSJetBestDR/D");
 
    double CSJetRefPT, CSJetRefEta, CSJetRefPhi;
    OutputTree.Branch("CSJetRefPT", &CSJetRefPT, "CSJetRefPT/D");
@@ -192,7 +194,7 @@ int main(int argc, char *argv[])
    // Start looping //
    ///////////////////
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.01;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.001;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
@@ -347,6 +349,8 @@ int main(int argc, char *argv[])
          MatchJetRawPT = Jets[iJ].perp();
          MatchJetEta = Jets[iJ].eta();
          MatchJetPhi = Jets[iJ].phi();
+
+         MatchJetBestDR = BestDR;
  
          //////////////////////
          // Match to CS jets //
@@ -356,7 +360,7 @@ int main(int argc, char *argv[])
          double BestCSDR = -1;
          for(int i = 0; i < MJet.JetCount; i++)
          {
-            double DR = GetDR(GenJets[iG].eta(), GenJets[iG].phi(), MJet.JetEta[i], MJet.JetPhi[i] + M_PI);
+            double DR = GetDR(GenJets[iG].eta(), GenJets[iG].phi(), MJet.JetEta[i], MJet.JetPhi[i]);
             if(BestCSDR < 0 || BestCSDR > DR)
                iCS = i, BestCSDR = DR;
          }
@@ -369,6 +373,8 @@ int main(int argc, char *argv[])
          CSJetRefPT = MJet.RefPT[iCS];
          CSJetRefEta = MJet.RefEta[iCS];
          CSJetRefPhi = MJet.RefPhi[iCS];
+
+         CSJetBestDR = BestCSDR;
 
          Flavor = MJet.RefPartonFlavor[iCS];
          FlavorB = MJet.RefPartonFlavorForB[iCS];

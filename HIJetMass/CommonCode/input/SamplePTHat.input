@@ -61,3 +61,6 @@ PP6Dijet280HIReco               280 370
 PP6Dijet370HIReco               370 460
 PP6Dijet460HIReco               460 540
 PP6Dijet540HIReco               540 100000
+PPHerwig50to100                 -10000 10000
+PPHerwig100to200                -10000 10000
+PPHerwig200                     -10000 10000

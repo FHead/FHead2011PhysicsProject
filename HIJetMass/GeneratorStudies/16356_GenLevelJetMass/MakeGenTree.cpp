@@ -93,15 +93,17 @@ int main(int argc, char *argv[])
 
    TFile OutputFile(OutputFileName.c_str(), "RECREATE");
 
+   TTree OutputTree("GenJetTree", "GenJetTree");
+
    double TreeCentrality, TreePTHat;
-   OutputFile.Branch("Centrality", &TreeCentrality, "Centrality/D");
-   OutputFile.Branch("PTHat", &TreePTHat, "PTHat/D");
+   OutputTree.Branch("Centrality", &TreeCentrality, "Centrality/D");
+   OutputTree.Branch("PTHat", &TreePTHat, "PTHat/D");
 
    double TreeJetPT, TreeJetEta, TreeJetPhi, TreeJetEnergy;
-   OutputFile.Branch("JetPT", &TreeJetPT, "JetPT/D");
-   OutputFile.Branch("JetEta", &TreeJetEta, "JetEta/D");
-   OutputFile.Branch("JetPhi", &TreeJetPhi, "JetPhi/D");
-   OutputFile.Branch("JetEnergy", &TreeJetEnergy, "JetEnergy/D");
+   OutputTree.Branch("JetPT", &TreeJetPT, "JetPT/D");
+   OutputTree.Branch("JetEta", &TreeJetEta, "JetEta/D");
+   OutputTree.Branch("JetPhi", &TreeJetPhi, "JetPhi/D");
+   OutputTree.Branch("JetEnergy", &TreeJetEnergy, "JetEnergy/D");
 
    int TreeDepth0, TreeDepth7;
    OutputTree.Branch("Depth0", &TreeDepth0, "Depth0/I");
@@ -133,8 +135,6 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SubJet2Phi7", &TreeSubJet2Phi7, "SubJet2Phi7/D");
 
    TH1D HN("HN", ";;", 1, 0, 1);
-
-   TTree OutputTree("T", "T");
 
    int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
    ProgressBar Bar(cout, EntryCount);
@@ -175,10 +175,10 @@ int main(int argc, char *argv[])
          if(AbsID < 0)
             AbsID = -AbsID;
 
-         if(AbsID == 12 || AbdID == 14 || AbsID == 16)   // neutrinos, skip
+         if(AbsID == 12 || AbsID == 14 || AbsID == 16)   // neutrinos, skip
             continue;
 
-         if((*MGen.DaughterCount)[i] > 0)   // we want final state particles
+         if((*MGen.DaughterCount)[iG] > 0)   // we want final state particles
             continue;
 
          double Mass = 0;
@@ -195,6 +195,12 @@ int main(int argc, char *argv[])
 
       for(int iJ = 0; iJ < Jets.size(); iJ++)
       {
+         // Save some space!
+         if(Jets[iJ].eta() < -1.5 || Jets[iJ].eta() > 1.5)
+            continue;
+         if(Jets[iJ].perp() < 50)
+            continue;
+
          TreeJetPT = Jets[iJ].perp();
          TreeJetEta = Jets[iJ].eta();
          TreeJetPhi = Jets[iJ].phi();

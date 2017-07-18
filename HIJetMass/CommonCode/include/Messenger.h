@@ -163,6 +163,7 @@ public:
    std::vector<int> *ID;
    std::vector<int> *Charge;
    std::vector<int> *DaughterCount;
+   std::vector<int> *SubEvent;
 public:
    GenParticleTreeMessenger(TFile &File);
    GenParticleTreeMessenger(TFile *File);

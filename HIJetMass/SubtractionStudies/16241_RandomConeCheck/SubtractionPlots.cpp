@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
       return -1;
    }
 
+   cout << "Running with input file " << argv[1] << endl;
+
    string TriggerString = "HLT_HIPuAK4CaloJet100_Eta5p1_v1";
 
    string Input = argv[1];
@@ -38,10 +40,13 @@ int main(int argc, char *argv[])
    TTree *SkimTree = (TTree *)InputFile.Get("skimanalysis/HltTree");
    TTree *PFTree = (TTree *)InputFile.Get("pfcandAnalyzer/pfTree");
 
+   if(Tree == NULL)
+      return -1;
+
    TFile OutputFile(Output.c_str(), "RECREATE");
   
    TH2D HSubtractedPTCentrality("HSubtractedPTCentrality", ";Centrality;Subtracted Random Cone PT",
-      100, 0, 1, 1000, -100, 100);
+      100, -0.0001, 0.9999, 1000, -100, 100);
    TH2D HSubtractedPTRatioCentrality("HSubtractedPTRatioCentrality", ";Centrality;Subtracted Random Cone PT / PT",
       100, 0, 1, 1000, -2, 2);
 

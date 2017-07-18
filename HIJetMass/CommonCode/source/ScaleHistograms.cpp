@@ -11,6 +11,8 @@ using namespace std;
 #include "TTree.h"
 #include "TClass.h"
 
+#define Percentage 1
+
 int main(int argc, char *argv[])
 {
    if(argc < 4)
@@ -75,10 +77,11 @@ int main(int argc, char *argv[])
       else if(Object->IsA()->InheritsFrom("TTree") == true)   // trees!  attach a "MCWeight"!
       {
          TTree *T = (TTree *)Object;
-         T = T->CloneTree();
+         int EntryCount = T->GetEntries() * Percentage;
+         
+         T = T->CloneTree(EntryCount);
 
          TBranch *Branch = T->Branch("MCWeight", &ScaleFactor, "MCWeight/D");
-         int EntryCount = T->GetEntries();
          for(int i = 0; i < EntryCount; i++)
          {
             T->GetEntry(i);

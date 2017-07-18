@@ -24,8 +24,8 @@ int main()
    TFile FG("Graphs_SD0_MC_16354AA6DijetCymbal_16354PP6Dijet.root");
    TFile FG2("Graphs_SD0_MC_16354AA6DijetCymbal_16354PassThroughPP6Dijet.root");
 
-   TFile F1("AA6DijetCymbalNoCut.root");
-   TFile F2("PP6Dijet.root");
+   TFile F1("ScaledResult/AA6DijetCymbal.root");
+   TFile F2("ScaledResult/PP6Dijet.root");
 
    TTree *T1 = (TTree *)F1.Get("GenJetTree");
    TTree *T2 = (TTree *)F2.Get("GenJetTree");
@@ -66,6 +66,8 @@ int main()
 
    TCanvas C;
 
+   H1.SetMaximum(15);
+
    H1.Draw("");
    H2.Draw("same");
 
@@ -84,20 +86,22 @@ int main()
    GPP->SetMarkerColor(kBlue);
    GPP2->SetMarkerColor(kBlack);
 
-   TLegend Legend(0.5, 0.8, 0.8, 0.6);
+   TLegend Legend(0.50, 0.85, 0.80, 0.55);
    Legend.SetFillStyle(0);
    Legend.SetTextSize(0.035);
    Legend.SetTextFont(42);
    Legend.AddEntry(&H1, "AA (Gen)", "pl");
    Legend.AddEntry(&H2, "PP (Gen)", "pl");
-   Legend.AddEntry(GAA, "AA (Reco)", "pl");
-   Legend.AddEntry(GPP, "PP+Smear (Reco)", "pl");
+   Legend.AddEntry(GAA, "AA+CS (Reco)", "pl");
+   Legend.AddEntry(GPP, "PP+MB+CS (Reco)", "pl");
    Legend.AddEntry(GPP2, "PP (Reco)", "pl");
    Legend.Draw();
 
    PdfFile.AddCanvas(C);
 
    C.SetLogy();
+   H1.SetMaximum(100);
+   H1.SetMinimum(0.1);
 
    PdfFile.AddCanvas(C);
 

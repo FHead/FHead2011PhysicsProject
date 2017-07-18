@@ -435,6 +435,7 @@ bool GenParticleTreeMessenger::Initialize()
    ID = NULL;
    Charge = NULL;
    DaughterCount = NULL;
+   SubEvent = NULL;
 
    if(Tree->GetBranch("npart")) Tree->SetBranchAddress("npart", &NPart);
    else                         NPart = 0;
@@ -457,6 +458,8 @@ bool GenParticleTreeMessenger::Initialize()
    else                         Charge = &EmptyVectors::EmptyVectorInt;
    if(Tree->GetBranch("nDaughters")) Tree->SetBranchAddress("nDaughters", &DaughterCount);
    else                         DaughterCount = &EmptyVectors::EmptyVectorInt;
+   if(Tree->GetBranch("sube"))  Tree->SetBranchAddress("sube", &SubEvent);
+   else                         SubEvent = &EmptyVectors::EmptyVectorInt;
 
    return true;
 }

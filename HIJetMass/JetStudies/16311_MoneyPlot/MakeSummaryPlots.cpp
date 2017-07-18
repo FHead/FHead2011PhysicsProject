@@ -48,14 +48,14 @@ int main()
             FileName = "Graphs_SD" + SD + "_DataPicked.root";
             OutputBase = "Plots/DataClosure" + SD;
             IsMC = false;
-
-            continue;
          }
          else
          {
             FileName = "Graphs_SD" + SD + "_MC.root";
             OutputBase = "Plots/MCClosure" + SD;
             IsMC = true;
+
+            continue;
          }
 
          TFile FGraphs(FileName.c_str());

@@ -82,8 +82,11 @@ int main(int argc, char *argv[])
    string FileNameSmear = "PPDataHighPTJet_16153.root";
    if(IsMC == true)
    {
-      FileNameData = "AA6DijetCymbal.root";
-      FileNameSmear = "PP6DijetCymbal.root";
+      // FileNameData = "AA6DijetCymbal.root";
+      // FileNameSmear = "PP6DijetCymbal.root";
+      
+      FileNameData = "PowerfulAA.root";
+      FileNameSmear = "PowerfulPP.root";
    }
    if(IsMC == false && TriggerSelection != TRIGGER_NONE)
       FileNameData = "AADataPrescale16241/AADataPrescale.root";

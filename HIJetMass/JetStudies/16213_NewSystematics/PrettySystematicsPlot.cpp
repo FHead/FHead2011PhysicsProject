@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
    double Bin = 20;
    double SysBin = 160;
 
-   int N = 11;
+   int N = 12;
    vector<string> FileNames(N), Labels(N);
    
    FileNames[0]  = "OutputFile_Ghost_%d.root";      Labels[0]  = "Ghost Area";
@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
    FileNames[8]  = "OutputFile_Range_%d.root";      Labels[8]  = "Range";
    FileNames[9]  = "OutputFile_Trigger_%d.root";    Labels[9]  = "Trigger";
    FileNames[10] = "OutputFile_QuarkGluon_%d.root"; Labels[10] = "QuarkGluon";
+   FileNames[11] = "OutputFile_MassScale_%d.root";  Labels[11] = "MassScale";
    
    vector<TGraph *> Graphs;
 
@@ -86,7 +87,8 @@ int main(int argc, char *argv[])
    Legend.SetTextFont(42);
    Legend.SetTextSize(0.035);
 
-   int Colors[] = {kBlack, kRed, kGreen - 3, kYellow + 3, kMagenta, kCyan - 3, kBlue, kGray, kGreen, kYellow, kMagenta + 3};
+   int Colors[] = {kBlack, kRed, kGreen - 3, kYellow + 3, kMagenta, kCyan - 3,
+      kBlue, kGray, kGreen, kYellow, kMagenta + 3, kGreen + 3};
 
    for(int i = 0; i < N; i++)
    {

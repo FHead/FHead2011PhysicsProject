@@ -1,5 +1,7 @@
 # FJ=/Users/yichen/Programs/fastjet/install321/
-FJ=/Users/yichen/Programs/fastjet/install321-1026/
+# FJ=/Users/yichen/Programs/fastjet/install321-1026/
+FJ=/Users/yichen/Programs/fastjet/install321-1019/
+# FJ=/Users/yichen/Programs/fastjet/install321-1014/
 
 CompileRootMacro JetMassPlots.cpp RunSmear Class.o \
    -I../../CommonCode/include ../../CommonCode/library/* \

@@ -17,10 +17,11 @@ void StraightTreeMessenger::Initialize()
    if(Tree == NULL)
       return;
 
-   Tree->SetBranchAddress("JetPT", &JetPT);
-   Tree->SetBranchAddress("JetEta", &JetEta);
-   Tree->SetBranchAddress("JetPhi", &JetPhi);
+   Tree->SetBranchAddress("JetCSPT", &JetPT);
+   Tree->SetBranchAddress("JetCSEta", &JetEta);
+   Tree->SetBranchAddress("JetCSPhi", &JetPhi);
    Tree->SetBranchAddress("MatchPT", &RawJetPT);
+   Tree->SetBranchAddress("MatchDR", &MatchDR);
    
    if(SD == 0)
    {
@@ -100,11 +101,20 @@ bool StraightTreeMessenger::PassPTHat(double PTHatMin)
    return true;
 }
 
+bool StraightTreeMessenger::PassPTHat(double PTHatMin, double PTHatMax)
+{
+   if(IsMC == true && (PTHat < PTHatMin || PTHat >= PTHatMax))
+      return false;
+   return true;
+}
+
 bool StraightTreeMessenger::PassSelection()
 {
    if(IsMC == false && PassFilter == false)
       return false;
    if(IsMC == false && PassTrigger == false)
+      return false;
+   if(MatchDR > 0.1)
       return false;
 
    if(JetEta < -1.3 || JetEta > 1.3)
@@ -159,6 +169,8 @@ void SmearTreeMessenger::Initialize()
    Tree->SetBranchAddress("BestJetEta", &JetEta);
    Tree->SetBranchAddress("BestJetPhi", &JetPhi);
    Tree->SetBranchAddress("JetPT", &OriginalJetPT);
+   Tree->SetBranchAddress("JetEta", &OriginalJetEta);
+   Tree->SetBranchAddress("JetPhi", &OriginalJetPhi);
 
    if(SD == 0)
    {
@@ -187,7 +199,7 @@ void SmearTreeMessenger::Initialize()
       Tree->SetBranchAddress("PTHat", &PTHat);
    else
       PTHat = 200;
-   
+
    Tree->SetBranchAddress("Centrality", &Centrality);
 
    Tree->SetBranchAddress("TotalPTInJet", &PTInJet);
@@ -196,8 +208,15 @@ void SmearTreeMessenger::Initialize()
 
    if(IsMC == false)
    {
-      Tree->SetBranchAddress("PassFilter", &PassFilter);
-      Tree->SetBranchAddress("PassHLT", &PassTrigger);
+      if(Tree->GetBranch("PassFilter") != NULL)
+         Tree->SetBranchAddress("PassFilter", &PassFilter);
+      else
+         PassFilter = true;
+
+      if(Tree->GetBranch("PassHLT") != NULL)
+         Tree->SetBranchAddress("PassHLT", &PassTrigger);
+      else
+         PassTrigger = true;
    }
    else
    {
@@ -216,13 +235,12 @@ void SmearTreeMessenger::GetEntry(int iE)
    RawJetPT = JetPT;
    SDMassRatio = SDMass / RawJetPT;
    SysBin = SDMassRatio / (0.40 / 160);
-      
-   // Temporary fix!
-   // if(IsMC == true && UseMCWeight == true)
-   // {
-   //    if(PTHat < 220 && PTHat > 170)
-   //       MCWeight = MCWeight / 1.08366;
-   // }
+   
+   double DEta = JetEta - OriginalJetEta;
+   double DPhi = JetPhi - OriginalJetPhi;
+   if(DPhi < -M_PI)   DPhi = DPhi + 2 * M_PI;
+   if(DPhi > +M_PI)   DPhi = DPhi - 2 * M_PI;
+   MatchDR = sqrt(DEta * DEta + DPhi * DPhi);
 }
 
 void SmearTreeMessenger::SetMB(TGraph *G)
@@ -242,19 +260,30 @@ bool SmearTreeMessenger::PassPTHat(double PTHatMin)
    return true;
 }
 
+bool SmearTreeMessenger::PassPTHat(double PTHatMin, double PTHatMax)
+{
+   if(IsMC == true && (PTHat < PTHatMin || PTHat >= PTHatMax))
+      return false;
+   return true;
+}
+
 bool SmearTreeMessenger::PassSelection()
 {
    if(IsMC == false && PassFilter == false)
       return false;
    if(IsMC == false && PassTrigger == false)
       return false;
+   if(MatchDR > 0.1)
+      return false;
+   if(OriginalJetPT < 50)
+      return false;
 
    if(JetEta < -1.3 || JetEta > 1.3)
       return false;
 
    // This is the poor-man's emulation for pp trigger in MC
-   if(IsMC == true && OriginalJetPT < 80)
-      return false;
+   // if(IsMC == true && OriginalJetPT < 80)
+   //    return false;
 
    return true;
 }
@@ -264,8 +293,7 @@ int SmearTreeMessenger::CentralityBin(double CBinEdge[], int BinCount)
    return GetBin(Centrality / 100, CBinEdge, BinCount);
 }
 
-int SmearTreeMessenger::PTBin(double PTBinEdge[], int BinCount)
-{
+int SmearTreeMessenger::PTBin(double PTBinEdge[], int BinCount){
    return GetBin(JetPT, PTBinEdge, BinCount);
 }
    
@@ -290,12 +318,11 @@ double SmearTreeMessenger::SmearWeight()
    GMBRMS->GetPoint((int)Centrality, Dummy, TargetRMS);
    GSmearRMS->GetPoint((int)Centrality, Dummy, SmearRMS);
 
-   SmearRMS = SmearRMS * 1.1;
-   TargetRMS = TargetRMS * 1.4;
+   SmearRMS = SmearRMS / 1.1;
 
    double ExcessPT = PTInJet - Rho * 0.4 * 0.4 * PI;
    double Weight = exp(-ExcessPT * ExcessPT / (2 * TargetRMS * TargetRMS))
-      / exp(-ExcessPT * ExcessPT / (2 * SmearRMS * SmearRMS));
+                 / exp(-ExcessPT * ExcessPT / (2 * SmearRMS * SmearRMS));
 
    return Weight;
 }

@@ -69,6 +69,8 @@ int main(int argc, char *argv[])
    double PTHatMin = ((IsMC == true) ? atof(argv[3]) : 0);
    string PTHatString = argv[3];
 
+   double PTHatMax = 1000000;
+
    cout << "Running with SD = " << SD << ", MC = " << IsMC << endl;
 
    /////////////////////
@@ -93,6 +95,8 @@ int main(int argc, char *argv[])
 
    string FileNameData = "AAData16241/AAData.root";
    string FileNameSmear = "PPDataHighPTJet_16153.root";
+   // FileNameSmear = "Mod1_PPDataHighPTJet.root";
+   
    if(IsMC == true)
    {
       FileNameData = "AA6Dijet" + PTHatString + "Cymbal.root";
@@ -100,9 +104,10 @@ int main(int argc, char *argv[])
 
       if(PTHatMin <= 0)
       {
-         FileNameData = "AA6DijetCymbal.root";
-         FileNameSmear = "PP6Dijet.root";
+         FileNameData = "AA6DijetCymbal16325.root";
+         FileNameSmear = "../../Samples/SmearTree/16333Type6/PP6Dijet.root";
          PTHatMin = 100;
+         PTHatMax = 10000000;
       }
    }
    if(IsMC == false && TriggerSelection != TRIGGER_NONE)
@@ -115,8 +120,8 @@ int main(int argc, char *argv[])
    string SmearGraphSmear = "SmearPPDataInJet2";
    if(IsMC == true)
    {
-      SmearGraphMB = "CymbalMB";
-      SmearGraphSmear = "SmearPP6DijetInJet16264Cymbal";
+      SmearGraphMB = "MBCymbal2";
+      SmearGraphSmear = "SmearPP6DijetV1InJet";
    }
 
    //////////////
@@ -199,7 +204,7 @@ int main(int argc, char *argv[])
       MData.GetEntry(iE);
 
       if(MData.PassSelection() == false)       continue;
-      if(MData.PassPTHat(PTHatMin) == false)   continue;
+      if(MData.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
 
       int CBin = MData.CentralityBin(CBinEdge, 5);
       int PTBin = MData.PTBin(PTBinEdge, 6);
@@ -226,7 +231,7 @@ int main(int argc, char *argv[])
       MSmear.GetEntry(iE);
 
       if(MSmear.PassSelection() == false)       continue;
-      if(MSmear.PassPTHat(PTHatMin) == false)   continue;
+      if(MSmear.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
       
       int CBin = MSmear.CentralityBin(CBinEdge, 5);
       int PTBin = MSmear.PTBin(PTBinEdge, 6);
@@ -257,7 +262,7 @@ int main(int argc, char *argv[])
       MData.GetEntry(iE);
 
       if(MData.PassSelection() == false)       continue;
-      if(MData.PassPTHat(PTHatMin) == false)   continue;
+      if(MData.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
 
       int CBin = MData.CentralityBin(CBinEdge, 5);
       int PTBin = MData.PTBin(PTBinEdge, 6);
@@ -285,7 +290,7 @@ int main(int argc, char *argv[])
       MSmear.GetEntry(iE);
 
       if(MSmear.PassSelection() == false)       continue;
-      if(MSmear.PassPTHat(PTHatMin) == false)   continue;
+      if(MSmear.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
       
       int CBin = MSmear.CentralityBin(CBinEdge, 5);
       int PTBin = MSmear.PTBin(PTBinEdge, 6);
@@ -349,7 +354,7 @@ int main(int argc, char *argv[])
       MData.GetEntry(iE);
 
       if(MData.PassSelection() == false)       continue;
-      if(MData.PassPTHat(PTHatMin) == false)   continue;
+      if(MData.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
 
       int CBin = MData.CentralityBin(CBinEdge, 5);
       int PTBin = MData.PTBin(PTBinEdge, 6);
@@ -455,7 +460,7 @@ int main(int argc, char *argv[])
       MSmear.GetEntry(iE);
 
       if(MSmear.PassSelection() == false)       continue;
-      if(MSmear.PassPTHat(PTHatMin) == false)   continue;
+      if(MSmear.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
       
       int CBin = MSmear.CentralityBin(CBinEdge, 5);
       int PTBin = MSmear.PTBin(PTBinEdge, 6);

@@ -290,6 +290,9 @@ double SmearTreeMessenger::SmearWeight()
    GMBRMS->GetPoint((int)Centrality, Dummy, TargetRMS);
    GSmearRMS->GetPoint((int)Centrality, Dummy, SmearRMS);
 
+   SmearRMS = SmearRMS * 1.1;
+   TargetRMS = TargetRMS * 1.4;
+
    double ExcessPT = PTInJet - Rho * 0.4 * 0.4 * PI;
    double Weight = exp(-ExcessPT * ExcessPT / (2 * TargetRMS * TargetRMS))
       / exp(-ExcessPT * ExcessPT / (2 * SmearRMS * SmearRMS));

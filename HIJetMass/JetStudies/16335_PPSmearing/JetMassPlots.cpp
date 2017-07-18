@@ -56,8 +56,8 @@ int main(int argc, char *argv[])
    bool IsData = IsDataFromTag(Tag);
    bool IsPP = IsPPFromTag(Tag);
 
-   bool PassThroughMode = true;
-   bool UseRhoM = false;   // switch to use rho_m or not
+   bool PassThroughMode = false;
+   bool UseRhoM = true;   // switch to use rho_m or not
 
    if(IsData == true)
       cerr << "I'd be glad to run on data for this study" << endl;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
    }
 
    TFile InputFile(Input.c_str());
-   TFile MBInputFile(MBInput.c_str());
+   TFile *MBInputFile = TFile::Open(MBInput.c_str());
 
    string JetTreeName = "akCs4PFJetAnalyzer/t";
    string SoftDropJetTreeName = "akCsSoftDrop4PFJetAnalyzer/t";
@@ -84,8 +84,6 @@ int main(int argc, char *argv[])
       JetTreeName = "ak4PFJetAnalyzer/t";
       SoftDropJetTreeName = "akSoftDrop4PFJetAnalyzer/t";
    }
-   // if(IsPP == false && PassThroughMode == true)
-   //    JetTreeName = "ak4PFJetAnalyzer/t";
 
    HiEventTreeMessenger MHiEvent(InputFile);
    JetTreeMessenger MJet(InputFile, JetTreeName);
@@ -95,10 +93,11 @@ int main(int argc, char *argv[])
    TriggerTreeMessenger MHLT(InputFile);
    RhoTreeMessenger MRho(InputFile);
 
-   HiEventTreeMessenger MMBHiEvent(MBInputFile);
-   PFTreeMessenger MMBPF(MBInputFile, "pfcandAnalyzer/pfTree");
-   SkimTreeMessenger MMBSkim(MBInputFile);
-   RhoTreeMessenger MMBRho(MBInputFile);
+   HiEventTreeMessenger MMBHiEvent(*MBInputFile);
+   PFTreeMessenger MMBPF(*MBInputFile, "pfcandAnalyzer/pfTree");
+   SkimTreeMessenger MMBSkim(*MBInputFile);
+   TriggerTreeMessenger MMBHLT(*MBInputFile);
+   RhoTreeMessenger MMBRho(*MBInputFile);
    
    if(MHiEvent.Tree == NULL)
       return -1;
@@ -109,9 +108,10 @@ int main(int argc, char *argv[])
 
    TTree OutputTree("OutputTree", "OutputTree");
 
-   bool PassFilter, PassHLT;
+   bool PassFilter, PassHLT, PassMBHLT;
    OutputTree.Branch("PassFilter", &PassFilter, "PassFilter/O");
    OutputTree.Branch("PassHLT", &PassHLT, "PassHLT/O");
+   OutputTree.Branch("PassMBHLT", &PassMBHLT, "PassMBHLT/O");
 
    double TreeJetPT, TreeJetEta, TreeJetPhi, TreeJetSDMass, TreeJetDR, TreeJetMass;
    double TreeJetShape1, TreeJetShape2, TreeJetShape3, TreeJetShape4, TreeJetShape5;
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
    TH1D HSDMass("HSDMass", "SD Mass, DR > 0.1;SD Mass", 100, 0, 100);
    TH1D HNewSDMass("HNewSDMass", "New SD Mass, New DR > 0.1; New SD Mass", 100, 0, 100);
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.2;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(1);
    
@@ -252,6 +252,7 @@ int main(int argc, char *argv[])
          MMBHiEvent.GetEntry(iEntry % MBEntryCount);
          MMBPF.GetEntry(iEntry % MBEntryCount);
          MMBSkim.GetEntry(iEntry % MBEntryCount);
+         MMBHLT.GetEntry(iEntry);
          MMBRho.GetEntry(iEntry % MBEntryCount);
       }
       else
@@ -259,14 +260,17 @@ int main(int argc, char *argv[])
 
       PassFilter = true;
       PassHLT = true;
+      PassMBHLT = true;
       if(IsData == true)
       {
-         if(MSkim.PassBasicFilter() == false)
+         if(MSkim.PassBasicFilterLoose() == false)
             PassFilter = false;
-         if(PassThroughMode == false && MMBSkim.PassBasicFilter() == false)
+         if(PassThroughMode == false && MMBSkim.PassBasicFilterLoose() == false)
             PassFilter = false;
          if(MHLT.CheckTrigger("HLT_AK4PFJet80_Eta5p1_v1") == false)
             PassHLT = false;
+         if(PassThroughMode == false && MMBHLT.CheckTrigger("HLT_HIL1MinimumBiasHF1ANDPixel_SingleTrack_v1") == false)
+            PassMBHLT = false;
       }
 
       SDJetHelper HSDJet(MSDJet);
@@ -284,20 +288,6 @@ int main(int argc, char *argv[])
             continue;
          if(MJet.JetPT[iJ] < 10)
             continue;
-
-         bool WriteJet = false;
-         // if(MJet.JetPT[iJ] > 200 && GetCentrality(MMBHiEvent.hiBin) < 0.1 && MJet.JetPT[iJ] > MSDJet.PTHat)
-         //    WriteJet = true;
-         // if(WriteJet == true)
-         //    WriteJetCount = WriteJetCount + 1;
-         // if(WriteJetCount > 20)
-         // {
-         //    WriteJet = false;
-         //    break;
-         // }
-
-         if(WriteJet == true)
-            PdfFile.AddTextPage(Form("Jet (%.2f, %.2f, %.2f)", MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ]));
 
          FourVector JetP;
          JetP.SetPtEtaPhi(MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ]);
@@ -340,6 +330,27 @@ int main(int argc, char *argv[])
          TreeCentrality = Centrality;
 
          HRho.Fill(Rho);
+
+         bool WriteJet = false;
+         /*
+         if(MJet.JetPT[iJ] > 150 && Centrality > 0.5 && fabs(MJet.JetEta[iJ]) < 1.5)
+            WriteJet = true;
+         if(WriteJet == true)
+            WriteJetCount = WriteJetCount + 1;
+         if(WriteJetCount > 20)
+         {
+            WriteJet = false;
+            iEntry = EntryCount;
+            break;
+         }
+         */
+
+         if(WriteJet == true)
+         {
+            cout << "Starting to make plots for jet #" << WriteJetCount << endl;
+            PdfFile.AddTextPage(Form("Centrality %.2f, Rho %.2f, RhoM %.2f", Centrality, Rho, RhoM));
+            PdfFile.AddTextPage(Form("Jet (%.2f, %.2f, %.2f) [%d:%d]", MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ], MHiEvent.Run, MHiEvent.Event));
+         }
 
          // Step 1 - get all PF candidates within range
          vector<PseudoJet> Candidates;
@@ -746,6 +757,22 @@ int main(int argc, char *argv[])
          else
             TreeFirstJetDR3 = -1, TreeFirstJetZG3 = -1;
          
+         if(WriteJet == true)
+         {
+            vector<string> Text(20);
+            Text[0] = Form("Jet: (%.1f, %.2f, %.2f)", MJet.JetPT[iJ], MJet.JetEta[iJ], MJet.JetPhi[iJ]);
+            Text[1] = Form("Total stuff in jet (pre-CS): %.2f", TotalStuffInJet.GetPT());
+            Text[2] = Form("BestJet: (%.1f, %.2f, %.2f)", BestJetP.GetPT(), BestJetP.GetEta(), BestJetP.GetPhi());
+            Text[3] = Form("GroomedPT %.2f", GroomedBest->P.GetPT());
+            Text[4] = Form("SDMass %.2f, SDMass/Jet %.2f", GroomedBest->P.GetMass(), GroomedBest->P.GetMass() / BestJetP.GetPT());
+            Text[5] = Form("DR %.2f, ZG %.2f", TreeBestJetDR, TreeBestJetZG);
+            Text[6] = "";
+            Text[7] = Form("SubJet1 (%.1f, %.2f, %.2f)", GroomedBest->Child1->P.GetPT(), GroomedBest->Child1->P.GetEta(), GroomedBest->Child1->P.GetPhi());
+            Text[8] = Form("SubJet2 (%.1f, %.2f, %.2f)", GroomedBest->Child2->P.GetPT(), GroomedBest->Child2->P.GetEta(), GroomedBest->Child2->P.GetPhi());
+
+            PdfFile.AddTextPage(Text);
+         }
+
          // cout << TreeFirstJetDR << " " << TreeFirstJetSDMass << endl;
 
          // Cleanup
@@ -788,7 +815,7 @@ int main(int argc, char *argv[])
 
    OutputFile.Close();
 
-   MBInputFile.Close();
+   MBInputFile->Close();
    InputFile.Close();
 }
 

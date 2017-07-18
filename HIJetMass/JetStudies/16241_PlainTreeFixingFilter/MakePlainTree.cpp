@@ -81,8 +81,15 @@ int main(int argc, char *argv[])
    OutputTree.Branch("Flavor", &TreePartonFlavor, "Flavor/I");
    OutputTree.Branch("FlavorB", &TreePartonFlavorForB, "FlavorB/I");
 
-   double TreeJetPT, TreeJetEta, TreeJetPhi;
+   double TreeJetCSPT, TreeJetCSRawPT, TreeJetCSEta, TreeJetCSPhi;
+   OutputTree.Branch("JetCSPT", &TreeJetCSPT, "JetCSPT/D");
+   OutputTree.Branch("JetCSRawPT", &TreeJetCSRawPT, "JetCSRawPT/D");
+   OutputTree.Branch("JetCSEta", &TreeJetCSEta, "JetCSEta/D");
+   OutputTree.Branch("JetCSPhi", &TreeJetCSPhi, "JetCSPhi/D");
+   
+   double TreeJetPT, TreeJetRawPT, TreeJetEta, TreeJetPhi;
    OutputTree.Branch("JetPT", &TreeJetPT, "JetPT/D");
+   OutputTree.Branch("JetRawPT", &TreeJetRawPT, "JetRawPT/D");
    OutputTree.Branch("JetEta", &TreeJetEta, "JetEta/D");
    OutputTree.Branch("JetPhi", &TreeJetPhi, "JetPhi/D");
    
@@ -107,6 +114,10 @@ int main(int argc, char *argv[])
    double TreeMatchDR, TreeMatchPT;
    OutputTree.Branch("MatchDR", &TreeMatchDR, "MatchDR/D");
    OutputTree.Branch("MatchPT", &TreeMatchPT, "MatchPT/D");
+
+   int TreeDepth0, TreeDepth7;
+   OutputTree.Branch("Depth0", &TreeDepth0, "Depth0/I");
+   OutputTree.Branch("Depth7", &TreeDepth7, "Depth7/I");
 
    double TreeSubJetDR0, TreeSDMass0;
    double TreeSubJetDR7, TreeSDMass7;
@@ -138,6 +149,20 @@ int main(int argc, char *argv[])
    OutputTree.Branch("PassPbPb60", &TreePassPbPb60, "PassPbPb60/O");
    OutputTree.Branch("PassPbPb80", &TreePassPbPb80, "PassPbPb80/O");
    OutputTree.Branch("PassPbPb100", &TreePassPbPb100, "PassPbPb100/O");
+
+   double TreeCHF, TreeNHF, TreeCEF, TreeNEF, TreeMUF;
+   OutputTree.Branch("CHF", &TreeCHF, "CHF/D");
+   OutputTree.Branch("NHF", &TreeNHF, "NHF/D");
+   OutputTree.Branch("CEF", &TreeCEF, "CEF/D");
+   OutputTree.Branch("NEF", &TreeNEF, "NEF/D");
+   OutputTree.Branch("MUF", &TreeMUF, "MUF/D");
+   
+   double TreeCHM, TreeNHM, TreeCEM, TreeNEM, TreeMUM;
+   OutputTree.Branch("CHM", &TreeCHM, "CHM/D");
+   OutputTree.Branch("NHM", &TreeNHM, "NHM/D");
+   OutputTree.Branch("CEM", &TreeCEM, "CEM/D");
+   OutputTree.Branch("NEM", &TreeNEM, "NEM/D");
+   OutputTree.Branch("MUM", &TreeMUM, "MUM/D");
 
    int EntryCount = MHiEvent.Tree->GetEntries();
    ProgressBar Bar(cout, EntryCount);
@@ -209,6 +234,7 @@ int main(int argc, char *argv[])
       for(int iJ = 0; iJ < MSDJet.JetCount; iJ++)
       {
          TreeJetPT = MSDJet.JetPT[iJ];
+         TreeJetRawPT = MSDJet.JetRawPT[iJ];
          TreeJetEta = MSDJet.JetEta[iJ];
          TreeJetPhi = MSDJet.JetPhi[iJ];
 
@@ -224,6 +250,37 @@ int main(int argc, char *argv[])
 
          TreePartonFlavor = MSDJet.RefPartonFlavor[iJ];
          TreePartonFlavorForB = MSDJet.RefPartonFlavorForB[iJ];
+
+         int BestCSJet = 0;
+         double BestCSDR = -1;
+         for(int i = 0; i < MJet.JetCount; i++)
+         {
+            double DR = GetDR(MSDJet.JetEta[iJ], MSDJet.JetPhi[iJ], MJet.JetEta[i], MJet.JetPhi[i]);
+            if(BestCSDR < 0 || DR < BestCSDR)
+            {
+               BestCSJet = i;
+               BestCSDR = DR;
+            }
+         }
+
+         if(BestCSDR >= 0)
+         {
+            TreeCHF = MJet.JetPFCHF[BestCSJet];
+            TreeNHF = MJet.JetPFNHF[BestCSJet];
+            TreeCEF = MJet.JetPFCEF[BestCSJet];
+            TreeNEF = MJet.JetPFNEF[BestCSJet];
+            TreeMUF = MJet.JetPFMUF[BestCSJet];
+            TreeCHM = MJet.JetPFCHM[BestCSJet];
+            TreeNHM = MJet.JetPFNHM[BestCSJet];
+            TreeCEM = MJet.JetPFCEM[BestCSJet];
+            TreeNEM = MJet.JetPFNEM[BestCSJet];
+            TreeMUM = MJet.JetPFMUM[BestCSJet];
+
+            TreeJetCSPT = MJet.JetPT[BestCSJet];
+            TreeJetCSRawPT = MJet.JetRawPT[BestCSJet];
+            TreeJetCSEta = MJet.JetEta[BestCSJet];
+            TreeJetCSPhi = MJet.JetPhi[BestCSJet];
+         }
 
          int BestJet = 0;
          double BestDR = -1;
@@ -263,6 +320,9 @@ int main(int argc, char *argv[])
 
             Node *Groomed0 = FindSDNode(Nodes[0], 0.1, 0.0, 0.4);
             Node *Groomed7 = FindSDNode(Nodes[0], 0.5, 1.5, 0.4);
+
+            TreeDepth0 = NodeDistance(Groomed0, Nodes[0]);
+            TreeDepth7 = NodeDistance(Groomed7, Nodes[0]);
 
             if(Groomed0->N > 1)
             {

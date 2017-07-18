@@ -10,7 +10,7 @@ cd - > /dev/null
 
 if [[ __INPUT__ != root* ]]
 then
-   cmsStage __INPUT__ Input.root
+   eos cp /eos/cms/__INPUT__ Input.root
 fi
 
 export X509_USER_PROXY=$PhysicsWorkspace/HIJetMass/CommonCode/proxy/x509up_proxy
@@ -26,5 +26,5 @@ else
    __EXECUTABLE__ __INPUT__ Output.root __TAG__ __PTHATMIN__ __PTHATMAX__ __EXTRA1__ __EXTRA2__ __EXTRA3__ 
 fi
 
-cmsStage -f Output.root /store/cmst3/user/chenyi/BatchOutput/HIJetMass/JetStudies/16354_CSPlainTreeRestructuring//Result/`basename __OUTPUT__`
+eos cp Output.root /eos/cms/store/cmst3/user/chenyi/BatchOutput/HIJetMass/JetStudies/16354_CSPlainTreeRestructuring//Result/`basename __OUTPUT__`
 # mv Output.root __OUTPUT__

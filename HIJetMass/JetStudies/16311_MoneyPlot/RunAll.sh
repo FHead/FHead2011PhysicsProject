@@ -11,7 +11,7 @@ CompileRootMacro MakeGraphs.cpp RunGraph ReadTree.o
 # ./RunGraph 0 N 100 SD0_DataPrescale_100
 # ./RunGraph 0 N 80 SD0_DataPrescale_80
 # ./RunGraph 0 N 60 SD0_DataPrescale_60
-./RunGraph 7 Y 0 SD7_MC
+# ./RunGraph 7 Y 0 SD7_MC
 # ./RunGraph 7 Y 100 SD7_MC_100
 # ./RunGraph 7 Y 120 SD7_MC_120
 # ./RunGraph 7 Y 170 SD7_MC_170

@@ -27,6 +27,8 @@ int main(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
+   bool UseRhoM = false;
+
    SetThesisStyle();
 
    ClusterSequence::set_fastjet_banner_stream(NULL);
@@ -90,6 +92,11 @@ int main(int argc, char *argv[])
 
    TTree OutputTree("T", "T");
 
+   int TreeRun, TreeEvent, TreeLumi;
+   OutputTree.Branch("Run", &TreeRun, "Run/I");
+   OutputTree.Branch("Event", &TreeEvent, "Event/I");
+   OutputTree.Branch("Lumi", &TreeLumi, "Lumi/I");
+
    double TreeHF, TreeHFPlus, TreeHFMinus, TreeHFPlusEta4, TreeHFMinusEta4;
    OutputTree.Branch("HF", &TreeHF, "HF/D");
    OutputTree.Branch("HFPlus", &TreeHFPlus, "HFPlus/D");
@@ -150,20 +157,24 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SubJetDR7", &TreeSubJetDR7, "SubJetDR7/D");
    OutputTree.Branch("SDMass7", &TreeSDMass7, "SDMass7/D");
    
-   double TreeSubJet1PT0, TreeSubJet1Eta0, TreeSubJet1Phi0;
-   double TreeSubJet2PT0, TreeSubJet2Eta0, TreeSubJet2Phi0;
+   double TreeSubJet1E0, TreeSubJet1PT0, TreeSubJet1Eta0, TreeSubJet1Phi0;
+   double TreeSubJet2E0, TreeSubJet2PT0, TreeSubJet2Eta0, TreeSubJet2Phi0;
+   OutputTree.Branch("SubJet1E0", &TreeSubJet1E0, "SubJet1E0/D");
    OutputTree.Branch("SubJet1PT0", &TreeSubJet1PT0, "SubJet1PT0/D");
    OutputTree.Branch("SubJet1Eta0", &TreeSubJet1Eta0, "SubJet1Eta0/D");
    OutputTree.Branch("SubJet1Phi0", &TreeSubJet1Phi0, "SubJet1Phi0/D");
+   OutputTree.Branch("SubJet2E0", &TreeSubJet2E0, "SubJet2E0/D");
    OutputTree.Branch("SubJet2PT0", &TreeSubJet2PT0, "SubJet2PT0/D");
    OutputTree.Branch("SubJet2Eta0", &TreeSubJet2Eta0, "SubJet2Eta0/D");
    OutputTree.Branch("SubJet2Phi0", &TreeSubJet2Phi0, "SubJet2Phi0/D");
    
-   double TreeSubJet1PT7, TreeSubJet1Eta7, TreeSubJet1Phi7;
-   double TreeSubJet2PT7, TreeSubJet2Eta7, TreeSubJet2Phi7;
+   double TreeSubJet1E7, TreeSubJet1PT7, TreeSubJet1Eta7, TreeSubJet1Phi7;
+   double TreeSubJet2E7, TreeSubJet2PT7, TreeSubJet2Eta7, TreeSubJet2Phi7;
+   OutputTree.Branch("SubJet1E7", &TreeSubJet1E7, "SubJet1E7/D");
    OutputTree.Branch("SubJet1PT7", &TreeSubJet1PT7, "SubJet1PT7/D");
    OutputTree.Branch("SubJet1Eta7", &TreeSubJet1Eta7, "SubJet1Eta7/D");
    OutputTree.Branch("SubJet1Phi7", &TreeSubJet1Phi7, "SubJet1Phi7/D");
+   OutputTree.Branch("SubJet2E7", &TreeSubJet2E7, "SubJet2E7/D");
    OutputTree.Branch("SubJet2PT7", &TreeSubJet2PT7, "SubJet2PT7/D");
    OutputTree.Branch("SubJet2Eta7", &TreeSubJet2Eta7, "SubJet2Eta7/D");
    OutputTree.Branch("SubJet2Phi7", &TreeSubJet2Phi7, "SubJet2Phi7/D");
@@ -188,7 +199,7 @@ int main(int argc, char *argv[])
    OutputTree.Branch("NEM", &TreeNEM, "NEM/D");
    OutputTree.Branch("MUM", &TreeMUM, "MUM/D");
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
@@ -212,6 +223,10 @@ int main(int argc, char *argv[])
       MSkim.GetEntry(iE);
          
       HN.Fill(0);
+
+      TreeRun = MHiEvent.Run;
+      TreeEvent = MHiEvent.Event;
+      TreeLumi = MHiEvent.Lumi;
 
       TreeHF = MHiEvent.hiHF;
       TreeHFPlus = MHiEvent.hiHFplus;
@@ -252,6 +267,8 @@ int main(int argc, char *argv[])
          double Mass = 0;
          if((*MPF.ID)[iPF] == 1)
             Mass = 0.13957018;   // Pion...
+         if(UseRhoM == false)
+            Mass = 0;
          FourVector P;
          P.SetPtEtaPhiMass((*MPF.PT)[iPF], (*MPF.Eta)[iPF], (*MPF.Phi)[iPF], Mass);
          Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
@@ -267,6 +284,8 @@ int main(int argc, char *argv[])
       {
          double Rho = GetRho(MRho.EtaMax, MRho.Rho, RawJets[i].eta(), true);
          double RhoM = GetRho(MRho.EtaMax, MRho.RhoM, RawJets[i].eta(), true);
+         if(UseRhoM == false)
+            RhoM = 0;
          contrib::ConstituentSubtractor Subtractor(Rho, RhoM, 0, -1);
          Subtractor.set_alpha(1);
          CSJets[i] = Subtractor(RawJets[i]);
@@ -382,9 +401,11 @@ int main(int argc, char *argv[])
             TreeSubJetDR0 = GetDR(Groomed0->Child1->P, Groomed0->Child2->P);
             TreeSDMass0 = Groomed0->P.GetMass();
 
+            TreeSubJet1E0   = Groomed0->Child1->P[0];
             TreeSubJet1PT0  = Groomed0->Child1->P.GetPT();
             TreeSubJet1Eta0 = Groomed0->Child1->P.GetEta();
             TreeSubJet1Phi0 = Groomed0->Child1->P.GetPhi();
+            TreeSubJet2E0   = Groomed0->Child2->P[0];
             TreeSubJet2PT0  = Groomed0->Child2->P.GetPT();
             TreeSubJet2Eta0 = Groomed0->Child2->P.GetEta();
             TreeSubJet2Phi0 = Groomed0->Child2->P.GetPhi();
@@ -397,10 +418,12 @@ int main(int argc, char *argv[])
             TreeSubJetDR7 = GetDR(Groomed7->Child1->P, Groomed7->Child2->P);
             TreeSDMass7 = Groomed7->P.GetMass();
 
-            TreeSubJet1PT7 = Groomed7->Child1->P.GetPT();
+            TreeSubJet1E7   = Groomed7->Child1->P[0];
+            TreeSubJet1PT7  = Groomed7->Child1->P.GetPT();
             TreeSubJet1Eta7 = Groomed7->Child1->P.GetEta();
             TreeSubJet1Phi7 = Groomed7->Child1->P.GetPhi();
-            TreeSubJet2PT7 = Groomed7->Child2->P.GetPT();
+            TreeSubJet2E7   = Groomed7->Child1->P[0];
+            TreeSubJet2PT7  = Groomed7->Child2->P.GetPT();
             TreeSubJet2Eta7 = Groomed7->Child2->P.GetEta();
             TreeSubJet2Phi7 = Groomed7->Child2->P.GetPhi();
          }

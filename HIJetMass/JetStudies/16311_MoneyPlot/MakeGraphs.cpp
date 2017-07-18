@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
       if(PTHatMin <= 0)
       {
          FileNameData = "AA6DijetCymbal.root";
-         FileNameSmear = "PP6DijetV1.root";
+         FileNameSmear = "PP6Dijet.root";
          PTHatMin = 100;
       }
    }

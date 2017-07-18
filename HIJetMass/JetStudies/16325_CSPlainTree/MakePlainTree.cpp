@@ -237,7 +237,7 @@ int main(int argc, char *argv[])
       {
          FourVector P;
          P.SetPtEtaPhi((*MPF.PT)[iPF], (*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
-         // P[0] = (*MPF.E)[iPF];
+         P[0] = (*MPF.E)[iPF];
          Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
       }
       double GhostArea = 0.07 * 0.07;
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
       {
          double Rho = GetRho(MRho.EtaMax, MRho.Rho, RawJets[i].eta());
          double RhoM = GetRho(MRho.EtaMax, MRho.RhoM, RawJets[i].eta());
-         contrib::ConstituentSubtractor Subtractor(Rho, 0, 0, -1);
+         contrib::ConstituentSubtractor Subtractor(Rho, RhoM, 0, -1);
          Subtractor.set_alpha(1);
          CSJets[i] = Subtractor(RawJets[i]);
       }
@@ -268,7 +268,8 @@ int main(int argc, char *argv[])
       for(int iJ = 0; iJ < MSDJet.JetCount; iJ++)
       {
          bool WriteJet = false;
-         if(MSDJet.JetPT[iJ] > 200 && GetCentrality(MHiEvent.hiBin) > 0.8 && MSDJet.JetPT[iJ] > MSDJet.PTHat)
+         
+         if(MSDJet.JetPT[iJ] > 150 && GetCentrality(MHiEvent.hiBin) > 0.5 && fabs(MSDJet.JetEta[iJ]) < 1.5)
             WriteJet = true;
          if(WriteJet == true)
             WriteJetCount = WriteJetCount + 1;
@@ -278,9 +279,9 @@ int main(int argc, char *argv[])
             iE = EntryCount;
             break;
          }
-         
+
          if(WriteJet == true)
-            PdfFile.AddTextPage(Form("SD Jet (%.2f, %.2f, %.2f)", MSDJet.JetPT[iJ], MSDJet.JetEta[iJ], MSDJet.JetPhi[iJ]));
+            PdfFile.AddTextPage(Form("SD Jet (%.2f, %.2f, %.2f) [%d:%d]", MSDJet.JetPT[iJ], MSDJet.JetEta[iJ], MSDJet.JetPhi[iJ], MHiEvent.Run, MHiEvent.Event));
 
          if(WriteJet == true)
          {
@@ -422,10 +423,10 @@ int main(int argc, char *argv[])
                TreeSubJetDR0 = GetDR(Groomed0->Child1->P, Groomed0->Child2->P);
                TreeSDMass0 = Groomed0->P.GetMass();
          
-               TreeSubJet1PT0 = Groomed0->Child1->P.GetPT();
+               TreeSubJet1PT0  = Groomed0->Child1->P.GetPT();
                TreeSubJet1Eta0 = Groomed0->Child1->P.GetEta();
                TreeSubJet1Phi0 = Groomed0->Child1->P.GetPhi();
-               TreeSubJet2PT0 = Groomed0->Child2->P.GetPT();
+               TreeSubJet2PT0  = Groomed0->Child2->P.GetPT();
                TreeSubJet2Eta0 = Groomed0->Child2->P.GetEta();
                TreeSubJet2Phi0 = Groomed0->Child2->P.GetPhi();
             }
@@ -446,6 +447,22 @@ int main(int argc, char *argv[])
             }
             else
                TreeSubJetDR7 = -1;
+
+            if(WriteJet == true)
+            {
+               vector<string> Text(20);
+               Text[0] = Form("SDJet: (%.1f, %.2f, %.2f)", MSDJet.JetPT[iJ], MSDJet.JetEta[iJ], MSDJet.JetPhi[iJ]);
+               Text[1] = "";
+               Text[2] = Form("BestJet: (%.1f, %.2f, %.2f)", Jets[BestJet].perp(), Jets[BestJet].eta(), Jets[BestJet].phi());
+               Text[3] = Form("GroomedPT %.2f", Groomed0->P.GetPT());
+               Text[4] = Form("SDMass %.2f, SDMass/Jet %.2f", Groomed0->P.GetMass(), Groomed0->P.GetMass() / Jets[BestJet].perp());
+               Text[5] = Form("DR %.2f, ZG %.2f", TreeSubJetDR0, min(TreeSubJet1PT0, TreeSubJet2PT0) / (TreeSubJet1PT0 + TreeSubJet2PT0));
+               Text[6] = "";
+               Text[7] = Form("SubJet1 (%.1f, %.2f, %.2f)", TreeSubJet1PT0, TreeSubJet1Eta0, TreeSubJet1Phi0);
+               Text[8] = Form("SubJet2 (%.1f, %.2f, %.2f)", TreeSubJet2PT0, TreeSubJet2Eta0, TreeSubJet2Phi0);
+
+               PdfFile.AddTextPage(Text);
+            }
 
             delete Nodes[0];
          }

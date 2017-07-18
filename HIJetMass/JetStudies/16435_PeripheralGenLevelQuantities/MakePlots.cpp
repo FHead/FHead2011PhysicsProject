@@ -12,6 +12,7 @@ using namespace std;
 class Messenger;
 class Histograms;
 int main();
+int GetType(int ID);
 
 class Messenger
 {
@@ -79,6 +80,8 @@ public:
    }
    bool PassSelection()
    {
+      if(PTHat < 100)
+         return false;
       return true;
    }
 };
@@ -94,6 +97,7 @@ public:
    TH1D *HGenPhi;
    TH1D *HGenEta_PT5;
    TH2D *HGenEtaPhi_PT5;
+   TH1D *HType_PT5;
 public:
    Histograms(string tag)
       : Tag(tag)
@@ -104,6 +108,7 @@ public:
       HGenPhi = new TH1D(Form("HGenPhi_%s", Tag.c_str()), ";Phi;", 100, -M_PI, M_PI);
       HGenEta_PT5 = new TH1D(Form("HGenEta_PT5_%s", Tag.c_str()), ";Eta;", 100, -2, 2);
       HGenEtaPhi_PT5 = new TH2D(Form("HGenEtaPhi_PT5_%s", Tag.c_str()), ";Eta;Phi", 100, -2, 2, 100, -M_PI, M_PI);
+      HType_PT5 = new TH1D(Form("HType_PT5_%s", Tag.c_str()), ";Type;", 14, 0, 14);
 
       BasicStyling(HPTHat);
       BasicStyling(HGenPT);
@@ -111,6 +116,7 @@ public:
       BasicStyling(HGenPhi);
       BasicStyling(HGenEta_PT5);
       BasicStyling(HGenEtaPhi_PT5);
+      BasicStyling(HType_PT5);
    }
    ~Histograms()
    {
@@ -130,13 +136,12 @@ public:
          {
             HGenEta_PT5->Fill(M.Eta[iGen], M.MCWeight);
             HGenEtaPhi_PT5->Fill(M.Eta[iGen], M.Phi[iGen], M.MCWeight);
+            HType_PT5->Fill(GetType(M.ID[iGen]), M.MCWeight);
          }
       }
    }
    void FillAll(Messenger &M)
    {
-      HPTHat->Fill(M.PTHat, M.MCWeight);
-
       double TotalWeight = 0;
 
       int EntryCount = M.EntryCount();
@@ -144,14 +149,14 @@ public:
       {
          M.GetEntry(iE);
 
+         HPTHat->Fill(M.PTHat, M.MCWeight);
+
          if(M.PassSelection() == false)
             continue;
 
          TotalWeight = TotalWeight + M.MCWeight;
          Fill(M);
       }
-
-      Scale(1 / TotalWeight);
    }
    void Write()
    {
@@ -161,6 +166,7 @@ public:
       HGenPhi->Write();
       HGenEta_PT5->Write();
       HGenEtaPhi_PT5->Write();
+      HType_PT5->Write();
    }
    void BasicStyling(TH1D *H)
    {
@@ -192,6 +198,7 @@ public:
       HGenPhi->Scale(c);
       HGenEta_PT5->Scale(c);
       HGenEtaPhi_PT5->Scale(c);
+      HType_PT5->Scale(c);
 
       DivideByBinSize(HPTHat);
       DivideByBinSize(HGenPT);
@@ -199,6 +206,7 @@ public:
       DivideByBinSize(HGenPhi);
       DivideByBinSize(HGenEta_PT5);
       DivideByBinSize(HGenEtaPhi_PT5);
+      DivideByBinSize(HType_PT5);
    }
    void DivideByBinSize(TH1D *H)
    {
@@ -260,6 +268,27 @@ int main()
    return 0;
 }
 
+int GetType(int ID)
+{
+   if(ID == 1)    return 0;
+   if(ID == -1)   return 1;
+   if(ID == 2)    return 2;
+   if(ID == -2)   return 3;
+   if(ID == 3)    return 4;
+   if(ID == -3)   return 5;
+   if(ID == 4)    return 6;
+   if(ID == -4)   return 7;
+   if(ID == 5)    return 8;
+   if(ID == -5)   return 9;
+
+   if(ID == 21)   return 10;
+   if(ID == 22)   return 11;
+
+   if(ID >= 11 && ID <= 16)     return 12;
+   if(ID >= -16 && ID <= -11)   return 12;
+
+   return 13;
+}
 
 
 

@@ -378,7 +378,7 @@ int main(int argc, char *argv[])
          vector<PseudoJet> CSJets(JetsWithGhosts.size());
          for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
          {
-            contrib::ConstituentSubtractor Subtractor(Rho, 0, 0, -1);
+            contrib::ConstituentSubtractor Subtractor(Rho, 0.5, 0, -1);
             Subtractor.set_alpha(1);  // optional
             // subtractor.set_max_deltaR(2);  // optional
             CSJets[i] = Subtractor(JetsWithGhosts[i]);
@@ -399,7 +399,7 @@ int main(int argc, char *argv[])
          int MaxCSJet = 0;
          for(int i = 0; i < (int)CSJets.size(); i++)
          {
-            // cout << "CS Jet " << CSJets[i].perp() << " " << CSJets[i].eta() << " " << CSJets[i].phi() << endl;
+            cout << "CS Jet " << CSJets[i].perp() << " " << CSJets[i].eta() << " " << CSJets[i].phi() << endl;
             if(CSJets[i].perp() > CSJets[MaxCSJet].perp())
                MaxCSJet = i;
          }
@@ -411,13 +411,11 @@ int main(int argc, char *argv[])
             vector<PseudoJet> Constituents = CSJets[i].constituents();
             CSCandidates.insert(CSCandidates.end(), Constituents.begin(), Constituents.end());
 
-            /*
             if(i == (int)CSJets.size() - 1)
             {
                for(int j = 0; j < (int)Constituents.size(); j++)
                   cout << "CS Candidate " << Constituents[j].perp() << " " << Constituents[j].eta() << " " << Constituents[j].phi() << endl;
             }
-            */
          }
          ClusterSequence NewSequence(CSCandidates, Definition);
          vector<PseudoJet> SDJets = NewSequence.inclusive_jets(10);

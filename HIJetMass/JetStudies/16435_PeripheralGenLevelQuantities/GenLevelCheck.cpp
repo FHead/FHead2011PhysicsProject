@@ -34,12 +34,20 @@ int main(int argc, char *argv[])
    double PTHatMax = atof(argv[5]);
 
    bool IsData = IsDataFromTag(Tag);
+   bool IsPP = IsPPFromTag(Tag);
+   bool IsPPHIReco = IsPPHiRecoFromTag(Tag);
+
+   string TreeName = "akCs4PFJetAnalyzer/t";
+   if(IsPP == true)
+      TreeName = "ak4PFJetAnalyzer/t";
+   if(IsPPHIReco == true)
+      TreeName = "akPu4PFJetAnalyzer/t";
 
    TFile *InputFile = TFile::Open(Input.c_str());
 
    HiEventTreeMessenger MHiEvent(InputFile);
    GenParticleTreeMessenger MGen(InputFile);
-   JetTreeMessenger MJet(InputFile, "ak4PFJetAnalyzer/t");
+   JetTreeMessenger MJet(InputFile, TreeName);
    PFTreeMessenger MPF(InputFile, "pfcandanalyzer/pfTree");
 
    if(MHiEvent.Tree == NULL)
@@ -88,6 +96,9 @@ int main(int argc, char *argv[])
       MGen.GetEntry(iE);
       MJet.GetEntry(iE);
       MPF.GetEntry(iE);
+
+      if(MJet.PTHat <= PTHatMin || MJet.PTHat > PTHatMax)
+         continue;
 
       PTHat = MJet.PTHat;
       Centrality = GetCentrality(MHiEvent.hiBin);
@@ -172,6 +183,7 @@ int main(int argc, char *argv[])
    Bar.Print();
    Bar.PrintLine();
 
+   HN.Write();
    OutputTree.Write();
 
    OutputFile.Close();

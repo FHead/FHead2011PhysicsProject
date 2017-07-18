@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
    bool IsPPHiReco = IsPPHiRecoFromTag(Tag);
 
    bool PassThroughMode = false;
-   bool UseRhoM = true;   // switch to use rho_m or not
+   bool UseRhoM = false;   // switch to use rho_m or not
 
    if(IsData == true)
       cerr << "I'd be glad to run on data for this study" << endl;
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
    SkimTreeMessenger MMBSkim(MBInputFile);
    TriggerTreeMessenger MMBHLT(MBInputFile);
    RhoTreeMessenger MMBRho(MBInputFile);
-   
+
    if(MHiEvent.Tree == NULL)
       return -1;
    if(PassThroughMode == false && MMBHiEvent.Tree == NULL)
@@ -113,6 +113,16 @@ int main(int argc, char *argv[])
    TFile OutputFile(Output.c_str(), "RECREATE");
 
    TTree OutputTree("OutputTree", "OutputTree");
+
+   int TreeRun, TreeEvent, TreeLumi;
+   OutputTree.Branch("Run", &TreeRun, "Run/I");
+   OutputTree.Branch("Event", &TreeEvent, "Event/I");
+   OutputTree.Branch("Lumi", &TreeLumi, "Lumi/I");
+   
+   int TreeRunMB, TreeEventMB, TreeLumiMB;
+   OutputTree.Branch("RunMB", &TreeRunMB, "RunMB/I");
+   OutputTree.Branch("EventMB", &TreeEventMB, "EventMB/I");
+   OutputTree.Branch("LumiMB", &TreeLumiMB, "LumiMB/I");
 
    bool PassFilter, PassHLT, PassMBHLT;
    OutputTree.Branch("PassFilter", &PassFilter, "PassFilter/O");
@@ -124,13 +134,27 @@ int main(int argc, char *argv[])
    double TreeNewJetPT, TreeNewJetEta, TreeNewJetPhi, TreeNewJetSDMass, TreeNewJetDR, TreeNewJetZG, TreeNewJetMass, TreeNewJetSDPT;
    double TreeFirstJetPT, TreeFirstJetEta, TreeFirstJetPhi, TreeFirstJetSDMass, TreeFirstJetDR, TreeFirstJetZG, TreeFirstJetMass, TreeFirstJetSDPT;
    double TreeBestJetPT, TreeBestJetEta, TreeBestJetPhi, TreeBestJetSDMass, TreeBestJetDR, TreeBestJetZG, TreeBestJetMass, TreeBestJetSDPT;
+   int TreeBestJetDepth;
+   double TreeBestJetClosePT, TreeBestJetCloseEta, TreeBestJetClosePhi, TreeBestJetCloseSDMass, TreeBestJetCloseDR, TreeBestJetCloseZG, TreeBestJetCloseMass, TreeBestJetCloseSDPT;
    double TreeNewJetSDMass2, TreeNewJetDR2, TreeNewJetZG2, TreeNewJetSDPT2;
    double TreeFirstJetSDMass2, TreeFirstJetDR2, TreeFirstJetZG2, TreeFirstJetSDPT2;
    double TreeBestJetSDMass2, TreeBestJetDR2, TreeBestJetZG2, TreeBestJetSDPT2;
+   int TreeBestJetDepth2;
+   double TreeBestJetCloseSDMass2, TreeBestJetCloseDR2, TreeBestJetCloseZG2, TreeBestJetCloseSDPT2;
    double TreeNewJetSDMass3, TreeNewJetDR3, TreeNewJetZG3, TreeNewJetSDPT3;
    double TreeFirstJetSDMass3, TreeFirstJetDR3, TreeFirstJetZG3, TreeFirstJetSDPT3;
    double TreeBestJetSDMass3, TreeBestJetDR3, TreeBestJetZG3, TreeBestJetSDPT3;
+   int TreeBestJetDepth3;
+   double TreeBestJetCloseSDMass3, TreeBestJetCloseDR3, TreeBestJetCloseZG3, TreeBestJetCloseSDPT3;
    double TreeBestJetShape1, TreeBestJetShape2, TreeBestJetShape3, TreeBestJetShape4, TreeBestJetShape5;
+   double TreeBestJetSJ1E, TreeBestJetSJ1PT, TreeBestJetSJ1Eta, TreeBestJetSJ1Phi;
+   double TreeBestJetSJ2E, TreeBestJetSJ2PT, TreeBestJetSJ2Eta, TreeBestJetSJ2Phi;
+   double TreeBestJetSJ1E2, TreeBestJetSJ1PT2, TreeBestJetSJ1Eta2, TreeBestJetSJ1Phi2;
+   double TreeBestJetSJ2E2, TreeBestJetSJ2PT2, TreeBestJetSJ2Eta2, TreeBestJetSJ2Phi2;
+   double TreeBestJetCloseSJ1E, TreeBestJetCloseSJ1PT, TreeBestJetCloseSJ1Eta, TreeBestJetCloseSJ1Phi;
+   double TreeBestJetCloseSJ2E, TreeBestJetCloseSJ2PT, TreeBestJetCloseSJ2Eta, TreeBestJetCloseSJ2Phi;
+   double TreeBestJetCloseSJ1E2, TreeBestJetCloseSJ1PT2, TreeBestJetCloseSJ1Eta2, TreeBestJetCloseSJ1Phi2;
+   double TreeBestJetCloseSJ2E2, TreeBestJetCloseSJ2PT2, TreeBestJetCloseSJ2Eta2, TreeBestJetCloseSJ2Phi2;
    double TreeTotalPT, TreeRho, TreeTotalPTInJet, TreeTotalStuffInJet;
    double TreePTHat, TreeCentrality;
    OutputTree.Branch("JetPT",           &TreeJetPT,           "JetPT/D");
@@ -168,6 +192,31 @@ int main(int argc, char *argv[])
    OutputTree.Branch("BestJetZG",       &TreeBestJetZG,       "BestJetZG/D");
    OutputTree.Branch("BestJetMass",     &TreeBestJetMass,     "BestJetMass/D");
    OutputTree.Branch("BestJetSDPT",     &TreeBestJetSDPT,     "BestJetSDPT/D");
+   OutputTree.Branch("BestJetSJ1E",    &TreeBestJetSJ1E,    "BestJetSJ1E/D");
+   OutputTree.Branch("BestJetSJ1PT",    &TreeBestJetSJ1PT,    "BestJetSJ1PT/D");
+   OutputTree.Branch("BestJetSJ1Eta",   &TreeBestJetSJ1Eta,   "BestJetSJ1Eta/D");
+   OutputTree.Branch("BestJetSJ1Phi",   &TreeBestJetSJ1Phi,   "BestJetSJ1Phi/D");
+   OutputTree.Branch("BestJetSJ2E",    &TreeBestJetSJ2E,    "BestJetSJ2E/D");
+   OutputTree.Branch("BestJetSJ2PT",    &TreeBestJetSJ2PT,    "BestJetSJ2PT/D");
+   OutputTree.Branch("BestJetSJ2Eta",   &TreeBestJetSJ2Eta,   "BestJetSJ2Eta/D");
+   OutputTree.Branch("BestJetSJ2Phi",   &TreeBestJetSJ2Phi,   "BestJetSJ2Phi/D");
+   OutputTree.Branch("BestJetDepth",    &TreeBestJetDepth,    "BestJetDepth/I");
+   OutputTree.Branch("BestJetClosePT",       &TreeBestJetClosePT,       "BestJetClosePT/D");
+   OutputTree.Branch("BestJetCloseEta",      &TreeBestJetCloseEta,      "BestJetCloseEta/D");
+   OutputTree.Branch("BestJetClosePhi",      &TreeBestJetClosePhi,      "BestJetClosePhi/D");
+   OutputTree.Branch("BestJetCloseSDMass",   &TreeBestJetCloseSDMass,   "BestJetCloseSDMass/D");
+   OutputTree.Branch("BestJetCloseDR",       &TreeBestJetCloseDR,       "BestJetCloseDR/D");
+   OutputTree.Branch("BestJetCloseZG",       &TreeBestJetCloseZG,       "BestJetCloseZG/D");
+   OutputTree.Branch("BestJetCloseMass",     &TreeBestJetCloseMass,     "BestJetCloseMass/D");
+   OutputTree.Branch("BestJetCloseSDPT",     &TreeBestJetCloseSDPT,     "BestJetCloseSDPT/D");
+   OutputTree.Branch("BestJetCloseSJ1E",    &TreeBestJetCloseSJ1E,    "BestJetCloseSJ1E/D");
+   OutputTree.Branch("BestJetCloseSJ1PT",    &TreeBestJetCloseSJ1PT,    "BestJetCloseSJ1PT/D");
+   OutputTree.Branch("BestJetCloseSJ1Eta",   &TreeBestJetCloseSJ1Eta,   "BestJetCloseSJ1Eta/D");
+   OutputTree.Branch("BestJetCloseSJ1Phi",   &TreeBestJetCloseSJ1Phi,   "BestJetCloseSJ1Phi/D");
+   OutputTree.Branch("BestJetCloseSJ2E",    &TreeBestJetCloseSJ2E,    "BestJetCloseSJ2E/D");
+   OutputTree.Branch("BestJetCloseSJ2PT",    &TreeBestJetCloseSJ2PT,    "BestJetCloseSJ2PT/D");
+   OutputTree.Branch("BestJetCloseSJ2Eta",   &TreeBestJetCloseSJ2Eta,   "BestJetCloseSJ2Eta/D");
+   OutputTree.Branch("BestJetCloseSJ2Phi",   &TreeBestJetCloseSJ2Phi,   "BestJetCloseSJ2Phi/D");
    OutputTree.Branch("NewJetSDMass2",   &TreeNewJetSDMass2,   "NewJetSDMass2/D");
    OutputTree.Branch("NewJetDR2",       &TreeNewJetDR2,       "NewJetDR2/D");
    OutputTree.Branch("NewJetZG2",       &TreeNewJetZG2,       "NewJetZG2/D");
@@ -180,6 +229,27 @@ int main(int argc, char *argv[])
    OutputTree.Branch("BestJetDR2",      &TreeBestJetDR2,      "BestJetDR2/D");
    OutputTree.Branch("BestJetZG2",      &TreeBestJetZG2,      "BestJetZG2/D");
    OutputTree.Branch("BestJetSDPT2",    &TreeBestJetSDPT2,    "BestJetSDPT2/D");
+   OutputTree.Branch("BestJetSJ1E2",   &TreeBestJetSJ1E2,   "BestJetSJ1E2/D");
+   OutputTree.Branch("BestJetSJ1PT2",   &TreeBestJetSJ1PT2,   "BestJetSJ1PT2/D");
+   OutputTree.Branch("BestJetSJ1Eta2",  &TreeBestJetSJ1Eta2,  "BestJetSJ1Eta2/D");
+   OutputTree.Branch("BestJetSJ1Phi2",  &TreeBestJetSJ1Phi2,  "BestJetSJ1Phi2/D");
+   OutputTree.Branch("BestJetSJ2E2",   &TreeBestJetSJ2E2,   "BestJetSJ2E2/D");
+   OutputTree.Branch("BestJetSJ2PT2",   &TreeBestJetSJ2PT2,   "BestJetSJ2PT2/D");
+   OutputTree.Branch("BestJetSJ2Eta2",  &TreeBestJetSJ2Eta2,  "BestJetSJ2Eta2/D");
+   OutputTree.Branch("BestJetSJ2Phi2",  &TreeBestJetSJ2Phi2,  "BestJetSJ2Phi2/D");
+   OutputTree.Branch("BestJetDepth2",    &TreeBestJetDepth2,    "BestJetDepth2/I");
+   OutputTree.Branch("BestJetCloseSDMass2",  &TreeBestJetCloseSDMass2,  "BestJetCloseSDMass2/D");
+   OutputTree.Branch("BestJetCloseDR2",      &TreeBestJetCloseDR2,      "BestJetCloseDR2/D");
+   OutputTree.Branch("BestJetCloseZG2",      &TreeBestJetCloseZG2,      "BestJetCloseZG2/D");
+   OutputTree.Branch("BestJetCloseSDPT2",    &TreeBestJetCloseSDPT2,    "BestJetCloseSDPT2/D");
+   OutputTree.Branch("BestJetCloseSJ1E2",   &TreeBestJetCloseSJ1E2,   "BestJetCloseSJ1E2/D");
+   OutputTree.Branch("BestJetCloseSJ1PT2",   &TreeBestJetCloseSJ1PT2,   "BestJetCloseSJ1PT2/D");
+   OutputTree.Branch("BestJetCloseSJ1Eta2",  &TreeBestJetCloseSJ1Eta2,  "BestJetCloseSJ1Eta2/D");
+   OutputTree.Branch("BestJetCloseSJ1Phi2",  &TreeBestJetCloseSJ1Phi2,  "BestJetCloseSJ1Phi2/D");
+   OutputTree.Branch("BestJetCloseSJ2E2",   &TreeBestJetCloseSJ2E2,   "BestJetCloseSJ2E2/D");
+   OutputTree.Branch("BestJetCloseSJ2PT2",   &TreeBestJetCloseSJ2PT2,   "BestJetCloseSJ2PT2/D");
+   OutputTree.Branch("BestJetCloseSJ2Eta2",  &TreeBestJetCloseSJ2Eta2,  "BestJetCloseSJ2Eta2/D");
+   OutputTree.Branch("BestJetCloseSJ2Phi2",  &TreeBestJetCloseSJ2Phi2,  "BestJetCloseSJ2Phi2/D");
    OutputTree.Branch("NewJetSDMass3",   &TreeNewJetSDMass3,   "NewJetSDMass3/D");
    OutputTree.Branch("NewJetDR3",       &TreeNewJetDR3,       "NewJetDR3/D");
    OutputTree.Branch("NewJetZG3",       &TreeNewJetZG3,       "NewJetZG3/D");
@@ -192,6 +262,11 @@ int main(int argc, char *argv[])
    OutputTree.Branch("BestJetDR3",      &TreeBestJetDR3,      "BestJetDR3/D");
    OutputTree.Branch("BestJetZG3",      &TreeBestJetZG3,      "BestJetZG3/D");
    OutputTree.Branch("BestJetSDPT3",    &TreeBestJetSDPT3,    "BestJetSDPT3/D");
+   OutputTree.Branch("BestJetDepth3",    &TreeBestJetDepth3,    "BestJetDepth3/I");
+   OutputTree.Branch("BestJetCloseSDMass3",  &TreeBestJetCloseSDMass3,  "BestJetCloseSDMass3/D");
+   OutputTree.Branch("BestJetCloseDR3",      &TreeBestJetCloseDR3,      "BestJetCloseDR3/D");
+   OutputTree.Branch("BestJetCloseZG3",      &TreeBestJetCloseZG3,      "BestJetCloseZG3/D");
+   OutputTree.Branch("BestJetCloseSDPT3",    &TreeBestJetCloseSDPT3,    "BestJetCloseSDPT3/D");
    OutputTree.Branch("BestJetShape1",   &TreeBestJetShape1,   "BestJetShape1/D");
    OutputTree.Branch("BestJetShape2",   &TreeBestJetShape2,   "BestJetShape2/D");
    OutputTree.Branch("BestJetShape3",   &TreeBestJetShape3,   "BestJetShape3/D");
@@ -221,10 +296,10 @@ int main(int argc, char *argv[])
    TH1D HSDMass("HSDMass", "SD Mass, DR > 0.1;SD Mass", 100, 0, 100);
    TH1D HNewSDMass("HNewSDMass", "New SD Mass, New DR > 0.1; New SD Mass", 100, 0, 100);
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.15;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(1);
-   
+
    PdfFileHelper PdfFile("SanityFiles.pdf");
    PdfFile.AddTextPage("Some plots for individual jets");
    int WriteJetCount = 0;
@@ -258,11 +333,18 @@ int main(int argc, char *argv[])
          MMBHiEvent.GetEntry(iEntry % MBEntryCount);
          MMBPF.GetEntry(iEntry % MBEntryCount);
          MMBSkim.GetEntry(iEntry % MBEntryCount);
-         MMBHLT.GetEntry(iEntry);
+         MMBHLT.GetEntry(iEntry % MBEntryCount);
          MMBRho.GetEntry(iEntry % MBEntryCount);
       }
       else
          MRho.GetEntry(iEntry);
+
+      TreeRun = MHiEvent.Run;
+      TreeEvent = MHiEvent.Event;
+      TreeLumi = MHiEvent.Lumi;
+      TreeRunMB = MMBHiEvent.Run;
+      TreeEventMB = MMBHiEvent.Event;
+      TreeLumiMB = MMBHiEvent.Lumi;
 
       PassFilter = true;
       PassHLT = true;
@@ -332,7 +414,7 @@ int main(int argc, char *argv[])
 
             FourVector P;
             P.SetPtEtaPhiMass((*MMBPF.PT)[i], (*MMBPF.Eta)[i], (*MMBPF.Phi)[i], Mass);
-            
+
             Candidates.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
          }
       }
@@ -364,7 +446,7 @@ int main(int argc, char *argv[])
       }
       ClusterSequence NewSequence(CSCandidates, Definition);
       vector<PseudoJet> SDJets = NewSequence.inclusive_jets();
-         
+
       if(SDJets.size() == 0)   // Huh?
          continue;
 
@@ -412,8 +494,16 @@ int main(int argc, char *argv[])
             }
          }
 
-         TreeJetDR = HSDJet.RecoSubJetDR[SDIndex];
-         TreeJetSDMass = MSDJet.JetM[SDIndex];
+         if(SDIndex >= 0)
+         {
+            TreeJetDR = HSDJet.RecoSubJetDR[SDIndex];
+            TreeJetSDMass = MSDJet.JetM[SDIndex];
+         }
+         else
+         {
+            TreeJetDR = -1;
+            TreeJetSDMass = -1;
+         }
 
          int ClosestCSJet = 0;
          double ClosestCSDR2 = -1;
@@ -436,7 +526,7 @@ int main(int argc, char *argv[])
          FourVector FirstJetP(Jet.e(), Jet.px(), Jet.py(), Jet.pz());
          FourVector BestJetP = SDJetP;
 
-         vector<FourVector> GoodCandidatesBest, GoodCandidatesFirst;
+         vector<FourVector> GoodCandidatesBest, GoodCandidatesBestClose, GoodCandidatesFirst;
 
          vector<PseudoJet> Constituents = CSJets[ClosestCSJet].constituents();
          for(int i = 0; i < (int)Constituents.size(); i++)
@@ -457,6 +547,8 @@ int main(int argc, char *argv[])
             P[2] = Constituents[i].py();
             P[3] = Constituents[i].pz();
             GoodCandidatesBest.push_back(P);
+            if(GetDR(P, BestJetP) < 0.4)
+               GoodCandidatesBestClose.push_back(P);
          }
 
          if(GoodCandidatesBest.size() == 0 && GoodCandidatesFirst.size() == 0)
@@ -474,15 +566,26 @@ int main(int argc, char *argv[])
          vector<Node *> NodesBest;
          for(int i = 0; i < (int)GoodCandidatesBest.size(); i++)
             NodesBest.push_back(new Node(GoodCandidatesBest[i]));
+         vector<Node *> NodesBestClose;
+         for(int i = 0; i < (int)GoodCandidatesBestClose.size(); i++)
+            NodesBestClose.push_back(new Node(GoodCandidatesBestClose[i]));
 
          BuildCATree(NodesFirst);
          BuildCATree(NodesBest);
+         BuildCATree(NodesBestClose);
          Node *GroomedFirst = FindSDNode(NodesFirst[0]);
          Node *GroomedBest = FindSDNode(NodesBest[0]);
+         Node *GroomedBestClose = FindSDNode(NodesBestClose[0]);
          Node *GroomedFirst2 = FindSDNode(NodesFirst[0], 0.5, 1.5);
          Node *GroomedBest2 = FindSDNode(NodesBest[0], 0.5, 1.5);
+         Node *GroomedBestClose2 = FindSDNode(NodesBestClose[0], 0.5, 1.5);
          Node *GroomedFirst3 = FindSDNode(NodesFirst[0], 0.3, 1.5);
          Node *GroomedBest3 = FindSDNode(NodesBest[0], 0.3, 1.5);
+         Node *GroomedBestClose3 = FindSDNode(NodesBestClose[0], 0.3, 1.5);
+
+         TreeBestJetDepth = NodeDistance(GroomedBest, NodesBest[0]);
+         TreeBestJetDepth2 = NodeDistance(GroomedBest2, NodesBest[0]);
+         TreeBestJetDepth3 = NodeDistance(GroomedBest3, NodesBest[0]);
 
          TreeBestJetPT = BestJetP.GetPT();
          TreeBestJetEta = BestJetP.GetEta();
@@ -499,6 +602,15 @@ int main(int argc, char *argv[])
             FourVector P2 = GroomedBest->Child2->P;
             TreeBestJetDR = GetDR(P1, P2);
             TreeBestJetZG = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+
+            TreeBestJetSJ1E = P1[0];
+            TreeBestJetSJ1PT = P1.GetPT();
+            TreeBestJetSJ1Eta = P1.GetEta();
+            TreeBestJetSJ1Phi = P1.GetPhi();
+            TreeBestJetSJ2E = P2[0];
+            TreeBestJetSJ2PT = P2.GetPT();
+            TreeBestJetSJ2Eta = P2.GetEta();
+            TreeBestJetSJ2Phi = P2.GetPhi();
          }
          else
             TreeBestJetDR = -1, TreeBestJetZG = -1;
@@ -508,6 +620,15 @@ int main(int argc, char *argv[])
             FourVector P2 = GroomedBest2->Child2->P;
             TreeBestJetDR2 = GetDR(P1, P2);
             TreeBestJetZG2 = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+
+            TreeBestJetSJ1E2 = P1[0];
+            TreeBestJetSJ1PT2 = P1.GetPT();
+            TreeBestJetSJ1Eta2 = P1.GetEta();
+            TreeBestJetSJ1Phi2 = P1.GetPhi();
+            TreeBestJetSJ2E2 = P2[0];
+            TreeBestJetSJ2PT2 = P2.GetPT();
+            TreeBestJetSJ2Eta2 = P2.GetEta();
+            TreeBestJetSJ2Phi2 = P2.GetPhi();
          }
          else
             TreeBestJetDR2 = -1, TreeBestJetZG2 = -1;
@@ -520,6 +641,61 @@ int main(int argc, char *argv[])
          }
          else
             TreeBestJetDR3 = -1, TreeBestJetZG3 = -1;
+
+         TreeBestJetClosePT = BestJetP.GetPT();
+         TreeBestJetCloseEta = BestJetP.GetEta();
+         TreeBestJetClosePhi = BestJetP.GetPhi();
+         TreeBestJetCloseSDMass = GroomedBestClose->P.GetMass();
+         TreeBestJetCloseSDMass2 = GroomedBestClose2->P.GetMass();
+         TreeBestJetCloseSDMass3 = GroomedBestClose3->P.GetMass();
+         TreeBestJetCloseSDPT = GroomedBestClose->P.GetPT();
+         TreeBestJetCloseSDPT2 = GroomedBestClose2->P.GetPT();
+         TreeBestJetCloseSDPT3 = GroomedBestClose3->P.GetPT();
+         if(GroomedBestClose->N > 1)
+         {
+            FourVector P1 = GroomedBestClose->Child1->P;
+            FourVector P2 = GroomedBestClose->Child2->P;
+            TreeBestJetCloseDR = GetDR(P1, P2);
+            TreeBestJetCloseZG = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+
+            TreeBestJetCloseSJ1E = P1[0];
+            TreeBestJetCloseSJ1PT = P1.GetPT();
+            TreeBestJetCloseSJ1Eta = P1.GetEta();
+            TreeBestJetCloseSJ1Phi = P1.GetPhi();
+            TreeBestJetCloseSJ2E = P2[0];
+            TreeBestJetCloseSJ2PT = P2.GetPT();
+            TreeBestJetCloseSJ2Eta = P2.GetEta();
+            TreeBestJetCloseSJ2Phi = P2.GetPhi();
+         }
+         else
+            TreeBestJetCloseDR = -1, TreeBestJetCloseZG = -1;
+         if(GroomedBestClose2->N > 1)
+         {
+            FourVector P1 = GroomedBestClose2->Child1->P;
+            FourVector P2 = GroomedBestClose2->Child2->P;
+            TreeBestJetCloseDR2 = GetDR(P1, P2);
+            TreeBestJetCloseZG2 = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+
+            TreeBestJetCloseSJ1E2 = P1[0];
+            TreeBestJetCloseSJ1PT2 = P1.GetPT();
+            TreeBestJetCloseSJ1Eta2 = P1.GetEta();
+            TreeBestJetCloseSJ1Phi2 = P1.GetPhi();
+            TreeBestJetCloseSJ2E2 = P2[0];
+            TreeBestJetCloseSJ2PT2 = P2.GetPT();
+            TreeBestJetCloseSJ2Eta2 = P2.GetEta();
+            TreeBestJetCloseSJ2Phi2 = P2.GetPhi();
+         }
+         else
+            TreeBestJetCloseDR2 = -1, TreeBestJetCloseZG2 = -1;
+         if(GroomedBestClose3->N > 1)
+         {
+            FourVector P1 = GroomedBestClose3->Child1->P;
+            FourVector P2 = GroomedBestClose3->Child2->P;
+            TreeBestJetCloseDR3 = GetDR(P1, P2);
+            TreeBestJetCloseZG3 = min(P1.GetPT(), P2.GetPT()) / (P1.GetPT() + P2.GetPT());
+         }
+         else
+            TreeBestJetCloseDR3 = -1, TreeBestJetCloseZG3 = -1;
 
          // cout << "Best " << BestJetP << endl;
          // cout << TreeBestJetDR << " " << TreeBestJetSDMass << endl;
@@ -563,10 +739,95 @@ int main(int argc, char *argv[])
 
          // cout << TreeFirstJetDR << " " << TreeFirstJetSDMass << endl;
 
+         bool WriteJet = false;
+         // if(Centrality > 0.8 && SDJets[iJ].eta() < 1.3 && SDJets[iJ].eta() > -1.3 && SDJets[iJ].perp() > 140 && TreeBestJetDR > 0.35)
+         //    WriteJet = true;
+         if(WriteJet == true)
+            WriteJetCount = WriteJetCount + 1;
+         if(WriteJetCount >= 10)
+         {
+            iEntry = EntryCount;
+            break;
+         }
+
+         if(WriteJet == true)
+         {
+            cout << "Starting to make plots for jet #" << WriteJetCount << endl;
+            PdfFile.AddTextPage(Form("Centrality %.2f, Rho %.2f, RhoM %.2f", Centrality, Rho, RhoM));
+            PdfFile.AddTextPage(Form("Jet (%.2f, %.2f, %.2f) [%d:%d]", SDJets[iJ].perp(), SDJets[iJ].eta(), SDJets[iJ].phi(), MHiEvent.Run, MHiEvent.Event));
+            
+            TH2D HPP("HPP", "PP Jet;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            HPP.SetStats(0);
+            for(int i = 0; i < MPF.ID->size(); i++)
+            {
+               HPP.Fill((*MPF.Eta)[i], (*MPF.Phi)[i], (*MPF.PT)[i]);
+               HPP.Fill((*MPF.Eta)[i], (*MPF.Phi)[i] + 2 * M_PI, (*MPF.PT)[i]);
+            }
+            PdfFile.AddPlot(HPP, "colz");
+         
+            for(int i = 0; i < MMBPF.ID->size(); i++)
+            {
+               HPP.Fill((*MMBPF.Eta)[i], (*MMBPF.Phi)[i], (*MMBPF.PT)[i]);
+               HPP.Fill((*MMBPF.Eta)[i], (*MMBPF.Phi)[i] + 2 * M_PI, (*MMBPF.PT)[i]);
+            }
+            PdfFile.AddPlot(HPP, "colz");
+
+            TH2D HCS("HCS", "CS;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            HCS.SetStats(0);
+            for(int i = 0; i < (int)CSCandidates.size(); i++)
+               HCS.Fill(CSCandidates[i].eta(), CSCandidates[i].phi(), CSCandidates[i].perp());
+            PdfFile.AddPlot(HCS, "colz");
+
+            TCanvas Canvas;
+            HCS.Draw("colz");
+            TEllipse Circle;
+            Circle.SetFillStyle(0);
+            for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
+               Circle.DrawEllipse(JetsWithGhosts[i].eta(), JetsWithGhosts[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
+            Circle.SetLineStyle(kDashed);
+            Circle.SetLineColor(kRed);
+            for(int i = 0; i < (int)SDJets.size(); i++)
+            {
+               if(i == iJ)
+                  Circle.SetLineColor(kGreen);
+               else
+                  Circle.SetLineColor(kRed);
+
+               Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi(), 0.4, 0.4, 0.0, 360, 0.0, "");
+               if(i == iJ)
+               {
+                  Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi() + 2 * M_PI, 0.4, 0.4, 0.0, 360, 0.0, "");
+                  Circle.DrawEllipse(SDJets[i].eta(), SDJets[i].phi() - 2 * M_PI, 0.4, 0.4, 0.0, 360, 0.0, "");
+               }
+            }
+            PdfFile.AddCanvas(Canvas);
+
+            TH2D HCSJet("HCSJet", "Candidate in jet;eta;phi", 200, -3, 3, 200, 0, 2 * M_PI);
+            HCSJet.SetStats(0);
+            vector<PseudoJet> JetCandidates = SDJets[iJ].constituents();
+            for(int i = 0; i < (int)JetCandidates.size(); i++)
+               HCSJet.Fill(JetCandidates[i].eta(), JetCandidates[i].phi(), JetCandidates[i].perp());
+            PdfFile.AddPlot(HCSJet, "colz");
+
+            vector<string> Text(20);
+            Text[0] = Form("Jet: (%.1f, %.2f, %.2f)", SDJetP.GetPT(), SDJetP.GetEta(), SDJetP.GetPhi());
+            Text[1] = "";
+            Text[2] = Form("BestJet: (%.1f, %.2f, %.2f)", BestJetP.GetPT(), BestJetP.GetEta(), BestJetP.GetPhi());
+            Text[3] = Form("GroomedPT %.2f", GroomedBest->P.GetPT());
+            Text[4] = Form("SDMass %.2f, SDMass/Jet %.2f", GroomedBest->P.GetMass(), GroomedBest->P.GetMass() / BestJetP.GetPT());
+            Text[5] = Form("DR %.2f, ZG %.2f", TreeBestJetDR, TreeBestJetZG);
+            Text[6] = "";
+            Text[7] = Form("SubJet1 (%.1f, %.2f, %.2f)", GroomedBest->Child1->P.GetPT(), GroomedBest->Child1->P.GetEta(), GroomedBest->Child1->P.GetPhi());
+            Text[8] = Form("SubJet2 (%.1f, %.2f, %.2f)", GroomedBest->Child2->P.GetPT(), GroomedBest->Child2->P.GetEta(), GroomedBest->Child2->P.GetPhi());
+
+            PdfFile.AddTextPage(Text);
+         }
+
+
          // Cleanup
-         if(NodesFirst.size() > 0)
+         if(NodesFirst.size() > 0 && NodesFirst[0] != NULL)
             delete NodesFirst[0];
-         if(NodesBest.size() > 0)
+         if(NodesBest.size() > 0 && NodesBest[0] != NULL)
             delete NodesBest[0];
 
          OutputTree.Fill();

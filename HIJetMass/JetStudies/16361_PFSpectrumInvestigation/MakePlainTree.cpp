@@ -186,17 +186,14 @@ int main(int argc, char *argv[])
    OutputTree.Branch("PFPhi", &TreePFPhi, "PFPhi[1000]/D");
    OutputTree.Branch("PFID", &TreePFID, "PFID[1000]/I");
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.50;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
    for(int iE = 0; iE < EntryCount; iE++)
    {
-      if(iE < 200 || (iE % (EntryCount / 300)) == 0)
-      {
-         Bar.Update(iE);
-         Bar.Print();
-      }
+      Bar.Update(iE);
+      Bar.PrintWithMod(300);
 
       MHiEvent.GetEntry(iE);
       MJet.GetEntry(iE);
@@ -241,8 +238,11 @@ int main(int argc, char *argv[])
       else
          TreeRho = -1;
 
-      if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
-         continue;
+      // if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
+      //    continue;
+
+      // if(TreeCentrality < 0.6)
+      //    continue;
 
       vector<PseudoJet> Particles;
       for(int iPF = 0; iPF < MPF.ID->size(); iPF++)

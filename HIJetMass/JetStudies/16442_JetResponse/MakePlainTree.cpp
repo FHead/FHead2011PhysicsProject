@@ -136,6 +136,7 @@ int main(int argc, char *argv[])
    OutputTree.Branch("GenJetEta", &GenJetEta, "GenJetEta/D");
    OutputTree.Branch("GenJetPhi", &GenJetPhi, "GenJetPhi/D");
 
+   // Matched jet quantities
    double MatchJetRawPT, MatchJetEta, MatchJetPhi;
    OutputTree.Branch("MatchJetRawPT", &MatchJetRawPT, "MatchJetRawPT/D");
    OutputTree.Branch("MatchJetEta", &MatchJetEta, "MatchJetEta/D");
@@ -146,6 +147,37 @@ int main(int argc, char *argv[])
    OutputTree.Branch("CSJetPT", &CSJetPT, "CSJetPT/D");
    OutputTree.Branch("CSJetEta", &CSJetEta, "CSJetEta/D");
    OutputTree.Branch("CSJetPhi", &CSJetPhi, "CSJetPhi/D");
+
+   // SD quantities
+   int SD0Depth, SD7Depth;
+   double SD0DR, SD7DR;
+   double SD0Mass, SD7Mass;
+   double SD0SubJet1E, SD0SubJet1PT, SD0SubJet1Eta, SD0SubJet1Phi;
+   double SD0SubJet2E, SD0SubJet2PT, SD0SubJet2Eta, SD0SubJet2Phi;
+   double SD7SubJet1E, SD7SubJet1PT, SD7SubJet1Eta, SD7SubJet1Phi;
+   double SD7SubJet2E, SD7SubJet2PT, SD7SubJet2Eta, SD7SubJet2Phi;
+   OutputTree.Branch("SD0Depth", &SD0Depth, "SD0Depth/I");
+   OutputTree.Branch("SD7Depth", &SD7Depth, "SD7Depth/I");
+   OutputTree.Branch("SD0DR", &SD0DR, "SD0DR/D");
+   OutputTree.Branch("SD7DR", &SD7DR, "SD7DR/D");
+   OutputTree.Branch("SD0Mass", &SD0Mass, "SD0Mass/D");
+   OutputTree.Branch("SD7Mass", &SD7Mass, "SD7Mass/D");
+   OutputTree.Branch("SD0SubJet1E", &SD0SubJet1E, "SD0SubJet1E/D");
+   OutputTree.Branch("SD0SubJet1PT", &SD0SubJet1PT, "SD0SubJet1PT/D");
+   OutputTree.Branch("SD0SubJet1Eta", &SD0SubJet1Eta, "SD0SubJet1Eta/D");
+   OutputTree.Branch("SD0SubJet1Phi", &SD0SubJet1Phi, "SD0SubJet1Phi/D");
+   OutputTree.Branch("SD0SubJet2E", &SD0SubJet2E, "SD0SubJet2E/D");
+   OutputTree.Branch("SD0SubJet2PT", &SD0SubJet2PT, "SD0SubJet2PT/D");
+   OutputTree.Branch("SD0SubJet2Eta", &SD0SubJet2Eta, "SD0SubJet2Eta/D");
+   OutputTree.Branch("SD0SubJet2Phi", &SD0SubJet2Phi, "SD0SubJet2Phi/D");
+   OutputTree.Branch("SD7SubJet1E", &SD7SubJet1E, "SD7SubJet1E/D");
+   OutputTree.Branch("SD7SubJet1PT", &SD7SubJet1PT, "SD7SubJet1PT/D");
+   OutputTree.Branch("SD7SubJet1Eta", &SD7SubJet1Eta, "SD7SubJet1Eta/D");
+   OutputTree.Branch("SD7SubJet1Phi", &SD7SubJet1Phi, "SD7SubJet1Phi/D");
+   OutputTree.Branch("SD7SubJet2E", &SD7SubJet2E, "SD7SubJet2E/D");
+   OutputTree.Branch("SD7SubJet2PT", &SD7SubJet2PT, "SD7SubJet2PT/D");
+   OutputTree.Branch("SD7SubJet2Eta", &SD7SubJet2Eta, "SD7SubJet2Eta/D");
+   OutputTree.Branch("SD7SubJet2Phi", &SD7SubJet2Phi, "SD7SubJet2Phi/D");
 
    /*
    int TreePartonFlavor, TreePartonFlavorForB;
@@ -408,6 +440,67 @@ int main(int argc, char *argv[])
          CSJetPT = MJet.JetPT[iCS];
          CSJetEta = MJet.JetEta[iCS];
          CSJetPhi = MJet.JetPhi[iCS];
+
+         ///////////////////////////////////////
+         // Run soft drop on the matched jets //
+         ///////////////////////////////////////
+
+         vector<PseudoJet> Constituents = Jets[iJ].constituents();
+         vector<Node *> Nodes;
+         for(int i = 0; i < (int)Constituents.size(); i++)
+         {
+            FourVector P;
+            P[0] = Constituents[i].e();
+            P[1] = Constituents[i].px();
+            P[2] = Constituents[i].py();
+            P[3] = Constituents[i].pz();
+            Nodes.push_back(new Node(P));
+         }
+
+         BuildCATree(Nodes);
+
+         Node *Groomed0 = FindSDNode(Nodes[0], 0.1, 0.0, 0.4);
+         Node *Groomed7 = FindSDNode(Nodes[0], 0.5, 1.5, 0.4);
+
+         SD0Depth = NodeDistance(Groomed0, Nodes[0]);
+         SD7Depth = NodeDistance(Groomed7, Nodes[0]);
+
+         if(Groomed0->N > 1)
+         {
+            SD0DR         = GetDR(Groomed0->Child1->P, Groomed0->Child2->P);
+            SD0Mass       = Groomed0->P.GetMass();
+
+            SD0SubJet1E   = Groomed0->Child1->P[0];
+            SD0SubJet1PT  = Groomed0->Child1->P.GetPT();
+            SD0SubJet1Eta = Groomed0->Child1->P.GetEta();
+            SD0SubJet1Phi = Groomed0->Child1->P.GetPhi();
+            SD0SubJet2E   = Groomed0->Child2->P[0];
+            SD0SubJet2PT  = Groomed0->Child2->P.GetPT();
+            SD0SubJet2Eta = Groomed0->Child2->P.GetEta();
+            SD0SubJet2Phi = Groomed0->Child2->P.GetPhi();
+         }
+         else
+            SD0DR = -1;
+
+         if(Groomed7->N > 1)
+         {
+            SD7DR         = GetDR(Groomed7->Child1->P, Groomed7->Child2->P);
+            SD7Mass       = Groomed7->P.GetMass();
+
+            SD7SubJet1E   = Groomed7->Child1->P[0];
+            SD7SubJet1PT  = Groomed7->Child1->P.GetPT();
+            SD7SubJet1Eta = Groomed7->Child1->P.GetEta();
+            SD7SubJet1Phi = Groomed7->Child1->P.GetPhi();
+            SD7SubJet2E   = Groomed7->Child1->P[0];
+            SD7SubJet2PT  = Groomed7->Child2->P.GetPT();
+            SD7SubJet2Eta = Groomed7->Child2->P.GetEta();
+            SD7SubJet2Ph7 = Groomed7->Child2->P.GetPhi();
+         }
+         else
+            SD7DR = -1;
+
+         if(Nodes.size() > 0 && Nodes[0] != NULL)
+            delete Nodes[0];
 
          OutputTree.Fill();
       }

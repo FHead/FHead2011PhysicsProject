@@ -356,7 +356,7 @@ int main(int argc, char *argv[])
          double BestCSDR = -1;
          for(int i = 0; i < MJet.JetCount; i++)
          {
-            double DR = GetDR(GenJets[iG].eta(), GenJets[iG].phi(), MJet.JetEta[i], MJet.JetPhi[i]);
+            double DR = GetDR(GenJets[iG].eta(), GenJets[iG].phi(), MJet.JetEta[i], MJet.JetPhi[i] + M_PI);
             if(BestCSDR < 0 || BestCSDR > DR)
                iCS = i, BestCSDR = DR;
          }

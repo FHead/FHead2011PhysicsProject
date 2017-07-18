@@ -27,11 +27,19 @@ int main(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
+   /////////////////
+   // Basic Stuff //
+   /////////////////
+
    bool UseRhoM = false;
 
    SetThesisStyle();
 
    ClusterSequence::set_fastjet_banner_stream(NULL);
+
+   ////////////
+   // Inputs //
+   ////////////
 
    string InputFileName = "HiForestAOD_999.root";
    string OutputFileName = "Output_HiForestAOD_999.root";
@@ -50,6 +58,10 @@ int main(int argc, char *argv[])
    Tag = argv[3];
    PTHatMin = atof(argv[4]);
    PTHatMax = atof(argv[5]);
+
+   ////////////////////////
+   // Prepare messengers //
+   ////////////////////////
 
    bool IsPP = IsPPFromTag(Tag);
    bool IsData = IsDataFromTag(Tag);
@@ -82,9 +94,14 @@ int main(int argc, char *argv[])
    RhoTreeMessenger MRho(InputFile);
    TriggerTreeMessenger MHLT(InputFile);
    SkimTreeMessenger MSkim(InputFile);
+   GenParticleTreeMessenger MGen(InputFile);
 
    if(MHiEvent.Tree == NULL)
       return -1;
+
+   /////////////////////////
+   // Prepare output file //
+   /////////////////////////
 
    TFile OutputFile(OutputFileName.c_str(), "RECREATE");
 
@@ -92,18 +109,34 @@ int main(int argc, char *argv[])
 
    TTree OutputTree("T", "T");
 
+   // Event coordinates
    int TreeRun, TreeEvent, TreeLumi;
    OutputTree.Branch("Run", &TreeRun, "Run/I");
    OutputTree.Branch("Event", &TreeEvent, "Event/I");
    OutputTree.Branch("Lumi", &TreeLumi, "Lumi/I");
 
-   double TreeHF, TreeHFPlus, TreeHFMinus, TreeHFPlusEta4, TreeHFMinusEta4;
-   OutputTree.Branch("HF", &TreeHF, "HF/D");
-   OutputTree.Branch("HFPlus", &TreeHFPlus, "HFPlus/D");
-   OutputTree.Branch("HFMinus", &TreeHFMinus, "HFMinus/D");
-   OutputTree.Branch("HFPlusEta4", &TreeHFPlusEta4, "HFPlusEta4/D");
-   OutputTree.Branch("HFMinusEta4", &TreeHFMinusEta4, "HFMinusEta4/D");
+   // Event-wide quantities
+   double TreeCentrality, TreePTHat, TreeRho;
+   OutputTree.Branch("Centrality", &TreeCentrality, "Centrality/D");
+   OutputTree.Branch("PTHat", &TreePTHat, "PTHat/D");
+   OutputTree.Branch("Rho", &TreeRho, "Rho/D");
 
+   // Trigger information
+   bool TreePassPbPb40, TreePassPbPb60, TreePassPbPb80, TreePassPbPb100;
+   OutputTree.Branch("PassPbPb40", &TreePassPbPb40, "PassPbPb40/O");
+   OutputTree.Branch("PassPbPb60", &TreePassPbPb60, "PassPbPb60/O");
+   OutputTree.Branch("PassPbPb80", &TreePassPbPb80, "PassPbPb80/O");
+   OutputTree.Branch("PassPbPb100", &TreePassPbPb100, "PassPbPb100/O");
+
+   // Gen-jet quantities
+   int GenJetIndex;
+   double GenJetPT, GenJetEta, GenJetPhi;
+   OutputTree.Branch("GenJetIndex", &GenJetIndex, "GenJetIndex/I");
+   OutputTree.Branch("GenJetPT", &GenJetPT, "GenJetPT/D");
+   OutputTree.Branch("GenJetEta", &GenJetEta, "GenJetEta/D");
+   OutputTree.Branch("GenJetPhi", &GenJetPhi, "GenJetPhi/D");
+
+   /*
    int TreePartonFlavor, TreePartonFlavorForB;
    OutputTree.Branch("Flavor", &TreePartonFlavor, "Flavor/I");
    OutputTree.Branch("FlavorB", &TreePartonFlavorForB, "FlavorB/I");
@@ -136,11 +169,6 @@ int main(int argc, char *argv[])
    double TreeSubJetDR, TreeSDMass;
    OutputTree.Branch("SubJetDR", &TreeSubJetDR, "SubJetDR/D");
    OutputTree.Branch("SDMass", &TreeSDMass, "SDMass/D");
-
-   double TreeCentrality, TreePTHat, TreeRho;
-   OutputTree.Branch("Centrality", &TreeCentrality, "Centrality/D");
-   OutputTree.Branch("PTHat", &TreePTHat, "PTHat/D");
-   OutputTree.Branch("Rho", &TreeRho, "Rho/D");
 
    double TreeMatchDR, TreeMatchPT;
    OutputTree.Branch("MatchDR", &TreeMatchDR, "MatchDR/D");
@@ -179,12 +207,6 @@ int main(int argc, char *argv[])
    OutputTree.Branch("SubJet2Eta7", &TreeSubJet2Eta7, "SubJet2Eta7/D");
    OutputTree.Branch("SubJet2Phi7", &TreeSubJet2Phi7, "SubJet2Phi7/D");
 
-   bool TreePassPbPb40, TreePassPbPb60, TreePassPbPb80, TreePassPbPb100;
-   OutputTree.Branch("PassPbPb40", &TreePassPbPb40, "PassPbPb40/O");
-   OutputTree.Branch("PassPbPb60", &TreePassPbPb60, "PassPbPb60/O");
-   OutputTree.Branch("PassPbPb80", &TreePassPbPb80, "PassPbPb80/O");
-   OutputTree.Branch("PassPbPb100", &TreePassPbPb100, "PassPbPb100/O");
-
    double TreeCHF, TreeNHF, TreeCEF, TreeNEF, TreeMUF;
    OutputTree.Branch("CHF", &TreeCHF, "CHF/D");
    OutputTree.Branch("NHF", &TreeNHF, "NHF/D");
@@ -198,6 +220,11 @@ int main(int argc, char *argv[])
    OutputTree.Branch("CEM", &TreeCEM, "CEM/D");
    OutputTree.Branch("NEM", &TreeNEM, "NEM/D");
    OutputTree.Branch("MUM", &TreeMUM, "MUM/D");
+   */
+
+   ///////////////////
+   // Start looping //
+   ///////////////////
 
    int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
    ProgressBar Bar(cout, EntryCount);
@@ -218,19 +245,33 @@ int main(int argc, char *argv[])
       MRho.GetEntry(iE);
       MHLT.GetEntry(iE);
       MSkim.GetEntry(iE);
+      MGen.GetEntry(iE);
          
       HN.Fill(0);
+
+      ///////////////////////
+      // Event coordinates //
+      ///////////////////////
 
       TreeRun = MHiEvent.Run;
       TreeEvent = MHiEvent.Event;
       TreeLumi = MHiEvent.Lumi;
 
-      TreeHF = MHiEvent.hiHF;
-      TreeHFPlus = MHiEvent.hiHFplus;
-      TreeHFMinus = MHiEvent.hiHFminus;
-      TreeHFPlusEta4 = MHiEvent.hiHFplusEta4;
-      TreeHFMinusEta4 = MHiEvent.hiHFminusEta4;
-         
+      /////////////////////////////////
+      // Basic event-wide quantities //
+      /////////////////////////////////
+
+      TreeCentrality = GetCentrality(MHiEvent.hiBin);
+      TreePTHat = MSDJet.PTHat;
+      TreeRho = GetRho(MRho.EtaMax, MRho.Rho, 0, true);
+
+      if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
+         continue;
+      
+      ///////////////////
+      // Event cleanup //
+      ///////////////////
+
       TreePassPbPb40 = MHLT.CheckTrigger("HLT_HIPuAK4CaloJet40_Eta5p1_v1");
       TreePassPbPb60 = MHLT.CheckTrigger("HLT_HIPuAK4CaloJet60_Eta5p1_v1");
       TreePassPbPb80 = MHLT.CheckTrigger("HLT_HIPuAK4CaloJet80_Eta5p1_v1");
@@ -249,14 +290,24 @@ int main(int argc, char *argv[])
       if(IsData == true && MSkim.PassBasicFilterLoose() == false)
          continue;
 
-      // SDJetHelper HSDJet(MSDJet);
+      //////////////////////
+      // Cluster gen-jets //
+      //////////////////////
 
-      TreeCentrality = GetCentrality(MHiEvent.hiBin);
-      TreePTHat = MSDJet.PTHat;
-      TreeRho = GetRho(MRho.EtaMax, MRho.Rho, 0, true);
+      vector<PseudoJet> GenParticles;
+      for(int iG = 0; iG < MGen.ID->size(); iG++)
+      {
+         FourVector P;
+         P.SetPtEtaPhi((*MGen.PT)[iG], (*MGen.Eta)[iG], (*MGen.Phi)[iG]);
+         Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
+      }
+      JetDefinition GenDefinition(antikt_algorithm, 0.4);
+      ClusterSequence GenSequence(GenParticles, GenDefinition);
+      vector<PseudoJet> GenJets = GenSequence.inclusive_jets();
 
-      if(MSDJet.PTHat <= PTHatMin || MSDJet.PTHat > PTHatMax)
-         continue;
+      ///////////////////////
+      // Cluster reco jets //
+      ///////////////////////
 
       vector<PseudoJet> Particles;
       for(int iPF = 0; iPF < MPF.ID->size(); iPF++)
@@ -297,6 +348,27 @@ int main(int argc, char *argv[])
       ClusterSequence NewSequence(AllCandidates, Definition);
       vector<PseudoJet> Jets = NewSequence.inclusive_jets();
 
+      //////////////////////////
+      // Loop over (gen) jets //
+      //////////////////////////
+      
+      GenJetIndex = -1;
+      for(int iG = 0; iG < GenJets.size(); iG++)
+      {
+         if(GenJets[iG].perp() < 10)   // mini jets!
+            continue;
+
+         GenJetIndex = GenJetIndex + 1;
+         GenJetPT = GenJets[iG].perp();
+         GenJetEta = GenJets[iG].eta();
+         GenJetPhi = GenJets[iG].phi();
+
+         int iJ = -1;
+
+         OutputTree.Fill();
+      }
+
+      /*
       for(int iJ = 0; iJ < Jets.size(); iJ++)
       {
          int BestSDJet = 0;
@@ -432,6 +504,7 @@ int main(int argc, char *argv[])
 
          OutputTree.Fill();
       }
+      */
    }
 
    Bar.Update(EntryCount);

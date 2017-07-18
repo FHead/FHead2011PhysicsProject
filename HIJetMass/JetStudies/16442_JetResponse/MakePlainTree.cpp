@@ -148,6 +148,11 @@ int main(int argc, char *argv[])
    OutputTree.Branch("CSJetEta", &CSJetEta, "CSJetEta/D");
    OutputTree.Branch("CSJetPhi", &CSJetPhi, "CSJetPhi/D");
 
+   double CSJetRefPT, CSJetRefEta, CSJetRefPhi;
+   OutputTree.Branch("CSJetRefPT", &CSJetRefPT, "CSJetRefPT/D");
+   OutputTree.Branch("CSJetRefEta", &CSJetRefEta, "CSJetRefEta/D");
+   OutputTree.Branch("CSJetRefPhi", &CSJetRefPhi, "CSJetRefPhi/D");
+
    int Flavor, FlavorB;
    OutputTree.Branch("Flavor", &Flavor, "Flavor/I");
    OutputTree.Branch("FlavorB", &FlavorB, "FlavorB/I");
@@ -360,6 +365,10 @@ int main(int argc, char *argv[])
          CSJetPT = MJet.JetPT[iCS];
          CSJetEta = MJet.JetEta[iCS];
          CSJetPhi = MJet.JetPhi[iCS];
+         
+         CSJetRefPT = MJetRef.RefPT[iCS];
+         CSJetRefEta = MJetRef.RefEta[iCS];
+         CSJetRefPhi = MJetRef.RefPhi[iCS];
 
          Flavor = MJet.RefPartonFlavor[iCS];
          FlavorB = MJet.RefPartonFlavorForB[iCS];

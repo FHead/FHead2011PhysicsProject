@@ -366,9 +366,9 @@ int main(int argc, char *argv[])
          CSJetEta = MJet.JetEta[iCS];
          CSJetPhi = MJet.JetPhi[iCS];
          
-         CSJetRefPT = MJetRef.RefPT[iCS];
-         CSJetRefEta = MJetRef.RefEta[iCS];
-         CSJetRefPhi = MJetRef.RefPhi[iCS];
+         CSJetRefPT = MJet.RefPT[iCS];
+         CSJetRefEta = MJet.RefEta[iCS];
+         CSJetRefPhi = MJet.RefPhi[iCS];
 
          Flavor = MJet.RefPartonFlavor[iCS];
          FlavorB = MJet.RefPartonFlavorForB[iCS];

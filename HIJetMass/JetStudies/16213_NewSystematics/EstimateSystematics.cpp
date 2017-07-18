@@ -34,6 +34,7 @@ using namespace std;
 #define TypeMB 8
 #define TypeRange 9
 #define TypeRange2 10
+#define TypeMass 11
 
 struct Box;
 class TreeMessenger;
@@ -165,6 +166,12 @@ public:
          JetPT = JetPT * Factor;
          SDMass = SDMass * Factor;
       }
+
+      if(Type == TypeMass)
+      {
+         if(IsNominal == true)   SDMass = SDMass * (1.01 - 0.075 * SDDR);
+         else                    SDMass = SDMass * (1.01 - 0.075 * SDDR) / 1.005;
+      }
    }
    bool InBox(Box B)
    {
@@ -254,6 +261,8 @@ int main(int argc, char *argv[])
       Type = TypeRange;
    if(StringType == "Range2")
       Type = TypeRange2;
+   if(StringType == "Mass")
+      Type = TypeMass;
 
    Tag = Form("%s_%d", Tag.c_str(), SD);
 

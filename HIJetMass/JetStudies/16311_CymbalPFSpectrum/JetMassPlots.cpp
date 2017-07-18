@@ -331,6 +331,7 @@ int main(int argc, char *argv[])
          {
             FourVector P;
             P.SetPtEtaPhi((*MPF.PT)[i], (*MPF.Eta)[i], (*MPF.Phi)[i]);
+            P[0] = (*MPF.E)[i];
             if(GetDR(P, JetP) < Range)
                Candidates.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
             if(GetDR(P, JetP) < 0.4)
@@ -378,8 +379,9 @@ int main(int argc, char *argv[])
          vector<PseudoJet> CSJets(JetsWithGhosts.size());
          for(int i = 0; i < (int)JetsWithGhosts.size(); i++)
          {
+            // contrib::ConstituentSubtractor Subtractor(Rho, 0, 0, -1, contrib::ConstituentSubtractor::Distance::deltaR);
             contrib::ConstituentSubtractor Subtractor(Rho, 0.5, 0, -1);
-            Subtractor.set_alpha(1);  // optional
+            Subtractor.set_alpha(2);  // optional
             // subtractor.set_max_deltaR(2);  // optional
             CSJets[i] = Subtractor(JetsWithGhosts[i]);
          }
@@ -414,7 +416,7 @@ int main(int argc, char *argv[])
             if(i == (int)CSJets.size() - 1)
             {
                for(int j = 0; j < (int)Constituents.size(); j++)
-                  cout << "CS Candidate " << Constituents[j].perp() << " " << Constituents[j].eta() << " " << Constituents[j].phi() << endl;
+                  cout << "CS Candidate " << Constituents[j].perp() << " " << Constituents[j].eta() << " " << Constituents[j].phi() << " " << Constituents[j].m() << endl;
             }
          }
          ClusterSequence NewSequence(CSCandidates, Definition);

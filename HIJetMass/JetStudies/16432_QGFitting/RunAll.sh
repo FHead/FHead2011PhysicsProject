@@ -1,0 +1,11 @@
+CompileRootMacro QuickFit.cpp DoFit
+
+# ./DoFit C0P1 140 160 0 10
+# ./DoFit C0P4 200 300 0 10
+# ./DoFit C1P1 140 160 10 30
+# ./DoFit C1P4 200 300 10 30
+./DoFit C3P1 140 160 50 80
+./DoFit C3P2 160 180 50 80
+./DoFit C3P3 180 200 50 80
+./DoFit C3P4 200 300 50 80
+

@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
    int SD = (argv[1][0] == '0') ? 0 : 7;
 
    TFile F1(Form("Graphs_SD%d_Data.root", SD));
-   TFile F2(Form("Graphs_SD%d_DataPrescale.root_100", SD));
-   TFile F3(Form("Graphs_SD%d_DataPrescale.root_80", SD));
-   TFile F4(Form("Graphs_SD%d_DataPrescale.root_60", SD));
+   TFile F2(Form("Graphs_SD%d_DataPrescale_100.root", SD));
+   TFile F3(Form("Graphs_SD%d_DataPrescale_80.root", SD));
+   TFile F4(Form("Graphs_SD%d_DataPrescale_60.root", SD));
 
    TFile FOutput(Form("Graphs_SD%d_DataPicked.root", SD), "RECREATE");
 
@@ -50,9 +50,16 @@ int main(int argc, char *argv[])
                G = (TGraphAsymmErrors *)F1.Get(Form("%s_%d_%d", Prefix[k].c_str(), i, j));
             if(Source[i][j] == 2)
                G = (TGraphAsymmErrors *)F2.Get(Form("%s_%d_%d", Prefix[k].c_str(), i, j));
+            if(Source[i][j] == 3)
+               G = (TGraphAsymmErrors *)F3.Get(Form("%s_%d_%d", Prefix[k].c_str(), i, j));
+            if(Source[i][j] == 4)
+               G = (TGraphAsymmErrors *)F4.Get(Form("%s_%d_%d", Prefix[k].c_str(), i, j));
 
             if(G == NULL)
+            {
+               cout << Prefix[k] << " " << i << " " << j << " " << "Not found" << endl;
                continue;
+            }
 
             G->Write();
          }

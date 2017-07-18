@@ -23,6 +23,7 @@ public:   // direct quantities
    double SDRecoDR, SDSubJetPT1, SDSubJetPT2, SDMass;
    double MCWeight, Centrality, PTHat;
    bool PassFilter, PassTrigger;
+   double MatchDR;
 public:   // derived quantities
    double SDZG;
    double SDMassRatio;
@@ -32,6 +33,7 @@ public:
    void Initialize();
    void GetEntry(int iE);
    bool PassPTHat(double PTHatMin);
+   bool PassPTHat(double PTHatMin, double PTHatMax);
    bool PassSelection();
    int CentralityBin(double CBinEdge[], int BinCount);
    int PTBin(double PTBinEdge[], int BinCount);
@@ -48,12 +50,13 @@ public:
    TGraph *GMBRMS;
    TGraph *GSmearRMS;
 public:   // direct quantities
-   double JetPT, JetEta, JetPhi, OriginalJetPT;
+   double JetPT, JetEta, JetPhi, OriginalJetPT, OriginalJetEta, OriginalJetPhi;
    double SDRecoDR, SDZG, SDMass;
    double MCWeight, Centrality, PTHat;
    double PTInJet, Rho, TotalPT;
    bool PassFilter, PassTrigger;
 public:   // derived quantities
+   double MatchDR;
    double RawJetPT;
    double SDMassRatio;
    int SysBin;
@@ -64,6 +67,7 @@ public:
    void SetMB(TGraph *G);
    void SetSmear(TGraph *G);
    bool PassPTHat(double PTHatMin);
+   bool PassPTHat(double PTHatMin, double PTHatMax);
    bool PassSelection();
    int CentralityBin(double CBinEdge[], int BinCount);
    int PTBin(double PTBinEdge[], int BinCount);

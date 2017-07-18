@@ -23,7 +23,7 @@ int main()
    PdfFileHelper PdfFile("SmearTreeComparison.pdf");
    PdfFile.AddTextPage("Smear tree comparison");
 
-   TFile F1("PP6Dijet120.root");
+   TFile F1("Pass1/PP6Dijet120.root");
    TFile F2("Smear120.root");
 
    TTree *T1 = (TTree *)F1.Get("OutputTree");
@@ -136,6 +136,18 @@ void ComparePlots(PdfFileHelper &PdfFile, TTree *T1, TTree *T2, string ToPlot, s
    Legend.AddEntry(&H1, "Batch-run", "lp");
    Legend.AddEntry(&H2, "Local-run", "lp");
    Legend.Draw();
+
+   PdfFile.AddCanvas(C);
+
+   H1.Divide(&H2);
+   H1.SetMaximum(2);
+
+   H1.Draw();
+
+   TGraph G;
+   G.SetPoint(0, 0, 1);
+   G.SetPoint(1, 100000, 1);
+   G.Draw("l");
 
    PdfFile.AddCanvas(C);
 }

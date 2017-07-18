@@ -115,7 +115,7 @@ int main()
 
    TGraph G;
    for(int iC = 0; iC < CBinCount; iC++)
-      G.SetPoint(iC, iC * 0.01, RMSEta[iC]);
+      G.SetPoint(iC, (iC + 1) * 0.01, RMSEta[iC]);
 
    G.SetMarkerColor(kRed);
    G.SetLineColor(kRed);

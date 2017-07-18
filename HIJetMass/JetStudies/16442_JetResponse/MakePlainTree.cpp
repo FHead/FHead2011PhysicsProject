@@ -226,7 +226,7 @@ int main(int argc, char *argv[])
    // Start looping //
    ///////////////////
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
@@ -299,7 +299,7 @@ int main(int argc, char *argv[])
       {
          FourVector P;
          P.SetPtEtaPhi((*MGen.PT)[iG], (*MGen.Eta)[iG], (*MGen.Phi)[iG]);
-         Particles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
+         GenParticles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
       }
       JetDefinition GenDefinition(antikt_algorithm, 0.4);
       ClusterSequence GenSequence(GenParticles, GenDefinition);

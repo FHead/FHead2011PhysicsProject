@@ -136,6 +136,17 @@ int main(int argc, char *argv[])
    OutputTree.Branch("GenJetEta", &GenJetEta, "GenJetEta/D");
    OutputTree.Branch("GenJetPhi", &GenJetPhi, "GenJetPhi/D");
 
+   double MatchJetRawPT, MatchJetEta, MatchJetPhi;
+   OutputTree.Branch("MatchJetPT", &MatchJetPT, "MatchJetPT/D");
+   OutputTree.Branch("MatchJetEta", &MatchJetEta, "MatchJetEta/D");
+   OutputTree.Branch("MatchJetPhi", &MatchJetPhi, "MatchJetPhi/D");
+
+   double CSJetRawPT, CSJetPT, CSJetEta, CSJetPhi;
+   OutputTree.Branch("CSJetRawPT", &CSJetRawPT, "CSJetRawPT/D");
+   OutputTree.Branch("CSJetPT", &CSJetPT, "CSJetPT/D");
+   OutputTree.Branch("CSJetEta", &CSJetEta, "CSJetEta/D");
+   OutputTree.Branch("CSJetPhi", &CSJetPhi, "CSJetPhi/D");
+
    /*
    int TreePartonFlavor, TreePartonFlavorForB;
    OutputTree.Branch("Flavor", &TreePartonFlavor, "Flavor/I");
@@ -226,7 +237,7 @@ int main(int argc, char *argv[])
    // Start looping //
    ///////////////////
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.01;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
@@ -363,7 +374,40 @@ int main(int argc, char *argv[])
          GenJetEta = GenJets[iG].eta();
          GenJetPhi = GenJets[iG].phi();
 
+         ///////////////////
+         // Match to jets //
+         ///////////////////
+
          int iJ = -1;
+         double BestDR = -1;
+         for(int i = 0; i < (int)Jets.size(); i++)
+         {
+            double DR = GetDR(GenJets[iG].eta(), GenJets[iG].phi(), Jets[i].eta(), Jets[i].phi());
+            if(BestDR < 0 || BestDR > DR)
+               iJ = i, BestDR = DR;
+         }
+
+         MatchJetRawPT = Jets[iJ].perp();
+         MatchJetEta = Jets[iJ].eta();
+         MatchJetPhi = Jets[iJ].phi();
+ 
+         //////////////////////
+         // Match to CS jets //
+         //////////////////////
+
+         int iCS = -1;
+         double BestCSDR = -1;
+         for(int i = 0; i < MJet.JetCount; i++)
+         {
+            double DR = GetDR(GenJets[iG].eta(), GenJets[iG].phi(), MJet.JetEta[i], MJet.JetPhi[i]);
+            if(BestCSDR < 0 || BestCSDR > DR)
+               iCS = i, BestCSDR = DR;
+         }
+
+         CSJetRawPT = MJet.RawPT[iCS];
+         CSJetPT = MJet.JetPT[iCS];
+         CSJetEta = MJet.JetEta[iCS];
+         CSJetPhi = MJet.JetPhi[iCS];
 
          OutputTree.Fill();
       }

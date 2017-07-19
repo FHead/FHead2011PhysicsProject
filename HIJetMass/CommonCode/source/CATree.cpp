@@ -323,13 +323,11 @@ std::vector<std::pair<double, double>> CountSD(Node *HeadNode, double ZCut, doub
          {
             if(PTRatio > Threshold)
                Result.emplace_back(PTRatio, DR);
+
+            if(PT1 > PT2)
+               Current = Current->Child1;
             else
-            {
-               if(PT1 > PT2)
-                  Current = Current->Child1;
-               else
-                  Current = Current->Child2;
-            }
+               Current = Current->Child2;
          }
       }
    }

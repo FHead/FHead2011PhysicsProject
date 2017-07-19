@@ -286,6 +286,57 @@ Node *FindSDNode(Node *HeadNode, double ZCut, double Beta, double R0)
    return Current;
 }
 
+std::vector<std::pair<double, double>> CountSD(Node *HeadNode, double ZCut, double Beta, double R0, double DRCut)
+{
+   std::vector<std::pair<double, double>> Result;
+
+   bool Done = false;
+   Node *Current = HeadNode;
+
+   while(Done == false)
+   {
+      if(Current->N == 1)
+         Done = true;
+      else if(Current->N == 2)
+      {
+         // WTF!
+         std::cerr << "Error!  N = " << Current->N << "!" << std::endl;
+      }
+      else if(Current->Child1 == NULL || Current->Child2 == NULL)
+      {
+         // WTF!
+         std::cerr << "Error!  Child NULL while N = " << Current->N << "!" << std::endl;
+      }
+      else
+      {
+         double PT1 = Current->Child1->P.GetPT();
+         double PT2 = Current->Child2->P.GetPT();
+         double PTRatio = std::min(PT1, PT2) / (PT1 + PT2);
+
+         double DR = GetDR(Current->Child1->P, Current->Child2->P);
+
+         double Threshold = ZCut * std::pow(DR / R0, Beta);
+
+         if(DR < DRCut)
+            Done = true;
+         else
+         {
+            if(PTRatio > Threshold)
+               Result.emplace_back(PTRatio, DR);
+            else
+            {
+               if(PT1 > PT2)
+                  Current = Current->Child1;
+               else
+                  Current = Current->Child2;
+            }
+         }
+      }
+   }
+
+   return Result;
+}
+
 int NodeDistance(Node *Child, Node *Root)
 {
    if(Child == NULL || Root == NULL)

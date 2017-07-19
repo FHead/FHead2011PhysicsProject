@@ -194,17 +194,14 @@ int main(int argc, char *argv[])
    // Start looping //
    ///////////////////
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.001;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.1;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
    for(int iE = 0; iE < EntryCount; iE++)
    {
-      if(iE < 200 || (iE % (EntryCount / 300)) == 0)
-      {
-         Bar.Update(iE);
-         Bar.Print();
-      }
+      Bar.Update(iE);
+      Bar.PrintWithMod(200);
 
       MHiEvent.GetEntry(iE);
       MJet.GetEntry(iE);

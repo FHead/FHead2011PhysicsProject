@@ -295,7 +295,7 @@ std::vector<std::pair<double, double>> CountSD(Node *HeadNode, double ZCut, doub
 
    while(Done == false)
    {
-      if(Current->N == 1)
+      if(Current->N == 1)   // This is a leaf - doing nothing and terminate
          Done = true;
       else if(Current->N == 2)
       {
@@ -356,6 +356,15 @@ int NodeDistance(Node *Child, Node *Root)
    return Count;
 }
 
+double SDCSum(std::vector<std::pair<double, double>> &Z, double Kappa)
+{
+   double Result = 0;
+
+   for(int i = 0; i < (int)Z.size(); i++)
+      Result = Result + pow(Z[i].first, Kappa);
+
+   return Result;
+}
 
 
 

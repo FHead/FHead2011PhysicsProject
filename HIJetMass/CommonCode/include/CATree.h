@@ -11,6 +11,7 @@ NodePair FindClosestPair(std::vector<Node *> &Nodes, std::vector<std::pair<doubl
 Node *FindSDNode(Node *HeadNode, double ZCut = 0.1, double Beta = 0, double R0 = 0.4);
 std::vector<std::pair<double, double>> CountSD(Node *HeadNode, double ZCut = 0.1, double Beta = 0, double R0 = 0.4, double DRCut = 0.1);
 int NodeDistance(Node *Child, Node *Root);
+double SDCSum(std::vector<std::pair<double, double>> &Z, double Kappa);
 
 class Node
 {

@@ -265,6 +265,10 @@ int main(int argc, char *argv[])
       vector<PseudoJet> GenParticles;
       for(int iG = 0; iG < MGen.ID->size(); iG++)
       {
+         if(MGen.SubEvent->size() < iG)
+            continue;
+         if((*MGen.SubEvent)[iG] != 0)
+            continue;
          FourVector P;
          P.SetPtEtaPhi((*MGen.PT)[iG], (*MGen.Eta)[iG], (*MGen.Phi)[iG]);
          GenParticles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));

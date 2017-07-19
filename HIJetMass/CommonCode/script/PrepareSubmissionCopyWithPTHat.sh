@@ -152,10 +152,16 @@ rm -f $TempFile1 $TempFile2
 mv Total$TempFile RunAll.sh
 
 cp $WorkspaceBase/CommonCode/script/BatchHeaderCopy.txt BatchTemplate.submit
-echo "__EXECUTABLE__ Input.root Output.root __TAG__ __PTHATMIN__ __PTHATMAX__ __EXTRA1__ __EXTRA2__ __EXTRA3__ $@" >> BatchTemplate.submit
+
+echo "if [[ __INPUT__ != root* ]]" >> BatchTemplate.submit
+echo "then" >> BatchTemplate.submit
+echo "   __EXECUTABLE__ /eos/cms/__INPUT__ Output.root __TAG__ __PTHATMIN__ __PTHATMAX__ __EXTRA1__ __EXTRA2__ __EXTRA3__ $@" >> BatchTemplate.submit
+echo "else" >> BatchTemplate.submit
+echo "   __EXECUTABLE__ __INPUT___ Output.root __TAG__ __PTHATMIN__ __PTHATMAX__ __EXTRA1__ __EXTRA2__ __EXTRA3__ $@" >> BatchTemplate.submit
+echo "fi" >> BatchTemplate.submit
 
 BaseDirAfterWorkspace=`echo $PWD | tr '/' '\n' | grep -A 999 PhysicsWorkspace | tail -n+2 | tr '\n' '/'`
-echo "# cmsStage Output.root /store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/\`basename __OUTPUT__\`" >> BatchTemplate.submit
+echo "# mv Output.root /eos/cms/store/cmst3/user/chenyi/BatchOutput/$BaseDirAfterWorkspace/Result/\`basename __OUTPUT__\`" >> BatchTemplate.submit
 echo "mv Output.root __OUTPUT__" >> BatchTemplate.submit
 
 

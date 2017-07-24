@@ -66,10 +66,19 @@ public:
    }
 };
 
-int main()
+int main(int argc, char *argv[])
 {
    string InputFile = "example.hepmc";
    string OutputFile = "example.root";
+
+   if(argc != 3)
+   {
+      cerr << "Usage: " << argv[0] << " InputFile.hepmc OutputFile.root" << endl;
+      return -1;
+   }
+
+   InputFile = argv[1];
+   OutputFile = argv[2];
 
    TFile File(OutputFile.c_str(), "RECREATE");
 
@@ -113,7 +122,7 @@ int main()
             for(int i = 0; i < E.E[10]; i++)
                str >> E.ERand;
          str >> E.E[11];
-         if(E.E[10] != 0)
+         if(E.E[11] != 0)
          {
             E.EWeight = 1;
             double Weight = 1;
@@ -123,6 +132,8 @@ int main()
                E.EWeight = E.EWeight * Weight;
             }
          }
+         else
+            E.EWeight = 1;
       }
       if(Type == "N")   for(int i = 0; i < 2; i++)    str >> E.N[i];
       if(Type == "U")   for(int i = 0; i < 2; i++)    str >> E.U[i];

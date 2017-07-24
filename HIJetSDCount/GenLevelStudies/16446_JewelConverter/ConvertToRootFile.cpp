@@ -13,7 +13,9 @@ int main();
 class Event
 {
 public:
-   double E[13];
+   double E[12];
+   int ERand;
+   double EWeight;
    string N[2];
    string U[2];
    double C[2];
@@ -27,7 +29,7 @@ public:
    ~Event() {}
    void Clean()
    {
-      for(int i = 0; i < 13; i++)   E[i] = 0;
+      for(int i = 0; i < 12; i++)   E[i] = 0;
       for(int i = 0; i < 2; i++)    N[i] = "";
       for(int i = 0; i < 2; i++)    U[i] = "";
       for(int i = 0; i < 2; i++)    C[i] = 0;
@@ -41,7 +43,9 @@ public:
    }
    void DoBranch(TTree &T)
    {
-      T.Branch("E", &E, "E[13]/D");
+      T.Branch("E", &E, "E[12]/D");
+      T.Branch("ERand", &ERand, "ERand/I");
+      T.Branch("EWeight", &EWeight, "EWeight/D");
       T.Branch("C", &C, "C[2]/D");
       T.Branch("H", &H, "H[13]/D");
       T.Branch("F", &F, "F[9]/D");
@@ -64,8 +68,8 @@ public:
 
 int main()
 {
-   string InputFile = "example-vac.hepmc";
-   string OutputFile = "example-vac.root";
+   string InputFile = "example.hepmc";
+   string OutputFile = "example.root";
 
    TFile File(OutputFile.c_str(), "RECREATE");
 
@@ -101,8 +105,24 @@ int main()
          BeforeFirstEvent = false;
          E.Clean();
 
-         for(int i = 0; i < 13; i++)
+         for(int i = 0; i < 10; i++)
             str >> E.E[i];
+
+         str >> E.E[10];
+         if(E.E[10] != 0)
+            for(int i = 0; i < E.E[10]; i++)
+               str >> E.ERand;
+         str >> E.E[11];
+         if(E.E[10] != 0)
+         {
+            E.EWeight = 1;
+            double Weight = 1;
+            for(int i = 0; i < E.E[11]; i++)
+            {
+               str >> Weight;
+               E.EWeight = E.EWeight * Weight;
+            }
+         }
       }
       if(Type == "N")   for(int i = 0; i < 2; i++)    str >> E.N[i];
       if(Type == "U")   for(int i = 0; i < 2; i++)    str >> E.U[i];

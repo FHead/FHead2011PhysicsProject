@@ -8,7 +8,7 @@ using namespace std;
 #include "TTree.h"
 
 class Event;
-int main();
+int main(int argc, char *argv[]);
 
 class Event
 {
@@ -71,20 +71,33 @@ int main(int argc, char *argv[])
    string InputFile = "example.hepmc";
    string OutputFile = "example.root";
 
-   if(argc != 3)
+   if(argc != 3 && argc != 2)
    {
-      cerr << "Usage: " << argv[0] << " InputFile.hepmc OutputFile.root" << endl;
+      cerr << "Usage: " << argv[0] << " [InputFile.hepmc] OutputFile.root" << endl;
       return -1;
    }
 
-   InputFile = argv[1];
-   OutputFile = argv[2];
+   bool ReadFromSTD = false;
+
+   if(argc == 3)
+   {
+      ReadFromSTD = false;
+      InputFile = argv[1];
+      OutputFile = argv[2];
+   }
+   else
+   {
+      ReadFromSTD = true;
+      OutputFile = argv[1];
+   }
 
    TFile File(OutputFile.c_str(), "RECREATE");
 
    TTree Tree("Tree", "Tree");
 
-   ifstream in(InputFile.c_str());
+   ifstream filein(InputFile.c_str());
+
+   istream &in = (ReadFromSTD ? cin : filein);
    
    bool BeforeFirstEvent = true;
    Event E;
@@ -149,7 +162,7 @@ int main(int argc, char *argv[])
       }
    }
 
-   in.close();
+   filein.close();
 
    Tree.Write();
 

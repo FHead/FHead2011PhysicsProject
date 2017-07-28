@@ -21,8 +21,10 @@ int main(int argc, char *argv[])
    TTree *Tree = (TTree *)File.Get("Tree");
 
    int NP;
+   double Weight;
    double PID[MAX], PX[MAX], PY[MAX], PZ[MAX], PM[MAX], PStatus[MAX];
 
+   Tree->SetBranchAddress("Weight", &EWeight);
    Tree->SetBranchAddress("NP", &NP);
    Tree->SetBranchAddress("PID", &PID);
    Tree->SetBranchAddress("PX", &PX);
@@ -37,6 +39,7 @@ int main(int argc, char *argv[])
       Tree->GetEntry(iE);
 
       out << "# event " << iE << endl;
+      out << "weight " << Weight << endl;
       for(int i = 0; i < NP; i++)
          if(PStatus[i] < 1.5)
             out << PX[i] << " " << PY[i] << " " << PZ[i] << " " << PM[i] << " " << PID[i] << " " << 0 << endl;

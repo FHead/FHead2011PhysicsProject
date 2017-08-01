@@ -8,6 +8,7 @@
 #define GENCOUNTMAX 100
 
 class HiEventTreeMessenger;
+class GGTreeMessenger;
 class RhoTreeMessenger;
 class SkimTreeMessenger;
 class JetTreeMessenger;
@@ -34,6 +35,23 @@ public:
    HiEventTreeMessenger(TFile *File);
    HiEventTreeMessenger(TTree *HiEventTree);
    bool Initialize(TTree *HiEventTree);
+   bool Initialize();
+   bool GetEntry(int iEntry);
+};
+
+class GGTreeMessenger
+{
+public:
+   TTree *Tree;
+   int NPUInfo;
+   std::vector<int> *PUCount;
+   std::vector<int> *PUBX;
+   std::vector<float> *PUTrue;
+public:
+   GGTreeMessenger(TFile &File, std::string TreeName = "ggHiNtuplizer/EventTree");
+   GGTreeMessenger(TFile *File, std::string TreeName = "ggHiNtuplizer/EventTree");
+   GGTreeMessenger(TTree *EventTree);
+   bool Initialize(TTree *EventTree);
    bool Initialize();
    bool GetEntry(int iEntry);
 };
@@ -163,6 +181,7 @@ public:
    std::vector<int> *ID;
    std::vector<int> *Charge;
    std::vector<int> *DaughterCount;
+   std::vector<int> *SubEvent;
 public:
    GenParticleTreeMessenger(TFile &File);
    GenParticleTreeMessenger(TFile *File);

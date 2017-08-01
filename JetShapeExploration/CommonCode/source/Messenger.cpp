@@ -77,6 +77,59 @@ bool HiEventTreeMessenger::GetEntry(int iEntry)
    return true;
 }
 
+GGTreeMessenger::GGTreeMessenger(TFile &File, std::string TreeName)
+{
+   Tree = (TTree *)File.Get(TreeName.c_str());
+   Initialize();
+}
+
+GGTreeMessenger::GGTreeMessenger(TFile *File, std::string TreeName)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get(TreeName.c_str());
+   else
+      Tree = NULL;
+   Initialize();
+}
+
+GGTreeMessenger::GGTreeMessenger(TTree *EventTree)
+{
+   Tree = EventTree;
+   Initialize();
+}
+
+bool GGTreeMessenger::Initialize(TTree *EventTree)
+{
+   Tree = EventTree;
+   return Initialize();
+}
+
+bool GGTreeMessenger::Initialize()
+{
+   if(Tree == NULL)
+      return false;
+
+   if(Tree->GetBranch("nPUInfo"))   Tree->SetBranchAddress("nPUInfo", &NPUInfo);
+   else                             NPUInfo = 0;
+   if(Tree->GetBranch("nPU"))       Tree->SetBranchAddress("nPU", &PUCount);
+   else                             PUCount = &EmptyVectors::EmptyVectorInt;
+   if(Tree->GetBranch("puBX"))      Tree->SetBranchAddress("puBX", &PUBX);
+   else                             PUBX = &EmptyVectors::EmptyVectorInt;
+   if(Tree->GetBranch("puTrue"))    Tree->SetBranchAddress("puTrue", &PUTrue);
+   else                             PUTrue = &EmptyVectors::EmptyVectorFloat;
+
+   return true;
+}
+
+bool GGTreeMessenger::GetEntry(int iEntry)
+{
+   if(Tree == NULL)
+      return false;
+
+   Tree->GetEntry(iEntry);
+   return true;
+}
+
 RhoTreeMessenger::RhoTreeMessenger(TFile &File)
 {
    Tree = (TTree *)File.Get("hiFJRhoAnalyzer/t");
@@ -435,6 +488,7 @@ bool GenParticleTreeMessenger::Initialize()
    ID = NULL;
    Charge = NULL;
    DaughterCount = NULL;
+   SubEvent = NULL;
 
    if(Tree->GetBranch("npart")) Tree->SetBranchAddress("npart", &NPart);
    else                         NPart = 0;
@@ -457,6 +511,8 @@ bool GenParticleTreeMessenger::Initialize()
    else                         Charge = &EmptyVectors::EmptyVectorInt;
    if(Tree->GetBranch("nDaughters")) Tree->SetBranchAddress("nDaughters", &DaughterCount);
    else                         DaughterCount = &EmptyVectors::EmptyVectorInt;
+   if(Tree->GetBranch("sube"))  Tree->SetBranchAddress("sube", &SubEvent);
+   else                         SubEvent = &EmptyVectors::EmptyVectorInt;
 
    return true;
 }

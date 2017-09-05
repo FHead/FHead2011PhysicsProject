@@ -1,5 +1,7 @@
 #!/bin/sh
 
+CompileRootMacro MakeJetRAAPlots.cpp
+
 for i in On Off
 do
    for j in S SB P
@@ -11,4 +13,6 @@ do
    done
 done
 
+CompileRootMacro CollectRAAPlots.cpp
 
+./a.out

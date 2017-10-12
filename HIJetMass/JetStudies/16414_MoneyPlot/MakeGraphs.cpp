@@ -28,6 +28,7 @@ using namespace std;
 #define ZGBINCOUNT 10
 #define DRBINCOUNT 15
 #define PTPTBINCOUNT 50
+#define PTPTCORRECTIONBINCOUNT 23
 
 #define TRIGGER_NONE 0
 #define TRIGGER_100 1
@@ -61,6 +62,7 @@ int main(int argc, char *argv[])
    bool IsMC = ((argv[2][0] == 'Y') ? true : false);
 
    bool DoDRReweight = false;
+   bool DoPTPTReweight = true;
 
    string Tag = argv[4];
 
@@ -91,6 +93,11 @@ int main(int argc, char *argv[])
       {0.00, 0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.21, 0.26};
    double Mass0BinEdge[MASS0BINCOUNT+1] =
       {0.00, 0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27, 0.30};
+
+   double PTPTCorrectionBinEdge[PTPTCORRECTIONBINCOUNT+1] =
+      {0.00, 0.45, 0.50, 0.60, 0.65,
+      0.70, 0.725, 0.75, 0.775, 0.80, 0.825, 0.85, 0.875,
+      0.90, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1.01};
 
    // Optimized mass binning for massless subjets
    // double MassBinEdge[MASSBINCOUNT+1] =
@@ -406,7 +413,87 @@ int main(int argc, char *argv[])
       BarSmear.Print();
       BarSmear.PrintLine();
    }
-   
+  
+   //////////////////////////////////
+   // Optional - get PT/PT weights //
+   //////////////////////////////////
+
+   vector<double> DataPTPT[5][6];
+   InitializeVectors(DataPTPT, PTPTCORRECTIONBINCOUNT);
+
+   if(DoPTPTReweight == true)
+   {
+      BarData.Update(0);
+      for(int iE = 0; iE < DataEntryCount; iE++)
+      {
+         BarData.Update(iE);
+         BarData.PrintWithMod(300);
+
+         MData.GetEntry(iE);
+
+         if(MData.PassSelection() == false)       continue;
+         if(MData.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
+
+         int CBin = MData.CentralityBin(CBinEdge, 5);
+         int PTBin = MData.PTBin(PTBinEdge, 6);
+         int JetBin = MData.JetBin(PTBinEdge, 6);
+         int Centrality = MData.CentralityInt();
+         int AngleBin = MData.AngleBin(DRBinEdge, DRBINCOUNT);
+         int PTPTBin = MData.PTPTBin(PTPTCorrectionBinEdge, PTPTCORRECTIONBINCOUNT);
+
+         if(CBin < 0 || PTBin < 0 || JetBin < 0 || AngleBin < 0)
+            continue;
+
+         if(MData.SDRecoDR > 0.1)
+            DataPTPT[CBin][PTBin][PTPTBin] += MData.MCWeight;
+      }
+      BarData.Update(DataEntryCount);
+      BarData.Print();
+      BarData.PrintLine();
+   }
+
+   vector<double> SmearPTPT[5][6];
+   InitializeVectors(SmearPTPT, PTPTCORRECTIONBINCOUNT);
+
+   if(DoPTPTReweight == true)
+   {
+      BarSmear.Update(0);
+      for(int iE = 0; iE < SmearEntryCount; iE++)
+      {
+         BarSmear.Update(iE);
+         BarSmear.PrintWithMod(300);
+
+         MSmear.GetEntry(iE);
+
+         if(MSmear.PassSelection() == false)       continue;
+         if(MSmear.PassPTHat(PTHatMin, PTHatMax) == false)   continue;
+
+         int CBin = MSmear.CentralityBin(CBinEdge, 5);
+         int PTBin = MSmear.PTBin(PTBinEdge, 6);
+         int JetBin = MSmear.JetBin(PTBinEdge, 6);
+         int Centrality = MSmear.CentralityInt();
+         int AngleBin = MSmear.AngleBin(DRBinEdge, DRBINCOUNT);
+         int PTPTBin = MSmear.PTPTBin(PTPTCorrectionBinEdge, PTPTCORRECTIONBINCOUNT);
+
+         if(CBin < 0 || PTBin < 0 || JetBin < 0 || AngleBin < 0 || PTPTBin < 0)
+            continue;
+
+         double JetWeight = DataPT[CBin][PTBin][JetBin] / SmearPT[CBin][PTBin][JetBin];
+         double CentralityWeight = DataCentralityBins[PTBin][Centrality]
+            / SmearCentralityBins[PTBin][Centrality];
+      
+         double AngleWeight = 1;
+         if(DoDRReweight == true)
+            AngleWeight = DataAngle[CBin][PTBin][AngleBin] / SmearAngle[CBin][PTBin][AngleBin];
+
+         if(MSmear.SDRecoDR > 0.1)
+            SmearPTPT[CBin][PTBin][PTPTBin] += MSmear.MCWeight * JetWeight * CentralityWeight * AngleWeight;
+      }
+      BarSmear.Update(SmearEntryCount);
+      BarSmear.Print();
+      BarSmear.PrintLine();
+   }
+    
    //////////////////////////////////
    // Third step - collect results //
    //////////////////////////////////
@@ -467,6 +554,7 @@ int main(int argc, char *argv[])
       int JetBin = MData.JetBin(PTBinEdge, 6);
       int Centrality = MData.CentralityInt();
       int AngleBin = MData.AngleBin(DRBinEdge, DRBINCOUNT);
+      int PTPTBin = MData.PTPTBin(DRBinEdge, DRBINCOUNT);
 
       if(CBin < 0 || PTBin < 0 || JetBin < 0)
          continue;
@@ -596,6 +684,7 @@ int main(int argc, char *argv[])
       int JetBin = MSmear.JetBin(PTBinEdge, 6);
       int Centrality = MSmear.CentralityInt();
       int AngleBin = MSmear.AngleBin(DRBinEdge, DRBINCOUNT);
+      int PTPTBin = MSmear.PTPTBin(PTPTCorrectionBinEdge, PTPTCORRECTIONBINCOUNT);
 
       if(CBin < 0 || PTBin < 0 || JetBin < 0)
          continue;
@@ -619,7 +708,11 @@ int main(int argc, char *argv[])
       if(DoDRReweight == true)
          AngleWeight = DataAngle[CBin][PTBin][AngleBin] / SmearAngle[CBin][PTBin][AngleBin];
 
-      double TotalWeight = MSmear.MCWeight * JetWeight * CentralityWeight * AngleWeight;
+      double PTPTWeight = 1;
+      if(DoPTPTReweight == true)
+         PTPTWeight = DataPTPT[CBin][PTBin][PTPTBin] / SmearPTPT[CBin][PTBin][PTPTBin];
+
+      double TotalWeight = MSmear.MCWeight * JetWeight * CentralityWeight * AngleWeight * PTPTWeight;
       // double TotalWeight = MSmear.MCWeight;
       double UpWeight = SmearError[CBin][PTBin]->GetErrorYhigh(MSmear.SysBin);
       double DownWeight = -SmearError[CBin][PTBin]->GetErrorYlow(MSmear.SysBin);

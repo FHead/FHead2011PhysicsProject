@@ -6,9 +6,9 @@
 
 FJ=/Users/yichen/Programs/fastjet/install321-1026/
 
-echo Compiling RunSmear
-CompileRootMacro MakePlainTree.cpp Run Class.o \
-   -I../../CommonCode/include ../../CommonCode/library/* \
-   `$FJ/bin/fastjet-config --cxxflags` `$FJ/bin/fastjet-config --libs` \
-   $FJ/lib/*.a
+# CompileRootMacro MakePlainTree.cpp Run Class.o \
+#    -I../../CommonCode/include ../../CommonCode/library/* \
+#    `$FJ/bin/fastjet-config --cxxflags` `$FJ/bin/fastjet-config --libs` \
+#    $FJ/lib/*.a
 
+CompileRootMacro ResolutionPlots.cpp ./a.out -I ../../CommonCode/include/ ../../CommonCode/library/BasicUtilities.o

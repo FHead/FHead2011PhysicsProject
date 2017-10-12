@@ -51,6 +51,7 @@ public:
    int PTBin(double PTBinEdge[], int BinCount);
    int JetBin(double PTBinEdge[], int BinCount);
    int AngleBin(double AngleBinEdge[], int BinCount);
+   int PTPTBin(double PTPTBinEdge[], int BinCount);
    int CentralityInt();
 };
 
@@ -90,6 +91,7 @@ public:
    int PTBin(double PTBinEdge[], int BinCount);
    int JetBin(double PTBinEdge[], int BinCount);
    int AngleBin(double AngleBinEdge[], int BinCount);
+   int PTPTBin(double PTPTBinEdge[], int BinCount);
    int CentralityInt();
 };
 

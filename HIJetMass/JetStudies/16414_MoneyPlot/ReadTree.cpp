@@ -189,6 +189,11 @@ int StraightTreeMessenger::AngleBin(double AngleBinEdge[], int BinCount)
    return GetBin(SDRecoDR, AngleBinEdge, BinCount);
 }
 
+int StraightTreeMessenger::PTPTBin(double PTPTBinEdge[], int BinCount)
+{
+   return GetBin(PTPT, PTPTBinEdge, BinCount);
+}
+
 int StraightTreeMessenger::CentralityInt()
 {
    return (int)(Centrality * 100);
@@ -303,6 +308,7 @@ void SmearTreeMessenger::GetEntry(int iE)
 
    SDMassRatio = NewSDMass / JetRawPT;
    // SDMassRatio = NewSDMass / SDSubJetPT / 1.025;
+   
    SysBin = SDMassRatio / (0.40 / 160);
 
    if(JES != NULL)
@@ -344,7 +350,7 @@ bool SmearTreeMessenger::PassSelection()
       return false;
    if(IsMC == false && PassTrigger == false)
       return false;
-   if(MatchDR > 0.1)
+   if(SD == 0 && MatchDR > 0.1)
       return false;
 
    if(JetEta < -1.3 || JetEta > 1.3)
@@ -386,6 +392,11 @@ int SmearTreeMessenger::JetBin(double PTBinEdge[], int BinCount)
 int SmearTreeMessenger::AngleBin(double AngleBinEdge[], int BinCount)
 {
    return GetBin(SDRecoDR, AngleBinEdge, BinCount);
+}
+
+int SmearTreeMessenger::PTPTBin(double PTPTBinEdge[], int BinCount)
+{
+   return GetBin(PTPT, PTPTBinEdge, BinCount);
 }
 
 int SmearTreeMessenger::CentralityInt()

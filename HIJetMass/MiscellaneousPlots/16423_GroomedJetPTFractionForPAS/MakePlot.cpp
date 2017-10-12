@@ -102,7 +102,7 @@ void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, 
       Legend.AddEntry(&HMC, "PYTHIA+HYDJET", "f");
 
    // Profit!
-   TH2D HWorld("HWorld", ";p_{T,g}/p_{T,jet};#frac{1}{N_{jet}}#frac{dN}{d(p_{T,g}/p_{T,jet})}",
+   TH2D HWorld("HWorld", ";p_{T,g}/p_{T}^{jet};#frac{1}{N_{jet}}#frac{dN}{d(p_{T,g}/p_{T}^{jet})}",
       Bin, Min, Max, Bin, YMin, YMax);
    HWorld.SetStats(0);
 
@@ -131,26 +131,26 @@ void MakePlot(PdfFileHelper &PdfFile, bool IsPP, bool Is0, string DataFileName, 
    {
       Latex.DrawLatex(0.15, YTop - 0 * YSpacing, "PbPb #sqrt{s_{NN}} = 5.02 TeV 404 #mub^{-1}");
       Latex.DrawLatex(0.15, YTop - 1 * YSpacing, "Centrality: 0-10\%");
-      Latex.DrawLatex(0.15, YTop - 2 * YSpacing, "140 < p_{T,jet} < 160 GeV");
+      Latex.DrawLatex(0.15, YTop - 2 * YSpacing, "140 < p_{T}^{jet} < 160 GeV");
       Latex.DrawLatex(0.15, YTop - 3 * YSpacing, "anti-k_{T} R=0.4 |#eta_{jet}|<1.3");
       if(Is0 == true)
          Latex.DrawLatex(0.15, YTop - 4 * YSpacing, "SoftDrop #beta=0 z_{cut}=0.1");
       else
          Latex.DrawLatex(0.15, YTop - 4 * YSpacing, "SoftDrop #beta=1.5 z_{cut}=0.5");
       Latex.DrawLatex(0.15, YTop - 5 * YSpacing, "#DeltaR_{12} > 0.1");
-      Latex.DrawLatex(0.15, YTop - 6 * YSpacing, "#font[62]{CMS Preliminary}");
+      Latex.DrawLatex(0.10, 0.925, "#font[62]{CMS Preliminary}");
    }
    else
    {
       Latex.DrawLatex(0.15, YTop - 0 * YSpacing, "pp #sqrt{s_{NN}} = 5.02 TeV 25.8 pb^{-1}");
-      Latex.DrawLatex(0.15, YTop - 1 * YSpacing, "140 < p_{T,jet} < 160 GeV");
+      Latex.DrawLatex(0.15, YTop - 1 * YSpacing, "140 < p_{T}^{jet} < 160 GeV");
       Latex.DrawLatex(0.15, YTop - 2 * YSpacing, "anti-k_{T} R=0.4 |#eta_{jet}|<1.3");
       if(Is0 == true)
          Latex.DrawLatex(0.15, YTop - 3 * YSpacing, "SoftDrop #beta=0 z_{cut}=0.1");
       else
          Latex.DrawLatex(0.15, YTop - 3 * YSpacing, "SoftDrop #beta=1.5 z_{cut}=0.5");
       Latex.DrawLatex(0.15, YTop - 4 * YSpacing, "#DeltaR_{12} > 0.1");
-      Latex.DrawLatex(0.15, YTop - 5 * YSpacing, "#font[62]{CMS Preliminary}");
+      Latex.DrawLatex(0.10, 0.925, "#font[62]{CMS Preliminary}");
    }
 
    string Tag = "Comparison";

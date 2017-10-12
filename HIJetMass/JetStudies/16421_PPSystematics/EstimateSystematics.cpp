@@ -46,6 +46,7 @@ double GetBinCenter(int B);
 double GetSysBinCenter(int B);
 int FindBin(double X);
 void TranscribeQuadratic(vector<pair<double, double>> V, TGraphAsymmErrors *G);
+void Transcribe(vector<pair<double, double>> V, TGraphAsymmErrors *G);
 void AddPlot(PdfFileHelper &PdfFile, vector<double> N, vector<double> M, vector<double> N2, vector<double> M2, TGraphAsymmErrors *G);
 bool InBox(StraightTreeMessenger &M, Box &B);
 bool DRCut(StraightTreeMessenger &M, double Cut = 0.10);
@@ -297,7 +298,7 @@ int main(int argc, char *argv[])
       
       Error[iC] = QuadraticError(PdfFile, HN[iC], HM[iC], HN2[iC], HM2[iC], FunctionType);
 
-      TranscribeQuadratic(Error[iC], GRatio[iC]);
+      Transcribe(Error[iC], GRatio[iC]);
 
       AddPlot(PdfFile, HN[iC], HM[iC], HN2[iC], HM2[iC], GRatio[iC]);
 
@@ -357,6 +358,23 @@ void TranscribeQuadratic(vector<pair<double, double>> V, TGraphAsymmErrors *G)
 
       G->SetPoint(i, X, Mean);
       G->SetPointError(i, 0, 0, (Mean - V[Bin].first) * 0.5, (V[Bin].second - Mean) * 0.5);
+   }
+}
+
+void Transcribe(vector<pair<double, double>> V, TGraphAsymmErrors *G)
+{
+   if(G == NULL)
+      return;
+
+   for(int i = 0; i < SYSBIN; i++)
+   {
+      double X = GetSysBinCenter(i);
+      int Bin = i;
+
+      double Mean = (V[Bin].first + V[Bin].second) / 2;
+
+      G->SetPoint(i, X, Mean);
+      G->SetPointError(i, 0, 0, (Mean - V[Bin].first), (V[Bin].second - Mean));
    }
 }
 
@@ -542,6 +560,19 @@ vector<pair<double, double>> QuadraticError(PdfFileHelper &PdfFile,
 
       int Location = Size * P;
       Result[iS] = pair<double, double>(-BinResults[iS][Location], BinResults[iS][Location]);
+   }
+
+   if(FunctionType == TypeExponential)
+   {
+      for(int iS = SYSBIN - 1; iS > 0; iS--)
+      {
+         if(Result[iS-1].second < Result[iS].second)
+         {
+            double Size = Result[iS].second;
+            Result[iS-1].first = -Size;
+            Result[iS-1].second = Size;
+         }
+      }
    }
 
    return Result;

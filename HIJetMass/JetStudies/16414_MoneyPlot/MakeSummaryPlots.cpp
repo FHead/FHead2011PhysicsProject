@@ -54,7 +54,7 @@ int main()
       {
          if(iMC == 0)
          {
-            FileName = "Graphs_SD" + SD + "_DataPicked.root";
+            FileName = "Graphs_SD" + SD + "_DataCentered.root";
             OutputBase = "Plots/DataClosure" + SD;
             IsMC = false;
          }
@@ -72,7 +72,6 @@ int main()
          double PTBinEdge[] = {120, 140, 160, 180, 200, 300, 500};
          double CBinEdge[] = {0, 10, 30, 50, 80, 100};
 
-         /*
          for(int i = 1; i < 5; i++)
          {
             vector<TGraphAsymmErrors *> Gs(16);
@@ -228,7 +227,6 @@ int main()
 
             DoGraph(Gs, OutputBase + Form("_0_PTPTPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_PTPT, SD);
          }
-         */
 
          for(int i = 0; i < 5; i++)
          {
@@ -537,6 +535,8 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    {
       WorldMin = 0;
       WorldMax = 25;
+
+      RatioMax = 2.749;
    }
    if(Type == TYPE_MASS0 && SD == "0" && LogMass == false)
    {
@@ -666,18 +666,33 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    TGraph GData, GSmear;
    GData.SetLineColor(G1Data->GetLineColor());
+   GData.SetLineWidth(G1Data->GetLineWidth());
+   GData.SetMarkerColor(G1Data->GetMarkerColor());
+   GData.SetMarkerStyle(G1Data->GetMarkerStyle());
+   GData.SetMarkerSize(G1Data->GetMarkerSize());
+   if(G1DataSys)   GData.SetFillStyle(G1DataSys->GetFillStyle());
    if(G1DataSys)   GData.SetFillColor(G1DataSys->GetFillColor());
    else            GData.SetFillColor(kWhite);
    GSmear.SetLineColor(G1Smear->GetLineColor());
+   GSmear.SetLineWidth(G1Smear->GetLineWidth());
+   GSmear.SetMarkerColor(G1Smear->GetMarkerColor());
+   GSmear.SetMarkerStyle(G1Smear->GetMarkerStyle());
+   GSmear.SetMarkerSize(G1Smear->GetMarkerSize());
+   if(G1SmearSys)  GSmear.SetFillStyle(G1SmearSys->GetFillStyle());
    if(G1SmearSys)  GSmear.SetFillColor(G1SmearSys->GetFillColor());
    else            GSmear.SetFillColor(kWhite);
 
+   if(GData.GetFillStyle() == 3454)
+      GData.SetFillStyle(3154);
+   if(GSmear.GetFillStyle() == 3545)
+      GSmear.SetFillStyle(3145);
+
    Pad1->cd();
    HWorld.Draw("");
-   if(G1SmearSys)   G1SmearSys->Draw("2");
    if(G1DataSys)    G1DataSys->Draw("2");
-   G1Smear->Draw("p");
+   if(G1SmearSys)   G1SmearSys->Draw("2");
    G1Data->Draw("p");
+   G1Smear->Draw("p");
    HWorld.Draw("axis same");
    if(Type == TYPE_MASS && LogMass == true)
       Pad1->SetLogy();
@@ -689,10 +704,10 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    Pad2->cd();
    HWorld.Draw("");
-   if(G2SmearSys)   G2SmearSys->Draw("2");
    if(G2DataSys)    G2DataSys->Draw("2");
-   G2Smear->Draw("p");
+   if(G2SmearSys)   G2SmearSys->Draw("2");
    G2Data->Draw("p");
+   G2Smear->Draw("p");
    HWorld.Draw("axis same");
    if(Type == TYPE_MASS && LogMass == true)
       Pad2->SetLogy();
@@ -704,10 +719,10 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    Pad3->cd();
    HWorld.Draw("");
-   if(G3SmearSys)   G3SmearSys->Draw("2");
    if(G3DataSys)    G3DataSys->Draw("2");
-   G3Smear->Draw("p");
+   if(G3SmearSys)   G3SmearSys->Draw("2");
    G3Data->Draw("p");
+   G3Smear->Draw("p");
    HWorld.Draw("axis same");
    if(Type == TYPE_MASS && LogMass == true)
       Pad3->SetLogy();
@@ -719,10 +734,10 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    Pad4->cd();
    HWorld.Draw("");
-   if(G4SmearSys)   G4SmearSys->Draw("2");
    if(G4DataSys)    G4DataSys->Draw("2");
-   G4Smear->Draw("p");
+   if(G4SmearSys)   G4SmearSys->Draw("2");
    G4Data->Draw("p");
+   G4Smear->Draw("p");
    HWorld.Draw("axis same");
    if(Type == TYPE_MASS && LogMass == true)
       Pad4->SetLogy();
@@ -816,9 +831,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(SD Mass/PT)}");
    if(Type == TYPE_MASS)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T})}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T,jet})}");
    if(Type == TYPE_MASS0)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T})}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T,jet})}");
    if(Type == TYPE_ZG)
       LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d z_{g}}");
    if(Type == TYPE_DR)
@@ -826,7 +841,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #DeltaR}");
    if(Type == TYPE_PTPT)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(p_{T,g} / p_{T})}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(p_{T,g} / p_{T,jet})}");
    LeftAxis1.SetTextFont(42);
    LeftAxis1.SetLabelFont(42);
    LeftAxis1.CenterTitle(true);
@@ -860,9 +875,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis1.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis1.SetTitle("M_{g} / p_{T}");
+      BottomAxis1.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis1.SetTitle("M_{g} / p_{T}");
+      BottomAxis1.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_ZG)
       BottomAxis1.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -870,7 +885,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis1.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis1.SetTitle("p_{T,g} / p_{T}");
+      BottomAxis1.SetTitle("p_{T,g} / p_{T,jet}");
    BottomAxis1.SetTextFont(42);
    BottomAxis1.SetLabelFont(42);
    BottomAxis1.CenterTitle(true);
@@ -883,9 +898,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis2.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis2.SetTitle("M_{g} / p_{T}");
+      BottomAxis2.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis2.SetTitle("M_{g} / p_{T}");
+      BottomAxis2.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_ZG)
       BottomAxis2.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -893,7 +908,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis2.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis2.SetTitle("p_{T,g} / p_{T}");
+      BottomAxis2.SetTitle("p_{T,g} / p_{T,jet}");
    BottomAxis2.SetTextFont(42);
    BottomAxis2.SetLabelFont(42);
    BottomAxis2.CenterTitle(true);
@@ -906,9 +921,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis3.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis3.SetTitle("M_{g} / p_{T}");
+      BottomAxis3.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis3.SetTitle("M_{g} / p_{T}");
+      BottomAxis3.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_ZG)
       BottomAxis3.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -916,7 +931,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis3.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis3.SetTitle("p_{T,g} / p_{T}");
+      BottomAxis3.SetTitle("p_{T,g} / p_{T,jet}");
    BottomAxis3.SetTextFont(42);
    BottomAxis3.SetLabelFont(42);
    BottomAxis3.CenterTitle(true);
@@ -929,9 +944,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis4.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis4.SetTitle("M_{g} / p_{T}");
+      BottomAxis4.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis4.SetTitle("M_{g} / p_{T}");
+      BottomAxis4.SetTitle("M_{g} / p_{T,jet}");
    if(Type == TYPE_ZG)
       BottomAxis4.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -939,7 +954,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis4.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis4.SetTitle("p_{T,g} / p_{T}");
+      BottomAxis4.SetTitle("p_{T,g} / p_{T,jet}");
    BottomAxis4.SetTextFont(42);
    BottomAxis4.SetLabelFont(42);
    BottomAxis4.CenterTitle(true);
@@ -957,7 +972,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    Latex.SetTextAlign(30);
    if(IsMC == false)
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp 28 pb^{-1}");
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp 27.4 pb^{-1}");
    else
       Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, Simulation");
 
@@ -966,11 +981,11 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    Legend.SetTextSize(0.035);
    Legend.SetFillStyle(0);
    Legend.SetBorderSize(0);
-   Legend.AddEntry(&GData, "PbPb", "lf");
+   Legend.AddEntry(&GData, "PbPb", "plf");
    if(OriginalPP == true)
-      Legend.AddEntry(&GSmear, "Original pp", "lf");
+      Legend.AddEntry(&GSmear, "Original pp", "plf");
    else
-      Legend.AddEntry(&GSmear, "Smeared pp", "lf");
+      Legend.AddEntry(&GSmear, "Smeared pp", "plf");
    Legend.Draw();
 
    Latex.SetTextAlign(33);
@@ -992,11 +1007,11 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(IsPT == true)
    {
       Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, Form("%.0f < p_{T,jet} < %.0f GeV", BinMin, BinMax));
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "|#eta| < 1.3");
+      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "|#eta_{jet}| < 1.3");
    }
    else
    {
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "|#eta| < 1.3");
+      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "|#eta_{jet}| < 1.3");
       Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, Form("Centrality: %.0f-%.0f%%", BinMin, BinMax));
    }
 
@@ -1031,28 +1046,43 @@ void GraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmError
 {
    if(G1 != NULL)
    {
-      G1->SetLineColor(kRed);
-      G1->SetMarkerColor(kRed);
+      // was kRed
+      G1->SetLineColor(kRed + 1);
+      G1->SetLineWidth(2);
+      G1->SetMarkerColor(kRed + 1);
+      G1->SetMarkerStyle(21);
+      G1->SetMarkerSize(5);
    }
 
    if(G2 != NULL)
    {
+      // was kMagenta - 9, 3454
       G2->SetLineWidth(0);
-      G2->SetFillStyle(3454);
-      G2->SetFillColor(kMagenta - 9);
+      G2->SetFillColor(kRed - 9);
+      G2->SetMarkerColor(kRed + 1);
+      G2->SetMarkerStyle(21);
+      G2->SetMarkerSize(5);
    }
 
    if(G3 != NULL)
    {
-      G3->SetLineColor(kBlue);
-      G3->SetMarkerColor(kBlue);
-      G3->SetLineWidth(1);
+      // was kBlue
+      G3->SetLineColor(kBlack);
+      G3->SetLineWidth(2);
+      G3->SetMarkerColor(kBlack);
+      G3->SetMarkerStyle(20);
+      G3->SetMarkerSize(5);
    }
 
    if(G4 != NULL)
    {
+      // was kCyan - 9
       G4->SetLineWidth(0);
-      G4->SetFillColor(kCyan - 9);
+      G4->SetFillStyle(3545);
+      G4->SetFillColor(kBlack);
+      G4->SetMarkerColor(kBlack);
+      G4->SetMarkerStyle(20);
+      G4->SetMarkerSize(5);
    }
 }
 
@@ -1121,13 +1151,19 @@ void RatioGraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2)
    if(G1 != NULL)
    {
       G1->SetLineColor(kBlack);
+      G1->SetLineWidth(2);
       G1->SetMarkerColor(kBlack);
+      G1->SetMarkerStyle(20);
+      G1->SetMarkerSize(5);
    }
 
    if(G2 != NULL)
    {
+      // was kBlue - 9
       G2->SetLineWidth(0);
-      G2->SetFillColor(kBlue - 9);
+      G2->SetFillColor(kGray);
+      G2->SetMarkerStyle(20);
+      G2->SetMarkerSize(5);
    }
 }
 

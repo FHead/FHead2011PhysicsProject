@@ -25,30 +25,32 @@
 
 # ./RunGraph 0 N 60 SD0_DataPrescale_60_Alternative; mv JESCheck.pdf JESDataPrescale60.pdf
 # ./RunGraph 7 N 60 SD7_DataPrescale_60_Alternative; mv JESCheck.pdf JESDataPrescale60.pdf
-./RunGraph 0 Y 0 SD0_MC_Alternative
-./RunGraph 7 Y 0 SD7_MC_Alternative
+# ./RunGraph 0 Y 0 SD0_MC_Alternative
+# ./RunGraph 7 Y 0 SD7_MC_Alternative
 
 # CompileRootMacro PickGraphs.cpp RunPickGraph
 # 
 # ./RunPickGraph 0
 # ./RunPickGraph 7
 
-# cp Graphs_SD0_Data.root Graphs_SD0_DataPicked.root
-# cp Graphs_SD7_Data.root Graphs_SD7_DataPicked.root
-
-# CompileRootMacro MakeSummaryPlots.cpp RunSummary
+# CompileRootMacro CenterGraphs.cpp RunCenterGraph
 # 
-# ./RunSummary
- 
-CompileRootMacro MakeSummaryPlotsAlternative.cpp RunSummaryAlternative
+# ./RunCenterGraph 0
+# ./RunCenterGraph 7
 
-./RunSummaryAlternative
+CompileRootMacro MakeSummaryPlotsPostApproval.cpp RunSummary
+
+./RunSummary
+ 
+# CompileRootMacro MakeSummaryPlotsAlternative.cpp RunSummaryAlternative
+# 
+# ./RunSummaryAlternative
+
+mkdir -p PDFPlots
+
+mv Plots/*pdf PDFPlots/
 
 exit
-
-# mkdir -p PDFPlots
-# 
-# mv Plots/*pdf PDFPlots/
 
 # CompileRootMacro MakeAverageMassPlots.cpp RunAverage
 # 

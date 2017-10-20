@@ -1,0 +1,33 @@
+imax 4 number of bins
+jmax 1 number of processes minus 1
+kmax * number of nuisance parameters
+---------------------------------------------------------------------------------------
+shapes model      MethodT_50_0_Data  CombineWorkspace.root W:MethodT_50_0_Data_Model
+shapes background MethodT_50_0_Data  CombineWorkspace.root W:MethodT_50_0_Data_BackgroundModel
+shapes data_obs   MethodT_50_0_Data  CombineWorkspace.root W:MethodT_50_0_Data
+shapes model      MethodT_75_0_Data  CombineWorkspace.root W:MethodT_75_0_Data_Model
+shapes background MethodT_75_0_Data  CombineWorkspace.root W:MethodT_75_0_Data_BackgroundModel
+shapes data_obs   MethodT_75_0_Data  CombineWorkspace.root W:MethodT_75_0_Data
+shapes model      MethodT_50_0_MC    CombineWorkspace.root W:MethodT_50_0_MC_Model
+shapes background MethodT_50_0_MC    CombineWorkspace.root W:MethodT_50_0_MC_BackgroundModel
+shapes data_obs   MethodT_50_0_MC    CombineWorkspace.root W:MethodT_50_0_MC
+shapes model      MethodT_75_0_MC    CombineWorkspace.root W:MethodT_75_0_MC_Model
+shapes background MethodT_75_0_MC    CombineWorkspace.root W:MethodT_75_0_MC_BackgroundModel
+shapes data_obs   MethodT_75_0_MC    CombineWorkspace.root W:MethodT_75_0_MC
+---------------------------------------------------------------------------------------
+bin   MethodT_50_0_Data MethodT_75_0_Data MethodT_50_0_MC MethodT_75_0_MC
+observation -1 -1 -1 -1
+---------------------------------------------------------------------------------------
+bin   MethodT_50_0_Data MethodT_50_0_Data MethodT_75_0_Data MethodT_75_0_Data MethodT_50_0_MC MethodT_50_0_MC MethodT_75_0_MC MethodT_75_0_MC
+process model background model background model background model background
+process 0 1 0 1 0 1 0 1
+rate 1000 1 1000 1 1000 1 1000 1
+---------------------------------------------------------------------------------------
+MethodT_50_0_MC_Mean      param   1.0 1.0
+MethodT_75_0_MC_Mean      param   1.0 1.0
+MethodT_50_0_Data_Sigma   param   0.2 0.2
+MethodT_75_0_Data_Sigma   param   0.2 0.2
+MethodT_50_0_MC_Sigma     param   0.2 0.2
+MethodT_75_0_MC_Sigma     param   0.2 0.2
+
+

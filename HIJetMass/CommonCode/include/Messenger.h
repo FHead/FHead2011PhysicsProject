@@ -47,6 +47,14 @@ public:
    std::vector<int> *PUCount;
    std::vector<int> *PUBX;
    std::vector<float> *PUTrue;
+   int PFJetCount;
+   std::vector<float> *PFJetPT;
+   std::vector<float> *PFJetEta;
+   std::vector<float> *PFJetPhi;
+   int CaloJetCount;
+   std::vector<float> *CaloJetPT;
+   std::vector<float> *CaloJetEta;
+   std::vector<float> *CaloJetPhi;
 public:
    GGTreeMessenger(TFile &File, std::string TreeName = "ggHiNtuplizer/EventTree");
    GGTreeMessenger(TFile *File, std::string TreeName = "ggHiNtuplizer/EventTree");

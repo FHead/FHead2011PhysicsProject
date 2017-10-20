@@ -109,6 +109,10 @@ bool GGTreeMessenger::Initialize()
    if(Tree == NULL)
       return false;
 
+   PUCount = NULL;
+   PUBX = NULL;
+   PUTrue = NULL;
+
    if(Tree->GetBranch("nPUInfo"))   Tree->SetBranchAddress("nPUInfo", &NPUInfo);
    else                             NPUInfo = 0;
    if(Tree->GetBranch("nPU"))       Tree->SetBranchAddress("nPU", &PUCount);
@@ -117,6 +121,30 @@ bool GGTreeMessenger::Initialize()
    else                             PUBX = &EmptyVectors::EmptyVectorInt;
    if(Tree->GetBranch("puTrue"))    Tree->SetBranchAddress("puTrue", &PUTrue);
    else                             PUTrue = &EmptyVectors::EmptyVectorFloat;
+   
+   PFJetPT = NULL;
+   PFJetEta = NULL;
+   PFJetPhi = NULL;
+   CaloJetPT = NULL;
+   CaloJetEta = NULL;
+   CaloJetPhi = NULL;
+
+   if(Tree->GetBranch("nPFJt"))         Tree->SetBranchAddress("nPFJt", &PFJetCount);
+   else                                 PFJetCount = 0;
+   if(Tree->GetBranch("pfJtPt"))        Tree->SetBranchAddress("pfJtPt", &PFJetPT);
+   else                                 PFJetPT = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("pfJtEta"))       Tree->SetBranchAddress("pfJtEta", &PFJetEta);
+   else                                 PFJetEta = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("pfJtPhi"))       Tree->SetBranchAddress("pfJtPhi", &PFJetPhi);
+   else                                 PFJetPhi = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("nCaloJt"))       Tree->SetBranchAddress("nCaloJt", &CaloJetCount);
+   else                                 CaloJetCount = 0;
+   if(Tree->GetBranch("caloJtPt"))      Tree->SetBranchAddress("caloJtPt", &CaloJetPT);
+   else                                 CaloJetPT = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("caloJtEta"))     Tree->SetBranchAddress("caloJtEta", &CaloJetEta);
+   else                                 CaloJetEta = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("caloJtPhi"))     Tree->SetBranchAddress("caloJtPhi", &CaloJetPhi);
+   else                                 CaloJetPhi = &EmptyVectors::EmptyVectorFloat;
 
    return true;
 }
@@ -840,6 +868,33 @@ void TriggerTreeMessenger::FillTriggerNames()
    Name.push_back("HLT_PASinglePhoton15_Eta3p1_PAL3Mu5_v3");
    Name.push_back("HLT_PASinglePhoton20_Eta3p1_PAL3Mu3_v3");
    Name.push_back("HLT_PASinglePhoton20_Eta3p1_PAL3Mu5_v3");
+
+   // PP Reference Runs - v4
+   Name.push_back("HLT_AK4PFJet30_v15");
+   Name.push_back("HLT_AK4PFJet50_v15");
+   Name.push_back("HLT_AK4PFJet80_v15");
+   Name.push_back("HLT_AK4PFJet100_v15");
+   Name.push_back("HLT_AK4PFJet120_v14");
+
+   Name.push_back("HLT_AK4CaloJet30_v10");
+   Name.push_back("HLT_AK4CaloJet40_v9");
+   Name.push_back("HLT_AK4CaloJet50_v9");
+   Name.push_back("HLT_AK4CaloJet80_v9");
+   Name.push_back("HLT_AK4CaloJet100_v9");
+   Name.push_back("HLT_AK4CaloJet120_v8");
+
+   // pp reference runs - v6
+   Name.push_back("HLT_L1SingleJet20FWD");
+   Name.push_back("HLT_L1SingleJet35FWD");
+   Name.push_back("HLT_L1SingleJet40FWD");
+   Name.push_back("HLT_L1SingleJet50FWD");
+   Name.push_back("HLT_L1SingleJet60FWD");
+   
+   Name.push_back("HLT_AK4PFJet30FWD_v14");
+   Name.push_back("HLT_AK4PFJet50FWD_v14");
+   Name.push_back("HLT_AK4PFJet60FWD_v14");
+   Name.push_back("HLT_AK4PFJet70FWD_v14");
+   Name.push_back("HLT_AK4PFJet80FWD_v14");
 
    std::sort(Name.begin(), Name.end());
    std::vector<std::string>::iterator iter = std::unique(Name.begin(), Name.end());

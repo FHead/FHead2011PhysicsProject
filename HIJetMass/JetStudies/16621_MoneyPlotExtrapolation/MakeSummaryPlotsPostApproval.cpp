@@ -14,7 +14,7 @@ using namespace std;
 
 #define MASSBINCOUNT 17
 #define MASS0BINCOUNT 18
-#define ZGBINCOUNT 30
+#define ZGBINCOUNT 15
 #define DRBINCOUNT 15
 #define PTPTBINCOUNT 50
 
@@ -40,7 +40,8 @@ void GraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmError
 void GraphTidying(TGraphAsymmErrors *G);
 void Division(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmErrors &GRatio, int BinCount);
 void RatioGraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2);
-TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, string Label);
+TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, string Label, int Style = kSolid);
+TheoryRatio GetRatio(string FileName, string Name, int Color, string Label, int Style = kSolid);
 
 class TheoryRatio
 {
@@ -49,11 +50,15 @@ public:
    string Label;
 public:
    TheoryRatio() {}
-   TheoryRatio(TH1D *h1, TH1D *h2, int color, string label)
+   TheoryRatio(TH1D *h1, TH1D *h2, int color, string label, int style = kSolid)
    {
-      Initialize(h1, h2, color, label);
+      Initialize(h1, h2, color, label, style);
    }
-   void Initialize(TH1D *h1, TH1D *h2, int color, string label)
+   TheoryRatio(TGraphAsymmErrors *g, int color, string label, int style = kSolid)
+   {
+      Initialize(g, color, label, style);
+   }
+   void Initialize(TH1D *h1, TH1D *h2, int color, string label, int style = kSolid)
    {
       if(h1 == NULL || h2 == NULL)
          return;
@@ -78,10 +83,40 @@ public:
       Label = label;
 
       G.SetLineColor(color);
+      G.SetLineStyle(style);
       G.SetMarkerColor(color);
       G.SetMarkerStyle(21);
       G.SetMarkerSize(5);
-      G.SetLineWidth(2);
+      G.SetLineWidth(3);
+   }
+   void Initialize(TGraphAsymmErrors *g, int color, string label, int style = kSolid)
+   {
+      if(g == NULL)
+         return;
+
+      for(int i = 0; i < g->GetN(); i++)
+      {
+         double x, y;
+         double ex1, ex2, ey1, ey2;
+
+         g->GetPoint(i, x, y);
+         ex1 = g->GetErrorXlow(i);
+         ex2 = g->GetErrorXhigh(i);
+         ey1 = g->GetErrorYlow(i);
+         ey2 = g->GetErrorYhigh(i);
+
+         G.SetPoint(i, x, y);
+         G.SetPointError(i, ex1, ex2, ey1, ey2);
+      }
+
+      Label = label;
+
+      G.SetLineColor(color);
+      G.SetLineStyle(style);
+      G.SetMarkerColor(color);
+      G.SetMarkerStyle(21);
+      G.SetMarkerSize(5);
+      G.SetLineWidth(3);
    }
 };
 
@@ -101,9 +136,9 @@ int main()
          SD = "7";
 
       TheoryRatio JewelOnPT0 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT0", "JewelVacSB_C0PT0",
-         kGreen, "Jewel (recoil on)");
+            kGreen, "Jewel (recoil on)");
       TheoryRatio JewelOnPT1 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT1", "JewelVacSB_C0PT1",
-         kGreen, "Jewel (recoil on)");
+            kGreen, "Jewel (recoil on)");
       TheoryRatio JewelOnPT2 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT2", "JewelVacSB_C0PT2",
          kGreen, "Jewel (recoil on)");
       TheoryRatio JewelOnPT3 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT3", "JewelVacSB_C0PT3",
@@ -136,6 +171,14 @@ int main()
          kBlue, "QPythia");
       TheoryRatio QPythiaPT5 = GetRatio("PickedPlots_SD" + SD + ".root", "QPythiaMedS_C0PT5", "QPythiaVacS_C0PT5",
          kBlue, "QPythia");
+
+      TheoryRatio ZGHTCEL = GetRatio("ZgGraphsHT.root", "grZgRatioHT_140_160_CEL", kGreen + 2, "HT (Coherent)", kDashed);
+      TheoryRatio ZGHTIEL = GetRatio("ZgGraphsHT.root", "grZgRatioHT_140_160_IEL", kGreen - 3, "HT (Incoherent)", kSolid);
+      TheoryRatio ZGBDMPS1 = GetRatio("ZgGraphsBDMPS.root", "grZgRatioBDMPS_140_160_qhat1", kRed, "BDMPS (#hat{q} = 1)", kSolid);
+      TheoryRatio ZGBDMPS2 = GetRatio("ZgGraphsBDMPS.root", "grZgRatioBDMPS_140_160_qhat2", kRed, "BDMPS (#hat{q} = 2)", kDashed);
+      TheoryRatio ZGSCET18 = GetRatio("ZgGraphsSCET.root", "grZgRatioSCET_140_160_g18", kOrange, "SCET (g = 1.8)", kSolid);
+      TheoryRatio ZGSCET22 = GetRatio("ZgGraphsSCET.root", "grZgRatioSCET_140_160_g22", kOrange + 2, "SCET (g = 2.2)", kDotted);
+      TheoryRatio ZGJEWEL = GetRatio("Zg_jewel_histos_PbPb.root", "grRatioCent0Pt3", kTeal, "JEWEL", kSolid);
 
       for(int iMC = 0; iMC < 2; iMC++)
       {
@@ -274,7 +317,26 @@ int main()
             Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_3_%d"   , i));
             Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_3_%d", i));
 
-            DoGraph(Gs, OutputBase + Form("_0_ZGPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD);
+            if(i == 1)
+            {
+               vector<TheoryRatio> Extra1;
+               vector<TheoryRatio> Extra2;
+               vector<TheoryRatio> Extra3;
+               vector<TheoryRatio> Extra4;
+
+               Extra4.push_back(ZGHTCEL);
+               Extra4.push_back(ZGHTIEL);
+               Extra4.push_back(ZGBDMPS1);
+               Extra4.push_back(ZGBDMPS2);
+               Extra4.push_back(ZGSCET18);
+               Extra4.push_back(ZGSCET22);
+               // Extra4.push_back(ZGJEWEL);
+               
+               DoGraph(Gs, OutputBase + Form("_0_ZGPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD,
+                  Extra1, Extra2, Extra3, Extra4);
+            }
+            else
+               DoGraph(Gs, OutputBase + Form("_0_ZGPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD);
 
             // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_0_%d"    , i));
             // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_0_%d" , i));
@@ -675,7 +737,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       WorldMin = 0;
       WorldMax = 30;
 
-      RatioMax = 4.999;
+      RatioMax = 5.999;
    }
    if(Type == TYPE_MASS0 && SD == "0" && LogMass == false)
    {
@@ -683,7 +745,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       WorldMax = 14.5;
 
       MassMax = 0.27;
-      RatioMax = 4.999;
+      RatioMax = 5.999;
    }
    if(Type == TYPE_MASS0 && SD == "7" && LogMass == false)
    {
@@ -700,7 +762,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    if(Type == TYPE_ZG && SD == "0")
    {
-      WorldMin = 1e-3;
+      WorldMin = 0;
       WorldMax = 15;
       MassMin = 0;
       MassMax = 0.5;
@@ -709,7 +771,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    }
    if(Type == TYPE_ZG && SD == "7")
    {
-      WorldMin = 1e-3;
+      WorldMin = 0;
       WorldMax = 12;
       MassMin = 0;
       MassMax = 0.5;
@@ -928,7 +990,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(G4SmearSys)   G4RatioSys.Draw("2");
    if(Extra4.size() > 0)
       for(int i = 0; i < (int)Extra4.size(); i++)
-         Extra4[i].G.Draw("p");
+         Extra4[i].G.Draw("l");
    G4Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
@@ -1118,15 +1180,15 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    Latex.SetTextSize(0.06 * TextSizeFactor);
    Latex.SetTextAlign(10);
-   if(Type == TYPE_MASS || Type == TYPE_MASS0)
-      Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.005, "#font[62]{CMS}");
+   if(Type == TYPE_MASS || Type == TYPE_MASS0 || Type == TYPE_ZG)
+      Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.005, "#font[62]{CMS} #font[52]{Projection}");
    else                                                                                           
       Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.005, "#font[62]{CMS} #font[52]{Internal}");
 
    Latex.SetTextSize(0.035 * TextSizeFactor);
    Latex.SetTextAlign(30);
    if(IsMC == false)
-      Latex.DrawLatex((BorderWidth + PadWidth * 4) / TotalWidth, (BorderHeight + RatioHeight + PadHeight + 0.000) / TotalHeight, "PbPb 404 #mub^{-1} (5.02 TeV), pp 27.4 pb^{-1} (5.02 TeV)");
+      Latex.DrawLatex((BorderWidth + PadWidth * 4) / TotalWidth, (BorderHeight + RatioHeight + PadHeight + 0.000) / TotalHeight, "PbPb 10 nb^{-1} (5.02 TeV)");
    else
       Latex.DrawLatex((BorderWidth + PadWidth * 4) / TotalWidth, (BorderHeight + RatioHeight + PadHeight + 0.000) / TotalHeight, "Simulation (5.02 TeV)");
 
@@ -1159,6 +1221,17 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       for(int i = 0; i < (int)Extra1.size(); i++)
          Legend2.AddEntry(&Extra1[i].G, Extra1[i].Label.c_str(), "pl");
       Legend2.Draw();
+   }
+   TLegend Legend3((BorderWidth + PadWidth * 3.35) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.85) / TotalHeight, (BorderWidth + PadWidth * 3.80) / TotalWidth, (BorderHeight + RatioHeight + 0.35 * PadHeight) / TotalHeight);
+   Legend3.SetTextFont(42);
+   Legend3.SetTextSize(0.035 * TextSizeFactor);
+   Legend3.SetFillStyle(0);
+   Legend3.SetBorderSize(0);
+   if(Extra4.size() > 0)
+   {
+      for(int i = 0; i < (int)Extra4.size(); i++)
+         Legend3.AddEntry(&Extra4[i].G, Extra4[i].Label.c_str(), "l");
+      Legend3.Draw();
    }
 
    Latex.SetTextAlign(13);
@@ -1326,19 +1399,31 @@ void RatioGraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2)
    }
 }
 
-TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, string Label)
+TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, string Label, int Style)
 {
    TheoryRatio Result;
 
    TFile File(FileName.c_str());
 
-   Result.Initialize((TH1D *)File.Get(Name1.c_str()), (TH1D *)File.Get(Name2.c_str()), Color, Label);
+   Result.Initialize((TH1D *)File.Get(Name1.c_str()), (TH1D *)File.Get(Name2.c_str()), Color, Label, Style);
 
    File.Close();
 
    return Result;
 }
 
+TheoryRatio GetRatio(string FileName, string Name, int Color, string Label, int Style)
+{
+   TheoryRatio Result;
+
+   TFile File(FileName.c_str());
+
+   Result.Initialize((TGraphAsymmErrors *)File.Get(Name.c_str()), Color, Label, Style);
+
+   File.Close();
+
+   return Result;
+}
 
 
 

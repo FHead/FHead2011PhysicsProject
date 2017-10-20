@@ -12,9 +12,11 @@ using namespace std;
 #include "Code/DrawRandom.h"
 
 int main(int argc, char *argv[]);
-void ProjectionMass(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmErrors *GDataSys, TGraphAsymmErrors *GSmear, TGraphAsymmErrors *GSmearSys);
+void ProjectionMass(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmErrors *GDataSys, TGraphAsymmErrors *GSmear, TGraphAsymmErrors *GSmearSys, int SD);
 void ProjectionZG(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmErrors *GSmear);
 void Division(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmErrors &GRatio);
+void Renormalize(TGraphAsymmErrors *G);
+void FlatSystematics(TGraphAsymmErrors *G, TGraphAsymmErrors *GSys, double Percentage);
 
 int main(int argc, char *argv[])
 {
@@ -38,12 +40,14 @@ int main(int argc, char *argv[])
    {
       for(int j = 0; j < 6; j++)
       {
+         cout << "Starting to run CBin " << i << " PTBin " << j << endl;
+
          TGraphAsymmErrors *GData     = (TGraphAsymmErrors *)FInput.Get(Form("MassData_%d_%d", i, j));
          TGraphAsymmErrors *GSmear    = (TGraphAsymmErrors *)FInput.Get(Form("MassSmear_%d_%d", i, j));
          TGraphAsymmErrors *GDataSys  = (TGraphAsymmErrors *)FInput.Get(Form("MassDataSys_%d_%d", i, j));
          TGraphAsymmErrors *GSmearSys = (TGraphAsymmErrors *)FInput.Get(Form("MassSmearSys_%d_%d", i, j));
 
-         ProjectionMass(PdfFile, GData, GDataSys, GSmear, GSmearSys);
+         ProjectionMass(PdfFile, GData, GDataSys, GSmear, GSmearSys, SD);
 
          GData->Write();
          GSmear->Write();
@@ -55,7 +59,7 @@ int main(int argc, char *argv[])
          GDataSys  = (TGraphAsymmErrors *)FInput.Get(Form("MassDataSys0_%d_%d", i, j));
          GSmearSys = (TGraphAsymmErrors *)FInput.Get(Form("MassSmearSys0_%d_%d", i, j));
 
-         ProjectionMass(PdfFile, GData, GDataSys, GSmear, GSmearSys);
+         ProjectionMass(PdfFile, GData, GDataSys, GSmear, GSmearSys, SD);
 
          GData->Write();
          GSmear->Write();
@@ -67,16 +71,32 @@ int main(int argc, char *argv[])
 
          ProjectionZG(PdfFile, GData, GSmear);
 
+         GDataSys  = (TGraphAsymmErrors *)GData->Clone(Form("ZGDataSys_%d_%d", i, j));
+         GSmearSys = (TGraphAsymmErrors *)GSmear->Clone(Form("ZGSmearSys_%d_%d", i, j));
+
+         FlatSystematics(GData, GDataSys, 0.04);
+         FlatSystematics(GSmear, GSmearSys, 0.04);
+ 
          GData->Write();
          GSmear->Write();
+         GDataSys->Write();
+         GSmearSys->Write();
       
          GData     = (TGraphAsymmErrors *)FInput.Get(Form("ZGData0_%d_%d", i, j));
          GSmear    = (TGraphAsymmErrors *)FInput.Get(Form("ZGSmear0_%d_%d", i, j));
 
          ProjectionZG(PdfFile, GData, GSmear);
 
+         GDataSys  = (TGraphAsymmErrors *)GData->Clone(Form("ZGDataSys0_%d_%d", i, j));
+         GSmearSys = (TGraphAsymmErrors *)GSmear->Clone(Form("ZGSmearSys0_%d_%d", i, j));
+
+         FlatSystematics(GData, GDataSys, 0.04);
+         FlatSystematics(GSmear, GSmearSys, 0.04);
+         
          GData->Write();
          GSmear->Write();
+         GDataSys->Write();
+         GSmearSys->Write();
          
          ((TGraphAsymmErrors *)FInput.Get(Form("DRData_%d_%d", i, j)))->Write();
          ((TGraphAsymmErrors *)FInput.Get(Form("DRData0_%d_%d", i, j)))->Write();
@@ -98,7 +118,7 @@ int main(int argc, char *argv[])
    return 0;
 }
 
-void ProjectionMass(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmErrors *GDataSys, TGraphAsymmErrors *GSmear, TGraphAsymmErrors *GSmearSys)
+void ProjectionMass(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmErrors *GDataSys, TGraphAsymmErrors *GSmear, TGraphAsymmErrors *GSmearSys, int SD)
 {
    if(GData == NULL || GDataSys == NULL || GSmear == NULL || GSmearSys == NULL)
       return;
@@ -151,6 +171,9 @@ void ProjectionMass(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsym
    FRatio.SetParLimits(2, 0.00, 10000.00);
 
    GRatio.Fit(&FRatio, "NW", "", 0.00, 0.27);
+
+   if(SD == 7)
+      FRatio.SetParameter(0, FRatio.GetParameter(0) * 4);
    
    TH2D HWorld2("HWorld2", "Ratio & fit;M/PT;R", 100, 0.0, 0.30, 100, 0.0, 5.0);
    HWorld2.SetStats(0);
@@ -187,6 +210,9 @@ void ProjectionMass(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsym
       ey2 = GSmearSys->GetErrorYhigh(i);
       GSmearSys->SetPointError(i, ex1, ex2, ey1 / SysFactor, ey2 / SysFactor);
    }
+
+   Renormalize(GData);
+   Renormalize(GDataSys);
    
    HWorld.SetTitle("Post-projection");
 
@@ -207,7 +233,9 @@ void ProjectionZG(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmE
    if(GData->GetN() == 0 || GSmear->GetN() == 0)
       return;
 
-   if(string(GData->GetName()) == "ZGData_0_1" || string(GData->GetName()) == "ZGData0_0_1")
+   string Name = GData->GetName();
+
+   if(Name == "ZGData_0_1" || Name == "ZGData0_0_1")
    {
       // do Marta trigger correction
 
@@ -245,7 +273,18 @@ void ProjectionZG(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmE
 
    TF1 FRatio("FRatio", "expo+[2]");
 
-   GRatio.Fit(&FRatio, "N", "", 0.00, 0.50);
+   if(Name.substr(0, 9) == "ZGData_3_" || Name.substr(0, 10) == "ZGData0_3_")
+      FRatio.SetParameters(0, 0, 0);
+   else
+   {
+      GRatio.Fit(&FRatio, "N", "", 0.00, 0.50);
+      if(Name.substr(0, 9) == "ZGData_2_" || Name.substr(0, 10) == "ZGData0_2_")
+         FRatio.SetParameter(2, FRatio.GetParameter(2) * 2);
+      if(Name.substr(0, 9) == "ZGData_1_" || Name.substr(0, 10) == "ZGData0_1_")
+         FRatio.SetParameter(2, FRatio.GetParameter(2) * 1.5);
+      if(Name.substr(0, 10) == "ZGData_0_4" || Name.substr(0, 11) == "ZGData0_0_4")
+         FRatio.SetParameter(2, FRatio.GetParameter(2) * 1.25);
+   }
 
    TH2D HWorld2("HWorld2", "Ratio & fit;ZG;R", 100, 0.0, 0.50, 100, 0.0, 2.0);
    HWorld2.SetStats(0);
@@ -273,6 +312,8 @@ void ProjectionZG(PdfFileHelper &PdfFile, TGraphAsymmErrors *GData, TGraphAsymmE
       GData->SetPoint(i, x, newy);
       GData->SetPointError(i, ex1, ex2, ey1 / StatFactor, ey2 / StatFactor);
    }
+
+   Renormalize(GData);
    
    HWorld.SetTitle("Post-projection");
 
@@ -326,7 +367,69 @@ void Division(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmErrors &G
    GRatio.SetName(Form("Ratio_%s_%s", G1->GetName(), G2->GetName()));
 }
 
+void Renormalize(TGraphAsymmErrors *G)
+{
+   if(G == NULL)
+      return;
 
+   int N = G->GetN();
+
+   double Integral = 0;
+   for(int i = 0; i < N; i++)
+   {
+      double X, Y, EX1, EX2, EY1, EY2;
+      G->GetPoint(i, X, Y);
+      EX1 = G->GetErrorXlow(i);
+      EX2 = G->GetErrorXhigh(i);
+      EY1 = G->GetErrorYlow(i);
+      EY2 = G->GetErrorYhigh(i);
+
+      if(X != X || Y != Y || EX1 != EX1 || EX2 != EX2)
+         continue;
+
+      double BinSize = EX2 + EX1;
+      Integral = Integral + Y * BinSize;
+   }
+
+   cout << "INTEGRAL " << G->GetName() << " " << Integral << endl;
+
+   for(int i = 0; i < N; i++)
+   {
+      double X, Y, EX1, EX2, EY1, EY2;
+      G->GetPoint(i, X, Y);
+      EX1 = G->GetErrorXlow(i);
+      EX2 = G->GetErrorXhigh(i);
+      EY1 = G->GetErrorYlow(i);
+      EY2 = G->GetErrorYhigh(i);
+
+      if(X != X || Y != Y)
+         continue;
+
+      G->SetPoint(i, X, Y / Integral);
+      // G->SetPointError(i, EX1, EX2, EY1 / Integral, EY2 / Integral);
+   }
+}
+
+void FlatSystematics(TGraphAsymmErrors *G, TGraphAsymmErrors *GSys, double Percentage)
+{
+   if(G == NULL || GSys == NULL)
+      return;
+
+   int N = G->GetN();
+   for(int i = 0; i < N; i++)
+   {
+      double X, Y, EX1, EX2;
+      G->GetPoint(i, X, Y);
+      EX1 = G->GetErrorXlow(i);
+      EX2 = G->GetErrorXhigh(i);
+
+      if(X != X || Y != Y)
+         continue;
+
+      GSys->SetPoint(i, X, Y);
+      GSys->SetPointError(i, EX1, EX2, Y * Percentage, Y * Percentage);
+   }
+}
 
 
 

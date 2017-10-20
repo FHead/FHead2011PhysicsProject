@@ -10,6 +10,9 @@ using namespace std;
 #include "TObject.h"
 #include "TClass.h"
 
+int main(int argc, char *argv[]);
+void ClearNaN(TGraphAsymmErrors *G);
+
 int main(int argc, char *argv[])
 {
    if(argc != 2)
@@ -59,6 +62,8 @@ int main(int argc, char *argv[])
             G->SetPointEXhigh(i, (xl + xr) / 2);
          }
 
+         ClearNaN(G);
+
          G->Clone(G->GetName())->Write();
       }
       else   // otherwise just copy them to the new file
@@ -72,6 +77,26 @@ int main(int argc, char *argv[])
    return 0;
 }
 
+void ClearNaN(TGraphAsymmErrors *G)
+{
+   for(int i = 0; i < G->GetN(); i++)
+   {
+      double x, y;
+      double xl, xr, yl, yr;
+
+      G->GetPoint(i, x, y);
+      xl = G->GetErrorXlow(i);
+      xr = G->GetErrorXhigh(i);
+      yl = G->GetErrorYlow(i);
+      yr = G->GetErrorYhigh(i);
+
+      if(x != x || y != y || xl != xl || xr != xr || yl != yl || yr != yr)
+      {
+         G->SetPoint(i, x, -1);
+         G->SetPointError(i, 0, 0, 1000, 1000);
+      }
+   }
+}
 
 
 

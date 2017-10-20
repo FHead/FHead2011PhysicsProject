@@ -373,10 +373,12 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    double Border = 350;
    double PadWidth = 1000;
    double PadHeight = 1000;
-   double RatioHeight = 500;
+   double RatioHeight = 1000;
 
    double TotalHeight = RatioHeight + PadHeight + Border * 2;
    double TotalWidth = PadWidth * 4 + Border * 2;
+
+   double TextSizeFactor = (500 + 1000 + 350 * 2) / TotalHeight;
 
    double PadLowY  = (Border + RatioHeight) / TotalHeight;
    double PadHighY = (Border + RatioHeight + PadHeight) / TotalHeight;
@@ -386,18 +388,18 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    double WorldMax = 500;
    double MassMin = 0;
    double MassMax = 0.26;
-   double RatioMin = 0.5000;
-   double RatioMax = 1.4999;
+   double RatioMin = 0.0000;
+   double RatioMax = 1.9999;
 
    if(Type == TYPE_MASS && SD == "0" && LogMass == false)
    {
       WorldMin = 0;
-      WorldMax = 18;
+      WorldMax = 22;
    }
    if(Type == TYPE_MASS && SD == "7" && LogMass == false)
    {
       WorldMin = 0;
-      WorldMax = 25;
+      WorldMax = 35;
    }
    if(Type == TYPE_MASS0 && SD == "0" && LogMass == false)
    {
@@ -713,9 +715,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(SD Mass/PT)}");
    if(Type == TYPE_MASS)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T,jet})}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T}^{jet})}");
    if(Type == TYPE_MASS0)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T,jet})}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(M_{g} / p_{T}^{jet})}");
    if(Type == TYPE_ZG)
       LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d z_{g}}");
    if(Type == TYPE_DR)
@@ -723,7 +725,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d #DeltaR}");
    if(Type == TYPE_PTPT)
-      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(p_{T,g} / p_{T,jet})}");
+      LeftAxis1.SetTitle("#frac{1}{N} #frac{dN}{d(p_{T,g} / p_{T}^{jet})}");
    LeftAxis1.SetTextFont(42);
    LeftAxis1.SetLabelFont(42);
    LeftAxis1.CenterTitle(true);
@@ -754,9 +756,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis1.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis1.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis1.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis1.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis1.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_ZG)
       BottomAxis1.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -764,7 +766,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis1.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis1.SetTitle("p_{T,g} / p_{T,jet}");
+      BottomAxis1.SetTitle("p_{T,g} / p_{T}^{jet}");
    BottomAxis1.SetTextFont(42);
    BottomAxis1.SetLabelFont(42);
    BottomAxis1.CenterTitle(true);
@@ -777,9 +779,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis2.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis2.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis2.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis2.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis2.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_ZG)
       BottomAxis2.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -787,7 +789,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis2.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis2.SetTitle("p_{T,g} / p_{T,jet}");
+      BottomAxis2.SetTitle("p_{T,g} / p_{T}^{jet}");
    BottomAxis2.SetTextFont(42);
    BottomAxis2.SetLabelFont(42);
    BottomAxis2.CenterTitle(true);
@@ -800,9 +802,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis3.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis3.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis3.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis3.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis3.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_ZG)
       BottomAxis3.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -810,7 +812,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis3.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis3.SetTitle("p_{T,g} / p_{T,jet}");
+      BottomAxis3.SetTitle("p_{T,g} / p_{T}^{jet}");
    BottomAxis3.SetTextFont(42);
    BottomAxis3.SetLabelFont(42);
    BottomAxis3.CenterTitle(true);
@@ -823,9 +825,9 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    // if(Type == TYPE_MASS)
    //    BottomAxis4.SetTitle("SD Mass / Jet PT");
    if(Type == TYPE_MASS)
-      BottomAxis4.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis4.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_MASS0)
-      BottomAxis4.SetTitle("M_{g} / p_{T,jet}");
+      BottomAxis4.SetTitle("M_{g} / p_{T}^{jet}");
    if(Type == TYPE_ZG)
       BottomAxis4.SetTitle("z_{g}");
    if(Type == TYPE_DR)
@@ -833,7 +835,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_DR0)
       BottomAxis4.SetTitle("#DeltaR");
    if(Type == TYPE_PTPT)
-      BottomAxis4.SetTitle("p_{T,g} / p_{T,jet}");
+      BottomAxis4.SetTitle("p_{T,g} / p_{T}^{jet}");
    BottomAxis4.SetTextFont(42);
    BottomAxis4.SetLabelFont(42);
    BottomAxis4.CenterTitle(true);
@@ -841,67 +843,56 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    TLatex Latex;
    Latex.SetTextFont(42);
-   Latex.SetTextSize(0.035);
+   Latex.SetTextSize(0.035 * TextSizeFactor);
 
+   Latex.SetTextSize(0.06 * TextSizeFactor);
    Latex.SetTextAlign(10);
    if(Type == TYPE_MASS || Type == TYPE_MASS0)
-      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "CMS Preliminary");
+      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight + 0.01, "#font[62]{CMS}");
    else
-      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "CMS Internal");
+      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight + 0.01, "#font[62]{CMS}");
 
+   Latex.SetTextSize(0.035 * TextSizeFactor);
    Latex.SetTextAlign(30);
    if(IsMC == false)
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, pp 27.4 pb^{-1}");
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "pp 27.4 pb^{-1} (5.02 TeV)");
    else
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, Simulation");
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "Simulation (5.02 TeV)");
 
-   TLegend Legend((Border + PadWidth * 0.40) / TotalWidth, (Border + RatioHeight + 0.45 * PadHeight) / TotalHeight,
-                  (Border + PadWidth * 0.85) / TotalWidth, (Border + RatioHeight + 0.85 * PadHeight) / TotalHeight);
+   Latex.SetTextSize(0.035 * TextSizeFactor);
+   Latex.SetTextAlign(30);
+   if(SD == "0")
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.1, #beta = 0.0, #DeltaR_{12} > 0.1");
+   else
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.5, #beta = 1.5, #DeltaR_{12} > 0.1");
+
+   TLegend Legend((Border + PadWidth * 0.25) / TotalWidth, (Border + RatioHeight + 0.45 * PadHeight) / TotalHeight,
+      (Border + PadWidth * 0.70) / TotalWidth, (Border + RatioHeight + 0.85 * PadHeight) / TotalHeight);
    Legend.SetTextFont(42);
-   Legend.SetTextSize(0.035);
+   Legend.SetTextSize(0.035 * TextSizeFactor);
    Legend.SetFillStyle(0);
    Legend.SetBorderSize(0);
    Legend.AddEntry(&GData, "Data", "lfp");
    Legend.AddEntry(&GMC1, "PYTHIA6 (Z2*)", "lp");
-   Legend.AddEntry(&GMC2, "HERWIG++", "lp");
-   Legend.AddEntry("", " (EE5C)", "");
+   Legend.AddEntry(&GMC2, "HERWIG++ (EE5C)", "lp");
+   Legend.AddEntry("", " ", "");
    Legend.Draw();
 
-   Latex.SetTextAlign(33);
+   Latex.SetTextAlign(13);
    if(IsPT == true)
    {
-      Latex.DrawLatex((Border + PadWidth * 0.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 0-10%");
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 10-30%");
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 30-50%");
-      Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 50-80%");
+      Latex.DrawLatex((Border + PadWidth * 0.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 0-10%");
+      Latex.DrawLatex((Border + PadWidth * 1.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 10-30%");
+      Latex.DrawLatex((Border + PadWidth * 2.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 30-50%");
+      Latex.DrawLatex((Border + PadWidth * 3.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 50-80%");
    }
    else
    {
-      Latex.DrawLatex((Border + PadWidth * 0.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "140 < p_{T,jet} < 160 GeV");
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "160 < p_{T,jet} < 180 GeV");
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "180 < p_{T,jet} < 200 GeV");
-      Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "200 < p_{T,jet} < 300 GeV");
+      Latex.DrawLatex((Border + PadWidth * 0.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "140 < p_{T}^{jet} < 160 GeV");
+      Latex.DrawLatex((Border + PadWidth * 1.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "160 < p_{T}^{jet} < 180 GeV");
+      Latex.DrawLatex((Border + PadWidth * 2.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "180 < p_{T}^{jet} < 200 GeV");
+      Latex.DrawLatex((Border + PadWidth * 3.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "200 < p_{T}^{jet} < 300 GeV");
    }
-
-   if(IsPT == true)
-   {
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, Form("%.0f < p_{T,jet} < %.0f GeV", BinMin, BinMax));
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "|#eta_{jet}| < 1.3");
-   }
-   else
-   {
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "|#eta_{jet}| < 1.3");
-      // Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, Form("Centrality: %.0f-%.0f%%", BinMin, BinMax));
-   }
-
-   Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "anti-kt R = 0.4");
-   Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "#DeltaR_{1,2} > 0.1");
-
-   Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "Soft drop");
-   if(SD == "7")
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "z_{cut} = 0.5, #beta = 1.5");
-   else
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "z_{cut} = 0.1, #beta = 0.0");
 
    Canvas.SaveAs(Form("%s.png", OutputBase.c_str()));
    Canvas.SaveAs(Form("%s.C"  , OutputBase.c_str()));

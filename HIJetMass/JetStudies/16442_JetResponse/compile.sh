@@ -6,3 +6,5 @@ CompileRootMacro MakePlainTree.cpp Run \
    -I../../CommonCode/include ../../CommonCode/library/*o \
    `$FASTJET/fastjet-config --cxxflags` `$FASTJET/fastjet-config --libs` \
    -I$FASTCONTRIB/include $FASTCONTRIB/lib/*.a
+
+CompileRootMacro ResolutionPlots.cpp ./a.out -I ../../CommonCode/include/ ../../CommonCode/library/BasicUtilities.o

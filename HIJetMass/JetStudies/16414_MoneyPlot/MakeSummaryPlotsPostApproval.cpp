@@ -75,157 +75,157 @@ int main()
          for(int i = 1; i < 5; i++)
          {
             vector<TGraphAsymmErrors *> Gs(16);
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_3_%d", i));
+            Gs[12]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_0_%d"    , i));
+            Gs[13]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_0_%d" , i));
+            Gs[14]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_0_%d"   , i));
+            Gs[15]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_0_%d", i));
+            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_1_%d"    , i));
+            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_1_%d" , i));
+            Gs[10]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_1_%d"   , i));
+            Gs[11]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_1_%d", i));
+            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_2_%d"    , i));
+            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_2_%d" , i));
+            Gs[6] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_2_%d"   , i));
+            Gs[7] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_2_%d", i));
+            Gs[0] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData_3_%d"    , i));
+            Gs[1] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys_3_%d" , i));
+            Gs[2] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear_3_%d"   , i));
+            Gs[3] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys_3_%d", i));
 
             DoGraph(Gs, OutputBase + Form("_PrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_MASS, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_3_%d", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_0_%d"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_0_%d" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_0_%d"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_0_%d", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_1_%d"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_1_%d" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_1_%d"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_1_%d", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_2_%d"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_2_%d" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_2_%d"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_2_%d", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_3_%d"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_3_%d" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_3_%d"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_3_%d", i));
 
-            DoGraph(Gs, OutputBase + Form("_ZGPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD);
+            // DoGraph(Gs, OutputBase + Form("_ZGPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_3_%d", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_0_%d"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_0_%d" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_0_%d"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_0_%d", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_1_%d"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_1_%d" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_1_%d"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_1_%d", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_2_%d"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_2_%d" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_2_%d"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_2_%d", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_3_%d"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_3_%d" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_3_%d"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_3_%d", i));
 
-            DoGraph(Gs, OutputBase + Form("_DRPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_DR, SD);
+            // DoGraph(Gs, OutputBase + Form("_DRPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_DR, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_3_%d", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_0_%d"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_0_%d" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_0_%d"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_0_%d", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_1_%d"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_1_%d" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_1_%d"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_1_%d", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_2_%d"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_2_%d" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_2_%d"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_2_%d", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_3_%d"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_3_%d" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_3_%d"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_3_%d", i));
 
-            DoGraph(Gs, OutputBase + Form("_PTPTPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_PTPT, SD);
+            // DoGraph(Gs, OutputBase + Form("_PTPTPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_PTPT, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_3_%d", i));
+            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_0_%d"    , i));
+            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_0_%d" , i));
+            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_0_%d"   , i));
+            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_0_%d", i));
+            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_1_%d"    , i));
+            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_1_%d" , i));
+            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_1_%d"   , i));
+            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_1_%d", i));
+            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_2_%d"    , i));
+            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_2_%d" , i));
+            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_2_%d"   , i));
+            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_2_%d", i));
+            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_3_%d"    , i));
+            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_3_%d" , i));
+            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmear0_3_%d"   , i));
+            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassSmearSys0_3_%d", i));
 
             DoGraph(Gs, OutputBase + Form("_0_PrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_MASS0, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_3_%d", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_0_%d"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_0_%d" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_0_%d"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_0_%d", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_1_%d"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_1_%d" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_1_%d"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_1_%d", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_2_%d"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_2_%d" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_2_%d"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_2_%d", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_3_%d"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_3_%d" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_3_%d"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_3_%d", i));
 
-            DoGraph(Gs, OutputBase + Form("_0_ZGPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD);
+            // DoGraph(Gs, OutputBase + Form("_0_ZGPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_ZG, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_3_%d", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_0_%d"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_0_%d" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_0_%d"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_0_%d", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_1_%d"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_1_%d" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_1_%d"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_1_%d", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_2_%d"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_2_%d" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_2_%d"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_2_%d", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_3_%d"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_3_%d" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_3_%d"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_3_%d", i));
 
-            DoGraph(Gs, OutputBase + Form("_0_DRPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_DR0, SD);
+            // DoGraph(Gs, OutputBase + Form("_0_DRPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_DR0, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_0_%d"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_0_%d" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_0_%d"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_0_%d", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_1_%d"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_1_%d" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_1_%d"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_1_%d", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_2_%d"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_2_%d" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_2_%d"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_2_%d", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_3_%d"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_3_%d" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_3_%d"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_3_%d", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_0_%d"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_0_%d" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_0_%d"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_0_%d", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_1_%d"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_1_%d" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_1_%d"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_1_%d", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_2_%d"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_2_%d" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_2_%d"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_2_%d", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_3_%d"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_3_%d" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_3_%d"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_3_%d", i));
 
-            DoGraph(Gs, OutputBase + Form("_0_PTPTPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_PTPT, SD);
+            // DoGraph(Gs, OutputBase + Form("_0_PTPTPrettyPlotPTBin%d", i), PTBinEdge[i], PTBinEdge[i+1], IsMC, true, TYPE_PTPT, SD);
          }
 
          for(int i = 0; i < 5; i++)
@@ -250,62 +250,62 @@ int main()
 
             DoGraph(Gs, OutputBase + Form("_PrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_MASS, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_1"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_1" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_1"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_1", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_2"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_2" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_2"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_2", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_3"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_3" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_3"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_3", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_4"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_4" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_4"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_4", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_1"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_1" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_1"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_1", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_2"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_2" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_2"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_2", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_3"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_3" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_3"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_3", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData_%d_4"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys_%d_4" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear_%d_4"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys_%d_4", i));
 
-            DoGraph(Gs, OutputBase + Form("_ZGPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_ZG, SD);
+            // DoGraph(Gs, OutputBase + Form("_ZGPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_ZG, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_1"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_1" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_1"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_1", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_2"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_2" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_2"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_2", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_3"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_3" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_3"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_3", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_4"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_4" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_4"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_4", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_1"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_1" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_1"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_1", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_2"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_2" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_2"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_2", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_3"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_3" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_3"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_3", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData_%d_4"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys_%d_4" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear_%d_4"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys_%d_4", i));
 
-            DoGraph(Gs, OutputBase + Form("_DRPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_DR, SD);
+            // DoGraph(Gs, OutputBase + Form("_DRPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_DR, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_1"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_1" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_1"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_1", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_2"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_2" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_2"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_2", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_3"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_3" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_3"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_3", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_4"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_4" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_4"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_4", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_1"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_1" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_1"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_1", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_2"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_2" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_2"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_2", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_3"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_3" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_3"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_3", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData_%d_4"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys_%d_4" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear_%d_4"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys_%d_4", i));
 
-            DoGraph(Gs, OutputBase + Form("_PTPTPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_PTPT, SD);
+            // DoGraph(Gs, OutputBase + Form("_PTPTPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_PTPT, SD);
 
             Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassData0_%d_1"    , i));
             Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("MassDataSys0_%d_1" , i));
@@ -326,62 +326,62 @@ int main()
 
             DoGraph(Gs, OutputBase + Form("_0_PrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_MASS0, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_1"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_1" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_1"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_1", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_2"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_2" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_2"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_2", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_3"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_3" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_3"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_3", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_4"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_4" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_4"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_4", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_1"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_1" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_1"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_1", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_2"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_2" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_2"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_2", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_3"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_3" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_3"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_3", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGData0_%d_4"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGDataSys0_%d_4" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmear0_%d_4"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("ZGSmearSys0_%d_4", i));
 
-            DoGraph(Gs, OutputBase + Form("_0_ZGPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_ZG, SD);
+            // DoGraph(Gs, OutputBase + Form("_0_ZGPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_ZG, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_1"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_1" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_1"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_1", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_2"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_2" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_2"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_2", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_3"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_3" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_3"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_3", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_4"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_4" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_4"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_4", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_1"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_1" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_1"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_1", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_2"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_2" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_2"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_2", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_3"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_3" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_3"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_3", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRData0_%d_4"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRDataSys0_%d_4" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmear0_%d_4"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("DRSmearSys0_%d_4", i));
 
-            DoGraph(Gs, OutputBase + Form("_0_DRPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_DR0, SD);
+            // DoGraph(Gs, OutputBase + Form("_0_DRPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_DR0, SD);
 
-            Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_1"    , i));
-            Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_1" , i));
-            Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_1"   , i));
-            Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_1", i));
-            Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_2"    , i));
-            Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_2" , i));
-            Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_2"   , i));
-            Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_2", i));
-            Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_3"    , i));
-            Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_3" , i));
-            Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_3"   , i));
-            Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_3", i));
-            Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_4"    , i));
-            Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_4" , i));
-            Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_4"   , i));
-            Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_4", i));
+            // Gs[0]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_1"    , i));
+            // Gs[1]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_1" , i));
+            // Gs[2]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_1"   , i));
+            // Gs[3]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_1", i));
+            // Gs[4]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_2"    , i));
+            // Gs[5]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_2" , i));
+            // Gs[6]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_2"   , i));
+            // Gs[7]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_2", i));
+            // Gs[8]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_3"    , i));
+            // Gs[9]  = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_3" , i));
+            // Gs[10] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_3"   , i));
+            // Gs[11] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_3", i));
+            // Gs[12] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTData0_%d_4"    , i));
+            // Gs[13] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTDataSys0_%d_4" , i));
+            // Gs[14] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmear0_%d_4"   , i));
+            // Gs[15] = (TGraphAsymmErrors *)FGraphs.Get(Form("PTPTSmearSys0_%d_4", i));
 
-            DoGraph(Gs, OutputBase + Form("_0_PTPTPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_PTPT, SD);
+            // DoGraph(Gs, OutputBase + Form("_0_PTPTPrettyPlotCentralityBin%d", i), CBinEdge[i], CBinEdge[i+1], IsMC, false, TYPE_PTPT, SD);
          }
 
          FGraphs.Close();
@@ -534,7 +534,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_MASS && SD == "7" && LogMass == false)
    {
       WorldMin = 0;
-      WorldMax = 25;
+      WorldMax = 30;
 
       RatioMax = 2.749;
    }
@@ -548,7 +548,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_MASS0 && SD == "7" && LogMass == false)
    {
       WorldMin = 0;
-      WorldMax = 25;
+      WorldMax = 30;
 
       MassMax = 0.27;
    }
@@ -964,17 +964,27 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.035);
 
+   Latex.SetTextSize(0.06);   
    Latex.SetTextAlign(10);
    if(Type == TYPE_MASS || Type == TYPE_MASS0)
-      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "CMS Preliminary");
+      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#font[62]{CMS} #font[52]{Preliminary}");
    else
-      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "CMS Internal");
+      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#font[62]{CMS} #font[52]{Internal}");
 
+   Latex.SetTextSize(0.035);
    Latex.SetTextAlign(30);
    if(IsMC == false)
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp 27.4 pb^{-1}");
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "PbPb 404 #mub^{-1} (5.02 TeV), pp 27.4 pb^{-1} (5.02 TeV)");
    else
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#sqrt{s_{NN}} = 5.02 TeV, Simulation");
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "Simulation (5.02 TeV)");
+
+   Latex.SetTextSize(0.035);
+   Latex.SetTextAlign(30);
+   if(SD == "0")
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.1, #beta = 0.0, #DeltaR_{12} > 0.1");
+   else
+      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.5, #beta = 1.5, #DeltaR_{12} > 0.1");
+
 
    TLegend Legend((Border + PadWidth * 0.40) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, (Border + PadWidth * 0.85) / TotalWidth, (Border + RatioHeight + 0.65 * PadHeight) / TotalHeight);
    Legend.SetTextFont(42);
@@ -988,41 +998,27 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       Legend.AddEntry(&GSmear, "Smeared pp", "plf");
    Legend.Draw();
 
-   Latex.SetTextAlign(33);
+   Latex.SetTextAlign(13);
    if(IsPT == true)
    {
-      Latex.DrawLatex((Border + PadWidth * 0.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 0-10%");
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 10-30%");
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 30-50%");
-      Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "Centrality: 50-80%");
+      Latex.DrawLatex((Border + PadWidth * 3.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 0-10%");
+      Latex.DrawLatex((Border + PadWidth * 2.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 10-30%");
+      Latex.DrawLatex((Border + PadWidth * 1.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 30-50%");
+      Latex.DrawLatex((Border + PadWidth * 0.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 50-80%");
    }
    else
    {
-      Latex.DrawLatex((Border + PadWidth * 0.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "140 < p_{T,jet} < 160 GeV");
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "160 < p_{T,jet} < 180 GeV");
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "180 < p_{T,jet} < 200 GeV");
-      Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.95) / TotalHeight, "200 < p_{T,jet} < 300 GeV");
+      Latex.DrawLatex((Border + PadWidth * 0.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "140 < p_{T,jet} < 160 GeV");
+      Latex.DrawLatex((Border + PadWidth * 1.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "160 < p_{T,jet} < 180 GeV");
+      Latex.DrawLatex((Border + PadWidth * 2.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "180 < p_{T,jet} < 200 GeV");
+      Latex.DrawLatex((Border + PadWidth * 3.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "200 < p_{T,jet} < 300 GeV");
    }
 
+   Latex.SetTextAlign(20);
    if(IsPT == true)
-   {
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, Form("%.0f < p_{T,jet} < %.0f GeV", BinMin, BinMax));
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "|#eta_{jet}| < 1.3");
-   }
+      Latex.DrawLatex((Border + PadWidth * 1.50) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.0) / TotalHeight, Form("%.0f < p_{T,jet} < %.0f GeV", BinMin, BinMax));
    else
-   {
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "|#eta_{jet}| < 1.3");
-      Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, Form("Centrality: %.0f-%.0f%%", BinMin, BinMax));
-   }
-
-   Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "anti-kt R = 0.4");
-   Latex.DrawLatex((Border + PadWidth * 3.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "#DeltaR_{1,2} > 0.1");
-
-   Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.85) / TotalHeight, "Soft drop");
-   if(SD == "7")
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "z_{cut} = 0.5, #beta = 1.5");
-   else
-      Latex.DrawLatex((Border + PadWidth * 2.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.75) / TotalHeight, "z_{cut} = 0.1, #beta = 0.0");
+      Latex.DrawLatex((Border + PadWidth * 1.50) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.0) / TotalHeight, Form("Centrality: %.0f-%.0f%%", BinMin, BinMax));
 
    Canvas.SaveAs(Form("%s.png", OutputBase.c_str()));
    Canvas.SaveAs(Form("%s.C"  , OutputBase.c_str()));

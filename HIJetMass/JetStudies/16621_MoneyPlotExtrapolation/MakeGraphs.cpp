@@ -23,9 +23,9 @@ using namespace std;
 #include "JetEnergyScale.h"
 
 #define PI 3.14159265358979323846264338327950288479716939937510
-#define MASSBINCOUNT 9
-#define MASS0BINCOUNT 11
-#define ZGBINCOUNT 10
+#define MASSBINCOUNT 17
+#define MASS0BINCOUNT 18
+#define ZGBINCOUNT 30
 #define DRBINCOUNT 15
 #define PTPTBINCOUNT 50
 #define PTPTCORRECTIONBINCOUNT 23
@@ -88,11 +88,33 @@ int main(int argc, char *argv[])
    double CBinEdge[5+1] = {0, 0.1, 0.3, 0.5, 0.8, 1.0};
    double PTBinEdge[6+1] = {120, 140, 160, 180, 200, 300, 500};
 
-   // Original mass binning
+   // double MassBinEdge[MASSBINCOUNT+1] =
+   //    {0.00, 0.01, 0.02, 0.03, 0.04,
+   //    0.045, 0.05, 0.055, 0.06, 0.065,
+   //    0.07, 0.075, 0.08, 0.085, 0.09,
+   //    0.095, 0.10, 0.105, 0.110, 0.115,
+   //    0.12, 0.13, 0.14, 0.15, 0.16,
+   //    0.17, 0.18, 0.19, 0.20, 0.21,
+   //    0.22, 0.23, 0.24, 0.25, 0.26};
+   // double Mass0BinEdge[MASS0BINCOUNT+1] =
+   //    {0.00, 0.01, 0.02, 0.03, 0.04,
+   //    0.045, 0.05, 0.055, 0.06, 0.065,
+   //    0.07, 0.075, 0.08, 0.085, 0.09,
+   //    0.095, 0.10, 0.105, 0.110, 0.115,
+   //    0.12, 0.13, 0.14, 0.15, 0.16,
+   //    0.17, 0.18, 0.19, 0.20, 0.21,
+   //    0.22, 0.23, 0.24, 0.25, 0.26,
+   //    0.27, 0.285, 0.30};
    double MassBinEdge[MASSBINCOUNT+1] =
-      {0.00, 0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.21, 0.26};
+      {0.00, 0.02, 0.04, 0.05, 0.06, 
+      0.07, 0.08, 0.09, 0.10, 0.11,
+      0.12, 0.14, 0.16, 0.18, 0.20,
+      0.22, 0.24, 0.26};
    double Mass0BinEdge[MASS0BINCOUNT+1] =
-      {0.00, 0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27, 0.30};
+      {0.00, 0.02, 0.04, 0.05, 0.06, 
+      0.07, 0.08, 0.09, 0.10, 0.11,
+      0.12, 0.14, 0.16, 0.18, 0.20,
+      0.22, 0.24, 0.27, 0.30};
 
    double PTPTCorrectionBinEdge[PTPTCORRECTIONBINCOUNT+1] =
       {0.00, 0.45, 0.50, 0.60, 0.65,
@@ -566,20 +588,13 @@ int main(int argc, char *argv[])
       int iDRB0 = GetBin(MData.SDRecoDR, DR0BinEdge, DRBINCOUNT);
       int iPTPT = GetBin(MData.PTPT, PTPTBinEdge, PTPTBINCOUNT);
 
-      if(iMassB < 0 || iMassB >= MASSBINCOUNT)
-         continue;
-
       double TotalWeight = MData.MCWeight;
       double UpWeight = DataError[CBin][PTBin]->GetErrorYhigh(MData.SysBin);
       double DownWeight = -DataError[CBin][PTBin]->GetErrorYlow(MData.SysBin);
 
-      // OutputMassFile << "Data " << Centrality << " " << MData.CorrectedJetPT
-      //    << " " << MData.SDMassRatio << " " << MData.SDZG << " " << MData.SDRecoDR
-      //    << " " << MData.PTPT << " " << TotalWeight << endl;
-
       if(MData.SDRecoDR > 0.0)
          DataPreCutGrandTotal[CBin][PTBin] += TotalWeight;
-      if(MData.SDRecoDR > 0.1)
+      if(MData.SDRecoDR > 0.1 && iMassB >= 0 && iMassB < MASSBINCOUNT)
       {
          DataCountMass     [CBin][PTBin][iMassB] += TotalWeight;
          DataTotalMassX    [CBin][PTBin][iMassB] += MData.SDMassRatio * TotalWeight;
@@ -601,7 +616,7 @@ int main(int argc, char *argv[])
          DataTotalPTPT2    [CBin][PTBin][iPTPT]  += TotalWeight * TotalWeight;
          DataGrandTotal    [CBin][PTBin]         += TotalWeight;
       }
-      if(MData.SDRecoDR > 0.1)
+      if(MData.SDRecoDR > 0.1 && iMassB0 >= 0 && iMassB0 < MASS0BINCOUNT)
       {
          Data0CountMass     [CBin][PTBin][iMassB0] += TotalWeight;
          Data0TotalMassX    [CBin][PTBin][iMassB0] += MData.SDMassRatio * TotalWeight;
@@ -698,9 +713,6 @@ int main(int argc, char *argv[])
       int iDRB0 = GetBin(MSmear.SDRecoDR, DR0BinEdge, DRBINCOUNT);
       int iPTPT = GetBin(MSmear.PTPT, PTPTBinEdge, PTPTBINCOUNT);
 
-      if(iMassB < 0 || iMassB >= MASSBINCOUNT)
-         continue;
-
       double CentralityWeight = DataCentralityBins[PTBin][Centrality]
          / SmearCentralityBins[PTBin][Centrality];
 
@@ -723,7 +735,7 @@ int main(int argc, char *argv[])
 
       if(MSmear.SDRecoDR > 0.0)
          SmearPreCutGrandTotal[CBin][PTBin] += TotalWeight;
-      if(MSmear.SDRecoDR > 0.1)
+      if(MSmear.SDRecoDR > 0.1 && iMassB >= 0 && iMassB < MASSBINCOUNT)
       {
          SmearCountMass     [CBin][PTBin][iMassB] += TotalWeight;
          SmearTotalMassX    [CBin][PTBin][iMassB] += MSmear.SDMassRatio * TotalWeight;
@@ -745,7 +757,7 @@ int main(int argc, char *argv[])
          SmearTotalPTPT2    [CBin][PTBin][iPTPT]  += TotalWeight * TotalWeight;
          SmearGrandTotal    [CBin][PTBin]         += TotalWeight;
       }
-      if(MSmear.SDRecoDR > 0.1)
+      if(MSmear.SDRecoDR > 0.1 && iMassB0 >= 0 && iMassB0 < MASS0BINCOUNT)
       {
          Smear0CountMass     [CBin][PTBin][iMassB0] += TotalWeight;
          Smear0TotalMassX    [CBin][PTBin][iMassB0] += MSmear.SDMassRatio * TotalWeight;

@@ -68,10 +68,10 @@
 #    continue
 # done
 
-# CompileRootMacro MakeFlatGraphs.cpp
-# 
-# ./a.out OutputFile_Trigger_0.root 0.05 0.00
-# ./a.out OutputFile_Trigger_7.root 0.05 0.00
+CompileRootMacro MakeFlatGraphs.cpp
+
+./a.out OutputFile_Trigger_0.root 0.05 0.02
+./a.out OutputFile_Trigger_7.root 0.05 0.02
 
 # CompileRootMacro CombineSystematics.cpp
 # 

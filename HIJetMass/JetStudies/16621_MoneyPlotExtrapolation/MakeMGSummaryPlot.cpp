@@ -122,9 +122,12 @@ int main(int argc, char *argv[])
 
    Latex.SetTextSize(0.035);
    Latex.SetTextAlign(30);
-   Latex.DrawLatex((BorderWidth + PanelWidth * 2) / TotalWidth, (BorderHeight + PanelHeight + BorderHeight * 0.5) / TotalHeight, "0-10%, anti-kt R = 0.4, |#eta_{jet}| < 1.3");
-   Latex.DrawLatex((BorderWidth + PanelWidth * 2) / TotalWidth, (BorderHeight + PanelHeight + BorderHeight * 0.25) / TotalHeight, "Soft drop z_{cut} = 0.1, #beta = 0.0, #DeltaR_{12} > 0.1");
-   Latex.DrawLatex((BorderWidth + PanelWidth * 2) / TotalWidth, (BorderHeight + PanelHeight + 0.000) / TotalHeight, "PbPb 10 nb^{-1} (5.02 TeV)");
+   Latex.DrawLatex((BorderWidth + PanelWidth * 2) / TotalWidth, (BorderHeight + PanelHeight + BorderHeight * 0.5) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3");
+   if(SD == 0)
+      Latex.DrawLatex((BorderWidth + PanelWidth * 2) / TotalWidth, (BorderHeight + PanelHeight + BorderHeight * 0.25) / TotalHeight, "Soft drop z_{cut} = 0.1, #beta = 0.0, #DeltaR_{12} > 0.1");
+   else
+      Latex.DrawLatex((BorderWidth + PanelWidth * 2) / TotalWidth, (BorderHeight + PanelHeight + BorderHeight * 0.25) / TotalHeight, "Soft drop z_{cut} = 0.5, #beta = 1.5, #DeltaR_{12} > 0.1");
+   Latex.DrawLatex((BorderWidth + PanelWidth * 2) / TotalWidth, (BorderHeight + PanelHeight + 0.000) / TotalHeight, "PbPb 10 nb^{-1} (#sqrt{s_{NN}} = 5.02 TeV)");
 
    Latex.SetTextAlign(22);
    Latex.DrawLatex((BorderWidth + PanelWidth * 0.5) / TotalWidth, (BorderHeight + PanelHeight * 0.93) / TotalHeight, "140 < p_{T}^{jet} < 160 GeV");
@@ -153,11 +156,12 @@ int main(int argc, char *argv[])
 
    Canvas.cd();
 
-   TLegend Legend((BorderWidth + PanelWidth * 0.40) / TotalWidth, (BorderHeight + PanelHeight * 0.75) / TotalHeight, (BorderWidth + PanelWidth * 0.85) / TotalWidth, (BorderHeight + 0.65 * PanelHeight) / TotalHeight);
+   TLegend Legend((BorderWidth + PanelWidth * 0.40) / TotalWidth, (BorderHeight + PanelHeight * 0.75) / TotalHeight, (BorderWidth + PanelWidth * 0.85) / TotalWidth, (BorderHeight + 0.55 * PanelHeight) / TotalHeight);
    Legend.SetTextFont(42);
    Legend.SetTextSize(0.035);
    Legend.SetFillStyle(0);
    Legend.SetBorderSize(0);
+   Legend.AddEntry("", "Centrality: 0-10%", "");
    Legend.AddEntry(&G1Sys, "Projection", "plf");
    Legend.Draw();
 

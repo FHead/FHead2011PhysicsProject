@@ -1,0 +1,38 @@
+#!/bin/sh
+
+WORKDIR=~/work/PhysicsWorkspace/HiggsProperties/LightBosonStudies/16716_AboveThresholdHypothesisTesting
+
+export SCRAM_ARCH=slc6_amd64_gcc491
+cd ~/work/CMSSW/CMSSW_7_5_8_patch3/src
+eval `scramv1 runtime -sh`
+cd -
+
+EOSLocation=/store/cmst3/user/chenyi//BatchOutput/HiggsProperties/LightBosonStudies/16716_AboveThresholdHypothesisTesting/CombinedResult/
+
+cp $WORKDIR/DoHarvest .
+
+for i in `ls /eos/cms/$EOSLocation`
+do
+   cp /eos/cms/$EOSLocation/$i .
+done
+
+echo Current directory looks like
+echo
+ls -lh
+echo
+echo
+
+echo Start running 
+
+mkdir -p PDF
+
+Model1=__MODEL1__
+Model2=__MODEL2__
+
+./DoHarvest $Model1 $Model2 Likelihood_${Model1}.root Likelihood_${Model2}.root
+
+cp ResultDatabase.dh $WORKDIR/ResultDatabaseBatch_${Model1}_${Model2}.dh
+
+cp PDF/*pdf $WORKDIR/PDF/
+
+

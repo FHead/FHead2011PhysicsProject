@@ -93,7 +93,7 @@ public:
          Leptons.Lepton12.SetPtEtaPhi(L2PT, L2Eta, L2Phi);
          Leptons.Lepton21.SetPtEtaPhi(L3PT, L3Eta, L3Phi);
          Leptons.Lepton22.SetPtEtaPhi(L4PT, L4Eta, L4Phi);
-         
+
          if(abs(L1ID) == abs(L3ID))
             Leptons = Leptons.ReorderLeptons4e();
          else
@@ -138,7 +138,7 @@ public:
       for(int iE = 0; iE < EntryCount; iE++)
       {
          Tree->GetEntry(iE);
-         
+
          HM1->Fill(ZMass);
          HM2->Fill(Z2Mass);
          HCosTheta0->Fill(cos(Theta0));
@@ -173,7 +173,7 @@ int main()
    Histograms A2UU4e("A2UU4e");
    Histograms A2UZ4e("A2UZ4e");
    Histograms A3UU4e("A3UU4e");
-   
+
    TFile FA1UU2e2mu("16246/Phto2e2mu_A1UU_18p4GeV_NoPDF_ForEff.root");
    TFile FA1UZ2e2mu("16246/Phto2e2mu_A1UZ_18p4GeV_NoPDF_ForEff.root");
    TFile FA2UA2e2mu("16246/Phto2e2mu_A2UA_18p4GeV_NoPDF_ForEff.root");
@@ -211,7 +211,7 @@ int main()
    OverlayPlots(PdfFile, A1UU2e2mu.HCosTheta1, A1UZ2e2mu.HCosTheta1, A2UA2e2mu.HCosTheta1, A2UU2e2mu.HCosTheta1, A2UZ2e2mu.HCosTheta1, A3UU2e2mu.HCosTheta1, 1.7 / 2);
    OverlayPlots(PdfFile, A1UU2e2mu.HCosTheta2, A1UZ2e2mu.HCosTheta2, A2UA2e2mu.HCosTheta2, A2UU2e2mu.HCosTheta2, A2UZ2e2mu.HCosTheta2, A3UU2e2mu.HCosTheta2, 1.7 / 2);
    OverlayPlots(PdfFile, A1UU2e2mu.HPhi, A1UZ2e2mu.HPhi, A2UA2e2mu.HPhi, A2UU2e2mu.HPhi, A2UZ2e2mu.HPhi, A3UU2e2mu.HPhi, 0.27);
-   
+
    PdfFile.AddTextPage("4e/4#mu plots");
    OverlayPlots(PdfFile, A1UU4e.HM1, A1UZ4e.HM1, A2UA4e.HM1, A2UU4e.HM1, A2UZ4e.HM1, A3UU4e.HM1, -1);
    OverlayPlots(PdfFile, A1UU4e.HM2, A1UZ4e.HM2, A2UA4e.HM2, A2UU4e.HM2, A2UZ4e.HM2, A3UU4e.HM2, 0.85);
@@ -223,7 +223,7 @@ int main()
 
    PdfFile.AddTimeStampPage();
    PdfFile.Close();
-   
+
    FA3UU2e2mu.Close();
    FA2UZ2e2mu.Close();
    FA2UU2e2mu.Close();
@@ -283,7 +283,7 @@ void OverlayPlots(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, TH1D *H3, TH1D *H4
    HWorld.SetStats(0);
 
    string XTitle = H1->GetXaxis()->GetTitle();
-   
+
    HWorld.GetXaxis()->SetTitle(XTitle.c_str());
    HWorld.GetYaxis()->SetTitle(Form("#Gamma^{-1} d#Gamma_{#varphi#rightarrow4l} / d %s", XTitle.c_str()));
 
@@ -294,10 +294,10 @@ void OverlayPlots(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, TH1D *H3, TH1D *H4
 
    HWorld.GetXaxis()->CenterTitle(true);
    HWorld.GetYaxis()->CenterTitle(true);
-   
+
    TH2D HWorldLog("HWorldLog", ";;", 100, L, R, 100, Max * 0.0001, Max * 100);
    HWorldLog.SetStats(0);
-   
+
    HWorldLog.GetXaxis()->SetTitle(XTitle.c_str());
    HWorldLog.GetYaxis()->SetTitle(Form("#Gamma^{-1} d#Gamma_{#varphi#rightarrow4l} / d %s", XTitle.c_str()));
 
@@ -313,12 +313,12 @@ void OverlayPlots(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, TH1D *H3, TH1D *H4
    Legend3.SetTextFont(42);
    Legend3.SetTextSize(0.035);
    Legend3.SetFillStyle(0);
-   Legend1.AddEntry(HT1, "A_{1}^{#Upsilon#Upsilon}", "l");
-   Legend1.AddEntry(HT2, "A_{1}^{#UpsilonZ}", "l");
-   Legend2.AddEntry(HT3, "A_{2}^{#Upsilon#gamma}", "l");
-   Legend2.AddEntry(HT4, "A_{2}^{#Upsilon#Upsilon}", "l");
-   Legend3.AddEntry(HT5, "A_{2}^{#UpsilonZ}", "l");
-   Legend3.AddEntry(HT6, "A_{3}^{#Upsilon#Upsilon}", "l");
+   Legend1.AddEntry(HT1, "|A_{1}^{#Upsilon#Upsilon}|^{2}", "l");
+   Legend1.AddEntry(HT2, "|A_{1}^{#UpsilonZ}|^{2}", "l");
+   Legend2.AddEntry(HT3, "|A_{2}^{#Upsilon#gamma}|^{2}", "l");
+   Legend2.AddEntry(HT4, "|A_{2}^{#Upsilon#Upsilon}|^{2}", "l");
+   Legend3.AddEntry(HT5, "|A_{2}^{#UpsilonZ}|^{2}", "l");
+   Legend3.AddEntry(HT6, "|A_{3}^{#Upsilon#Upsilon}|^{2}", "l");
 
    TCanvas C;
 
@@ -329,14 +329,14 @@ void OverlayPlots(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, TH1D *H3, TH1D *H4
    HT4->Draw("same p");
    HT5->Draw("same p");
    HT6->Draw("same p");
-   
+
    TH1D *HT1C = (TH1D *)HT1->Clone();
    TH1D *HT2C = (TH1D *)HT2->Clone();
    TH1D *HT3C = (TH1D *)HT3->Clone();
    TH1D *HT4C = (TH1D *)HT4->Clone();
    TH1D *HT5C = (TH1D *)HT5->Clone();
    TH1D *HT6C = (TH1D *)HT6->Clone();
-   
+
    if(XTitle == "cos#theta_{ll}" || XTitle == "cos#theta_{1}")
    {
       HT1C->Smooth();
@@ -353,7 +353,7 @@ void OverlayPlots(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, TH1D *H3, TH1D *H4
    HT4C->Draw("same c");
    HT5C->Draw("same c");
    HT6C->Draw("same c");
-   
+
    Legend1.Draw();
    Legend2.Draw();
    Legend3.Draw();

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+BaseDir=~/work/PhysicsWorkspace/HIJetML/SampleGeneration/17217_ExportJet/
+
+export SCRAM_ARCH=slc6_amd64_gcc491; cd ~/work/CMSSW/CMSSW_7_5_8_patch3/src; eval `scramv1 runtime -sh`; cd - > /dev/null; export CMSSW_SEARCH_PATH=$CMSSW_SEARCH_PATH:~/work/CMSSW/CMSSW_7_5_8_patch3/work/EssentialFiles
+
+
+$BaseDir/RunExport $BaseDir/Hydjet/60k_CentralFivePercent/RunOutput_0.root $BaseDir/Pythia/Output.root Output.root __START__ __END__ __FILE__
+
+mv Output.root $BaseDir/Output/JetTree___FILE__.root
+
+
+
+

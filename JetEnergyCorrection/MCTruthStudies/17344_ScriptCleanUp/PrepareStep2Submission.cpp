@@ -50,6 +50,8 @@ int main(int argc, char *argv[])
    int BundleCount = 0;
    int Count = 0;
 
+   cout << "#!/bin/sh" << endl;
+   cout << endl;
    cout << "source Setup_FileLocation.sh" << endl;
    cout << endl;
 

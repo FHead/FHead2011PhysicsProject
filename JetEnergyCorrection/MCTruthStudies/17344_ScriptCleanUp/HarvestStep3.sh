@@ -1,3 +1,5 @@
+#!/bin/sh
+
 source Setup_FileLocation.sh
 
 hadd -k -f $Step3Output/Merged.root $Step3Output/JRA_*root

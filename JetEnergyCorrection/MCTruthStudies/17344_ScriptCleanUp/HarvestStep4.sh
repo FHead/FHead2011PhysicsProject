@@ -1,3 +1,5 @@
+#!/bin/sh
+
 source Setup_FileLocation.sh
 
 hadd -k -f $Step4Output/Merged.root $Step4Output/Closure_*root

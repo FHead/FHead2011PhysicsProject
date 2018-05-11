@@ -1,3 +1,5 @@
+#!/bin/sh
+
 source Setup_FileLocation.sh
 
 hadd -k -f $Step2Output/output_ak4pfchs.root $Step2Output/Result_*root

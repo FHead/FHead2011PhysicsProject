@@ -1,3 +1,5 @@
+#!/bin/sh
+
 source Setup_FileLocation.sh
 
 Input=$WithPUFiles

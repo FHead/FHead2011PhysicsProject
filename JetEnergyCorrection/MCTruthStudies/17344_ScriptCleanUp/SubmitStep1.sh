@@ -1,3 +1,5 @@
+#!/bin/sh
+
 source Setup_FileLocation.sh
 
 mkdir -p $Step1Output/ResultNoPU $Step1Output/ResultWithPU

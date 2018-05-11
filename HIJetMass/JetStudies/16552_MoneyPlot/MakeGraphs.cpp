@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
    bool IsMC = ((argv[2][0] == 'Y') ? true : false);
 
    bool DoDRReweight = false;
-   bool DoPTPTReweight = true;
+   bool DoPTPTReweight =true;
 
    string Tag = argv[4];
 

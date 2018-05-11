@@ -1,4 +1,4 @@
-Build: RunListRunLumi RunMatchFiles RunPrepareStep2Submission Columnize
+all: RunListRunLumi RunMatchFiles RunPrepareStep2Submission Columnize
 
 RunListRunLumi: ListRunLumi.cpp
 	g++ ListRunLumi.cpp -o RunListRunLumi \
@@ -13,8 +13,5 @@ RunPrepareStep2Submission: PrepareStep2Submission.cpp
 Columnize: Columnize.cpp
 	g++ Columnize.cpp -o Columnize
 
-Preparation:
-	mkdir -p Files
-	# Please put pileup histograms in the Files/ folder
 
 

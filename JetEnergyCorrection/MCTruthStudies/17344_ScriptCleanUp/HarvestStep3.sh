@@ -1,6 +1,6 @@
 source Setup_FileLocation.sh
 
-hadd -k -f $Step3Output/Merged.root $Step3Output/jra_*root
+hadd -k -f $Step3Output/Merged.root $Step3Output/JRA_*root
 
 jet_l2_correction_x \
    -input $Step3Output/Merged.root \
@@ -18,6 +18,6 @@ jet_l2_correction_x \
    -l2pffit splineAkima \
    -ptclip 20
 
-
+cp Files/ParallelMC_L2Relative_AK4PFchsl1.txt Files/ParallelMC_L2Relative_AK4PFchs.txt
 
 

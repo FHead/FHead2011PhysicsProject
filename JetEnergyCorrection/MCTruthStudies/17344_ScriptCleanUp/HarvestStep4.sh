@@ -1,6 +1,6 @@
 source Setup_FileLocation.sh
 
-hadd -k -f $Step4Output/Merged.root $Step4Output/jra_*root
+hadd -k -f $Step4Output/Merged.root $Step4Output/Closure_*root
 
 jet_draw_closure_x \
    -doPt true \

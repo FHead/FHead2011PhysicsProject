@@ -6,8 +6,8 @@ WorkDir=__WORKDIR__
 
 source $WorkDir/Setup_CMSSW.sh
 
-cp $WorkDir/*txt .
-cp $WorkDir/My*PileupHistogram.root .
+cp $WorkDir/Files/*txt .
+cp $WorkDir/Files/My*PileupHistogram.root .
 
 echo Input files are: __FILE__
 
@@ -17,7 +17,7 @@ jet_correction_analyzer_x \
    -inputFilename Input.root \
    -outputDir ./ \
    -path ./ \
-   -era Parallelize_MC \
+   -era ParallelMC \
    -levels 1 2 \
    -useweight true \
    -algs ak4pfchs \

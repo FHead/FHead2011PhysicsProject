@@ -8,7 +8,7 @@ for i in `ls $Input | Reformat 20 | tr ' ' ':'`
 do
    echo $i
    File=`echo $i | tr ':' ' '`
-   cat RunFile.sh \
+   cat Step4Closure.sh \
       | sed "s#__FILE__#$File#g" \
       | sed "s#__ID__#$Count#g" \
       | sed "s#__WORKDIR__#`pwd`#g" \

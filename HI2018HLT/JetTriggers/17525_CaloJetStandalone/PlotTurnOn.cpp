@@ -106,15 +106,15 @@ int main(int argc, char *argv[])
       {
          if(MHLT.CheckTrigger(TriggerList[i]) > 0)   // passed!
             HJetPTs[i]->Fill(MJet.JetPT[BestJetIndex]);
-         else
-         {
-            if(MJet.JetPT[BestJetIndex] > 180)
-            {
-               cout << "Event: " << E.Run << " " << E.Lumi << " " << E.Event << endl;
-               cout << "   with leading jet (" << MJet.JetPT[BestJetIndex] << " " << MJet.JetEta[BestJetIndex] << ")" << endl;
-               cout << "   fails trigger \"" << TriggerList[i] << "\"" << endl;
-            }
-         }
+         // else
+         // {
+         //    if(MJet.JetPT[BestJetIndex] > 180)
+         //    {
+         //       cout << "Event: " << E.Run << " " << E.Lumi << " " << E.Event << endl;
+         //       cout << "   with leading jet (" << MJet.JetPT[BestJetIndex] << " " << MJet.JetEta[BestJetIndex] << ")" << endl;
+         //       cout << "   fails trigger \"" << TriggerList[i] << "\"" << endl;
+         //    }
+         // }
       }
    }
 

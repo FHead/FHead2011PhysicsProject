@@ -674,7 +674,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       WorldMin = 0;
       WorldMax = 30;
 
-      RatioMax = 4.999;
+      RatioMax = 5.999;
    }
    if(Type == TYPE_MASS0 && SD == "0" && LogMass == false)
    {
@@ -682,7 +682,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       WorldMax = 14.5;
 
       MassMax = 0.27;
-      RatioMax = 4.999;
+      RatioMax = 5.999;
    }
    if(Type == TYPE_MASS0 && SD == "7" && LogMass == false)
    {

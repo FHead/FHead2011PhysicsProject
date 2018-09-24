@@ -95,6 +95,7 @@ int main()
    Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
 
+   C.SaveAs("Plots/Plot1.pdf");
    PdfFile.AddCanvas(C);
 
    HWorld.Draw("axis");
@@ -123,8 +124,9 @@ int main()
    Latex.DrawLatex(0.15, 0.75, "Signal only");
    Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
-   Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
+   // Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
 
+   C.SaveAs("Plots/Plot2.pdf");
    PdfFile.AddCanvas(C);
 
    HWorld.Draw("axis");
@@ -154,6 +156,7 @@ int main()
    Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
 
+   C.SaveAs("Plots/Plot3.pdf");
    PdfFile.AddCanvas(C);
 
    HWorld.Draw("axis");
@@ -182,8 +185,9 @@ int main()
    Latex.DrawLatex(0.15, 0.75, "With background");
    Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
-   Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
+   // Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
 
+   C.SaveAs("Plots/Plot4.pdf");
    PdfFile.AddCanvas(C);
 
    SOff.SetLineColor(kBlack);
@@ -217,6 +221,7 @@ int main()
    Legend2.AddEntry("", "", "");
    Legend2.Draw();
 
+   C.SaveAs("Plots/Plot5.pdf");
    PdfFile.AddCanvas(C);
 
    PdfFile.AddTimeStampPage();

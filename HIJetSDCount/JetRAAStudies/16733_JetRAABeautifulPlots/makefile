@@ -15,4 +15,5 @@ Execute: RunJetRAAPlots RunBeautifulJetRAAPlots
 	./RunJetRAAPlots 16541Samples/Result_RecoilOn_S.root Plots_On_S_Y Y
 	./RunJetRAAPlots 16541Samples/Result_RecoilOn_SB.root Plots_On_SB_Y Y
 	./RunJetRAAPlots 16541Samples/Result_RecoilOn_P.root Plots_On_P_Y Y
+	mkdir -p Plots
 	./RunBeautifulJetRAAPlots

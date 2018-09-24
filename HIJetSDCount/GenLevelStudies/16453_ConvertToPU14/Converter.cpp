@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
    double Weight;
    double PID[MAX], PX[MAX], PY[MAX], PZ[MAX], PM[MAX], PStatus[MAX];
 
-   Tree->SetBranchAddress("Weight", &EWeight);
+   Tree->SetBranchAddress("EWeight", &Weight);
    Tree->SetBranchAddress("NP", &NP);
    Tree->SetBranchAddress("PID", &PID);
    Tree->SetBranchAddress("PX", &PX);
@@ -41,8 +41,14 @@ int main(int argc, char *argv[])
       out << "# event " << iE << endl;
       out << "weight " << Weight << endl;
       for(int i = 0; i < NP; i++)
-         if(PStatus[i] < 1.5)
+      {
+         if(PStatus[i] < 1.1 && PStatus[i] > 0.9)   // 1
             out << PX[i] << " " << PY[i] << " " << PZ[i] << " " << PM[i] << " " << PID[i] << " " << 0 << endl;
+         if(PStatus[i] < 4.1 && PStatus[i] > 3.9)   // 4
+            out << PX[i] << " " << PY[i] << " " << PZ[i] << " " << PM[i] << " " << PID[i] << " " << 0 << endl;
+         if(PStatus[i] > 2.9 && PStatus[i] < 3.1)   // 3
+            out << PX[i] << " " << PY[i] << " " << PZ[i] << " " << PM[i] << " " << PID[i] << " " << -1 << endl;
+      }
       out << "end" << endl;
    }
 

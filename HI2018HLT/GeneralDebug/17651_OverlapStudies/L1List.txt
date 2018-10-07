@@ -1,0 +1,11 @@
+L1_SingleJet8_BptxAND	1
+L1_SingleJet16_BptxAND	1
+L1_SingleJet24_BptxAND	1
+L1_SingleJet28_BptxAND	1
+L1_SingleJet32_BptxAND	1
+L1_SingleJet36_BptxAND	1
+L1_SingleJet40_BptxAND	1
+L1_SingleJet44_BptxAND	1
+L1_SingleJet56_BptxAND	1
+L1_SingleJet60_BptxAND	1
+L1_SingleJet64_BptxAND	1

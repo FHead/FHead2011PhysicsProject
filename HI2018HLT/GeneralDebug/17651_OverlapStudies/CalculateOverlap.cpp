@@ -114,6 +114,7 @@ int main(int argc, char *argv[])
 
    // Number of events in each dataset
    map<string, int> DatasetCount;
+   map<string, int> DatasetCountCross;
 
    // Now the event loop
    int EntryCount = Tree->GetEntries();
@@ -148,6 +149,26 @@ int main(int argc, char *argv[])
          if(I.second == true)
             DatasetCount[I.first]++;
 
+      for(auto I : Dataset)
+      {
+         if(I.first == "Everything")
+            continue;
+
+         for(auto J : Dataset)
+         {
+            if(J.first == "Everything")
+               continue;
+            if(J.first == I.first)
+               continue;
+            if(J.first > I.first)
+               continue;
+
+            string Name = I.first + " & " + J.first;
+            if(I.second == true && J.second == true)
+               DatasetCountCross[Name]++;
+         }
+      }
+
       // Increment switchboard for prescale calculation
       for(auto I : Index)
       {
@@ -169,9 +190,13 @@ int main(int argc, char *argv[])
    // outputs
    cout << "Dataset rates for " << MBRate << " Hz total interaction rate:" << endl;
    cout << endl;
-   cout << setw(30) << "Dataset" << setw(8) << "Pass" << " / " << setw(8) << "All" << " => " << setw(15) << " Rate" << endl;
+   cout << setw(50) << "Dataset" << setw(8) << "Pass" << " / " << setw(8) << "All" << " => " << setw(15) << " Rate" << endl;
    for(auto I : DatasetCount)
-      cout << setw(30) << I.first
+      cout << setw(50) << I.first
+         << setw(8) << I.second << " / " << setw(8) << EntryCount
+         << " => " << setw(15) << double(I.second) / EntryCount * MBRate << endl;
+   for(auto I : DatasetCountCross)
+      cout << setw(50) << I.first
          << setw(8) << I.second << " / " << setw(8) << EntryCount
          << " => " << setw(15) << double(I.second) / EntryCount * MBRate << endl;
 

@@ -190,13 +190,15 @@ int main(int argc, char *argv[])
    // outputs
    cout << "Dataset rates for " << MBRate << " Hz total interaction rate:" << endl;
    cout << endl;
-   cout << setw(50) << "Dataset" << setw(8) << "Pass" << " / " << setw(8) << "All" << " => " << setw(15) << " Rate" << endl;
+   cout << setw(60) << "Dataset" << setw(8) << "Pass" << " / " << setw(8) << "All" << " => " << setw(15) << " Rate" << endl;
+   cout << endl;
    for(auto I : DatasetCount)
-      cout << setw(50) << I.first
+      cout << setw(60) << I.first
          << setw(8) << I.second << " / " << setw(8) << EntryCount
          << " => " << setw(15) << double(I.second) / EntryCount * MBRate << endl;
+   cout << endl;
    for(auto I : DatasetCountCross)
-      cout << setw(50) << I.first
+      cout << setw(60) << I.first
          << setw(8) << I.second << " / " << setw(8) << EntryCount
          << " => " << setw(15) << double(I.second) / EntryCount * MBRate << endl;
 

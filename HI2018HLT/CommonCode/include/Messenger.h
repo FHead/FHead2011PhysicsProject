@@ -16,6 +16,7 @@ class GenParticleTreeMessenger;
 class PFTreeMessenger;
 class TriggerTreeMessenger;
 class TriggerObjectTreeMessenger;
+class TrackTreeMessenger;
 
 class HiEventTreeMessenger
 {
@@ -270,6 +271,21 @@ public:
    bool Initialize();
    bool GetEntry(int iEntry);
 };
+
+class TrackTreeMessenger
+{
+public:
+   TTree *Tree;
+   int TrackCount;
+public:
+   TrackTreeMessenger(TFile &File, std::string TreeName = "ppTrack/trackTree");
+   TrackTreeMessenger(TFile *File, std::string TreeName = "ppTrack/trackTree");
+   TrackTreeMessenger(TTree *TriggerTree);
+   bool Initialize(TTree *TriggerTree);
+   bool Initialize();
+   bool GetEntry(int iEntry);
+};
+
 
 
 

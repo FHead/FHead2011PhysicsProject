@@ -926,6 +926,53 @@ void TriggerTreeMessenger::FillTriggerNames()
    Name.push_back("HLT_PuAK4CaloJet120Eta5p1_v1");
    Name.push_back("HLT_PuAK4CaloJet120Fwd_v1");
 
+   // 2018 PbPb jet v20
+   Name.push_back("HLT_PuAK4PFJet80Eta5p1_v1");
+   Name.push_back("HLT_PuAK4PFJet100Eta5p1_v1");
+   
+   // 2018 PbPb jet v28
+   Name.push_back("HLT_CsAK4PFJet80Eta2p4_v1");
+   
+   // 2018 PbPb jet v44
+   Name.push_back("HLT_PuAK4CaloJet40Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet50Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet60Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet70Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet80Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet90Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet100Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet110Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet120Eta5p1_v1");
+   Name.push_back("HLT_PuAK4CaloJet40Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet50Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet60Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet70Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet80Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet90Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet100Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet110Fwd_v1");
+   Name.push_back("HLT_PuAK4CaloJet120Fwd_v1");
+   Name.push_back("HLT_CsAK4PFJet80Eta2p4_v1");
+   Name.push_back("HLT_CsAK4PFJet90Eta2p4_v1");
+   Name.push_back("HLT_CsAK4PFJet100Eta2p4_v1");
+   Name.push_back("HLT_CsAK4PFJet110Eta2p4_v1");
+   Name.push_back("HLT_CsAK4PFJet120Eta2p4_v1");
+   Name.push_back("HLT_CsAK4PFJet60Eta1p5_v1");
+   Name.push_back("HLT_CsAK4PFJet70Eta1p5_v1");
+   Name.push_back("HLT_CsAK4PFJet80Eta1p5_v1");
+   Name.push_back("HLT_CsAK4PFJet90Eta1p5_v1");
+   Name.push_back("HLT_CsAK4PFJet100Eta1p5_v1");
+   Name.push_back("HLT_CsAK4PFJet110Eta1p5_v1");
+   Name.push_back("HLT_CsAK4PFJet120Eta1p5_v1");
+   
+   Name.push_back("HLT_HICsAK4PFJet60Eta1p5_v1");
+   Name.push_back("HLT_HICsAK4PFJet70Eta1p5_v1");
+   Name.push_back("HLT_HICsAK4PFJet80Eta1p5_v1");
+   Name.push_back("HLT_HICsAK4PFJet90Eta1p5_v1");
+   Name.push_back("HLT_HICsAK4PFJet100Eta1p5_v1");
+   Name.push_back("HLT_HICsAK4PFJet110Eta1p5_v1");
+   Name.push_back("HLT_HICsAK4PFJet120Eta1p5_v1");
+
    std::sort(Name.begin(), Name.end());
    std::vector<std::string>::iterator iter = std::unique(Name.begin(), Name.end());
    Name.erase(iter, Name.end());
@@ -1065,6 +1112,58 @@ bool TriggerObjectTreeMessenger::GetEntry(int iEntry)
 
    return true;
 }
+
+TrackTreeMessenger::TrackTreeMessenger(TFile &File, std::string TreeName)
+{
+   Tree = (TTree *)File.Get(TreeName.c_str());
+   Initialize();
+}
+
+TrackTreeMessenger::TrackTreeMessenger(TFile *File, std::string TreeName)
+{
+   if(File != NULL)
+      Tree = (TTree *)File->Get(TreeName.c_str());
+   else
+      Tree = NULL;
+   Initialize();
+}
+
+TrackTreeMessenger::TrackTreeMessenger(TTree *TriggerTree)
+{
+   Initialize(TriggerTree);
+}
+
+bool TrackTreeMessenger::Initialize(TTree *TriggerTree)
+{
+   Tree = TriggerTree;
+   return Initialize();
+}
+
+bool TrackTreeMessenger::Initialize()
+{
+   TrackCount = 0;
+
+   if(Tree == NULL)
+      return false;
+
+   Tree->SetBranchAddress("nTrk", &TrackCount);
+
+   return true;
+}
+
+bool TrackTreeMessenger::GetEntry(int iEntry)
+{
+   if(Tree == NULL)
+      return false;
+
+   Tree->GetEntry(iEntry);
+
+   return true;
+}
+
+
+
+
 
 
 

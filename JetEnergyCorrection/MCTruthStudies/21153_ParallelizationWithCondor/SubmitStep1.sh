@@ -9,6 +9,8 @@ SubmissionFile=Step1.condor
 
 echo "Universe   = vanilla" > $SubmissionFile
 echo "Executable = `pwd`/Step1ListRunLumi.sh" >> $SubmissionFile
+echo "should_transfer_files = NO" >> $SubmissionFile
+# echo "transfer_output_files = DONE.txt" >> $SubmissionFile
 echo >> $SubmissionFile
 
 Input=$NoPUFiles

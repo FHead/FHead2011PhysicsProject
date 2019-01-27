@@ -11,6 +11,8 @@ SubmissionFile=Step4.condor
 
 echo "Universe   = vanilla" > $SubmissionFile
 echo "Executable = `pwd`/Step4Closure.sh" >> $SubmissionFile
+echo "should_transfer_files = NO" >> $SubmissionFile
+# echo "transfer_output_files = DONE.txt" >> $SubmissionFile
 echo >> $SubmissionFile
 
 Count=0
@@ -19,9 +21,9 @@ do
    echo $File
 
    echo "Arguments = `pwd` $File $Output $Count" >> $SubmissionFile
-   echo 'Output    = Log/Step3.out.$(Process)' >> $SubmissionFile
-   echo 'Error     = Log/Step3.err.$(Process)' >> $SubmissionFile
-   echo 'Log       = Log/Step3.log.$(Process)' >> $SubmissionFile
+   echo 'Output    = Log/Step4.out.$(Process)' >> $SubmissionFile
+   echo 'Error     = Log/Step4.err.$(Process)' >> $SubmissionFile
+   echo 'Log       = Log/Step4.log.$(Process)' >> $SubmissionFile
    echo 'Queue' >> $SubmissionFile
    echo >> $SubmissionFile
 

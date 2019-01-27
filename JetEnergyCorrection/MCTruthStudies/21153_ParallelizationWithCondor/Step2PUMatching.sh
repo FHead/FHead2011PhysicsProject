@@ -48,3 +48,4 @@ jet_synchtest_x \
 
 mv output_ak4pfchs.root ${Output}/Result_${ID}.root
 
+rm *.root

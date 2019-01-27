@@ -11,6 +11,8 @@ SubmissionFile=Step3.condor
 
 echo "Universe   = vanilla" > $SubmissionFile
 echo "Executable = `pwd`/Step3ApplyL1.sh" >> $SubmissionFile
+echo "should_transfer_files = NO" >> $SubmissionFile
+# echo "transfer_output_files = DONE.txt" >> $SubmissionFile
 echo >> $SubmissionFile
 
 Count=0

@@ -35,3 +35,4 @@ jet_correction_analyzer_x \
 
 cp Closure_ak4pfchs.root ${Output}/Closure_ak4pfchs${ID}.root
 
+rm *.root

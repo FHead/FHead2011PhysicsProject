@@ -50,3 +50,4 @@ jet_response_analyzer_x jra.config \
 
 cp jra.root ${Output}/JRA_jecl1${ID}.root
 
+rm *.root

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
    map<string, vector<string>> FileMap;
 
-   int Bundle = 10;
+   int Bundle = 5;
 
    if(argc > 1)
       Bundle = atoi(argv[1]);
@@ -60,6 +60,8 @@ int main(int argc, char *argv[])
    cout << endl;
    cout << "echo \"Universe   = vanilla\" > $SubmissionFile" << endl;
    cout << "echo \"Executable = `pwd`/Step2PUMatching.sh\" >> $SubmissionFile" << endl;
+   cout << "echo \"+JobFlavour = microcentury\" >> $SubmissionFile" << endl;
+   cout << "echo \"should_transfer_files = NO\" >> $SubmissionFile" << endl;
    cout << "echo >> $SubmissionFile" << endl;
    cout << endl;
 

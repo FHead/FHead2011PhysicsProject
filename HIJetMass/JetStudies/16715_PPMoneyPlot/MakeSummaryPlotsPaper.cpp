@@ -32,18 +32,18 @@ int main()
    TFile FGraphs7("Graphs_SD7_Centered.root");
 
    vector<TGraphAsymmErrors *> Gs(12);
-   Gs[0]  = (TGraphAsymmErrors *)FGraphs0.Get("Data_MassData_0_2");
-   Gs[1]  = (TGraphAsymmErrors *)FGraphs0.Get("Data_MassDataSys_0_2");
-   Gs[2]  = (TGraphAsymmErrors *)FGraphs7.Get("Data_MassData_0_2");
-   Gs[3]  = (TGraphAsymmErrors *)FGraphs7.Get("Data_MassDataSys_0_2");
-   Gs[4]  = (TGraphAsymmErrors *)FGraphs0.Get("PP6_MassData_0_2");
-   Gs[5]  = (TGraphAsymmErrors *)FGraphs0.Get("PP6_MassDataSys_0_2");
-   Gs[6]  = (TGraphAsymmErrors *)FGraphs7.Get("PP6_MassData_0_2");
-   Gs[7]  = (TGraphAsymmErrors *)FGraphs7.Get("PP6_MassDataSys_0_2");
-   Gs[8]  = (TGraphAsymmErrors *)FGraphs0.Get("PPHerwig_MassData_0_2");
-   Gs[9]  = (TGraphAsymmErrors *)FGraphs0.Get("PPHerwig_MassDataSys_0_2");
-   Gs[10] = (TGraphAsymmErrors *)FGraphs7.Get("PPHerwig_MassData_0_2");
-   Gs[11] = (TGraphAsymmErrors *)FGraphs7.Get("PPHerwig_MassDataSys_0_2");
+   Gs[0]  = (TGraphAsymmErrors *)FGraphs0.Get("Data_MassData_4_2");
+   Gs[1]  = (TGraphAsymmErrors *)FGraphs0.Get("Data_MassDataSys_4_2");
+   Gs[2]  = (TGraphAsymmErrors *)FGraphs7.Get("Data_MassData_4_2");
+   Gs[3]  = (TGraphAsymmErrors *)FGraphs7.Get("Data_MassDataSys_4_2");
+   Gs[4]  = (TGraphAsymmErrors *)FGraphs0.Get("PP6_MassData_4_2");
+   Gs[5]  = (TGraphAsymmErrors *)FGraphs0.Get("PP6_MassDataSys_4_2");
+   Gs[6]  = (TGraphAsymmErrors *)FGraphs7.Get("PP6_MassData_4_2");
+   Gs[7]  = (TGraphAsymmErrors *)FGraphs7.Get("PP6_MassDataSys_4_2");
+   Gs[8]  = (TGraphAsymmErrors *)FGraphs0.Get("PPHerwig_MassData_4_2");
+   Gs[9]  = (TGraphAsymmErrors *)FGraphs0.Get("PPHerwig_MassDataSys_4_2");
+   Gs[10] = (TGraphAsymmErrors *)FGraphs7.Get("PPHerwig_MassData_4_2");
+   Gs[11] = (TGraphAsymmErrors *)FGraphs7.Get("PPHerwig_MassDataSys_4_2");
 
    DoGraph(Gs, "Plots/PrettyPlotCentralityBin0");
 
@@ -111,7 +111,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase)
    double PadRatioLowY  = Border / TotalHeight;
 
    double WorldMin = 0;
-   double WorldMax = 30;
+   double WorldMax = 25;
    double MassMin = 0;
    double MassMax = 0.26;
    double RatioMin = 0.0000;
@@ -249,7 +249,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase)
    LeftAxis1.SetTextFont(42);
    LeftAxis1.SetLabelFont(42);
    LeftAxis1.CenterTitle(true);
-   LeftAxis1.SetTitleOffset(0.85);
+   LeftAxis1.SetTitleOffset(1.25);
    LeftAxis1.Draw();
 
    TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
@@ -260,7 +260,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase)
    LeftAxis2.SetTextFont(42);
    LeftAxis2.SetLabelFont(42);
    LeftAxis2.CenterTitle(true);
-   LeftAxis2.SetTitleOffset(0.85);
+   LeftAxis2.SetTitleOffset(1.25);
    LeftAxis2.Draw();
 
    int BottomTick = 1005;
@@ -291,7 +291,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase)
 
    Latex.SetTextSize(0.06);
    Latex.SetTextAlign(10);
-   Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "#font[62]{CMS}");
+   Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight + 0.005, "#font[62]{CMS}");
 
    Latex.SetTextSize(0.035);
    Latex.SetTextAlign(30);
@@ -299,10 +299,13 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase)
 
    Latex.SetTextSize(0.035);
    Latex.SetTextAlign(30);
-   Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.1, #beta = 0.0, #DeltaR_{12} > 0.1");
+   // Latex.DrawLatex((Border + PadWidth * 2) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, 160 < p_{T}^{jet} < 180 GeV");
+   Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.90) / TotalHeight, "anti-kt R = 0.4");
+   Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.76) / TotalHeight, "160 < p_{T}^{jet} < 180 GeV");
+   Latex.DrawLatex((Border + PadWidth * 1.95) / TotalWidth, (Border + RatioHeight + PadHeight * 0.65) / TotalHeight, "|#eta_{jet}| < 1.3");
 
-   TLegend Legend((Border + PadWidth * 0.25) / TotalWidth, (Border + RatioHeight + 0.45 * PadHeight) / TotalHeight,
-      (Border + PadWidth * 0.70) / TotalWidth, (Border + RatioHeight + 0.85 * PadHeight) / TotalHeight);
+   TLegend Legend((Border + PadWidth * 0.15) / TotalWidth, (Border + RatioHeight + 0.50 * PadHeight) / TotalHeight,
+      (Border + PadWidth * 0.60) / TotalWidth, (Border + RatioHeight + 0.90 * PadHeight) / TotalHeight);
    Legend.SetTextFont(42);
    Legend.SetTextSize(0.035);
    Legend.SetFillStyle(0);
@@ -314,12 +317,15 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase)
    Legend.Draw();
 
    Latex.SetTextAlign(13);
-   /*
-      Latex.DrawLatex((Border + PadWidth * 0.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "140 < p_{T}^{jet} < 160 GeV");
-      Latex.DrawLatex((Border + PadWidth * 1.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "160 < p_{T}^{jet} < 180 GeV");
-      Latex.DrawLatex((Border + PadWidth * 2.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "180 < p_{T}^{jet} < 200 GeV");
-      Latex.DrawLatex((Border + PadWidth * 3.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "200 < p_{T}^{jet} < 300 GeV");
-   */
+   Latex.DrawLatex((Border + PadWidth * 0.4) / TotalWidth, (Border + RatioHeight + PadHeight * 0.5) / TotalHeight,
+      "z_{cut} = 0.1, #beta = 0.0");
+   Latex.DrawLatex((Border + PadWidth * 0.4) / TotalWidth, (Border + RatioHeight + PadHeight * 0.4) / TotalHeight,
+      "#DeltaR_{12} > 0.1");
+   
+   Latex.DrawLatex((Border + PadWidth * 1.4) / TotalWidth, (Border + RatioHeight + PadHeight * 0.5) / TotalHeight,
+      "z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex((Border + PadWidth * 1.4) / TotalWidth, (Border + RatioHeight + PadHeight * 0.4) / TotalHeight,
+      "#DeltaR_{12} > 0.1");
 
    Canvas.SaveAs(Form("%s.png", OutputBase.c_str()));
    Canvas.SaveAs(Form("%s.C"  , OutputBase.c_str()));
@@ -366,7 +372,7 @@ void GraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmError
       G3->SetLineColor(kBlue + 2);
       G3->SetMarkerColor(kBlue + 2);
       G3->SetLineWidth(2);
-      G3->SetMarkerStyle(21);
+      G3->SetMarkerStyle(25);
       G3->SetMarkerSize(5);
    }
 
@@ -374,7 +380,7 @@ void GraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmError
    {
       G4->SetLineWidth(0);
       G4->SetFillColor(TColor::GetColor("#50BFE6"));
-      G4->SetMarkerStyle(21);
+      G4->SetMarkerStyle(25);
       G4->SetMarkerSize(5);
    }
 
@@ -383,7 +389,7 @@ void GraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmError
       G5->SetLineColor(kGreen + 3);
       G5->SetMarkerColor(kGreen + 3);
       G5->SetLineWidth(2);
-      G5->SetMarkerStyle(34);
+      G5->SetMarkerStyle(28);
       G5->SetMarkerSize(5);
    }
 
@@ -392,7 +398,7 @@ void GraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmError
       G6->SetLineWidth(0);
       G6->SetFillStyle(3445);
       G6->SetFillColor(kGreen - 3);
-      G6->SetMarkerStyle(34);
+      G6->SetMarkerStyle(28);
       G6->SetMarkerSize(5);
    }
 }
@@ -472,14 +478,14 @@ void RatioGraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, int MC)
       LineColor = kBlue + 2;
       FillColor = TColor::GetColor("#50BFE6");
       FillStyle = 1001;
-      MarkerStyle = 21;
+      MarkerStyle = 25;
    }
    if(MC == 2)
    {
       LineColor = kGreen + 3;
       FillColor = kGreen - 3;
       FillStyle = 3445;
-      MarkerStyle = 34;
+      MarkerStyle = 28;
    }
 
    if(G1 != NULL)

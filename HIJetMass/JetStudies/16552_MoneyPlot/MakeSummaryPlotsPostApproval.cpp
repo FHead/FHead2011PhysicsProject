@@ -40,7 +40,7 @@ void GraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmError
 void GraphTidying(TGraphAsymmErrors *G);
 void Division(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmErrors &GRatio, int BinCount);
 void RatioGraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2);
-TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, string Label);
+TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, int Style, string Label);
 
 class TheoryRatio
 {
@@ -49,11 +49,11 @@ public:
    string Label;
 public:
    TheoryRatio() {}
-   TheoryRatio(TH1D *h1, TH1D *h2, int color, string label)
+   TheoryRatio(TH1D *h1, TH1D *h2, int color, int style, string label)
    {
-      Initialize(h1, h2, color, label);
+      Initialize(h1, h2, color, style, label);
    }
-   void Initialize(TH1D *h1, TH1D *h2, int color, string label)
+   void Initialize(TH1D *h1, TH1D *h2, int color, int style, string label)
    {
       if(h1 == NULL || h2 == NULL)
          return;
@@ -72,16 +72,17 @@ public:
          double ey = y * sqrt(ey1 / y1 * ey1 / y1 + ey2 / y2 * ey2 / y2);
 
          G.SetPoint(i - 1, x, y);
-         G.SetPointError(i - 1, x - l, r - x, ey, ey);
+         // G.SetPointError(i - 1, x - l, r - x, ey, ey);
       }
 
       Label = label;
 
       G.SetLineColor(color);
       G.SetMarkerColor(color);
-      G.SetMarkerStyle(21);
-      G.SetMarkerSize(5);
-      G.SetLineWidth(2);
+      // G.SetMarkerStyle(21);
+      // G.SetMarkerSize(5);
+      G.SetLineWidth(4);
+      G.SetLineStyle(style);
    }
 };
 
@@ -101,41 +102,41 @@ int main()
          SD = "7";
 
       TheoryRatio JewelOnPT0 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT0", "JewelVacSB_C0PT0",
-         kGreen, "Jewel (recoil on)");
+         kBlue, kDashed, "Jewel (recoil on)");
       TheoryRatio JewelOnPT1 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT1", "JewelVacSB_C0PT1",
-         kGreen, "Jewel (recoil on)");
+         kBlue, kDashed, "Jewel (recoil on)");
       TheoryRatio JewelOnPT2 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT2", "JewelVacSB_C0PT2",
-         kGreen, "Jewel (recoil on)");
+         kBlue, kDashed, "Jewel (recoil on)");
       TheoryRatio JewelOnPT3 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT3", "JewelVacSB_C0PT3",
-         kGreen, "Jewel (recoil on)");
+         kBlue, kDashed, "Jewel (recoil on)");
       TheoryRatio JewelOnPT4 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT4", "JewelVacSB_C0PT4",
-         kGreen, "Jewel (recoil on)");
+         kBlue, kDashed, "Jewel (recoil on)");
       TheoryRatio JewelOnPT5 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOnSB_C0PT5", "JewelVacSB_C0PT5",
-         kGreen, "Jewel (recoil on)");
+         kBlue, kDashed, "Jewel (recoil on)");
       TheoryRatio JewelOffPT0 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOffSB_C0PT0", "JewelVacSB_C0PT0",
-         kGreen + 3, "Jewel (recoil off)");
+         kGreen - 2, kSolid, "Jewel (recoil off)");
       TheoryRatio JewelOffPT1 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOffSB_C0PT1", "JewelVacSB_C0PT1",
-         kGreen + 3, "Jewel (recoil off)");
+         kGreen - 2, kSolid, "Jewel (recoil off)");
       TheoryRatio JewelOffPT2 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOffSB_C0PT2", "JewelVacSB_C0PT2",
-         kGreen + 3, "Jewel (recoil off)");
+         kGreen - 2, kSolid, "Jewel (recoil off)");
       TheoryRatio JewelOffPT3 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOffSB_C0PT3", "JewelVacSB_C0PT3",
-         kGreen + 3, "Jewel (recoil off)");
+         kGreen - 2, kSolid, "Jewel (recoil off)");
       TheoryRatio JewelOffPT4 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOffSB_C0PT4", "JewelVacSB_C0PT4",
-         kGreen + 3, "Jewel (recoil off)");
+         kGreen - 2, kSolid, "Jewel (recoil off)");
       TheoryRatio JewelOffPT5 = GetRatio("PickedPlots_SD" + SD + ".root", "JewelOffSB_C0PT5", "JewelVacSB_C0PT5",
-         kGreen + 3, "Jewel (recoil off)");
+         kGreen - 2, kSolid, "Jewel (recoil off)");
       TheoryRatio QPythiaPT0 = GetRatio("PickedPlots_SD" + SD + ".root", "QPythiaMedS_C0PT0", "QPythiaVacS_C0PT0",
-         kBlue, "QPythia");
+         kRed, kDotted, "QPythia");
       TheoryRatio QPythiaPT1 = GetRatio("PickedPlots_SD" + SD + ".root", "QPythiaMedS_C0PT1", "QPythiaVacS_C0PT1",
-         kBlue, "QPythia");
+         kRed, kDotted, "QPythia");
       TheoryRatio QPythiaPT2 = GetRatio("PickedPlots_SD" + SD + ".root", "QPythiaMedS_C0PT2", "QPythiaVacS_C0PT2",
-         kBlue, "QPythia");
+         kRed, kDotted, "QPythia");
       TheoryRatio QPythiaPT3 = GetRatio("PickedPlots_SD" + SD + ".root", "QPythiaMedS_C0PT3", "QPythiaVacS_C0PT3",
-         kBlue, "QPythia");
+         kRed, kDotted, "QPythia");
       TheoryRatio QPythiaPT4 = GetRatio("PickedPlots_SD" + SD + ".root", "QPythiaMedS_C0PT4", "QPythiaVacS_C0PT4",
-         kBlue, "QPythia");
+         kRed, kDotted, "QPythia");
       TheoryRatio QPythiaPT5 = GetRatio("PickedPlots_SD" + SD + ".root", "QPythiaMedS_C0PT5", "QPythiaVacS_C0PT5",
-         kBlue, "QPythia");
+         kRed, kDotted, "QPythia");
 
       for(int iMC = 0; iMC < 2; iMC++)
       {
@@ -891,7 +892,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(G1SmearSys)   G1RatioSys.Draw("2");
    if(Extra1.size() > 0)
       for(int i = 0; i < (int)Extra1.size(); i++)
-         Extra1[i].G.Draw("p");
+         Extra1[i].G.Draw("l");
    G1Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
@@ -903,7 +904,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(G2SmearSys)   G2RatioSys.Draw("2");
    if(Extra2.size() > 0)
       for(int i = 0; i < (int)Extra2.size(); i++)
-         Extra2[i].G.Draw("p");
+         Extra2[i].G.Draw("l");
    G2Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
@@ -915,7 +916,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(G3SmearSys)   G3RatioSys.Draw("2");
    if(Extra3.size() > 0)
       for(int i = 0; i < (int)Extra3.size(); i++)
-         Extra3[i].G.Draw("p");
+         Extra3[i].G.Draw("l");
    G3Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
@@ -927,7 +928,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(G4SmearSys)   G4RatioSys.Draw("2");
    if(Extra4.size() > 0)
       for(int i = 0; i < (int)Extra4.size(); i++)
-         Extra4[i].G.Draw("p");
+         Extra4[i].G.Draw("l");
    G4Ratio.Draw("p");
    GLine.Draw("l");
    HWorldRatio.Draw("axis same");
@@ -1118,7 +1119,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    Latex.SetTextSize(0.06 * TextSizeFactor);
    Latex.SetTextAlign(10);
    if(Type == TYPE_MASS || Type == TYPE_MASS0)
-      Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.005, "#font[62]{CMS}");
+      Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.005, "#font[62]{CMS} #font[52]{Supplementary}");
    else                                                                                           
       Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.005, "#font[62]{CMS} #font[52]{Internal}");
 
@@ -1325,13 +1326,13 @@ void RatioGraphSetting(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2)
    }
 }
 
-TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, string Label)
+TheoryRatio GetRatio(string FileName, string Name1, string Name2, int Color, int Style, string Label)
 {
    TheoryRatio Result;
 
    TFile File(FileName.c_str());
 
-   Result.Initialize((TH1D *)File.Get(Name1.c_str()), (TH1D *)File.Get(Name2.c_str()), Color, Label);
+   Result.Initialize((TH1D *)File.Get(Name1.c_str()), (TH1D *)File.Get(Name2.c_str()), Color, Style, Label);
 
    File.Close();
 

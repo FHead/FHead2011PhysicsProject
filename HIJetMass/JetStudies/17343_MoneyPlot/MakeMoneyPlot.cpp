@@ -290,7 +290,7 @@ void MakePlot(vector<TGraphAsymmErrors *> G, vector<TGraphAsymmErrors *> T, stri
    Latex.SetTextAlign(13);
    Latex.DrawLatex((LeftMargin) / TotalWidth + 0.04, (BottomMargin + Height - 0.04 * TotalWidth) / TotalHeight, "#font[62]{CMS}");
    Latex.SetTextSize(0.045);
-   Latex.DrawLatex((LeftMargin) / TotalWidth + 0.04, (BottomMargin + Height - 0.10 * TotalWidth) / TotalHeight, "#font[52]{Preliminary}");
+   Latex.DrawLatex((LeftMargin) / TotalWidth + 0.04, (BottomMargin + Height - 0.10 * TotalWidth) / TotalHeight, "#font[52]{Supplementary}");
 
    Latex.SetTextSize(0.040);
    Latex.SetTextAlign(31);
@@ -417,9 +417,9 @@ void MakePlot(vector<TGraphAsymmErrors *> G, vector<TGraphAsymmErrors *> T, stri
 
    if(HasTheory == true)
    {
-      RT[0]->SetLineWidth(2);
-      RT[1]->SetLineWidth(2);
-      RT[2]->SetLineWidth(2);
+      RT[0]->SetLineWidth(4);
+      RT[1]->SetLineWidth(4);
+      RT[2]->SetLineWidth(4);
 
       RT[0]->SetLineColor(kGreen - 2);
       RT[1]->SetLineColor(kBlue);

@@ -116,10 +116,10 @@ int main()
             Text.SetTextSize(0.06);
             Text.DrawLatex(0.10, 0.925, "#font[62]{CMS} #font[52]{Supplementary}");
 
-            C.SaveAs(Form("Plots/Result_SD%d_C%d_PT%d.png", SD, iC, iP));
-            C.SaveAs(Form("Plots/Result_SD%d_C%d_PT%d.C",   SD, iC, iP));
-            C.SaveAs(Form("Plots/Result_SD%d_C%d_PT%d.eps", SD, iC, iP));
-            C.SaveAs(Form("PDFPlots/Result_SD%d_C%d_PT%d.pdf", SD, iC, iP));
+            C.SaveAs(Form("Plots/Systematics_SD%d_C%d_PT%d.png", SD, iC, iP));
+            C.SaveAs(Form("Plots/Systematics_SD%d_C%d_PT%d.C",   SD, iC, iP));
+            C.SaveAs(Form("Plots/Systematics_SD%d_C%d_PT%d.eps", SD, iC, iP));
+            C.SaveAs(Form("PDFPlots/Systematics_SD%d_C%d_PT%d.pdf", SD, iC, iP));
          }
       }
    }

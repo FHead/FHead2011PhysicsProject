@@ -370,19 +370,20 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    RatioGraphSetting(&G3Ratio2, &G3Ratio2Sys, 2);
    RatioGraphSetting(&G4Ratio2, &G4Ratio2Sys, 2);
 
-   double Border = 350;
+   double BorderWidth = 400;
+   double BorderHeight = 350;
    double PadWidth = 1000;
    double PadHeight = 1000;
    double RatioHeight = 1000;
 
-   double TotalHeight = RatioHeight + PadHeight + Border * 2;
-   double TotalWidth = PadWidth * 4 + Border * 2;
+   double TotalHeight = RatioHeight + PadHeight + BorderHeight * 2;
+   double TotalWidth = PadWidth * 4 + BorderWidth * 2;
 
    double TextSizeFactor = (500 + 1000 + 350 * 2) / TotalHeight;
 
-   double PadLowY  = (Border + RatioHeight) / TotalHeight;
-   double PadHighY = (Border + RatioHeight + PadHeight) / TotalHeight;
-   double PadRatioLowY  = Border / TotalHeight;
+   double PadLowY  = (BorderHeight + RatioHeight) / TotalHeight;
+   double PadHighY = (BorderHeight + RatioHeight + PadHeight) / TotalHeight;
+   double PadRatioLowY  = BorderWidth / TotalHeight;
 
    double WorldMin = 0.011;
    double WorldMax = 500;
@@ -490,15 +491,15 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
 
    TCanvas Canvas("Canvas", "", TotalWidth, TotalHeight);
 
-   TPad *Pad1 = new TPad("Pad1", "", (Border + PadWidth * 0) / TotalWidth, PadLowY, (Border + PadWidth * 1) / TotalWidth, PadHighY);
-   TPad *Pad2 = new TPad("Pad2", "", (Border + PadWidth * 1) / TotalWidth, PadLowY, (Border + PadWidth * 2) / TotalWidth, PadHighY);
-   TPad *Pad3 = new TPad("Pad3", "", (Border + PadWidth * 2) / TotalWidth, PadLowY, (Border + PadWidth * 3) / TotalWidth, PadHighY);
-   TPad *Pad4 = new TPad("Pad4", "", (Border + PadWidth * 3) / TotalWidth, PadLowY, (Border + PadWidth * 4) / TotalWidth, PadHighY);
+   TPad *Pad1 = new TPad("Pad1", "", (BorderWidth + PadWidth * 0) / TotalWidth, PadLowY, (BorderWidth + PadWidth * 1) / TotalWidth, PadHighY);
+   TPad *Pad2 = new TPad("Pad2", "", (BorderWidth + PadWidth * 1) / TotalWidth, PadLowY, (BorderWidth + PadWidth * 2) / TotalWidth, PadHighY);
+   TPad *Pad3 = new TPad("Pad3", "", (BorderWidth + PadWidth * 2) / TotalWidth, PadLowY, (BorderWidth + PadWidth * 3) / TotalWidth, PadHighY);
+   TPad *Pad4 = new TPad("Pad4", "", (BorderWidth + PadWidth * 3) / TotalWidth, PadLowY, (BorderWidth + PadWidth * 4) / TotalWidth, PadHighY);
 
-   TPad *Pad5 = new TPad("Pad5", "", (Border + PadWidth * 0) / TotalWidth, PadRatioLowY, (Border + PadWidth * 1) / TotalWidth, PadLowY);
-   TPad *Pad6 = new TPad("Pad6", "", (Border + PadWidth * 1) / TotalWidth, PadRatioLowY, (Border + PadWidth * 2) / TotalWidth, PadLowY);
-   TPad *Pad7 = new TPad("Pad7", "", (Border + PadWidth * 2) / TotalWidth, PadRatioLowY, (Border + PadWidth * 3) / TotalWidth, PadLowY);
-   TPad *Pad8 = new TPad("Pad8", "", (Border + PadWidth * 3) / TotalWidth, PadRatioLowY, (Border + PadWidth * 4) / TotalWidth, PadLowY);
+   TPad *Pad5 = new TPad("Pad5", "", (BorderWidth + PadWidth * 0) / TotalWidth, PadRatioLowY, (BorderWidth + PadWidth * 1) / TotalWidth, PadLowY);
+   TPad *Pad6 = new TPad("Pad6", "", (BorderWidth + PadWidth * 1) / TotalWidth, PadRatioLowY, (BorderWidth + PadWidth * 2) / TotalWidth, PadLowY);
+   TPad *Pad7 = new TPad("Pad7", "", (BorderWidth + PadWidth * 2) / TotalWidth, PadRatioLowY, (BorderWidth + PadWidth * 3) / TotalWidth, PadLowY);
+   TPad *Pad8 = new TPad("Pad8", "", (BorderWidth + PadWidth * 3) / TotalWidth, PadRatioLowY, (BorderWidth + PadWidth * 4) / TotalWidth, PadLowY);
 
    PadSetting(Pad1);
    PadSetting(Pad2);
@@ -708,7 +709,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
       Scale = "";
    if(Type == TYPE_MASS0 && LogMass == false)
       Scale = "";
-   TGaxis LeftAxis1(Border / TotalWidth, (Border + RatioHeight) / TotalHeight, Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight,
+   TGaxis LeftAxis1(BorderWidth / TotalWidth, (BorderHeight + RatioHeight) / TotalHeight, BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight,
          WorldMin, WorldMax, 50510, Scale.c_str());
    LeftAxis1.SetName("LeftAxis1");
    LeftAxis1.SetLineWidth(0);
@@ -732,7 +733,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    LeftAxis1.SetTitleOffset(0.85);
    LeftAxis1.Draw();
 
-   TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
+   TGaxis LeftAxis2(BorderWidth / TotalWidth, BorderHeight / TotalHeight, BorderWidth / TotalWidth, (BorderHeight + RatioHeight) / TotalHeight,
          RatioMin, RatioMax, 1005, "");
    // TGaxis LeftAxis2(Border / TotalWidth, Border / TotalHeight, Border / TotalWidth, (Border + RatioHeight) / TotalHeight,
    //       RatioMin, RatioMax, 1005, "G");
@@ -749,7 +750,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    if(Type == TYPE_MASS0)
       BottomTick = 505;
 
-   TGaxis BottomAxis1((Border + PadWidth * 0) / TotalWidth, Border / TotalHeight, (Border + PadWidth * 1) / TotalWidth, Border / TotalHeight,
+   TGaxis BottomAxis1((BorderWidth + PadWidth * 0) / TotalWidth, BorderHeight / TotalHeight, (BorderWidth + PadWidth * 1) / TotalWidth, BorderHeight / TotalHeight,
          MassMin, MassMax - 0.00001, BottomTick, "");
    BottomAxis1.SetName("BottomAxis1");
    BottomAxis1.SetLineWidth(0);
@@ -772,7 +773,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    BottomAxis1.CenterTitle(true);
    BottomAxis1.Draw();
 
-   TGaxis BottomAxis2((Border + PadWidth * 1) / TotalWidth, Border / TotalHeight, (Border + PadWidth * 2) / TotalWidth, Border / TotalHeight,
+   TGaxis BottomAxis2((BorderWidth + PadWidth * 1) / TotalWidth, BorderHeight / TotalHeight, (BorderWidth + PadWidth * 2) / TotalWidth, BorderHeight / TotalHeight,
          MassMin, MassMax - 0.00001, BottomTick, "");
    BottomAxis2.SetName("BottomAxis2");
    BottomAxis2.SetLineWidth(0);
@@ -795,7 +796,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    BottomAxis2.CenterTitle(true);
    BottomAxis2.Draw();
 
-   TGaxis BottomAxis3((Border + PadWidth * 2) / TotalWidth, Border / TotalHeight, (Border + PadWidth * 3) / TotalWidth, Border / TotalHeight,
+   TGaxis BottomAxis3((BorderWidth + PadWidth * 2) / TotalWidth, BorderHeight / TotalHeight, (BorderWidth + PadWidth * 3) / TotalWidth, BorderHeight / TotalHeight,
          MassMin, MassMax - 0.00001, BottomTick, "");
    BottomAxis3.SetName("BottomAxis3");
    BottomAxis3.SetLineWidth(0);
@@ -818,7 +819,7 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    BottomAxis3.CenterTitle(true);
    BottomAxis3.Draw();
 
-   TGaxis BottomAxis4((Border + PadWidth * 3) / TotalWidth, Border / TotalHeight, (Border + PadWidth * 4) / TotalWidth, Border / TotalHeight,
+   TGaxis BottomAxis4((BorderWidth + PadWidth * 3) / TotalWidth, BorderHeight / TotalHeight, (BorderWidth + PadWidth * 4) / TotalWidth, BorderHeight / TotalHeight,
          MassMin, MassMax, BottomTick, "");
    BottomAxis4.SetName("BottomAxis4");
    BottomAxis4.SetLineWidth(0);
@@ -848,26 +849,26 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    Latex.SetTextSize(0.06 * TextSizeFactor);
    Latex.SetTextAlign(10);
    if(Type == TYPE_MASS || Type == TYPE_MASS0)
-      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight + 0.01, "#font[62]{CMS}");
+      Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.01, "#font[62]{CMS}");
    else
-      Latex.DrawLatex(Border / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight + 0.01, "#font[62]{CMS}");
+      Latex.DrawLatex(BorderWidth / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight + 0.01, "#font[62]{CMS}");
 
    Latex.SetTextSize(0.035 * TextSizeFactor);
    Latex.SetTextAlign(30);
    if(IsMC == false)
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "pp 27.4 pb^{-1} (5.02 TeV)");
+      Latex.DrawLatex((BorderWidth + PadWidth * 4) / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight, "pp 27.4 pb^{-1} (5.02 TeV)");
    else
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight) / TotalHeight, "Simulation (5.02 TeV)");
+      Latex.DrawLatex((BorderWidth + PadWidth * 4) / TotalWidth, (BorderHeight + RatioHeight + PadHeight) / TotalHeight, "Simulation (5.02 TeV)");
 
    Latex.SetTextSize(0.035 * TextSizeFactor);
    Latex.SetTextAlign(30);
    if(SD == "0")
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.1, #beta = 0.0, #DeltaR_{12} > 0.1");
+      Latex.DrawLatex((BorderWidth + PadWidth * 4) / TotalWidth, (BorderHeight + RatioHeight + PadHeight + BorderHeight * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.1, #beta = 0.0, #DeltaR_{12} > 0.1");
    else
-      Latex.DrawLatex((Border + PadWidth * 4) / TotalWidth, (Border + RatioHeight + PadHeight + Border * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.5, #beta = 1.5, #DeltaR_{12} > 0.1");
+      Latex.DrawLatex((BorderWidth + PadWidth * 4) / TotalWidth, (BorderHeight + RatioHeight + PadHeight + BorderHeight * 0.2) / TotalHeight, "anti-kt R = 0.4, |#eta_{jet}| < 1.3, Soft drop z_{cut} = 0.5, #beta = 1.5, #DeltaR_{12} > 0.1");
 
-   TLegend Legend((Border + PadWidth * 0.25) / TotalWidth, (Border + RatioHeight + 0.45 * PadHeight) / TotalHeight,
-      (Border + PadWidth * 0.70) / TotalWidth, (Border + RatioHeight + 0.85 * PadHeight) / TotalHeight);
+   TLegend Legend((BorderWidth + PadWidth * 0.25) / TotalWidth, (BorderHeight + RatioHeight + 0.45 * PadHeight) / TotalHeight,
+      (BorderWidth + PadWidth * 0.70) / TotalWidth, (BorderHeight + RatioHeight + 0.85 * PadHeight) / TotalHeight);
    Legend.SetTextFont(42);
    Legend.SetTextSize(0.035 * TextSizeFactor);
    Legend.SetFillStyle(0);
@@ -881,17 +882,17 @@ void DoGraph(vector<TGraphAsymmErrors *> Gs, string OutputBase, double BinMin, d
    Latex.SetTextAlign(13);
    if(IsPT == true)
    {
-      Latex.DrawLatex((Border + PadWidth * 0.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 0-10%");
-      Latex.DrawLatex((Border + PadWidth * 1.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 10-30%");
-      Latex.DrawLatex((Border + PadWidth * 2.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 30-50%");
-      Latex.DrawLatex((Border + PadWidth * 3.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 50-80%");
+      Latex.DrawLatex((BorderWidth + PadWidth * 0.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 0-10%");
+      Latex.DrawLatex((BorderWidth + PadWidth * 1.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 10-30%");
+      Latex.DrawLatex((BorderWidth + PadWidth * 2.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 30-50%");
+      Latex.DrawLatex((BorderWidth + PadWidth * 3.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "Centrality: 50-80%");
    }
    else
    {
-      Latex.DrawLatex((Border + PadWidth * 0.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "140 < p_{T}^{jet} < 160 GeV");
-      Latex.DrawLatex((Border + PadWidth * 1.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "160 < p_{T}^{jet} < 180 GeV");
-      Latex.DrawLatex((Border + PadWidth * 2.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "180 < p_{T}^{jet} < 200 GeV");
-      Latex.DrawLatex((Border + PadWidth * 3.07) / TotalWidth, (Border + RatioHeight + PadHeight * 0.97) / TotalHeight, "200 < p_{T}^{jet} < 300 GeV");
+      Latex.DrawLatex((BorderWidth + PadWidth * 0.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "140 < p_{T}^{jet} < 160 GeV");
+      Latex.DrawLatex((BorderWidth + PadWidth * 1.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "160 < p_{T}^{jet} < 180 GeV");
+      Latex.DrawLatex((BorderWidth + PadWidth * 2.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "180 < p_{T}^{jet} < 200 GeV");
+      Latex.DrawLatex((BorderWidth + PadWidth * 3.07) / TotalWidth, (BorderHeight + RatioHeight + PadHeight * 0.97) / TotalHeight, "200 < p_{T}^{jet} < 300 GeV");
    }
 
    Canvas.SaveAs(Form("%s.png", OutputBase.c_str()));

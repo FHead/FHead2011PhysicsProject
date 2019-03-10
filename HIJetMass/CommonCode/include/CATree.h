@@ -12,6 +12,7 @@ Node *FindSDNode(Node *HeadNode, double ZCut = 0.1, double Beta = 0, double R0 =
 std::vector<std::pair<double, double>> CountSD(Node *HeadNode, double ZCut = 0.1, double Beta = 0, double R0 = 0.4, double DRCut = 0.1);
 int NodeDistance(Node *Child, Node *Root);
 double SDCSum(std::vector<std::pair<double, double>> &Z, double Kappa);
+std::pair<double, double> WinnerTakesAllAxis(Node *N);
 
 class Node
 {

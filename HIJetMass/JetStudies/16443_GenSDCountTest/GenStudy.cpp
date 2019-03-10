@@ -141,6 +141,11 @@ int main(int argc, char *argv[])
    OutputTree.Branch("GenSDDR", &GenSDDR, "GenSDDR/D");
    OutputTree.Branch("GenSDCount", &GenSDCount, "GenSDCount/D");
 
+   double GenSDCKappa0, GenSDCKappa1, GenSDCKappa2;
+   OutputTree.Branch("GenSDCKappa0", &GenSDCKappa0, "GenSDCKappa0/D");
+   OutputTree.Branch("GenSDCKappa1", &GenSDCKappa1, "GenSDCKappa1/D");
+   OutputTree.Branch("GenSDCKappa2", &GenSDCKappa2, "GenSDCKappa2/D");
+
    int Flavor, FlavorB;
    OutputTree.Branch("Flavor", &Flavor, "Flavor/I");
    OutputTree.Branch("FlavorB", &FlavorB, "FlavorB/I");
@@ -149,7 +154,7 @@ int main(int argc, char *argv[])
    // Start looping //
    ///////////////////
 
-   int EntryCount = MHiEvent.Tree->GetEntries();
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.1;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
@@ -246,6 +251,9 @@ int main(int argc, char *argv[])
          }
 
          GenSDCount = SDC.size();
+         GenSDCKappa0 = SDCSum(SDC, 0.0);
+         GenSDCKappa1 = SDCSum(SDC, 1.0);
+         GenSDCKappa2 = SDCSum(SDC, 2.0);
 
          //////////////////////
          // Match to CS jets //

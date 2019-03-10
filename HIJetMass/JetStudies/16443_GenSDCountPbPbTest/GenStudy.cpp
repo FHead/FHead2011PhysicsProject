@@ -30,12 +30,12 @@ int main(int argc, char *argv[])
    // double ZCut = 0.007;
    // double Beta = -1;
    // double R0 = 0.6;
-   // double ThetaCut = 0;
+   // double RCut = 0;
    
    double ZCut = 0.1;
    double Beta = 0.0;
    double R0 = 0.4;
-   double ThetaCut = 0.1;
+   double RCut = 0.1;
 
    /////////////////
    // Basic Stuff //
@@ -57,9 +57,9 @@ int main(int argc, char *argv[])
    double PTHatMin = -1000000;
    double PTHatMax = 1000000;
 
-   if(argc < 6)
+   if(argc != 10)
    {
-      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax" << endl;
+      cerr << "Usage: " << argv[0] << " Input Output Tag PTHatMin PTHatMax ZCut Beta R0 RCut" << endl;
       return -1;
    }
 
@@ -68,6 +68,11 @@ int main(int argc, char *argv[])
    Tag = argv[3];
    PTHatMin = atof(argv[4]);
    PTHatMax = atof(argv[5]);
+
+   ZCut = atof(argv[6]);
+   Beta = atof(argv[7]);
+   R0 = atof(argv[8]);
+   RCut = atof(argv[9]);
 
    ////////////////////////
    // Prepare messengers //
@@ -184,7 +189,7 @@ int main(int argc, char *argv[])
    // Start looping //
    ///////////////////
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.02;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.1;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
@@ -236,9 +241,10 @@ int main(int argc, char *argv[])
       {
          if(MGen.SubEvent->size() < iG)
             continue;
+         if(fabs((*MGen.Eta)[iG]) > 3.0)
+            continue;
          if((*MGen.SubEvent)[iG] != 0)
-            if(fabs((*MGen.Eta)[iG]) < 2.5)
-               TotalPT = TotalPT + (*MGen.PT)[iG];
+            TotalPT = TotalPT + (*MGen.PT)[iG];
          FourVector P;
          P.SetPtEtaPhi((*MGen.PT)[iG], (*MGen.Eta)[iG], (*MGen.Phi)[iG]);
          GenParticles.push_back(PseudoJet(P[1], P[2], P[3], P[0]));
@@ -306,7 +312,7 @@ int main(int argc, char *argv[])
          BuildCATree(GenNodes);
 
          Node *Groomed = FindSDNode(GenNodes[0], ZCut, Beta, R0);
-         vector<pair<double, double>> SDC = CountSD(GenNodes[0], ZCut, Beta, R0, ThetaCut);
+         vector<pair<double, double>> SDC = CountSD(GenNodes[0], ZCut, Beta, R0, RCut);
 
          GenSDDR = -1;
          if(Groomed->N > 1)
@@ -379,7 +385,7 @@ int main(int argc, char *argv[])
             BuildCATree(PPNodes);
 
             Node *PPGroomed = FindSDNode(PPNodes[0], ZCut, Beta, R0);
-            vector<pair<double, double>> PPSDC = CountSD(PPNodes[0], ZCut, Beta, R0, ThetaCut);
+            vector<pair<double, double>> PPSDC = CountSD(PPNodes[0], ZCut, Beta, R0, RCut);
 
             PPSDDR = -1;
             if(PPGroomed->N > 1)

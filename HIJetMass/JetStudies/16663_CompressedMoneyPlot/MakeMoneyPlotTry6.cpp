@@ -25,6 +25,7 @@ bool DivideAndShiftTheory(vector<TGraphAsymmErrors *> &T, vector<TGraphAsymmErro
 void Division(TGraphAsymmErrors *G1, TGraphAsymmErrors *G2, TGraphAsymmErrors *GRatio);
 void ShiftUp(TGraphAsymmErrors *G, double Amount);
 TGraphAsymmErrors *HistogramToGraph(TH1D *H);
+void Sanctify(TGraphAsymmErrors *G);
 
 int main()
 {
@@ -178,6 +179,9 @@ int main()
 
 void MakePlot(vector<TGraphAsymmErrors *> G, vector<TGraphAsymmErrors *> T, string OutputBase, int Preset)
 {
+   for(auto X : G)   Sanctify(X);
+   for(auto X : T)   Sanctify(X);
+
    // Inputs: edit to your liking
 
    double LeftMargin, RightMargin, TopMargin, BottomMargin, Height, Width;
@@ -940,8 +944,30 @@ TGraphAsymmErrors *HistogramToGraph(TH1D *H)
    return G;
 }
 
+void Sanctify(TGraphAsymmErrors *G)
+{
+   if(G == NULL)
+      return;
 
+   for(int i = 0; i < G->GetN(); i++)
+   {
+      double x, y;
+      G->GetPoint(i, x, y);
+      if(x != x)  x = 999;
+      if(y != y)  y = 999;
+      G->SetPoint(i, x, y);
 
+      double e;
+      e = G->GetErrorYlow(i);
+      if(e != e)  G->SetPointEYlow(i, 0);
+      e = G->GetErrorYhigh(i);
+      if(e != e)  G->SetPointEYhigh(i, 0);
+      e = G->GetErrorXlow(i);
+      if(e != e)  G->SetPointEXlow(i, 0);
+      e = G->GetErrorXhigh(i);
+      if(e != e)  G->SetPointEXhigh(i, 0);
+   }
+}
 
 
 

@@ -186,14 +186,15 @@ int main(int argc, char *argv[])
    OutputTree.Branch("PFPhi", &TreePFPhi, "PFPhi[1000]/D");
    OutputTree.Branch("PFID", &TreePFID, "PFID[1000]/I");
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.1;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 0.5;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
+   int Mod = ((EntryCount > 500) ? 1 : EntryCount / 300);
 
    for(int iE = 0; iE < EntryCount; iE++)
    {
       Bar.Update(iE);
-      Bar.PrintWithMod(300);
+      Bar.PrintWithMod(Mod);
 
       MHiEvent.GetEntry(iE);
       MJet.GetEntry(iE);
@@ -259,8 +260,8 @@ int main(int argc, char *argv[])
       {
          if(Jets[iJ].eta() < -2 || Jets[iJ].eta() > 2)
             continue;
-         if(Jets[iJ].perp() < 80)
-            continue;
+         // if(Jets[iJ].perp() < 80)
+         //    continue;
 
          TreePFCount = 0;
          for(int i = 0; i < 1000; i++)
@@ -322,6 +323,9 @@ int main(int argc, char *argv[])
             TreeNEM = MJet.JetPFNEM[BestCSJet];
             TreeMUM = MJet.JetPFMUM[BestCSJet];
          }
+
+         if(TreeJetCSPT < 20)
+            continue;
 
          int BestSDJet = 0;
          double BestSDDR = -1;

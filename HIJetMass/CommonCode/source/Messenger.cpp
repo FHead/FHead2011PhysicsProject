@@ -128,6 +128,9 @@ bool GGTreeMessenger::Initialize()
    CaloJetPT = NULL;
    CaloJetEta = NULL;
    CaloJetPhi = NULL;
+   GenJetPT = NULL;
+   GenJetEta = NULL;
+   GenJetPhi = NULL;
 
    if(Tree->GetBranch("nPFJt"))         Tree->SetBranchAddress("nPFJt", &PFJetCount);
    else                                 PFJetCount = 0;
@@ -145,6 +148,14 @@ bool GGTreeMessenger::Initialize()
    else                                 CaloJetEta = &EmptyVectors::EmptyVectorFloat;
    if(Tree->GetBranch("caloJtPhi"))     Tree->SetBranchAddress("caloJtPhi", &CaloJetPhi);
    else                                 CaloJetPhi = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("nGenJt"))        Tree->SetBranchAddress("nGenJt", &GenJetCount);
+   else                                 GenJetCount = 0;
+   if(Tree->GetBranch("genJtPt"))       Tree->SetBranchAddress("genJtPt", &GenJetPT);
+   else                                 GenJetPT = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("genJtEta"))      Tree->SetBranchAddress("genJtEta", &GenJetEta);
+   else                                 GenJetEta = &EmptyVectors::EmptyVectorFloat;
+   if(Tree->GetBranch("genJtPhi"))      Tree->SetBranchAddress("genJtPhi", &GenJetPhi);
+   else                                 GenJetPhi = &EmptyVectors::EmptyVectorFloat;
 
    return true;
 }
@@ -882,6 +893,12 @@ void TriggerTreeMessenger::FillTriggerNames()
    Name.push_back("HLT_AK4CaloJet80_v9");
    Name.push_back("HLT_AK4CaloJet100_v9");
    Name.push_back("HLT_AK4CaloJet120_v8");
+
+   Name.push_back("HLT_L1SingleJet16_Eta5p1_v1");
+   Name.push_back("HLT_L1SingleJet20_Eta5p1_v1");
+   Name.push_back("HLT_L1SingleJet28_Eta5p1_v1");
+   Name.push_back("HLT_L1SingleJet40_Eta5p1_v1");
+   Name.push_back("HLT_L1SingleJet60_Eta5p1_v1");
 
    // pp reference runs - v6
    Name.push_back("HLT_L1SingleJet20FWD");

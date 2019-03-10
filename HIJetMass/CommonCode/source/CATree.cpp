@@ -366,6 +366,21 @@ double SDCSum(std::vector<std::pair<double, double>> &Z, double Kappa)
    return Result;
 }
 
+std::pair<double, double> WinnerTakesAllAxis(Node *N)
+{
+   if(N == NULL)
+      return std::pair<double, double>(0, 0);
+
+   if(N->N == 1 || N->Child1 == NULL || N->Child2 == NULL)  // Leaf node.  Returns self
+      return std::pair<double, double>(N->P.GetEta(), N->P.GetPhi());
+
+   if(N->Child1->P.GetPT() > N->Child2->P.GetPT())
+      return WinnerTakesAllAxis(N->Child1);
+   else
+      return WinnerTakesAllAxis(N->Child2);
+
+   return std::pair<double, double>(0, 0);
+}
 
 
 

@@ -1,0 +1,1 @@
+./Run root://xrootd.cmsaf.mit.edu//store/user/dgulhan/HighPtJet80/pp5TeV_HighPtJet80_HIReco_758p3_GT_75X_dataRun2_PromptHI_v3/160606_144535/0000/step2_RAW2DIGI_L1Reco_RECO_999.root /tmp/chenyi/PPDataHIReco.root PPDataHighPTJetHIReco -100000 1000000

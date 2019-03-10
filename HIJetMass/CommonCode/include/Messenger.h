@@ -55,6 +55,10 @@ public:
    std::vector<float> *CaloJetPT;
    std::vector<float> *CaloJetEta;
    std::vector<float> *CaloJetPhi;
+   int GenJetCount;
+   std::vector<float> *GenJetPT;
+   std::vector<float> *GenJetEta;
+   std::vector<float> *GenJetPhi;
 public:
    GGTreeMessenger(TFile &File, std::string TreeName = "ggHiNtuplizer/EventTree");
    GGTreeMessenger(TFile *File, std::string TreeName = "ggHiNtuplizer/EventTree");

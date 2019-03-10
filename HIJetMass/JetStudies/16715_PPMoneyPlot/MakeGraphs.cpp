@@ -157,6 +157,9 @@ int main(int argc, char *argv[])
    PdfFileHelper PdfFile("QuickView_" + Tag + ".pdf");
    PdfFile.AddTextPage("Quick view of the result!");
 
+   TH2D HX("HX", "HX", 1, 0, 1, 1, 0, 1);
+   PdfFile.AddPlot(HX);
+
    ofstream OutputMassFile("Mass_" + Tag + ".txt");
    
    ///////////////////

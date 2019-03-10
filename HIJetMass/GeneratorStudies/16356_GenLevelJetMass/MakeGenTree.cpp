@@ -105,6 +105,15 @@ int main(int argc, char *argv[])
    OutputTree.Branch("JetPhi", &TreeJetPhi, "JetPhi/D");
    OutputTree.Branch("JetEnergy", &TreeJetEnergy, "JetEnergy/D");
 
+   double TreeMatchPT, TreeMatchDR, TreeMatchEta, TreeMatchPhi;
+   int TreeMatchType, TreeMatchTypeB;
+   OutputTree.Branch("MatchPT", &TreeMatchPT, "MatchPT/D");
+   OutputTree.Branch("MatchEta", &TreeMatchEta, "MatchEta/D");
+   OutputTree.Branch("MatchPhi", &TreeMatchPhi, "MatchPhi/D");
+   OutputTree.Branch("MatchDR", &TreeMatchDR, "MatchDR/D");
+   OutputTree.Branch("MatchType", &TreeMatchType, "MatchType/I");
+   OutputTree.Branch("MatchTypeB", &TreeMatchTypeB, "MatchTypeB/I");
+
    int TreeDepth0, TreeDepth7;
    OutputTree.Branch("Depth0", &TreeDepth0, "Depth0/I");
    OutputTree.Branch("Depth7", &TreeDepth7, "Depth7/I");
@@ -136,7 +145,7 @@ int main(int argc, char *argv[])
 
    TH1D HN("HN", ";;", 1, 0, 1);
 
-   int EntryCount = MHiEvent.Tree->GetEntries() * 0.10;
+   int EntryCount = MHiEvent.Tree->GetEntries() * 1.00;
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(-1);
 
@@ -200,6 +209,25 @@ int main(int argc, char *argv[])
             continue;
          if(Jets[iJ].perp() < 50)
             continue;
+
+         int iJet = 0;
+         double JetMatchDR = -1;
+         for(int i = 0; i < MJet.JetCount; i++)
+         {
+            double DR = GetDR(MJet.JetEta[i], MJet.JetPhi[i], Jets[iJ].eta(), Jets[iJ].phi());
+            if(JetMatchDR < 0 || DR < JetMatchDR)
+            {
+               iJet = i;
+               JetMatchDR = DR;
+            }
+         }
+
+         TreeMatchPT = MJet.JetPT[iJet];
+         TreeMatchEta = MJet.JetEta[iJet];
+         TreeMatchPhi = MJet.JetPhi[iJet];
+         TreeMatchDR = JetMatchDR;
+         TreeMatchType = MJet.RefPartonFlavor[iJet];
+         TreeMatchTypeB = MJet.RefPartonFlavorForB[iJet];
 
          TreeJetPT = Jets[iJ].perp();
          TreeJetEta = Jets[iJ].eta();

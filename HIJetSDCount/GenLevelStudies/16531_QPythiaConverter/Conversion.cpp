@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 #include "TFile.h"
@@ -8,11 +9,13 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-   if(argc != 2)
+   if(argc != 3)
    {
-      cerr << "Usage: " << argv[0] << " RootFileName" << endl;
+      cerr << "Usage: " << argv[0] << " RootFileName OutputBase" << endl;
       return -1;
    }
+
+   string OutputBase = argv[2];
 
    TFile File(argv[1]);
 
@@ -23,10 +26,14 @@ int main(int argc, char *argv[])
    vector<double> *pz = NULL;   T->SetBranchAddress("pz", &pz);
    vector<double> *m = NULL;    T->SetBranchAddress("m", &m);
    vector<int> *id = NULL;      T->SetBranchAddress("id", &id);
-   double w;                    T->SetBranchAddress("weight", &w);
+   double w;                    T->SetBranchAddress("xSec", &w);
 
    ProgressBar Bar(cerr, T->GetEntries());
    Bar.SetStyle(3);
+
+   ofstream out(OutputBase + "_0.pu14");
+   int ID = 0;
+   int EventCount = 0;
 
    int EntryCount = T->GetEntries();
    for(int iE = 0; iE < EntryCount; iE++)
@@ -36,15 +43,24 @@ int main(int argc, char *argv[])
       Bar.Update(iE);
       Bar.PrintWithMod(EntryCount / 300);
 
-      cout << px << " " << id << endl;
-
-      cout << "# event " << iE << endl;
-      cout << "weight " << w << endl;
+      out << "# event " << iE << endl;
+      out << "weight " << w << endl;
       for(int i = 0; i < (int)id->size(); i++)
-         cout << (*px)[i] << " " << (*py)[i] << " " << (*pz)[i] << " " << (*m)[i]
+         out << (*px)[i] << " " << (*py)[i] << " " << (*pz)[i] << " " << (*m)[i]
             << " " << (*id)[i] << " " << 0 << endl;
-      cout << "end" << endl;
+      out << "end" << endl;
+
+      EventCount = EventCount + 1;
+      if(EventCount >= 5000)
+      {
+         EventCount = 0;
+         ID = ID + 1;
+         out.close();
+         out.open(Form("%s_%d.pu14", OutputBase.c_str(), ID));
+      }
    }
+
+   out.close();
 
    Bar.Update(EntryCount);
    Bar.Print();

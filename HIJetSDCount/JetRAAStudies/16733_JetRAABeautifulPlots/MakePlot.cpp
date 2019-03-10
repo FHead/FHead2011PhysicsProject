@@ -26,27 +26,51 @@ int main()
    TGraphAsymmErrors SOn, SOnDR0, SOnDR1, SOnDR2, SOnDR3;
    TGraphAsymmErrors SBOff, SBOffDR0, SBOffDR1, SBOffDR2, SBOffDR3;
    TGraphAsymmErrors SBOn, SBOnDR0, SBOnDR1, SBOnDR2, SBOnDR3;
+   TGraphAsymmErrors Q1, Q1DR0, Q1DR1, Q1DR2, Q1DR3;
+   TGraphAsymmErrors QB, QBDR0, QBDR1, QBDR2, QBDR3;
+   TGraphAsymmErrors Q1M, Q1MDR0, Q1MDR1, Q1MDR2, Q1MDR3;
+   TGraphAsymmErrors QBM, QBMDR0, QBMDR1, QBMDR2, QBMDR3;
 
-   Divide(SOff,     "Plots_Off_S_N.root",  "HCS",       "Plots_Off_P_N.root", "HCS");
-   Divide(SOffDR0,  "Plots_Off_S_N.root",  "HCSSD7DR0", "Plots_Off_P_N.root", "HCSSD7DR0");
-   Divide(SOffDR1,  "Plots_Off_S_N.root",  "HCSSD7DR1", "Plots_Off_P_N.root", "HCSSD7DR1");
-   Divide(SOffDR2,  "Plots_Off_S_N.root",  "HCSSD7DR2", "Plots_Off_P_N.root", "HCSSD7DR2");
-   Divide(SOffDR3,  "Plots_Off_S_N.root",  "HCSSD7DR3", "Plots_Off_P_N.root", "HCSSD7DR3");
-   Divide(SOn,      "Plots_On_S_Y.root",   "HCS",       "Plots_On_P_Y.root",  "HCS");
-   Divide(SOnDR0,   "Plots_On_S_Y.root",   "HCSSD7DR0", "Plots_On_P_Y.root",  "HCSSD7DR0");
-   Divide(SOnDR1,   "Plots_On_S_Y.root",   "HCSSD7DR1", "Plots_On_P_Y.root",  "HCSSD7DR1");
-   Divide(SOnDR2,   "Plots_On_S_Y.root",   "HCSSD7DR2", "Plots_On_P_Y.root",  "HCSSD7DR2");
-   Divide(SOnDR3,   "Plots_On_S_Y.root",   "HCSSD7DR3", "Plots_On_P_Y.root",  "HCSSD7DR3");
-   Divide(SBOff,    "Plots_Off_SB_N.root", "HCS",       "Plots_Off_P_N.root", "HCS");
-   Divide(SBOffDR0, "Plots_Off_SB_N.root", "HCSSD7DR0", "Plots_Off_P_N.root", "HCSSD7DR0");
-   Divide(SBOffDR1, "Plots_Off_SB_N.root", "HCSSD7DR1", "Plots_Off_P_N.root", "HCSSD7DR1");
-   Divide(SBOffDR2, "Plots_Off_SB_N.root", "HCSSD7DR2", "Plots_Off_P_N.root", "HCSSD7DR2");
-   Divide(SBOffDR3, "Plots_Off_SB_N.root", "HCSSD7DR3", "Plots_Off_P_N.root", "HCSSD7DR3");
-   Divide(SBOn,     "Plots_On_SB_Y.root",  "HCS",       "Plots_On_P_Y.root",  "HCS");
-   Divide(SBOnDR0,  "Plots_On_SB_Y.root",  "HCSSD7DR0", "Plots_On_P_Y.root",  "HCSSD7DR0");
-   Divide(SBOnDR1,  "Plots_On_SB_Y.root",  "HCSSD7DR1", "Plots_On_P_Y.root",  "HCSSD7DR1");
-   Divide(SBOnDR2,  "Plots_On_SB_Y.root",  "HCSSD7DR2", "Plots_On_P_Y.root",  "HCSSD7DR2");
-   Divide(SBOnDR3,  "Plots_On_SB_Y.root",  "HCSSD7DR3", "Plots_On_P_Y.root",  "HCSSD7DR3");
+   Divide(SOff,     "Plots_Off_S_N.root",  "HCS",       "Plots_Vac_S_N.root",  "HCS");
+   Divide(SOffDR0,  "Plots_Off_S_N.root",  "HCSSD7DR0", "Plots_Vac_S_N.root",  "HCSSD7DR0");
+   Divide(SOffDR1,  "Plots_Off_S_N.root",  "HCSSD7DR1", "Plots_Vac_S_N.root",  "HCSSD7DR1");
+   Divide(SOffDR2,  "Plots_Off_S_N.root",  "HCSSD7DR2", "Plots_Vac_S_N.root",  "HCSSD7DR2");
+   Divide(SOffDR3,  "Plots_Off_S_N.root",  "HCSSD7DR3", "Plots_Vac_S_N.root",  "HCSSD7DR3");
+   Divide(SOn,      "Plots_On_S_Y.root",   "HCS",       "Plots_Vac_S_N.root",  "HCS");
+   Divide(SOnDR0,   "Plots_On_S_Y.root",   "HCSSD7DR0", "Plots_Vac_S_N.root",  "HCSSD7DR0");
+   Divide(SOnDR1,   "Plots_On_S_Y.root",   "HCSSD7DR1", "Plots_Vac_S_N.root",  "HCSSD7DR1");
+   Divide(SOnDR2,   "Plots_On_S_Y.root",   "HCSSD7DR2", "Plots_Vac_S_N.root",  "HCSSD7DR2");
+   Divide(SOnDR3,   "Plots_On_S_Y.root",   "HCSSD7DR3", "Plots_Vac_S_N.root",  "HCSSD7DR3");
+   Divide(SBOff,    "Plots_Off_SB_N.root", "HCS",       "Plots_Vac_SB_N.root", "HCS");
+   Divide(SBOffDR0, "Plots_Off_SB_N.root", "HCSSD7DR0", "Plots_Vac_SB_N.root", "HCSSD7DR0");
+   Divide(SBOffDR1, "Plots_Off_SB_N.root", "HCSSD7DR1", "Plots_Vac_SB_N.root", "HCSSD7DR1");
+   Divide(SBOffDR2, "Plots_Off_SB_N.root", "HCSSD7DR2", "Plots_Vac_SB_N.root", "HCSSD7DR2");
+   Divide(SBOffDR3, "Plots_Off_SB_N.root", "HCSSD7DR3", "Plots_Vac_SB_N.root", "HCSSD7DR3");
+   Divide(SBOn,     "Plots_On_SB_Y.root",  "HCS",       "Plots_Vac_SB_N.root", "HCS");
+   Divide(SBOnDR0,  "Plots_On_SB_Y.root",  "HCSSD7DR0", "Plots_Vac_SB_N.root", "HCSSD7DR0");
+   Divide(SBOnDR1,  "Plots_On_SB_Y.root",  "HCSSD7DR1", "Plots_Vac_SB_N.root", "HCSSD7DR1");
+   Divide(SBOnDR2,  "Plots_On_SB_Y.root",  "HCSSD7DR2", "Plots_Vac_SB_N.root", "HCSSD7DR2");
+   Divide(SBOnDR3,  "Plots_On_SB_Y.root",  "HCSSD7DR3", "Plots_Vac_SB_N.root", "HCSSD7DR3");
+   Divide(Q1,       "Plots_Q1_S.root",     "HCS",       "Plots_QV_S.root",     "HCS");
+   Divide(Q1DR0,    "Plots_Q1_S.root",     "HCSSD7DR0", "Plots_QV_S.root",     "HCSSD7DR0");
+   Divide(Q1DR1,    "Plots_Q1_S.root",     "HCSSD7DR1", "Plots_QV_S.root",     "HCSSD7DR1");
+   Divide(Q1DR2,    "Plots_Q1_S.root",     "HCSSD7DR2", "Plots_QV_S.root",     "HCSSD7DR2");
+   Divide(Q1DR3,    "Plots_Q1_S.root",     "HCSSD7DR3", "Plots_QV_S.root",     "HCSSD7DR3");
+   Divide(QB,       "Plots_Q1_SB.root",    "HCS",       "Plots_QV_SB.root",    "HCS");
+   Divide(QBDR0,    "Plots_Q1_SB.root",    "HCSSD7DR0", "Plots_QV_SB.root",    "HCSSD7DR0");
+   Divide(QBDR1,    "Plots_Q1_SB.root",    "HCSSD7DR1", "Plots_QV_SB.root",    "HCSSD7DR1");
+   Divide(QBDR2,    "Plots_Q1_SB.root",    "HCSSD7DR2", "Plots_QV_SB.root",    "HCSSD7DR2");
+   Divide(QBDR3,    "Plots_Q1_SB.root",    "HCSSD7DR3", "Plots_QV_SB.root",    "HCSSD7DR3");
+   Divide(Q1M,      "Plots_Q1_S_Merged.root",     "HCS",       "Plots_QV_S_Merged.root",     "HCS");
+   Divide(Q1MDR0,   "Plots_Q1_S_Merged.root",     "HCSSD7DR0", "Plots_QV_S_Merged.root",     "HCSSD7DR0");
+   Divide(Q1MDR1,   "Plots_Q1_S_Merged.root",     "HCSSD7DR1", "Plots_QV_S_Merged.root",     "HCSSD7DR1");
+   Divide(Q1MDR2,   "Plots_Q1_S_Merged.root",     "HCSSD7DR2", "Plots_QV_S_Merged.root",     "HCSSD7DR2");
+   Divide(Q1MDR3,   "Plots_Q1_S_Merged.root",     "HCSSD7DR3", "Plots_QV_S_Merged.root",     "HCSSD7DR3");
+   Divide(QBM,      "Plots_Q1_SB_Merged.root",    "HCS",       "Plots_QV_SB_Merged.root",    "HCS");
+   Divide(QBMDR0,   "Plots_Q1_SB_Merged.root",    "HCSSD7DR0", "Plots_QV_SB_Merged.root",    "HCSSD7DR0");
+   Divide(QBMDR1,   "Plots_Q1_SB_Merged.root",    "HCSSD7DR1", "Plots_QV_SB_Merged.root",    "HCSSD7DR1");
+   Divide(QBMDR2,   "Plots_Q1_SB_Merged.root",    "HCSSD7DR2", "Plots_QV_SB_Merged.root",    "HCSSD7DR2");
+   Divide(QBMDR3,   "Plots_Q1_SB_Merged.root",    "HCSSD7DR3", "Plots_QV_SB_Merged.root",    "HCSSD7DR3");
 
    TLatex Latex;
    Latex.SetNDC();
@@ -59,6 +83,9 @@ int main()
 
    TH2D HWorld("HWorld", ";p_{T}^{jet} (GeV);R_{AA}", 100, 99.99, 1000, 100, 0.0, 1.5);
    HWorld.SetStats(0);
+   TH2D HWorldHigh("HWorldHigh", ";p_{T}^{jet} (GeV);R_{AA}", 100, 99.99, 1000, 100, 0.0, 3.0);
+   HWorldHigh.SetStats(0);
+   
    HWorld.Draw("axis");
 
    SOff.SetLineColor(kBlack);
@@ -98,7 +125,7 @@ int main()
    C.SaveAs("Plots/Plot1.pdf");
    PdfFile.AddCanvas(C);
 
-   HWorld.Draw("axis");
+   HWorldHigh.Draw("axis");
 
    SOn.SetLineColor(kBlack);
    SOnDR0.SetLineColor(kMagenta);
@@ -124,7 +151,6 @@ int main()
    Latex.DrawLatex(0.15, 0.75, "Signal only");
    Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
-   // Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
 
    C.SaveAs("Plots/Plot2.pdf");
    PdfFile.AddCanvas(C);
@@ -157,7 +183,7 @@ int main()
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
 
    C.SaveAs("Plots/Plot3.pdf");
-   PdfFile.AddCanvas(C);
+   // PdfFile.AddCanvas(C);
 
    HWorld.Draw("axis");
 
@@ -188,7 +214,7 @@ int main()
    // Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
 
    C.SaveAs("Plots/Plot4.pdf");
-   PdfFile.AddCanvas(C);
+   // PdfFile.AddCanvas(C);
 
    SOff.SetLineColor(kBlack);
    SOn.SetLineColor(kGreen);
@@ -222,7 +248,128 @@ int main()
    Legend2.Draw();
 
    C.SaveAs("Plots/Plot5.pdf");
+   // PdfFile.AddCanvas(C);
+
+   HWorldHigh.Draw("axis");
+
+   Q1.SetLineColor(kBlack);
+   Q1DR0.SetLineColor(kMagenta);
+   Q1DR1.SetLineColor(kRed);
+   Q1DR2.SetLineColor(kBlue);
+   Q1DR3.SetLineColor(kGreen);
+   Q1.SetMarkerColor(kBlack);
+   Q1DR0.SetMarkerColor(kMagenta);
+   Q1DR1.SetMarkerColor(kRed);
+   Q1DR2.SetMarkerColor(kBlue);
+   Q1DR3.SetMarkerColor(kGreen);
+
+   Q1.Draw("p");
+   Q1DR0.Draw("p");
+   Q1DR1.Draw("p");
+   Q1DR2.Draw("p");
+   Q1DR3.Draw("p");
+
+   Legend.Draw();
+   
+   Latex.DrawLatex(0.15, 0.85, "QPythia");
+   Latex.DrawLatex(0.15, 0.80, "0-10% (#hat{p}_{T} > 40)");
+   Latex.DrawLatex(0.15, 0.75, "Signal only");
+   Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
+
+   C.SaveAs("Plots/Plot6.pdf");
    PdfFile.AddCanvas(C);
+
+   HWorldHigh.Draw("axis");
+
+   QB.SetLineColor(kBlack);
+   QBDR0.SetLineColor(kMagenta);
+   QBDR1.SetLineColor(kRed);
+   QBDR2.SetLineColor(kBlue);
+   QBDR3.SetLineColor(kGreen);
+   QB.SetMarkerColor(kBlack);
+   QBDR0.SetMarkerColor(kMagenta);
+   QBDR1.SetMarkerColor(kRed);
+   QBDR2.SetMarkerColor(kBlue);
+   QBDR3.SetMarkerColor(kGreen);
+
+   QB.Draw("p");
+   QBDR0.Draw("p");
+   QBDR1.Draw("p");
+   QBDR2.Draw("p");
+   QBDR3.Draw("p");
+
+   Legend.Draw();
+   
+   Latex.DrawLatex(0.15, 0.85, "QPythia");
+   Latex.DrawLatex(0.15, 0.80, "0-10% (#hat{p}_{T} > 40)");
+   Latex.DrawLatex(0.15, 0.75, "Signal + background");
+   Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
+
+   C.SaveAs("Plots/Plot7.pdf");
+   PdfFile.AddCanvas(C);
+
+   HWorldHigh.Draw("axis");
+
+   Q1M.SetLineColor(kBlack);
+   Q1MDR0.SetLineColor(kMagenta);
+   Q1MDR1.SetLineColor(kRed);
+   Q1MDR2.SetLineColor(kBlue);
+   Q1MDR3.SetLineColor(kGreen);
+   Q1M.SetMarkerColor(kBlack);
+   Q1MDR0.SetMarkerColor(kMagenta);
+   Q1MDR1.SetMarkerColor(kRed);
+   Q1MDR2.SetMarkerColor(kBlue);
+   Q1MDR3.SetMarkerColor(kGreen);
+
+   Q1M.Draw("p");
+   Q1MDR0.Draw("p");
+   Q1MDR1.Draw("p");
+   Q1MDR2.Draw("p");
+   Q1MDR3.Draw("p");
+
+   Legend.Draw();
+   
+   Latex.DrawLatex(0.15, 0.85, "QPythia");
+   Latex.DrawLatex(0.15, 0.80, "0-10% (#hat{p}_{T} > 80)");
+   Latex.DrawLatex(0.15, 0.75, "Signal only");
+   Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
+
+   C.SaveAs("Plots/Plot8.pdf");
+   PdfFile.AddCanvas(C);
+
+   HWorldHigh.Draw("axis");
+
+   QBM.SetLineColor(kBlack);
+   QBMDR0.SetLineColor(kMagenta);
+   QBMDR1.SetLineColor(kRed);
+   QBMDR2.SetLineColor(kBlue);
+   QBMDR3.SetLineColor(kGreen);
+   QBM.SetMarkerColor(kBlack);
+   QBMDR0.SetMarkerColor(kMagenta);
+   QBMDR1.SetMarkerColor(kRed);
+   QBMDR2.SetMarkerColor(kBlue);
+   QBMDR3.SetMarkerColor(kGreen);
+
+   QBM.Draw("p");
+   QBMDR0.Draw("p");
+   QBMDR1.Draw("p");
+   QBMDR2.Draw("p");
+   QBMDR3.Draw("p");
+
+   Legend.Draw();
+   
+   Latex.DrawLatex(0.15, 0.85, "QPythia");
+   Latex.DrawLatex(0.15, 0.80, "0-10% (#hat{p}_{T} > 80)");
+   Latex.DrawLatex(0.15, 0.75, "Signal + background");
+   Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
+
+   C.SaveAs("Plots/Plot9.pdf");
+   PdfFile.AddCanvas(C);
+
 
    PdfFile.AddTimeStampPage();
    PdfFile.Close();

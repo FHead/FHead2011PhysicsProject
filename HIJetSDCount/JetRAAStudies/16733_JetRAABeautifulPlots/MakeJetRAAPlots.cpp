@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
       T->SetBranchAddress("sigJetJewelPt", &SigPT);
       T->SetBranchAddress("sigJetJewelEta", &SigEta);
       T->SetBranchAddress("sigJetJewelPhi", &SigPhi);
-      T->SetBranchAddress("SigJetSDJeweldr12", &SigSD0DR);
-      T->SetBranchAddress("SigJetSD2Jeweldr12", &SigSD7DR);
+      T->SetBranchAddress("sigJetSDJeweldr12", &SigSD0DR);
+      T->SetBranchAddress("sigJetSD2Jeweldr12", &SigSD7DR);
       T->SetBranchAddress("csJetJewelPt", &CSPT);
       T->SetBranchAddress("csJetJewelEta", &CSEta);
       T->SetBranchAddress("csJetJewelPhi", &CSPhi);

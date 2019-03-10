@@ -20,33 +20,45 @@ int main()
    SetThesisStyle();
 
    PdfFileHelper PdfFile("JetRAAPlots.pdf");
-   PdfFile.AddTextPage("Jewel Jet R_{AA} Plots");
+   PdfFile.AddTextPage("Jewel & QPythia Jet R_{AA} Plots");
 
    TGraphAsymmErrors SOff, SOffDR0, SOffDR1, SOffDR2, SOffDR3;
    TGraphAsymmErrors SOn, SOnDR0, SOnDR1, SOnDR2, SOnDR3;
    TGraphAsymmErrors SBOff, SBOffDR0, SBOffDR1, SBOffDR2, SBOffDR3;
    TGraphAsymmErrors SBOn, SBOnDR0, SBOnDR1, SBOnDR2, SBOnDR3;
+   TGraphAsymmErrors QS, QSDR0, QSDR1, QSDR2, QSDR3;
+   TGraphAsymmErrors QSB, QSBDR0, QSBDR1, QSBDR2, QSBDR3;
 
-   Divide(SOff,     "Plots_Off_S_N.root",  "HCS",       "Plots_Off_P_N.root", "HCS");
-   Divide(SOffDR0,  "Plots_Off_S_N.root",  "HCSSD7DR0", "Plots_Off_P_N.root", "HCSSD7DR0");
-   Divide(SOffDR1,  "Plots_Off_S_N.root",  "HCSSD7DR1", "Plots_Off_P_N.root", "HCSSD7DR1");
-   Divide(SOffDR2,  "Plots_Off_S_N.root",  "HCSSD7DR2", "Plots_Off_P_N.root", "HCSSD7DR2");
-   Divide(SOffDR3,  "Plots_Off_S_N.root",  "HCSSD7DR3", "Plots_Off_P_N.root", "HCSSD7DR3");
-   Divide(SOn,      "Plots_On_S_Y.root",   "HCS",       "Plots_On_P_Y.root",  "HCS");
-   Divide(SOnDR0,   "Plots_On_S_Y.root",   "HCSSD7DR0", "Plots_On_P_Y.root",  "HCSSD7DR0");
-   Divide(SOnDR1,   "Plots_On_S_Y.root",   "HCSSD7DR1", "Plots_On_P_Y.root",  "HCSSD7DR1");
-   Divide(SOnDR2,   "Plots_On_S_Y.root",   "HCSSD7DR2", "Plots_On_P_Y.root",  "HCSSD7DR2");
-   Divide(SOnDR3,   "Plots_On_S_Y.root",   "HCSSD7DR3", "Plots_On_P_Y.root",  "HCSSD7DR3");
-   Divide(SBOff,    "Plots_Off_SB_N.root", "HCS",       "Plots_Off_P_N.root", "HCS");
-   Divide(SBOffDR0, "Plots_Off_SB_N.root", "HCSSD7DR0", "Plots_Off_P_N.root", "HCSSD7DR0");
-   Divide(SBOffDR1, "Plots_Off_SB_N.root", "HCSSD7DR1", "Plots_Off_P_N.root", "HCSSD7DR1");
-   Divide(SBOffDR2, "Plots_Off_SB_N.root", "HCSSD7DR2", "Plots_Off_P_N.root", "HCSSD7DR2");
-   Divide(SBOffDR3, "Plots_Off_SB_N.root", "HCSSD7DR3", "Plots_Off_P_N.root", "HCSSD7DR3");
-   Divide(SBOn,     "Plots_On_SB_Y.root",  "HCS",       "Plots_On_P_Y.root",  "HCS");
-   Divide(SBOnDR0,  "Plots_On_SB_Y.root",  "HCSSD7DR0", "Plots_On_P_Y.root",  "HCSSD7DR0");
-   Divide(SBOnDR1,  "Plots_On_SB_Y.root",  "HCSSD7DR1", "Plots_On_P_Y.root",  "HCSSD7DR1");
-   Divide(SBOnDR2,  "Plots_On_SB_Y.root",  "HCSSD7DR2", "Plots_On_P_Y.root",  "HCSSD7DR2");
-   Divide(SBOnDR3,  "Plots_On_SB_Y.root",  "HCSSD7DR3", "Plots_On_P_Y.root",  "HCSSD7DR3");
+   Divide(SOff,     "Plots_Off_S_N.root",      "HCS",       "Plots_Off_P_N.root",      "HCS");
+   Divide(SOffDR0,  "Plots_Off_S_N.root",      "HCSSD7DR0", "Plots_Off_P_N.root",      "HCSSD7DR0");
+   Divide(SOffDR1,  "Plots_Off_S_N.root",      "HCSSD7DR1", "Plots_Off_P_N.root",      "HCSSD7DR1");
+   Divide(SOffDR2,  "Plots_Off_S_N.root",      "HCSSD7DR2", "Plots_Off_P_N.root",      "HCSSD7DR2");
+   Divide(SOffDR3,  "Plots_Off_S_N.root",      "HCSSD7DR3", "Plots_Off_P_N.root",      "HCSSD7DR3");
+   Divide(SOn,      "Plots_On_S_Y.root",       "HCS",       "Plots_On_P_Y.root",       "HCS");
+   Divide(SOnDR0,   "Plots_On_S_Y.root",       "HCSSD7DR0", "Plots_On_P_Y.root",       "HCSSD7DR0");
+   Divide(SOnDR1,   "Plots_On_S_Y.root",       "HCSSD7DR1", "Plots_On_P_Y.root",       "HCSSD7DR1");
+   Divide(SOnDR2,   "Plots_On_S_Y.root",       "HCSSD7DR2", "Plots_On_P_Y.root",       "HCSSD7DR2");
+   Divide(SOnDR3,   "Plots_On_S_Y.root",       "HCSSD7DR3", "Plots_On_P_Y.root",       "HCSSD7DR3");
+   Divide(SBOff,    "Plots_Off_SB_N.root",     "HCS",       "Plots_Off_P_N.root",      "HCS");
+   Divide(SBOffDR0, "Plots_Off_SB_N.root",     "HCSSD7DR0", "Plots_Off_P_N.root",      "HCSSD7DR0");
+   Divide(SBOffDR1, "Plots_Off_SB_N.root",     "HCSSD7DR1", "Plots_Off_P_N.root",      "HCSSD7DR1");
+   Divide(SBOffDR2, "Plots_Off_SB_N.root",     "HCSSD7DR2", "Plots_Off_P_N.root",      "HCSSD7DR2");
+   Divide(SBOffDR3, "Plots_Off_SB_N.root",     "HCSSD7DR3", "Plots_Off_P_N.root",      "HCSSD7DR3");
+   Divide(SBOn,     "Plots_On_SB_Y.root",      "HCS",       "Plots_On_P_Y.root",       "HCS");
+   Divide(SBOnDR0,  "Plots_On_SB_Y.root",      "HCSSD7DR0", "Plots_On_P_Y.root",       "HCSSD7DR0");
+   Divide(SBOnDR1,  "Plots_On_SB_Y.root",      "HCSSD7DR1", "Plots_On_P_Y.root",       "HCSSD7DR1");
+   Divide(SBOnDR2,  "Plots_On_SB_Y.root",      "HCSSD7DR2", "Plots_On_P_Y.root",       "HCSSD7DR2");
+   Divide(SBOnDR3,  "Plots_On_SB_Y.root",      "HCSSD7DR3", "Plots_On_P_Y.root",       "HCSSD7DR3");
+   Divide(QS,       "Plots_QPythia_Q_N.root",  "HCS",       "Plots_QPythia_P_N.root",  "HCS");
+   Divide(QSDR0,    "Plots_QPythia_Q_N.root",  "HCSSD7DR0", "Plots_QPythia_P_N.root",  "HCSSD7DR0");
+   Divide(QSDR1,    "Plots_QPythia_Q_N.root",  "HCSSD7DR1", "Plots_QPythia_P_N.root",  "HCSSD7DR1");
+   Divide(QSDR2,    "Plots_QPythia_Q_N.root",  "HCSSD7DR2", "Plots_QPythia_P_N.root",  "HCSSD7DR2");
+   Divide(QSDR3,    "Plots_QPythia_Q_N.root",  "HCSSD7DR3", "Plots_QPythia_P_N.root",  "HCSSD7DR3");
+   Divide(QSB,      "Plots_QPythia_QB_N.root", "HCS",       "Plots_QPythia_PB_N.root", "HCS");
+   Divide(QSBDR0,   "Plots_QPythia_QB_N.root", "HCSSD7DR0", "Plots_QPythia_PB_N.root", "HCSSD7DR0");
+   Divide(QSBDR1,   "Plots_QPythia_QB_N.root", "HCSSD7DR1", "Plots_QPythia_PB_N.root", "HCSSD7DR1");
+   Divide(QSBDR2,   "Plots_QPythia_QB_N.root", "HCSSD7DR2", "Plots_QPythia_PB_N.root", "HCSSD7DR2");
+   Divide(QSBDR3,   "Plots_QPythia_QB_N.root", "HCSSD7DR3", "Plots_QPythia_PB_N.root", "HCSSD7DR3");
 
    // PdfFile.AddPlot(SOff, "apl");
    // PdfFile.AddPlot(SOffDR0, "apl");
@@ -81,6 +93,9 @@ int main()
    TH2D HWorld("HWorld", ";p_{T}^{jet} (GeV);R_{AA}", 100, 99.99, 1000, 100, 0.0, 1.5);
    HWorld.SetStats(0);
    HWorld.Draw("axis");
+   TH2D HWorld2("HWorld2", ";p_{T}^{jet} (GeV);R_{AA}", 100, 99.99, 1000, 100, 0.0, 4.5);
+   HWorld2.SetStats(0);
+   HWorld2.Draw("axis");
 
    SOff.SetLineColor(kBlack);
    SOffDR0.SetLineColor(kMagenta);
@@ -144,7 +159,6 @@ int main()
    Latex.DrawLatex(0.15, 0.75, "Signal only");
    Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
-   Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
 
    PdfFile.AddCanvas(C);
 
@@ -203,7 +217,6 @@ int main()
    Latex.DrawLatex(0.15, 0.75, "With background");
    Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
    Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
-   Latex.DrawLatex(0.15, 0.60, "#DeltaR curves not good!");
 
    PdfFile.AddCanvas(C);
 
@@ -237,6 +250,105 @@ int main()
    Legend2.AddEntry(&SBOn, "S+B, recoil on", "lp");
    Legend2.AddEntry("", "", "");
    Legend2.Draw();
+
+   PdfFile.AddCanvas(C);
+
+   QS.SetLineColor(kBlack);
+   QSDR0.SetLineColor(kMagenta);
+   QSDR1.SetLineColor(kRed);
+   QSDR2.SetLineColor(kBlue);
+   QSDR3.SetLineColor(kGreen);
+   QS.SetMarkerColor(kBlack);
+   QSDR0.SetMarkerColor(kMagenta);
+   QSDR1.SetMarkerColor(kRed);
+   QSDR2.SetMarkerColor(kBlue);
+   QSDR3.SetMarkerColor(kGreen);
+
+   HWorld2.Draw("axis");
+
+   QS.Draw("p");
+   QSDR0.Draw("p");
+   QSDR1.Draw("p");
+   QSDR2.Draw("p");
+   QSDR3.Draw("p");
+
+   Legend.Draw();
+ 
+   Latex.DrawLatex(0.15, 0.85, "QPythia");
+   Latex.DrawLatex(0.15, 0.80, "0-10%");
+   Latex.DrawLatex(0.15, 0.75, "No background");
+   Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
+
+   PdfFile.AddCanvas(C);
+
+   QSB.SetLineColor(kBlack);
+   QSBDR0.SetLineColor(kMagenta);
+   QSBDR1.SetLineColor(kRed);
+   QSBDR2.SetLineColor(kBlue);
+   QSBDR3.SetLineColor(kGreen);
+   QSB.SetMarkerColor(kBlack);
+   QSBDR0.SetMarkerColor(kMagenta);
+   QSBDR1.SetMarkerColor(kRed);
+   QSBDR2.SetMarkerColor(kBlue);
+   QSBDR3.SetMarkerColor(kGreen);
+
+   HWorld2.Draw("axis");
+
+   QSB.Draw("p");
+   QSBDR0.Draw("p");
+   QSBDR1.Draw("p");
+   QSBDR2.Draw("p");
+   QSBDR3.Draw("p");
+
+   Legend.Draw();
+ 
+   Latex.DrawLatex(0.15, 0.85, "QPythia");
+   Latex.DrawLatex(0.15, 0.80, "0-10%");
+   Latex.DrawLatex(0.15, 0.75, "With background");
+   Latex.DrawLatex(0.15, 0.70, "Soft drop z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex(0.15, 0.65, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
+
+   PdfFile.AddCanvas(C);
+   
+   TLegend Legend3(0.55, 0.87, 0.85, 0.56);
+   Legend3.SetTextFont(42);
+   Legend3.SetTextSize(0.035);
+   Legend3.SetFillStyle(0);
+   Legend3.AddEntry(&QS, "S", "lp");
+   Legend3.AddEntry(&QSDR0, "S, #DeltaR < 0.1", "lp");
+   Legend3.AddEntry(&QSDR1, "S, #DeltaR 0.1-0.2", "lp");
+   Legend3.AddEntry(&QSB, "S+B", "lp");
+   Legend3.AddEntry(&QSBDR0, "S+B, #DeltaR < 0.1", "lp");
+   Legend3.AddEntry(&QSBDR1, "S+B, #DeltaR 0.1-0.2", "lp");
+
+   QS.SetLineColor(kBlack);
+   QSDR0.SetLineColor(kGreen);
+   QSDR1.SetLineColor(kMagenta);
+   QSB.SetLineColor(kBlue);
+   QSBDR0.SetLineColor(kRed);
+   QSBDR1.SetLineColor(kYellow + 3);
+   QS.SetMarkerColor(kBlack);
+   QSDR0.SetMarkerColor(kGreen);
+   QSDR1.SetMarkerColor(kMagenta);
+   QSB.SetMarkerColor(kBlue);
+   QSBDR0.SetMarkerColor(kRed);
+   QSBDR1.SetMarkerColor(kYellow + 3);
+   
+   HWorld2.Draw("axis");
+
+   QS.Draw("p");
+   QSDR0.Draw("p");
+   QSDR1.Draw("p");
+   QSB.Draw("p");
+   QSBDR0.Draw("p");
+   QSBDR1.Draw("p");
+   Legend3.Draw();
+ 
+   Latex.DrawLatex(0.15, 0.85, "QPythia");
+   Latex.DrawLatex(0.15, 0.80, "0-10%");
+   Latex.DrawLatex(0.15, 0.75, "Soft drop z_{cut} = 0.5, #beta = 1.5");
+   Latex.DrawLatex(0.15, 0.70, "CS anti-k_{T} R = 0.4, |#eta^{jet}| < 1.3");
 
    PdfFile.AddCanvas(C);
 

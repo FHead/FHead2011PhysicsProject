@@ -29,8 +29,8 @@ int main()
    TFile FOffSB("Plots_Off_SB_N.root");
    TFile FOnSB("Plots_On_SB_Y.root");
    TFile FVacSB("Plots_Vac_SB_N.root");
-   TFile FQS("Plots_QPythia_S_N.root");
-   TFile FQSB("Plots_QPythia_SB_N.root");
+   TFile FQS("Plots_QPythia_Q_N.root");
+   TFile FQSB("Plots_QPythia_QB_N.root");
    TFile FQP("Plots_QPythia_P_N.root");
    TFile FQPB("Plots_QPythia_PB_N.root");
 
@@ -66,7 +66,7 @@ int main()
       "200 < p_{T}^{jet} < 300 GeV",
       "300 < p_{T}^{jet} < 500 GeV"
    };
-   double WorldMax[] = {15, 15, 15, 15, 15, 15, 25, 25, 25, 25, 25, 25};
+   double WorldMax[] = {25, 25, 25, 25, 25, 25, 35, 35, 35, 35, 35, 35};
 
    for(int iH = 0; iH < 12; iH++)
    {
@@ -156,7 +156,7 @@ int main()
          100, 0.0, 0.30, 100, 0.0, WorldMax[iH]);
       HWorld.SetStats(0);
 
-      TH2D HWorldRatio("HWorldRatio", ";M^{g} / p_{T}^{jet};Jewel / pp(S+B)",
+      TH2D HWorldRatio("HWorldRatio", ";M^{g} / p_{T}^{jet};Jewel / pp",
          100, 0.0, 0.30, 100, 0.0, 6.0);
       HWorldRatio.SetStats(0);
 
@@ -200,8 +200,8 @@ int main()
 
       PdfFile.AddCanvas(C);
       
-      HOffS->Divide(HVacSB);
-      HOnS->Divide(HVacSB);
+      HOffS->Divide(HVacS);
+      HOnS->Divide(HVacS);
       HOffSB->Divide(HVacSB);
       HOnSB->Divide(HVacSB);
 

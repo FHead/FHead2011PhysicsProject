@@ -36,29 +36,33 @@ int main(int argc, char *argv[])
    PdfFileHelper PdfFile(OutputBase + ".pdf");
    PdfFile.AddTextPage("Result");
 
-   int Bin = 20;
-   double Binning[] = {100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 225, 250, 275, 300, 350, 400, 450, 500, 700, 1000};
+   // int Bin = 20;
+   // double Binning[] = {100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 225, 250, 275, 300, 350, 400, 450, 500, 700, 1000};
+   int Bin = 10;
+   double Binning[] = {100, 120, 140, 160, 180, 200, 250, 300, 400, 500, 1000};
+   // int Bin = 6;
+   // double Binning[] = {100, 120, 140, 200, 300, 500, 1000};
 
    TFile OutputFile((OutputBase + ".root").c_str(), "RECREATE");
 
-   TH1D HSig("HSig", "Sig;Jet PT;", 20, Binning);                                   HSig.Sumw2();
-   TH1D HSigSD0DR0("HSigSD0DR0", "Sig (SD0DR < 0.1);Jet PT;", 20, Binning);         HSigSD0DR0.Sumw2();
-   TH1D HSigSD0DR1("HSigSD0DR1", "Sig (0.1 < SD0DR < 0.2);Jet PT;", 20, Binning);   HSigSD0DR1.Sumw2();
-   TH1D HSigSD0DR2("HSigSD0DR2", "Sig (0.2 < SD0DR < 0.3);Jet PT;", 20, Binning);   HSigSD0DR2.Sumw2();
-   TH1D HSigSD0DR3("HSigSD0DR3", "Sig (0.3 < SD0DR);Jet PT;", 20, Binning);         HSigSD0DR3.Sumw2();
-   TH1D HSigSD7DR0("HSigSD7DR0", "Sig (SD7DR < 0.1);Jet PT;", 20, Binning);         HSigSD7DR0.Sumw2();
-   TH1D HSigSD7DR1("HSigSD7DR1", "Sig (0.1 < SD7DR < 0.2);Jet PT;", 20, Binning);   HSigSD7DR1.Sumw2();
-   TH1D HSigSD7DR2("HSigSD7DR2", "Sig (0.2 < SD7DR < 0.3);Jet PT;", 20, Binning);   HSigSD7DR2.Sumw2();
-   TH1D HSigSD7DR3("HSigSD7DR3", "Sig (0.3 < SD7DR);Jet PT;", 20, Binning);         HSigSD7DR3.Sumw2();
-   TH1D HCS("HCS", "CS;Jet PT;", 20, Binning);                                      HCS.Sumw2();
-   TH1D HCSSD0DR0("HCSSD0DR0", "CS (SD0DR < 0.1);Jet PT;", 20, Binning);            HCSSD0DR0.Sumw2();
-   TH1D HCSSD0DR1("HCSSD0DR1", "CS (0.1 < SD0DR < 0.2);Jet PT;", 20, Binning);      HCSSD0DR1.Sumw2();
-   TH1D HCSSD0DR2("HCSSD0DR2", "CS (0.2 < SD0DR < 0.3);Jet PT;", 20, Binning);      HCSSD0DR2.Sumw2();
-   TH1D HCSSD0DR3("HCSSD0DR3", "CS (0.3 < SD0DR);Jet PT;", 20, Binning);            HCSSD0DR3.Sumw2();
-   TH1D HCSSD7DR0("HCSSD7DR0", "CS (SD7DR < 0.1);Jet PT;", 20, Binning);            HCSSD7DR0.Sumw2();
-   TH1D HCSSD7DR1("HCSSD7DR1", "CS (0.1 < SD7DR < 0.2);Jet PT;", 20, Binning);      HCSSD7DR1.Sumw2();
-   TH1D HCSSD7DR2("HCSSD7DR2", "CS (0.2 < SD7DR < 0.3);Jet PT;", 20, Binning);      HCSSD7DR2.Sumw2();
-   TH1D HCSSD7DR3("HCSSD7DR3", "CS (0.3 < SD7DR);Jet PT;", 20, Binning);            HCSSD7DR3.Sumw2();
+   TH1D HSig("HSig", "Sig;Jet PT;", Bin, Binning);                                   HSig.Sumw2();
+   TH1D HSigSD0DR0("HSigSD0DR0", "Sig (SD0DR < 0.1);Jet PT;", Bin, Binning);         HSigSD0DR0.Sumw2();
+   TH1D HSigSD0DR1("HSigSD0DR1", "Sig (0.1 < SD0DR < 0.2);Jet PT;", Bin, Binning);   HSigSD0DR1.Sumw2();
+   TH1D HSigSD0DR2("HSigSD0DR2", "Sig (0.2 < SD0DR < 0.3);Jet PT;", Bin, Binning);   HSigSD0DR2.Sumw2();
+   TH1D HSigSD0DR3("HSigSD0DR3", "Sig (0.3 < SD0DR);Jet PT;", Bin, Binning);         HSigSD0DR3.Sumw2();
+   TH1D HSigSD7DR0("HSigSD7DR0", "Sig (SD7DR < 0.1);Jet PT;", Bin, Binning);         HSigSD7DR0.Sumw2();
+   TH1D HSigSD7DR1("HSigSD7DR1", "Sig (0.1 < SD7DR < 0.2);Jet PT;", Bin, Binning);   HSigSD7DR1.Sumw2();
+   TH1D HSigSD7DR2("HSigSD7DR2", "Sig (0.2 < SD7DR < 0.3);Jet PT;", Bin, Binning);   HSigSD7DR2.Sumw2();
+   TH1D HSigSD7DR3("HSigSD7DR3", "Sig (0.3 < SD7DR);Jet PT;", Bin, Binning);         HSigSD7DR3.Sumw2();
+   TH1D HCS("HCS", "CS;Jet PT;", Bin, Binning);                                      HCS.Sumw2();
+   TH1D HCSSD0DR0("HCSSD0DR0", "CS (SD0DR < 0.1);Jet PT;", Bin, Binning);            HCSSD0DR0.Sumw2();
+   TH1D HCSSD0DR1("HCSSD0DR1", "CS (0.1 < SD0DR < 0.2);Jet PT;", Bin, Binning);      HCSSD0DR1.Sumw2();
+   TH1D HCSSD0DR2("HCSSD0DR2", "CS (0.2 < SD0DR < 0.3);Jet PT;", Bin, Binning);      HCSSD0DR2.Sumw2();
+   TH1D HCSSD0DR3("HCSSD0DR3", "CS (0.3 < SD0DR);Jet PT;", Bin, Binning);            HCSSD0DR3.Sumw2();
+   TH1D HCSSD7DR0("HCSSD7DR0", "CS (SD7DR < 0.1);Jet PT;", Bin, Binning);            HCSSD7DR0.Sumw2();
+   TH1D HCSSD7DR1("HCSSD7DR1", "CS (0.1 < SD7DR < 0.2);Jet PT;", Bin, Binning);      HCSSD7DR1.Sumw2();
+   TH1D HCSSD7DR2("HCSSD7DR2", "CS (0.2 < SD7DR < 0.3);Jet PT;", Bin, Binning);      HCSSD7DR2.Sumw2();
+   TH1D HCSSD7DR3("HCSSD7DR3", "CS (0.3 < SD7DR);Jet PT;", Bin, Binning);            HCSSD7DR3.Sumw2();
 
    TFile File(InputFileName.c_str());
 
@@ -87,8 +91,8 @@ int main(int argc, char *argv[])
       T->SetBranchAddress("sigJetJewelPt", &SigPT);
       T->SetBranchAddress("sigJetJewelEta", &SigEta);
       T->SetBranchAddress("sigJetJewelPhi", &SigPhi);
-      T->SetBranchAddress("SigJetSDJeweldr12", &SigSD0DR);
-      T->SetBranchAddress("SigJetSD2Jeweldr12", &SigSD7DR);
+      T->SetBranchAddress("sigJetSDJeweldr12", &SigSD0DR);
+      T->SetBranchAddress("sigJetSD2Jeweldr12", &SigSD7DR);
       T->SetBranchAddress("csJetJewelPt", &CSPT);
       T->SetBranchAddress("csJetJewelEta", &CSEta);
       T->SetBranchAddress("csJetJewelPhi", &CSPhi);

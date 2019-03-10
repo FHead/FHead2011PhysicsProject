@@ -31,6 +31,10 @@ int main(int argc, char *argv[])
    OutputBase = argv[2];
    Jewel = ((argv[3][0] == 'Y') ? true : false);
 
+   bool WithBackground = false;
+   if(OutputBase.find("PB") != string::npos || OutputBase.find("SB") != string::npos)
+      WithBackground = true;
+
    SetThesisStyle();
 
    PdfFileHelper PdfFile(OutputBase + ".pdf");
@@ -40,35 +44,37 @@ int main(int argc, char *argv[])
    // double Binning[] = {0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30};
    // int Bin = 10;
    // double Binning[] = {0.00, 0.02, 0.04, 0.06, 0.08, 0.10, 0.14, 0.18, 0.22, 0.26, 0.30};
-   int Bin = 10;
-   double Binning[] = {0.00, 0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.21, 0.26, 0.30};
+   int Bin0 = 10;
+   double Binning0[] = {0.00, 0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.21, 0.24, 0.27};
+   int Bin7 = 10;
+   double Binning7[] = {0.00, 0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.21, 0.26, 0.30};
 
    TFile OutputFile((OutputBase + ".root").c_str(), "RECREATE");
 
-   TH1D HSD0SigPT0("HSD0SigPT0", "Sig;Mass / Jet PT;", Bin, Binning);     HSD0SigPT0.Sumw2();
-   TH1D HSD0SigPT1("HSD0SigPT1", "Sig;Mass / Jet PT;", Bin, Binning);     HSD0SigPT1.Sumw2();
-   TH1D HSD0SigPT2("HSD0SigPT2", "Sig;Mass / Jet PT;", Bin, Binning);     HSD0SigPT2.Sumw2();
-   TH1D HSD0SigPT3("HSD0SigPT3", "Sig;Mass / Jet PT;", Bin, Binning);     HSD0SigPT3.Sumw2();
-   TH1D HSD0SigPT4("HSD0SigPT4", "Sig;Mass / Jet PT;", Bin, Binning);     HSD0SigPT4.Sumw2();
-   TH1D HSD0SigPT5("HSD0SigPT5", "Sig;Mass / Jet PT;", Bin, Binning);     HSD0SigPT5.Sumw2();
-   TH1D HSD0CSPT0("HSD0CSPT0", "CS;Mass / Jet PT;", Bin, Binning);        HSD0CSPT0.Sumw2();
-   TH1D HSD0CSPT1("HSD0CSPT1", "CS;Mass / Jet PT;", Bin, Binning);        HSD0CSPT1.Sumw2();
-   TH1D HSD0CSPT2("HSD0CSPT2", "CS;Mass / Jet PT;", Bin, Binning);        HSD0CSPT2.Sumw2();
-   TH1D HSD0CSPT3("HSD0CSPT3", "CS;Mass / Jet PT;", Bin, Binning);        HSD0CSPT3.Sumw2();
-   TH1D HSD0CSPT4("HSD0CSPT4", "CS;Mass / Jet PT;", Bin, Binning);        HSD0CSPT4.Sumw2();
-   TH1D HSD0CSPT5("HSD0CSPT5", "CS;Mass / Jet PT;", Bin, Binning);        HSD0CSPT5.Sumw2();
-   TH1D HSD7SigPT0("HSD7SigPT0", "Sig;Mass / Jet PT;", Bin, Binning);     HSD7SigPT0.Sumw2();
-   TH1D HSD7SigPT1("HSD7SigPT1", "Sig;Mass / Jet PT;", Bin, Binning);     HSD7SigPT1.Sumw2();
-   TH1D HSD7SigPT2("HSD7SigPT2", "Sig;Mass / Jet PT;", Bin, Binning);     HSD7SigPT2.Sumw2();
-   TH1D HSD7SigPT3("HSD7SigPT3", "Sig;Mass / Jet PT;", Bin, Binning);     HSD7SigPT3.Sumw2();
-   TH1D HSD7SigPT4("HSD7SigPT4", "Sig;Mass / Jet PT;", Bin, Binning);     HSD7SigPT4.Sumw2();
-   TH1D HSD7SigPT5("HSD7SigPT5", "Sig;Mass / Jet PT;", Bin, Binning);     HSD7SigPT5.Sumw2();
-   TH1D HSD7CSPT0("HSD7CSPT0", "CS;Mass / Jet PT;", Bin, Binning);        HSD7CSPT0.Sumw2();
-   TH1D HSD7CSPT1("HSD7CSPT1", "CS;Mass / Jet PT;", Bin, Binning);        HSD7CSPT1.Sumw2();
-   TH1D HSD7CSPT2("HSD7CSPT2", "CS;Mass / Jet PT;", Bin, Binning);        HSD7CSPT2.Sumw2();
-   TH1D HSD7CSPT3("HSD7CSPT3", "CS;Mass / Jet PT;", Bin, Binning);        HSD7CSPT3.Sumw2();
-   TH1D HSD7CSPT4("HSD7CSPT4", "CS;Mass / Jet PT;", Bin, Binning);        HSD7CSPT4.Sumw2();
-   TH1D HSD7CSPT5("HSD7CSPT5", "CS;Mass / Jet PT;", Bin, Binning);        HSD7CSPT5.Sumw2();
+   TH1D HSD0SigPT0("HSD0SigPT0", "Sig;Mass / Jet PT;", Bin0, Binning0);     HSD0SigPT0.Sumw2();
+   TH1D HSD0SigPT1("HSD0SigPT1", "Sig;Mass / Jet PT;", Bin0, Binning0);     HSD0SigPT1.Sumw2();
+   TH1D HSD0SigPT2("HSD0SigPT2", "Sig;Mass / Jet PT;", Bin0, Binning0);     HSD0SigPT2.Sumw2();
+   TH1D HSD0SigPT3("HSD0SigPT3", "Sig;Mass / Jet PT;", Bin0, Binning0);     HSD0SigPT3.Sumw2();
+   TH1D HSD0SigPT4("HSD0SigPT4", "Sig;Mass / Jet PT;", Bin0, Binning0);     HSD0SigPT4.Sumw2();
+   TH1D HSD0SigPT5("HSD0SigPT5", "Sig;Mass / Jet PT;", Bin0, Binning0);     HSD0SigPT5.Sumw2();
+   TH1D HSD0CSPT0("HSD0CSPT0", "CS;Mass / Jet PT;", Bin0, Binning0);        HSD0CSPT0.Sumw2();
+   TH1D HSD0CSPT1("HSD0CSPT1", "CS;Mass / Jet PT;", Bin0, Binning0);        HSD0CSPT1.Sumw2();
+   TH1D HSD0CSPT2("HSD0CSPT2", "CS;Mass / Jet PT;", Bin0, Binning0);        HSD0CSPT2.Sumw2();
+   TH1D HSD0CSPT3("HSD0CSPT3", "CS;Mass / Jet PT;", Bin0, Binning0);        HSD0CSPT3.Sumw2();
+   TH1D HSD0CSPT4("HSD0CSPT4", "CS;Mass / Jet PT;", Bin0, Binning0);        HSD0CSPT4.Sumw2();
+   TH1D HSD0CSPT5("HSD0CSPT5", "CS;Mass / Jet PT;", Bin0, Binning0);        HSD0CSPT5.Sumw2();
+   TH1D HSD7SigPT0("HSD7SigPT0", "Sig;Mass / Jet PT;", Bin7, Binning7);     HSD7SigPT0.Sumw2();
+   TH1D HSD7SigPT1("HSD7SigPT1", "Sig;Mass / Jet PT;", Bin7, Binning7);     HSD7SigPT1.Sumw2();
+   TH1D HSD7SigPT2("HSD7SigPT2", "Sig;Mass / Jet PT;", Bin7, Binning7);     HSD7SigPT2.Sumw2();
+   TH1D HSD7SigPT3("HSD7SigPT3", "Sig;Mass / Jet PT;", Bin7, Binning7);     HSD7SigPT3.Sumw2();
+   TH1D HSD7SigPT4("HSD7SigPT4", "Sig;Mass / Jet PT;", Bin7, Binning7);     HSD7SigPT4.Sumw2();
+   TH1D HSD7SigPT5("HSD7SigPT5", "Sig;Mass / Jet PT;", Bin7, Binning7);     HSD7SigPT5.Sumw2();
+   TH1D HSD7CSPT0("HSD7CSPT0", "CS;Mass / Jet PT;", Bin7, Binning7);        HSD7CSPT0.Sumw2();
+   TH1D HSD7CSPT1("HSD7CSPT1", "CS;Mass / Jet PT;", Bin7, Binning7);        HSD7CSPT1.Sumw2();
+   TH1D HSD7CSPT2("HSD7CSPT2", "CS;Mass / Jet PT;", Bin7, Binning7);        HSD7CSPT2.Sumw2();
+   TH1D HSD7CSPT3("HSD7CSPT3", "CS;Mass / Jet PT;", Bin7, Binning7);        HSD7CSPT3.Sumw2();
+   TH1D HSD7CSPT4("HSD7CSPT4", "CS;Mass / Jet PT;", Bin7, Binning7);        HSD7CSPT4.Sumw2();
+   TH1D HSD7CSPT5("HSD7CSPT5", "CS;Mass / Jet PT;", Bin7, Binning7);        HSD7CSPT5.Sumw2();
 
    TFile File(InputFileName.c_str());
 
@@ -122,6 +128,8 @@ int main(int argc, char *argv[])
    ProgressBar Bar(cout, EntryCount);
    Bar.SetStyle(5);
 
+   double Hack = 1;
+
    for(int iE = 0; iE < EntryCount; iE++)
    {
       Bar.Update(iE);
@@ -138,7 +146,7 @@ int main(int argc, char *argv[])
 
          if((*SigSD0DR)[iJ] > 0.1)
          {
-            double Ratio = (*SigSD0Mass)[iJ] / (*SigPT)[iJ];
+            double Ratio = (*SigSD0Mass)[iJ] / (*SigPT)[iJ] * Hack;
             if((*SigPT)[iJ] >= 120 && (*SigPT)[iJ] < 140)   HSD0SigPT0.Fill(Ratio, (*W)[0]);
             if((*SigPT)[iJ] >= 140 && (*SigPT)[iJ] < 160)   HSD0SigPT1.Fill(Ratio, (*W)[0]);
             if((*SigPT)[iJ] >= 160 && (*SigPT)[iJ] < 180)   HSD0SigPT2.Fill(Ratio, (*W)[0]);
@@ -148,7 +156,7 @@ int main(int argc, char *argv[])
          }
          if((*SigSD7DR)[iJ] > 0.1)
          {
-            double Ratio = (*SigSD7Mass)[iJ] / (*SigPT)[iJ];
+            double Ratio = (*SigSD7Mass)[iJ] / (*SigPT)[iJ] * Hack;
             if((*SigPT)[iJ] >= 120 && (*SigPT)[iJ] < 140)   HSD7SigPT0.Fill(Ratio, (*W)[0]);
             if((*SigPT)[iJ] >= 140 && (*SigPT)[iJ] < 160)   HSD7SigPT1.Fill(Ratio, (*W)[0]);
             if((*SigPT)[iJ] >= 160 && (*SigPT)[iJ] < 180)   HSD7SigPT2.Fill(Ratio, (*W)[0]);
@@ -158,7 +166,7 @@ int main(int argc, char *argv[])
          }
          if((*CSSD0DR)[iJ] > 0.1)
          {
-            double Ratio = (*CSSD0Mass)[iJ] / (*CSPT)[iJ];
+            double Ratio = (*CSSD0Mass)[iJ] / (*CSPT)[iJ] * Hack;
             if((*CSPT)[iJ] >= 120 && (*CSPT)[iJ] < 140)   HSD0CSPT0.Fill(Ratio, (*W)[0]);
             if((*CSPT)[iJ] >= 140 && (*CSPT)[iJ] < 160)   HSD0CSPT1.Fill(Ratio, (*W)[0]);
             if((*CSPT)[iJ] >= 160 && (*CSPT)[iJ] < 180)   HSD0CSPT2.Fill(Ratio, (*W)[0]);
@@ -168,7 +176,7 @@ int main(int argc, char *argv[])
          }
          if((*CSSD7DR)[iJ] > 0.1)
          {
-            double Ratio = (*CSSD7Mass)[iJ] / (*CSPT)[iJ];
+            double Ratio = (*CSSD7Mass)[iJ] / (*CSPT)[iJ] * Hack;
             if((*CSPT)[iJ] >= 120 && (*CSPT)[iJ] < 140)   HSD7CSPT0.Fill(Ratio, (*W)[0]);
             if((*CSPT)[iJ] >= 140 && (*CSPT)[iJ] < 160)   HSD7CSPT1.Fill(Ratio, (*W)[0]);
             if((*CSPT)[iJ] >= 160 && (*CSPT)[iJ] < 180)   HSD7CSPT2.Fill(Ratio, (*W)[0]);

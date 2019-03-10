@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
    float Py[TREEMAX];
    float Pz[TREEMAX];
    float E[TREEMAX];
+   int ID[TREEMAX];
    int Type[TREEMAX];
 
    OutputTree.Branch("HydjetFileIndex", &HydjetFileIndex, "HydjetFileIndex/I");
@@ -86,6 +87,7 @@ int main(int argc, char *argv[])
    OutputTree.Branch("Py", &Py, "Py[N]/F");
    OutputTree.Branch("Pz", &Pz, "Pz[N]/F");
    OutputTree.Branch("E", &E, "E[N]/F");
+   OutputTree.Branch("ID", &ID, "ID[N]/I");
    OutputTree.Branch("Type", &Type, "Type[N]/I");
 
    ProgressBar Bar(cout, PythiaEnd + 1, PythiaStart);
@@ -163,6 +165,7 @@ int main(int argc, char *argv[])
             Py[i] = 0;
             Pz[i] = 0;
             E[i] = 0;
+            ID[i] = 0;
             Type[i] = 0;
          }
 
@@ -180,6 +183,7 @@ int main(int argc, char *argv[])
             Py[N] = MPythia.Py[i];
             Pz[N] = MPythia.Pz[i];
             E[N] = MPythia.E[i];
+            ID[N] = MPythia.pdg[i];
             Type[N] = 1;
             N = N + 1;
          }
@@ -197,6 +201,7 @@ int main(int argc, char *argv[])
             Py[N] = MHydjet.Py[i];
             Pz[N] = MHydjet.Pz[i];
             E[N] = MHydjet.E[i];
+            ID[N] = MHydjet.pdg[i];
             Type[N] = 2;
             N = N + 1;
          }

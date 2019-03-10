@@ -19,6 +19,8 @@ using namespace std;
 #define TYPE_LOW 1
 #define TYPE_HIGH 2
 #define TYPE_ALLLOOSE 3
+#define TYPE_LOW_CALIBRATION 4
+#define TYPE_HIGH_CALIBRATION 5
 
 #define TARGET 0.95
 
@@ -84,6 +86,11 @@ int main()
    MultiProcess(PdfFile, "Result/Combined/WToEnu200PU_NewRecipePlusTyler_NoIso.root", "TkEG/TkEG", ToVector(5, 12, 15, 20, 25, 30), "WENu200TylerLow", true, TYPE_LOW);
    MultiProcess(PdfFile, "Result/Combined/WToEnu140PU_NewRecipePlusTyler_NoIso.root", "TkEG/TkEG", ToVector(5, 12, 15, 20, 25, 30), "WENu140TylerHigh", true, TYPE_HIGH);
    MultiProcess(PdfFile, "Result/Combined/WToEnu200PU_NewRecipePlusTyler_NoIso.root", "TkEG/TkEG", ToVector(5, 12, 15, 20, 25, 30), "WENu200TylerHigh", true, TYPE_HIGH);
+   
+   MultiProcess(PdfFile, "Result/Combined/WToEnu140PU_NewRecipePlusTyler_NoIso.root", "TkEG/TkEG", ToVector(5, 12, 15, 20, 25, 30), "WENu140TylerLowCalibrated", true, TYPE_LOW_CALIBRATION);
+   MultiProcess(PdfFile, "Result/Combined/WToEnu200PU_NewRecipePlusTyler_NoIso.root", "TkEG/TkEG", ToVector(5, 12, 15, 20, 25, 30), "WENu200TylerLowCalibrated", true, TYPE_LOW_CALIBRATION);
+   MultiProcess(PdfFile, "Result/Combined/WToEnu140PU_NewRecipePlusTyler_NoIso.root", "TkEG/TkEG", ToVector(5, 12, 15, 20, 25, 30), "WENu140TylerHighCalibrated", true, TYPE_HIGH_CALIBRATION);
+   MultiProcess(PdfFile, "Result/Combined/WToEnu200PU_NewRecipePlusTyler_NoIso.root", "TkEG/TkEG", ToVector(5, 12, 15, 20, 25, 30), "WENu200TylerHighCalibrated", true, TYPE_HIGH_CALIBRATION);
 
    PdfFile.AddTimeStampPage();
    PdfFile.Close();
@@ -156,6 +163,10 @@ void MultiProcess(PdfFileHelper &PdfFile, string FileName, string Prefix, vector
       TypeString = "|#eta| < 1.0";
    if(Type == TYPE_HIGH)
       TypeString = "|#eta| > 1.0";
+   if(Type == TYPE_LOW_CALIBRATION)
+      TypeString = "|#eta| < 1.5, Calibrated 10\% up";
+   if(Type == TYPE_HIGH_CALIBRATION)
+      TypeString = "|#eta| > 1.5, Calibrated 35\% up";
    if(Type == TYPE_ALLLOOSE)
       TypeString = "No eta cut, low tension";
 
@@ -166,7 +177,7 @@ void MultiProcess(PdfFileHelper &PdfFile, string FileName, string Prefix, vector
    Text[3] = "...and object prefix";
    Text[4] = Prefix;
    Text[5] = "";
-   Text[6] = "...and tyle";
+   Text[6] = "...and type";
    Text[7] = TypeString;
    PdfFile.AddTextPage(Text);
 
@@ -180,6 +191,10 @@ void MultiProcess(PdfFileHelper &PdfFile, string FileName, string Prefix, vector
       EtaString = "Eta10";
    if(Type == TYPE_HIGH)
       EtaString = "EtaLarge";
+   if(Type == TYPE_LOW_CALIBRATION)
+      EtaString = "Eta15";
+   if(Type == TYPE_HIGH_CALIBRATION)
+      EtaString = "Eta15Large";
 
    Prefix = Prefix + "_PT" + EtaString;
 
@@ -187,15 +202,15 @@ void MultiProcess(PdfFileHelper &PdfFile, string FileName, string Prefix, vector
    {
       if(IsEle == true)
       {
-         PdfFile.AddTextPage(Form("Threshold = %.1f (Iso = 0.10)", Thresholds[i]));
-         CrossOverA[i] = SmoothTurnOn(PdfFile,
-            (TH1D *)File.Get(Form("%sIso010_%06d", Prefix.c_str(), (int)Thresholds[i] * 100)),
-            (TH1D *)File.Get(Form("%sIso010_000000", Prefix.c_str())), Type);
-         
          PdfFile.AddTextPage(Form("Threshold = %.1f (Iso = 0.14)", Thresholds[i]));
-         CrossOverB[i] = SmoothTurnOn(PdfFile,
+         CrossOverA[i] = SmoothTurnOn(PdfFile,
             (TH1D *)File.Get(Form("%sIso014_%06d", Prefix.c_str(), (int)Thresholds[i] * 100)),
             (TH1D *)File.Get(Form("%sIso014_000000", Prefix.c_str())), Type);
+         
+         PdfFile.AddTextPage(Form("Threshold = %.1f (No isolation)", Thresholds[i]));
+         CrossOverB[i] = SmoothTurnOn(PdfFile,
+            (TH1D *)File.Get(Form("%s_%06d", Prefix.c_str(), (int)Thresholds[i] * 100)),
+            (TH1D *)File.Get(Form("%s_000000", Prefix.c_str())), Type);
       }
       else
       {
@@ -217,13 +232,19 @@ void MultiProcess(PdfFileHelper &PdfFile, string FileName, string Prefix, vector
 
    PdfFile.AddTextPage("Scaling Curve");
 
+   double ScaleFactor = 1;
+   if(Type == TYPE_LOW_CALIBRATION)
+      ScaleFactor = 1.10;
+   if(Type == TYPE_HIGH_CALIBRATION)
+      ScaleFactor = 1.35;
+
    TGraph GA, GB;
    for(int i = 0; i < (int)Thresholds.size(); i++)
       if(CrossOverA[i] > 0)
-         GA.SetPoint(GA.GetN(), Thresholds[i], CrossOverA[i]);
+         GA.SetPoint(GA.GetN(), Thresholds[i] * ScaleFactor, CrossOverA[i]);
    for(int i = 0; i < (int)Thresholds.size(); i++)
       if(CrossOverB[i] > 0)
-         GB.SetPoint(GB.GetN(), Thresholds[i], CrossOverB[i]);
+         GB.SetPoint(GB.GetN(), Thresholds[i] * ScaleFactor, CrossOverB[i]);
 
    GA.SetNameTitle((Tag + "A").c_str(), "");
    GB.SetNameTitle((Tag + "B").c_str(), "");
@@ -234,8 +255,8 @@ void MultiProcess(PdfFileHelper &PdfFile, string FileName, string Prefix, vector
    /*
    if(IsEle == true)
    {
-      GA.SetTitle("Iso = 0.10");
-      GB.SetTitle("Iso = 0.14");
+      GA.SetTitle("Iso = 0.14");
+      GB.SetTitle("Iso = None");
    }
    else
    {
@@ -262,8 +283,8 @@ void MultiProcess(PdfFileHelper &PdfFile, string FileName, string Prefix, vector
    Legend.SetTextFont(42);
    if(IsEle == true)
    {
-      Legend.AddEntry(&GA, "Iso = 0.10", "pl");
-      Legend.AddEntry(&GB, "Iso = 0.14", "pl");
+      Legend.AddEntry(&GA, "Iso = 0.14", "pl");
+      Legend.AddEntry(&GB, "Iso = None", "pl");
    }
    else
    {
@@ -375,6 +396,10 @@ double SmoothTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, int Type)
       Target = 0.90;
    if(Type == TYPE_HIGH)
       Target = 0.60;
+   if(Type == TYPE_LOW_CALIBRATION)
+      Target = 0.90;
+   if(Type == TYPE_HIGH_CALIBRATION)
+      Target = 0.80;
 
    if(H1 == NULL || H2 == NULL)
       return -1;

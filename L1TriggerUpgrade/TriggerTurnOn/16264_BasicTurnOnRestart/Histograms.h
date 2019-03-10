@@ -14,6 +14,8 @@ public:
    vector<TH1D *> HPT;
    vector<TH1D *> HPTEta10;
    vector<TH1D *> HPTEtaLarge;
+   vector<TH1D *> HPTEta15;
+   vector<TH1D *> HPTEta15Large;
    vector<TH1D *> HEta;
    vector<TH1D *> HEtaPT20;
    vector<TH1D *> HEtaPT25;
@@ -21,6 +23,8 @@ public:
    vector<TH1D *> HPTIso010;
    vector<TH1D *> HPTEta10Iso010;
    vector<TH1D *> HPTEtaLargeIso010;
+   vector<TH1D *> HPTEta15Iso010;
+   vector<TH1D *> HPTEta15LargeIso010;
    vector<TH1D *> HEtaIso010;
    vector<TH1D *> HEtaPT20Iso010;
    vector<TH1D *> HEtaPT25Iso010;
@@ -28,6 +32,8 @@ public:
    vector<TH1D *> HPTIso014;
    vector<TH1D *> HPTEta10Iso014;
    vector<TH1D *> HPTEtaLargeIso014;
+   vector<TH1D *> HPTEta15Iso014;
+   vector<TH1D *> HPTEta15LargeIso014;
    vector<TH1D *> HEtaIso014;
    vector<TH1D *> HEtaPT20Iso014;
    vector<TH1D *> HEtaPT25Iso014;
@@ -35,6 +41,8 @@ public:
    vector<TH1D *> HPTIso023;
    vector<TH1D *> HPTEta10Iso023;
    vector<TH1D *> HPTEtaLargeIso023;
+   vector<TH1D *> HPTEta15Iso023;
+   vector<TH1D *> HPTEta15LargeIso023;
    vector<TH1D *> HEtaIso023;
    vector<TH1D *> HEtaPT20Iso023;
    vector<TH1D *> HEtaPT25Iso023;
@@ -42,6 +50,8 @@ public:
    vector<TH1D *> HPTIso045;
    vector<TH1D *> HPTEta10Iso045;
    vector<TH1D *> HPTEtaLargeIso045;
+   vector<TH1D *> HPTEta15Iso045;
+   vector<TH1D *> HPTEta15LargeIso045;
    vector<TH1D *> HEtaIso045;
    vector<TH1D *> HEtaPT20Iso045;
    vector<TH1D *> HEtaPT25Iso045;

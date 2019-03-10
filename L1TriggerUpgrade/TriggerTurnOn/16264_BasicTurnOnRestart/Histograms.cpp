@@ -12,6 +12,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPT.push_back(new TH1D(Form("%s_PT_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEta10.push_back(new TH1D(Form("%s_PTEta10_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEtaLarge.push_back(new TH1D(Form("%s_PTEtaLarge_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15.push_back(new TH1D(Form("%s_PTEta15_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15Large.push_back(new TH1D(Form("%s_PTEta15Large_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HEta.push_back(new TH1D(Form("%s_Eta_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT20.push_back(new TH1D(Form("%s_EtaPT20_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT25.push_back(new TH1D(Form("%s_EtaPT25_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
@@ -19,6 +21,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso010.push_back(new TH1D(Form("%s_PTIso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEta10Iso010.push_back(new TH1D(Form("%s_PTEta10Iso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEtaLargeIso010.push_back(new TH1D(Form("%s_PTEtaLargeIso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15Iso010.push_back(new TH1D(Form("%s_PTEta15Iso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15LargeIso010.push_back(new TH1D(Form("%s_PTEta15LargeIso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HEtaIso010.push_back(new TH1D(Form("%s_EtaIso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT20Iso010.push_back(new TH1D(Form("%s_EtaPT20Iso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT25Iso010.push_back(new TH1D(Form("%s_EtaPT25Iso010_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
@@ -26,6 +30,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso014.push_back(new TH1D(Form("%s_PTIso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEta10Iso014.push_back(new TH1D(Form("%s_PTEta10Iso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEtaLargeIso014.push_back(new TH1D(Form("%s_PTEtaLargeIso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15Iso014.push_back(new TH1D(Form("%s_PTEta15Iso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15LargeIso014.push_back(new TH1D(Form("%s_PTEta15LargeIso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HEtaIso014.push_back(new TH1D(Form("%s_EtaIso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT20Iso014.push_back(new TH1D(Form("%s_EtaPT20Iso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT25Iso014.push_back(new TH1D(Form("%s_EtaPT25Iso014_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
@@ -33,6 +39,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso023.push_back(new TH1D(Form("%s_PTIso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEta10Iso023.push_back(new TH1D(Form("%s_PTEta10Iso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEtaLargeIso023.push_back(new TH1D(Form("%s_PTEtaLargeIso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15Iso023.push_back(new TH1D(Form("%s_PTEta15Iso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15LargeIso023.push_back(new TH1D(Form("%s_PTEta15LargeIso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HEtaIso023.push_back(new TH1D(Form("%s_EtaIso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT20Iso023.push_back(new TH1D(Form("%s_EtaPT20Iso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT25Iso023.push_back(new TH1D(Form("%s_EtaPT25Iso023_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
@@ -40,6 +48,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso045.push_back(new TH1D(Form("%s_PTIso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEta10Iso045.push_back(new TH1D(Form("%s_PTEta10Iso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HPTEtaLargeIso045.push_back(new TH1D(Form("%s_PTEtaLargeIso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15Iso045.push_back(new TH1D(Form("%s_PTEta15Iso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
+      HPTEta15LargeIso045.push_back(new TH1D(Form("%s_PTEta15LargeIso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;pt;#", ptbin, ptmin, ptmax));
       HEtaIso045.push_back(new TH1D(Form("%s_EtaIso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT20Iso045.push_back(new TH1D(Form("%s_EtaPT20Iso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
       HEtaPT25Iso045.push_back(new TH1D(Form("%s_EtaPT25Iso045_%06d", Label.c_str(), (int)thresholds[iT] * 100), "title;eta;#", etabin, etamin, etamax));
@@ -51,6 +61,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPT[iT]->Sumw2();
       HPTEta10[iT]->Sumw2();
       HPTEtaLarge[iT]->Sumw2();
+      HPTEta15[iT]->Sumw2();
+      HPTEta15Large[iT]->Sumw2();
       HEta[iT]->Sumw2();
       HEtaPT20[iT]->Sumw2();
       HEtaPT25[iT]->Sumw2();
@@ -58,6 +70,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso010[iT]->Sumw2();
       HPTEta10Iso010[iT]->Sumw2();
       HPTEtaLargeIso010[iT]->Sumw2();
+      HPTEta15Iso010[iT]->Sumw2();
+      HPTEta15LargeIso010[iT]->Sumw2();
       HEtaIso010[iT]->Sumw2();
       HEtaPT20Iso010[iT]->Sumw2();
       HEtaPT25Iso010[iT]->Sumw2();
@@ -65,6 +79,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso014[iT]->Sumw2();
       HPTEta10Iso014[iT]->Sumw2();
       HPTEtaLargeIso014[iT]->Sumw2();
+      HPTEta15Iso014[iT]->Sumw2();
+      HPTEta15LargeIso014[iT]->Sumw2();
       HEtaIso014[iT]->Sumw2();
       HEtaPT20Iso014[iT]->Sumw2();
       HEtaPT25Iso014[iT]->Sumw2();
@@ -72,6 +88,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso023[iT]->Sumw2();
       HPTEta10Iso023[iT]->Sumw2();
       HPTEtaLargeIso023[iT]->Sumw2();
+      HPTEta15Iso023[iT]->Sumw2();
+      HPTEta15LargeIso023[iT]->Sumw2();
       HEtaIso023[iT]->Sumw2();
       HEtaPT20Iso023[iT]->Sumw2();
       HEtaPT25Iso023[iT]->Sumw2();
@@ -79,6 +97,8 @@ Histograms::Histograms(int ptbin, double ptmin, double ptmax,
       HPTIso045[iT]->Sumw2();
       HPTEta10Iso045[iT]->Sumw2();
       HPTEtaLargeIso045[iT]->Sumw2();
+      HPTEta15Iso045[iT]->Sumw2();
+      HPTEta15LargeIso045[iT]->Sumw2();
       HEtaIso045[iT]->Sumw2();
       HEtaPT20Iso045[iT]->Sumw2();
       HEtaPT25Iso045[iT]->Sumw2();
@@ -123,6 +143,8 @@ void Histograms::Fill(double check, double pt, double eta, double iso)
       if(HPT[i] != NULL)                         HPT[i]->Fill(pt);
       if(HPTEta10[i] != NULL && fabs(eta) < 1)   HPTEta10[i]->Fill(pt);
       if(HPTEtaLarge[i] != NULL && fabs(eta) > 1)   HPTEtaLarge[i]->Fill(pt);
+      if(HPTEta15[i] != NULL && fabs(eta) < 1.5)   HPTEta15[i]->Fill(pt);
+      if(HPTEta15Large[i] != NULL && fabs(eta) > 1.5)   HPTEta15Large[i]->Fill(pt);
       if(HEta[i] != NULL)                        HEta[i]->Fill(eta);
       if(HEtaPT20[i] != NULL && pt > 20)         HEtaPT20[i]->Fill(eta);
       if(HEtaPT25[i] != NULL && pt > 25)         HEtaPT25[i]->Fill(eta);
@@ -132,6 +154,8 @@ void Histograms::Fill(double check, double pt, double eta, double iso)
          if(HPTIso010[i] != NULL)                         HPTIso010[i]->Fill(pt);
          if(HPTEta10Iso010[i] != NULL && fabs(eta) < 1)   HPTEta10Iso010[i]->Fill(pt);
          if(HPTEtaLargeIso010[i] != NULL && fabs(eta) > 1)   HPTEtaLargeIso010[i]->Fill(pt);
+         if(HPTEta15Iso010[i] != NULL && fabs(eta) < 1.5)   HPTEta15Iso010[i]->Fill(pt);
+         if(HPTEta15LargeIso010[i] != NULL && fabs(eta) > 1.5)   HPTEta15LargeIso010[i]->Fill(pt);
          if(HEtaIso010[i] != NULL)                        HEtaIso010[i]->Fill(eta);
          if(HEtaPT20Iso010[i] != NULL && pt > 20)         HEtaPT20Iso010[i]->Fill(eta);
          if(HEtaPT25Iso010[i] != NULL && pt > 25)         HEtaPT25Iso010[i]->Fill(eta);
@@ -142,6 +166,8 @@ void Histograms::Fill(double check, double pt, double eta, double iso)
          if(HPTIso014[i] != NULL)                         HPTIso014[i]->Fill(pt);
          if(HPTEta10Iso014[i] != NULL && fabs(eta) < 1)   HPTEta10Iso014[i]->Fill(pt);
          if(HPTEtaLargeIso014[i] != NULL && fabs(eta) > 1)   HPTEtaLargeIso014[i]->Fill(pt);
+         if(HPTEta15Iso014[i] != NULL && fabs(eta) < 1.5)   HPTEta15Iso014[i]->Fill(pt);
+         if(HPTEta15LargeIso014[i] != NULL && fabs(eta) > 1.5)   HPTEta15LargeIso014[i]->Fill(pt);
          if(HEtaIso014[i] != NULL)                        HEtaIso014[i]->Fill(eta);
          if(HEtaPT20Iso014[i] != NULL && pt > 20)         HEtaPT20Iso014[i]->Fill(eta);
          if(HEtaPT25Iso014[i] != NULL && pt > 25)         HEtaPT25Iso014[i]->Fill(eta);
@@ -152,6 +178,8 @@ void Histograms::Fill(double check, double pt, double eta, double iso)
          if(HPTIso023[i] != NULL)                         HPTIso023[i]->Fill(pt);
          if(HPTEta10Iso023[i] != NULL && fabs(eta) < 1)   HPTEta10Iso023[i]->Fill(pt);
          if(HPTEtaLargeIso023[i] != NULL && fabs(eta) > 1)   HPTEtaLargeIso023[i]->Fill(pt);
+         if(HPTEta15Iso023[i] != NULL && fabs(eta) < 1.5)   HPTEta15Iso023[i]->Fill(pt);
+         if(HPTEta15LargeIso023[i] != NULL && fabs(eta) > 1.5)   HPTEta15LargeIso023[i]->Fill(pt);
          if(HEtaIso023[i] != NULL)                        HEtaIso023[i]->Fill(eta);
          if(HEtaPT20Iso023[i] != NULL && pt > 20)         HEtaPT20Iso023[i]->Fill(eta);
          if(HEtaPT25Iso023[i] != NULL && pt > 25)         HEtaPT25Iso023[i]->Fill(eta);
@@ -162,6 +190,8 @@ void Histograms::Fill(double check, double pt, double eta, double iso)
          if(HPTIso045[i] != NULL)                         HPTIso045[i]->Fill(pt);
          if(HPTEta10Iso045[i] != NULL && fabs(eta) < 1)   HPTEta10Iso045[i]->Fill(pt);
          if(HPTEtaLargeIso045[i] != NULL && fabs(eta) > 1)   HPTEtaLargeIso045[i]->Fill(pt);
+         if(HPTEta15Iso045[i] != NULL && fabs(eta) < 1.5)   HPTEta15Iso045[i]->Fill(pt);
+         if(HPTEta15LargeIso045[i] != NULL && fabs(eta) > 1.5)   HPTEta15LargeIso045[i]->Fill(pt);
          if(HEtaIso045[i] != NULL)                        HEtaIso045[i]->Fill(eta);
          if(HEtaPT20Iso045[i] != NULL && pt > 20)         HEtaPT20Iso045[i]->Fill(eta);
          if(HEtaPT25Iso045[i] != NULL && pt > 25)         HEtaPT25Iso045[i]->Fill(eta);
@@ -183,6 +213,8 @@ void Histograms::Fill(FourVector Check, FourVector P, double iso)
       if(HPT[i] != NULL)                               HPT[i]->Fill(P.GetPT());
       if(HPTEta10[i] != NULL && P.GetAbsEta() < 1.0)   HPTEta10[i]->Fill(P.GetPT());
       if(HPTEtaLarge[i] != NULL && P.GetAbsEta() > 1.0)   HPTEtaLarge[i]->Fill(P.GetPT());
+      if(HPTEta15[i] != NULL && P.GetAbsEta() < 1.5)   HPTEta15[i]->Fill(P.GetPT());
+      if(HPTEta15Large[i] != NULL && P.GetAbsEta() > 1.5)   HPTEta15Large[i]->Fill(P.GetPT());
       if(HEta[i] != NULL)                              HEta[i]->Fill(P.GetEta());
       if(HEtaPT20[i] != NULL && P.GetPT() > 20)        HEtaPT20[i]->Fill(P.GetEta());
       if(HEtaPT25[i] != NULL && P.GetPT() > 25)        HEtaPT25[i]->Fill(P.GetEta());
@@ -192,6 +224,8 @@ void Histograms::Fill(FourVector Check, FourVector P, double iso)
          if(HPTIso010[i] != NULL)                               HPTIso010[i]->Fill(P.GetPT());
          if(HPTEta10Iso010[i] != NULL && P.GetAbsEta() < 1.0)   HPTEta10Iso010[i]->Fill(P.GetPT());
          if(HPTEtaLargeIso010[i] != NULL && P.GetAbsEta() > 1.0)   HPTEtaLargeIso010[i]->Fill(P.GetPT());
+         if(HPTEta15Iso010[i] != NULL && P.GetAbsEta() < 1.5)   HPTEta15Iso010[i]->Fill(P.GetPT());
+         if(HPTEta15LargeIso010[i] != NULL && P.GetAbsEta() > 1.5)   HPTEta15LargeIso010[i]->Fill(P.GetPT());
          if(HEtaIso010[i] != NULL)                              HEtaIso010[i]->Fill(P.GetEta());
          if(HEtaPT20Iso010[i] != NULL && P.GetPT() > 20)        HEtaPT20Iso010[i]->Fill(P.GetEta());
          if(HEtaPT25Iso010[i] != NULL && P.GetPT() > 25)        HEtaPT25Iso010[i]->Fill(P.GetEta());
@@ -202,6 +236,8 @@ void Histograms::Fill(FourVector Check, FourVector P, double iso)
          if(HPTIso014[i] != NULL)                               HPTIso014[i]->Fill(P.GetPT());
          if(HPTEta10Iso014[i] != NULL && P.GetAbsEta() < 1.0)   HPTEta10Iso014[i]->Fill(P.GetPT());
          if(HPTEtaLargeIso014[i] != NULL && P.GetAbsEta() > 1.0)   HPTEtaLargeIso014[i]->Fill(P.GetPT());
+         if(HPTEta15Iso014[i] != NULL && P.GetAbsEta() < 1.5)   HPTEta15Iso014[i]->Fill(P.GetPT());
+         if(HPTEta15LargeIso014[i] != NULL && P.GetAbsEta() > 1.5)   HPTEta15LargeIso014[i]->Fill(P.GetPT());
          if(HEtaIso014[i] != NULL)                              HEtaIso014[i]->Fill(P.GetEta());
          if(HEtaPT20Iso014[i] != NULL && P.GetPT() > 20)        HEtaPT20Iso014[i]->Fill(P.GetEta());
          if(HEtaPT25Iso014[i] != NULL && P.GetPT() > 25)        HEtaPT25Iso014[i]->Fill(P.GetEta());
@@ -212,6 +248,8 @@ void Histograms::Fill(FourVector Check, FourVector P, double iso)
          if(HPTIso023[i] != NULL)                               HPTIso023[i]->Fill(P.GetPT());
          if(HPTEta10Iso023[i] != NULL && P.GetAbsEta() < 1.0)   HPTEta10Iso023[i]->Fill(P.GetPT());
          if(HPTEtaLargeIso023[i] != NULL && P.GetAbsEta() > 1.0)   HPTEtaLargeIso023[i]->Fill(P.GetPT());
+         if(HPTEta15Iso023[i] != NULL && P.GetAbsEta() < 1.5)   HPTEta15Iso023[i]->Fill(P.GetPT());
+         if(HPTEta15LargeIso023[i] != NULL && P.GetAbsEta() > 1.5)   HPTEta15LargeIso023[i]->Fill(P.GetPT());
          if(HEtaIso023[i] != NULL)                              HEtaIso023[i]->Fill(P.GetEta());
          if(HEtaPT20Iso023[i] != NULL && P.GetPT() > 20)        HEtaPT20Iso023[i]->Fill(P.GetEta());
          if(HEtaPT25Iso023[i] != NULL && P.GetPT() > 25)        HEtaPT25Iso023[i]->Fill(P.GetEta());
@@ -222,6 +260,8 @@ void Histograms::Fill(FourVector Check, FourVector P, double iso)
          if(HPTIso045[i] != NULL)                               HPTIso045[i]->Fill(P.GetPT());
          if(HPTEta10Iso045[i] != NULL && P.GetAbsEta() < 1.0)   HPTEta10Iso045[i]->Fill(P.GetPT());
          if(HPTEtaLargeIso045[i] != NULL && P.GetAbsEta() > 1.0)   HPTEtaLargeIso045[i]->Fill(P.GetPT());
+         if(HPTEta15Iso045[i] != NULL && P.GetAbsEta() < 1.5)   HPTEta15Iso045[i]->Fill(P.GetPT());
+         if(HPTEta15LargeIso045[i] != NULL && P.GetAbsEta() > 1.5)   HPTEta15LargeIso045[i]->Fill(P.GetPT());
          if(HEtaIso045[i] != NULL)                              HEtaIso045[i]->Fill(P.GetEta());
          if(HEtaPT20Iso045[i] != NULL && P.GetPT() > 20)        HEtaPT20Iso045[i]->Fill(P.GetEta());
          if(HEtaPT25Iso045[i] != NULL && P.GetPT() > 25)        HEtaPT25Iso045[i]->Fill(P.GetEta());
@@ -266,6 +306,26 @@ void Histograms::Write(TDirectory *Directory)
       if(Directory != NULL)
          HPTEtaLarge[i]->SetDirectory(Directory);
       HPTEtaLarge[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15.size(); i++)
+   {
+      if(HPTEta15[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15[i]->SetDirectory(Directory);
+      HPTEta15[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15Large.size(); i++)
+   {
+      if(HPTEta15Large[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15Large[i]->SetDirectory(Directory);
+      HPTEta15Large[i]->Write();
    }
    
    for(int i = 0; i < (int)HEta.size(); i++)
@@ -338,6 +398,26 @@ void Histograms::Write(TDirectory *Directory)
       HPTEtaLargeIso010[i]->Write();
    }
    
+   for(int i = 0; i < (int)HPTEta15Iso010.size(); i++)
+   {
+      if(HPTEta15Iso010[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15Iso010[i]->SetDirectory(Directory);
+      HPTEta15Iso010[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15LargeIso010.size(); i++)
+   {
+      if(HPTEta15LargeIso010[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15LargeIso010[i]->SetDirectory(Directory);
+      HPTEta15LargeIso010[i]->Write();
+   }
+   
    for(int i = 0; i < (int)HEtaIso010.size(); i++)
    {
       if(HEtaIso010[i] == NULL)
@@ -406,6 +486,26 @@ void Histograms::Write(TDirectory *Directory)
       if(Directory != NULL)
          HPTEtaLargeIso014[i]->SetDirectory(Directory);
       HPTEtaLargeIso014[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15Iso014.size(); i++)
+   {
+      if(HPTEta15Iso014[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15Iso014[i]->SetDirectory(Directory);
+      HPTEta15Iso014[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15LargeIso014.size(); i++)
+   {
+      if(HPTEta15LargeIso014[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15LargeIso014[i]->SetDirectory(Directory);
+      HPTEta15LargeIso014[i]->Write();
    }
    
    for(int i = 0; i < (int)HEtaIso014.size(); i++)
@@ -478,6 +578,26 @@ void Histograms::Write(TDirectory *Directory)
       HPTEtaLargeIso023[i]->Write();
    }
    
+   for(int i = 0; i < (int)HPTEta15Iso023.size(); i++)
+   {
+      if(HPTEta15Iso023[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15Iso023[i]->SetDirectory(Directory);
+      HPTEta15Iso023[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15LargeIso023.size(); i++)
+   {
+      if(HPTEta15LargeIso023[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15LargeIso023[i]->SetDirectory(Directory);
+      HPTEta15LargeIso023[i]->Write();
+   }
+   
    for(int i = 0; i < (int)HEtaIso023.size(); i++)
    {
       if(HEtaIso023[i] == NULL)
@@ -546,6 +666,26 @@ void Histograms::Write(TDirectory *Directory)
       if(Directory != NULL)
          HPTEtaLargeIso045[i]->SetDirectory(Directory);
       HPTEtaLargeIso045[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15Iso045.size(); i++)
+   {
+      if(HPTEta15Iso045[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15Iso045[i]->SetDirectory(Directory);
+      HPTEta15Iso045[i]->Write();
+   }
+   
+   for(int i = 0; i < (int)HPTEta15LargeIso045.size(); i++)
+   {
+      if(HPTEta15LargeIso045[i] == NULL)
+         continue;
+
+      if(Directory != NULL)
+         HPTEta15LargeIso045[i]->SetDirectory(Directory);
+      HPTEta15LargeIso045[i]->Write();
    }
    
    for(int i = 0; i < (int)HEtaIso045.size(); i++)

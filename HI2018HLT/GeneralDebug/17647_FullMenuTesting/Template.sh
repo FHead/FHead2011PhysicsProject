@@ -6,15 +6,15 @@ WorkDir=__WORKDIR__
 SampleType=__SAMPLETYPE__
 ID=__ID__
 
-export SCRAM_ARCH=slc6_amd64_gcc630
-cd /afs/cern.ch/work/c/chenyi/CMSSW/CMSSW_10_3_0_pre5/src/
+export SCRAM_ARCH=slc6_amd64_gcc700
+cd /afs/cern.ch/work/c/chenyi/CMSSW/HI/CMSSW_10_3_0/src/
 eval `scramv1 runtime -sh`
 cd - > /dev/null
 
 export X509_USER_PROXY=$PhysicsWorkspace/HI2018HLT/CommonCode/proxy/x509up_proxy
 echo $X509_USER_PROXY
 
-Template=$WorkDir/ExportedMenuV76.py
+Template=$WorkDir/ExportedMenuFlowRRR.py
 
 FileList=`echo "__INPUT__" | tr '@' ' ' | sed "s/[ ,]*$//"`
 

@@ -1,0 +1,147 @@
+# Submission file for jet mass measurmement
+---
+
+additional_resources:
+   - {location: "http://cms-results.web.cern.ch/cms-results/public-results/publications/HIN-16-024/", description: "Web page with auxiliary material"}
+hepdata_doi: https://doi.org/10.17182/hepdata.83199
+record_ids:
+   - {id: 1805.05415, type: arxiv}
+   - {id: 1672962, type: inspire}
+   - {id: 2317417, type: cds}
+   - {id: 83199, type: durham}
+comment: |
+   A measurement of the groomed jet mass in PbPb and pp collisions at a nucleon-nucleon center-of-mass energy of 5.02 TeV with the CMS detector at the LHC is presented. Jet grooming is a recursive procedure which sequentially removes soft constituents of a jet until a pair of hard subjets is found. The resulting groomed jets can be used to study modifications to the parton shower evolution in the presence of the hot and dense medium created in heavy ion collisions. Predictions of groomed jet properties from the pythia and herwig++ event generators agree with the measurements in pp collisions. When comparing the results from the most central PbPb collisions to pp data, a hint of an increase of jets with large jet mass is observed, which could originate from additional medium-induced radiation at a large angle from the jet axis. However, no modification of the groomed mass of the core of the jet is observed for all PbPb centrality classes. The PbPb results are also compared to predictions from the jewel and q-pythia event generators, which predict a large modification of the groomed mass not observed in the data.
+
+---
+
+name: "Figure 1a"
+location: "Left panel of Figure 1 in the paper"
+description: "Groomed jet energy fraction in pp collision for jets with PTJET 160-180 GeV"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["P P --> JET X"]}
+   - {name: Observables, values: ["p_(T,g) / p_T^(jet)"]}
+data_file: Figure1a.yaml
+
+---
+
+name: "Figure 1b"
+location: "Right panel of Figure 1 in the paper"
+description: "Groomed jet energy fraction in PbPb collision for jets with PTJET 160-180 GeV"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X"]}
+   - {name: Observables, values: ["p_(T,g) / p_T^(jet)"]}
+data_file: Figure1b.yaml
+
+---
+
+name: "Figure 2a"
+location: "Left panel of Figure 2 in the paper"
+description: "MG/PTJET for SD (0.1,0.0) in PP collision"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure2a.yaml
+
+---
+
+name: "Figure 2b"
+location: "Right panel of Figure 2 in the paper"
+description: "MG/PTJET for SD (0.5,1.5) in PP collision"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure2b.yaml
+
+---
+
+name: "Figure 3a"
+location: "Left panel of Figure 3 in the paper"
+description: "MG/PTJET for SD (0.1,0.0) in PbPb collision and PP collision smeared for PTJET 160-180"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure3a.yaml
+
+---
+
+name: "Figure 3b"
+location: "Right panel of Figure 3 in the paper"
+description: "Ratio of MG/PTJET for SD (0.1,0.0) between PbPb collision and PP collision smeared for PTJET 160-180"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure3b.yaml
+
+---
+
+name: "Figure 4a"
+location: "Left panel of Figure 4 in the paper"
+description: "MG/PTJET for SD (0.5,1.5) in PbPb collision and PP collision smeared for PTJET 160-180"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure4a.yaml
+
+---
+
+name: "Figure 4b"
+location: "Right panel of Figure 4 in the paper"
+description: "Ratio of MG/PTJET for SD (0.5,1.5) between PbPb collision and PP collision smeared for PTJET 160-180"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure4b.yaml
+
+---
+
+name: "Figure 5a"
+location: "Left panel of Figure 5 in the paper"
+description: "MG/PTJET for SD (0.1,0.0) in PbPb collision and PP collision smeared for centrality class 0-10%"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure5a.yaml
+
+---
+
+name: "Figure 5b"
+location: "Right panel of Figure 5 in the paper"
+description: "Ratio of MG/PTJET for SD (0.1,0.0) between PbPb collision and PP collision smeared for centrality class 0-10%"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure5b.yaml
+
+---
+
+name: "Figure 6a"
+location: "Left panel of Figure 6 in the paper"
+description: "MG/PTJET for SD (0.5,1.5) in PbPb collision and PP collision smeared for centrality class 0-10%"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure6a.yaml
+
+---
+
+name: "Figure 6b"
+location: "Right panel of Figure 6 in the paper"
+description: "Ratio of MG/PTJET for SD (0.5,1.5) between PbPb collision and PP collision smeared for centrality class 0-10%"
+keywords:
+   - {name: CMEnergies, values: [5020]}
+   - {name: Reactions, values: ["Pb Pb --> JET X, P P --> JET X"]}
+   - {name: Observables, values: ["M_g / p_T^(jet)"]}
+data_file: Figure6b.yaml
+
+

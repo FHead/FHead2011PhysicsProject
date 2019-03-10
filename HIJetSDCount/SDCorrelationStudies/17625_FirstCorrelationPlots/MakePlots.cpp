@@ -103,40 +103,40 @@ int main(int argc, char *argv[])
 
    PdfFile.AddTextPage("SD (0.5, 1.5) plots");
    AddPlot(PdfFile, 2, 0, 2, "(0.5, 1.5) Completely killed percentage, PT > 200;(left) good (right) killed;%",
-      T1, "sig1JetSDJeweldr12 <= 0", "eventWeight[0] * (PT > 200)",
-      T2, "sig1JetSDdr12 <= 0",      "eventWeight[0] * (PT > 200)",
-      T3, "sig1JetSDJeweldr12 <= 0", "eventWeight[0] * (PT > 200)",
+      T1, "sigJetSD2Jeweldr12 <= 0", "eventWeight[0] * (PT > 200)",
+      T2, "sigJetSD2dr12 <= 0",      "eventWeight[0] * (PT > 200)",
+      T3, "sigJetSD2Jeweldr12 <= 0", "eventWeight[0] * (PT > 200)",
       1e-3);
    AddPlot(PdfFile, 40, 0, 0.5, "(0.5, 1.5) ZG, PT > 200, DR > 0.1;zg",
-      T1, "sig1JetSDJewelzg", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.1)",
-      T2, "sig1JetSDZg",      "eventWeight[0] * (PT > 200 && sig1JetSDdr12 > 0.1)",
-      T3, "sig1JetSDJewelzg", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.1)");
+      T1, "sigJetSD2Jewelzg", "eventWeight[0] * (PT > 200 && sigJetSD2Jeweldr12 > 0.1)",
+      T2, "sigJetSD2Zg",      "eventWeight[0] * (PT > 200 && sigJetSD2dr12 > 0.1)",
+      T3, "sigJetSD2Jewelzg", "eventWeight[0] * (PT > 200 && sigJetSD2Jeweldr12 > 0.1)");
    AddPlot(PdfFile, 40, 0, 0.5, "(0.5, 1.5) DR, PT > 200, DR > 0.0;DR",
-      T1, "sig1JetSDJeweldr12", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.0)",
-      T2, "sig1JetSDdr12",      "eventWeight[0] * (PT > 200 && sig1JetSDdr12 > 0.0)",
-      T3, "sig1JetSDJeweldr12", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.0)",
+      T1, "sigJetSD2Jeweldr12", "eventWeight[0] * (PT > 200 && sigJetSD2Jeweldr12 > 0.0)",
+      T2, "sigJetSD2dr12",      "eventWeight[0] * (PT > 200 && sigJetSD2dr12 > 0.0)",
+      T3, "sigJetSD2Jeweldr12", "eventWeight[0] * (PT > 200 && sigJetSD2Jeweldr12 > 0.0)",
       1e-3);
    AddPlot(PdfFile, 40, 0, 0.5, "(0.5, 1.5) DR, PT > 200, DR > 0.1;DR",
-      T1, "sig1JetSDJeweldr12", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.1)",
-      T2, "sig1JetSDdr12",      "eventWeight[0] * (PT > 200 && sig1JetSDdr12 > 0.1)",
-      T3, "sig1JetSDJeweldr12", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.1)",
+      T1, "sigJetSD2Jeweldr12", "eventWeight[0] * (PT > 200 && sigJetSD2Jeweldr12 > 0.1)",
+      T2, "sigJetSD2dr12",      "eventWeight[0] * (PT > 200 && sigJetSD2dr12 > 0.1)",
+      T3, "sigJetSD2Jeweldr12", "eventWeight[0] * (PT > 200 && sigJetSD2Jeweldr12 > 0.1)",
       1e-3);
    AddPlot(PdfFile, 40, 0, 0.3, "(0.5, 1.5) Mass/PT, PT > 200, DR > 0.1;Mass/PT",
-      T1, "sig1JetSDJewelM/PT", "eventWeight[0] * (sigJetJewelPt > 200 && sig1JetSDJeweldr12 > 0.1)",
-      T2, "sig1JetSDM/PT",           "eventWeight[0] * (PT > 200 && sig1JetSDdr12 > 0.1)",
-      T3, "sig1JetSDJewelM/PT", "eventWeight[0] * (sigJetJewelPt > 200 && sig1JetSDJeweldr12 > 0.1)");
+      T1, "sigJetSD2JewelM/PT", "eventWeight[0] * (sigJetJewelPt > 200 && sigJetSD2Jeweldr12 > 0.1)",
+      T2, "sigJetSD2M/PT",      "eventWeight[0] * (PT > 200 && sigJetSD2dr12 > 0.1)",
+      T3, "sigJetSD2JewelM/PT", "eventWeight[0] * (sigJetJewelPt > 200 && sigJetSD2Jeweldr12 > 0.1)");
    AddPlot(PdfFile, 40, 0, 0.3, "(0.5, 1.5) Mass/Guu PT, PT > 200, DR > 0.1;Mass/PT",
-      T1, "sig1JetSDJewelM/sigJetSDJewelPt", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.1)",
-      T2, "sig1JetSDM/sigJetSDPt",           "eventWeight[0] * (PT > 200 && sig1JetSDdr12 > 0.1)",
-      T3, "sig1JetSDJewelM/sigJetSDJewelPt", "eventWeight[0] * (PT > 200 && sig1JetSDJeweldr12 > 0.1)");
-   // AddPlot(PdfFile, 50, 0, 1000, "(0.5, 1.5) DR > 0.3;PT",
-   //    T1, "PT", "eventWeight[0] * (sig1JetSDJeweldr12 > 0.3)",
-   //    T2, "PT", "eventWeight[0] * (sig1JetSDdr12 > 0.3)",
-   //    T3, "PT", "eventWeight[0] * (sig1JetSDJeweldr12 > 0.3)");
-   // AddPlot(PdfFile, 50, 0, 1000, "(0.5, 1.5) DR < 0.2;PT",
-   //    T1, "PT", "eventWeight[0] * (sig1JetSDJeweldr12 < 0.2)",
-   //    T2, "PT", "eventWeight[0] * (sig1JetSDdr12 < 0.2)",
-   //    T3, "PT", "eventWeight[0] * (sig1JetSDJeweldr12 < 0.2)");
+      T1, "sigJetSD2JewelM/sigJetSDJewelPt", "eventWeight[0] * (PT > 200 && SigJetSD2Jeweldr12 > 0.1)",
+      T2, "sigJetSD2M/sigJetSDPt",           "eventWeight[0] * (PT > 200 && SigJetSD2dr12 > 0.1)",
+      T3, "sigJetSD2JewelM/sigJetSDJewelPt", "eventWeight[0] * (PT > 200 && SigJetSD2Jeweldr12 > 0.1)");
+   AddPlot(PdfFile, 50, 100, 1000, "(0.5, 1.5) DR > 0.3;PT",
+      T1, "PT", "eventWeight[0] * (SigJetSD2Jeweldr12 > 0.3)",
+      T2, "PT", "eventWeight[0] * (SigJetSD2dr12 > 0.3)",
+      T3, "PT", "eventWeight[0] * (SigJetSD2Jeweldr12 > 0.3)");
+   AddPlot(PdfFile, 50, 100, 1000, "(0.5, 1.5) DR < 0.2;PT",
+      T1, "PT", "eventWeight[0] * (SigJetSD2Jeweldr12 < 0.2)",
+      T2, "PT", "eventWeight[0] * (SigJetSD2dr12 < 0.2)",
+      T3, "PT", "eventWeight[0] * (SigJetSD2Jeweldr12 < 0.2)");
    
    PdfFile.AddTextPage("SD (0.15, -2.0) plots");
    AddPlot(PdfFile, 2, 0, 2, "(0.15, -2.0) Completely killed percentage, PT > 200;(left) good (right) killed;%",

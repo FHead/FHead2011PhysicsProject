@@ -1,0 +1,2 @@
+# hltGetConfiguration /users/chenyi/PP2017/HIHighPTPP2017/V14 --globaltag 92X_upgrade2017_realistic_v11 --input root://xrootd.cmsaf.mit.edu//store/user/gsfs/Pythia8_Dijet80_pp_CUETP8M1_5020GeV/RAW_20171002/171002_194411/0000/step2_pp_DIGI_L1_DIGI2RAW_HLT___JOB__.root --mc --process MYHLT --full --offline --l1-emulator FullMC --l1Xml L1Menu_Collisions2017_dev_r9_HIppRefMOD_Mod2.xml --unprescale --max-events -1
+

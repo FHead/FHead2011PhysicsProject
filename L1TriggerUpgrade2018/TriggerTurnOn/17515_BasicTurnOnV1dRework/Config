@@ -1,0 +1,11 @@
+Title      = Jet
+Comments   = With Respect to gen jet
+Thresholds = 0 25 50 75 100 150 200 250 300
+Bin Ranges = 200 0 1000 50 -3 3 2000 0 5
+Reference  = GenJets
+Eta        = 4.7
+Object     = MPhaseII.Jet
+DR         = 0.5
+Queue
+
+

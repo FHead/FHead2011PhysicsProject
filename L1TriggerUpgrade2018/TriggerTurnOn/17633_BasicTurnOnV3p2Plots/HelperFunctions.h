@@ -262,6 +262,8 @@ double Find95(TF1 &F, double Min, double Max, double Target)
 vector<double> Tridiagonal(vector<double> H, vector<double> K1, double K2)
 {
    int N = H.size();
+   if(N == 0)
+      return vector<double>();
 
    // Initialization
    vector<double> A(N);

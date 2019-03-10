@@ -12,7 +12,7 @@ using namespace std;
 #include "TLegend.h"
 #include "TPaveStats.h"
 
-#include "PlotHelper3.h"
+#include "PlotHelper4.h"
 #include "SetStyle.h"
 #include "CommandLine.h"
 
@@ -41,6 +41,8 @@ int main(int argc, char *argv[])
 
    PdfFileHelper PdfFile(OutputFileName);
    PdfFile.AddTextPage("Scaling plots :D");
+
+   PdfFile.SetAutomaticHomeButton();
    
    TFile OutputFile(CurvesFileName.c_str(), "RECREATE");
    OutputFile.Close();
@@ -51,8 +53,10 @@ int main(int argc, char *argv[])
    vector<double> TkJetThresholds = {15, 20, 25, 30, 40, 50, 75, 100, 150};
    vector<double> CaloJetThresholds = {50, 75, 100, 125, 150, 175, 200};
    vector<double> HTThresholds = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500};
+   vector<double> LowMHTThresholds = {20, 30, 40, 50, 60, 70};
    vector<double> MHTThresholds = {70, 80, 90, 100, 125, 150, 175};
-   vector<double> METThresholds = {70, 80, 90, 100, 125, 150, 175, 200};
+   vector<double> LowMETThresholds = {20, 30, 40, 50, 60, 70};
+   vector<double> METThresholds = {70, 80, 90, 100, 125, 150, 175};
 
    if(DoJet == true)
    {
@@ -66,8 +70,9 @@ int main(int argc, char *argv[])
    if(DoMuon == true)
    {
       ProcessFile(PdfFile, InputFileName, "Muon",         MuonThresholds, 0.95, "Muon",      "PT", TYPE_FIT);
-      ProcessFile(PdfFile, InputFileName, "MuonKF",       MuonThresholds, 0.95, "MuonKF",    "PT", TYPE_FITFIX);
-      ProcessFile(PdfFile, InputFileName, "TkGlbMuon",    MuonThresholds, 0.95, "TkGlbMuon", "PT", TYPE_FITFIX);
+      ProcessFile(PdfFile, InputFileName, "MuonKFIso",    MuonThresholds, 0.95, "MuonKFIso", "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkMuonIso",    MuonThresholds, 0.95, "TkMuonIso", "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkGlbMuonIso", MuonThresholds, 0.95, "TkGlbMuonIso", "PT", TYPE_SMOOTH_TIGHT);
    }
    if(DoE == true)
    {
@@ -97,22 +102,32 @@ int main(int argc, char *argv[])
    {
       ProcessFile(PdfFile, InputFileName, "TkHT1",        HTThresholds,   0.95, "TkHT1",     "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkMHT1",       MHTThresholds,  0.95, "TkMHT1",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT1",       LowMHTThresholds,  0.95, "LowTkMHT1",    "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "TkHT2",        HTThresholds,   0.95, "TkHT2",     "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkMHT2",       MHTThresholds,  0.95, "TkMHT2",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT2",       LowMHTThresholds,  0.95, "LowTkMHT2",    "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "TkHT3",        HTThresholds,   0.95, "TkHT3",     "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkMHT3",       MHTThresholds,  0.95, "TkMHT3",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT3",       LowMHTThresholds,  0.95, "LowTkMHT3",    "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "TkHT4",        HTThresholds,   0.95, "TkHT4",     "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkMHT4",       MHTThresholds,  0.95, "TkMHT4",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT4",       LowMHTThresholds,  0.95, "LowTkMHT4",    "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "TkHT5",        HTThresholds,   0.95, "TkHT5",     "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkMHT5",       MHTThresholds,  0.95, "TkMHT5",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT5",       LowMHTThresholds,  0.95, "LowTkMHT5",    "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "TkMET",        METThresholds,  0.95, "TkMET",     "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMET",        LowMETThresholds,  0.95, "LowTkMET",     "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "PuppiHT1",     HTThresholds,   0.95, "PuppiHT1",  "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "PuppiMHT1",    MHTThresholds,  0.95, "PuppiMHT1", "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "PuppiMHT1",    LowMHTThresholds,  0.95, "LowPuppiMHT1", "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "PuppiHT2",     HTThresholds,   0.95, "PuppiHT2",  "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "PuppiMHT2",    MHTThresholds,  0.95, "PuppiMHT2", "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "PuppiMHT2",    LowMHTThresholds,  0.95, "LowPuppiMHT2", "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "PuppiHT3",     HTThresholds,   0.95, "PuppiHT3",  "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "PuppiMHT3",    MHTThresholds,  0.95, "PuppiMHT3", "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "PuppiMHT3",    LowMHTThresholds,  0.95, "LowPuppiMHT3", "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, "PuppiMET",     METThresholds,  0.95, "PuppiMET",  "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "PuppiMET",     LowMETThresholds,  0.95, "LowPuppiMET",  "PT", TYPE_FITFIX2);
    }
    
    PdfFile.AddTimeStampPage();

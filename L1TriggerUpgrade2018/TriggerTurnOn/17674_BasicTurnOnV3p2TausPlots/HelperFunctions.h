@@ -11,6 +11,7 @@
 #define TYPE_FIT 0
 #define TYPE_FITFIX 5
 #define TYPE_FITFIX2 6
+#define TYPE_FITFLOAT 7
 #define TYPE_SMOOTH_LOOSE 1
 #define TYPE_SMOOTH_TIGHT 2
 #define TYPE_SMOOTH_SUPERTIGHT 3
@@ -262,6 +263,8 @@ double Find95(TF1 &F, double Min, double Max, double Target)
 vector<double> Tridiagonal(vector<double> H, vector<double> K1, double K2)
 {
    int N = H.size();
+   if(N == 0)
+      return vector<double>();
 
    // Initialization
    vector<double> A(N);

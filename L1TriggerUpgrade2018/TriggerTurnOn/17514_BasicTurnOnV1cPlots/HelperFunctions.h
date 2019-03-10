@@ -8,9 +8,8 @@
 #include "TLegend.h"
 #include "TPaveStats.h"
 
-#define TYPE_FIT 0
 #define TYPE_FITFIX 5
-#define TYPE_FITFIX2 6
+#define TYPE_FIT 0
 #define TYPE_SMOOTH_LOOSE 1
 #define TYPE_SMOOTH_TIGHT 2
 #define TYPE_SMOOTH_SUPERTIGHT 3
@@ -19,7 +18,7 @@
 #define TARGET 0.95
 
 double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target = TARGET,
-   bool tanh = false, bool noweight = false, bool Fix = false, bool Baseline = false);
+   bool tanh = false, bool noweight = false, bool Fix = false);
 double SmoothTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target = TARGET,
    int Type = TYPE_SMOOTH_LOOSE);
 double Find95(TF1 &F, double Min, double Max, double Target = 0.95);
@@ -27,7 +26,7 @@ double Find95(TGraph &F, double Min, double Max, double Target = 0.95);
 double Eval(TGraph &G, double x);
 vector<double> Tridiagonal(vector<double> H, vector<double> K1, double K2);
 
-double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, bool tanh, bool noweight, bool Fix, bool Baseline)
+double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, bool tanh, bool noweight, bool Fix)
 {
    cout << H1 << " " << H2 << endl;
 
@@ -59,7 +58,7 @@ double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, bool
    TGraphAsymmErrors G;
    G.Divide(H1Temp, H2Temp);
 
-   TH2D HWorld("HWorld", ";Gen p_{T};", 100, MinX, MaxX, 100, 0, 1.1);
+   TH2D HWorld("HWorld", ";;", 100, MinX, MaxX, 100, 0, 1.1);
    HWorld.SetStats(0);
    HWorld.Draw("axis");
 
@@ -79,24 +78,16 @@ double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, bool
    PdfFile.AddCanvas(Canvas);
    
    string Function;
-   Function = "(ROOT::Math::normal_cdf([0]*(x-[1]), [0]*[2], 0) - exp(-[0]*(x-[1])+[0]*[0]*[2]*[2]/2)*ROOT::Math::normal_cdf([0]*(x-[1]), [0]*[2], [0]*[0]*[2]*[2])) * ([3] - [4]) + [4]";
+   Function = "(ROOT::Math::normal_cdf([0]*(x-[1]), [0]*[2], 0) - exp(-[0]*(x-[1])+[0]*[0]*[2]*[2]/2)*ROOT::Math::normal_cdf([0]*(x-[1]), [0]*[2], [0]*[0]*[2]*[2])) * [3]";
    if(tanh == true)
       Function = "[2] + [3] * tanh([0] * (x - [1]))";
 
    TF1 Fit("Fit", Function.c_str(), MinX, MaxX);
 
-   Fit.SetParameters(0.02, 80, 20, 1.0, 0.0);
-   Fit.SetParNames("#lambda", "#mu", "#sigma", "Plateau", "Baseline");
+   Fit.SetParameters(0.02, 100, 20, 1.0);
+   Fit.SetParNames("#lambda", "#mu", "#sigma", "Plateau");
    if(Fix == true)
       Fit.FixParameter(3, 1.0);
-   if(Baseline == false)
-      Fit.FixParameter(4, 0.0);
-   else
-   {
-      double x, y;
-      G.GetPoint(0, x, y);
-      Fit.SetParameter(4, y);
-   }
    
    if(tanh == true)
    {
@@ -118,7 +109,7 @@ double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, bool
    GLine3.SetLineStyle(kDashed);
    GLine3.SetLineColor(kMagenta);
 
-   TH2D HWorld2("HWorld2", ";Gen p_{T};", 100, MinX, MaxX, 100, 0, 1.1);
+   TH2D HWorld2("HWorld2", ";;", 100, MinX, MaxX, 100, 0, 1.1);
    HWorld2.SetStats(0);
    HWorld2.Draw();
 
@@ -135,7 +126,7 @@ double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, bool
 
    PdfFile.AddCanvas(Canvas);
 
-   return Find95(Fit, MinX, MaxX * 10, Target * Fit.Eval(10000));
+   return Find95(Fit, MinX, MaxX, Target * Fit.Eval(10000));
 }
 
 double SmoothTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, int Type)
@@ -170,7 +161,7 @@ double SmoothTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, i
    TGraphAsymmErrors G;
    G.Divide(H1Temp, H2Temp);
 
-   TH2D HWorld("HWorld", ";Gen p_{T};", 100, MinX, MaxX, 100, 0, 1.1);
+   TH2D HWorld("HWorld", ";;", 100, MinX, MaxX, 100, 0, 1.1);
    HWorld.SetStats(0);
    HWorld.Draw("axis");
 
@@ -220,7 +211,7 @@ double SmoothTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, i
    }
    Fit.SetLineColor(kRed);
 
-   TH2D HWorld2("HWorld2", ";Gen p_{T};", 100, MinX, MaxX, 100, 0, 1.1);
+   TH2D HWorld2("HWorld2", ";;", 100, MinX, MaxX, 100, 0, 1.1);
    HWorld2.SetStats(0);
    HWorld2.Draw();
 

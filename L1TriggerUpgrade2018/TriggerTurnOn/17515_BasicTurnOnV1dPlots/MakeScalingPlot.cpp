@@ -27,15 +27,14 @@ int main(int argc, char *argv[])
 {
    CommandLine CL(argc, argv);
 
-   string InputFileName =  CL.Get("input");
+   string InputFileName = CL.Get("input");
    string OutputFileName = CL.Get("output");
    string CurvesFileName = CL.Get("curves");
 
-   bool DoJet  = CL.GetBool("DoJet", true);
-   bool DoMuon = CL.GetBool("DoMu",  true);
-   bool DoE    = CL.GetBool("DoE",   true);
-   bool DoG    = CL.GetBool("DoG",   true);
-   bool DoHT   = CL.GetBool("DoHT",  true);
+   bool DoJet = CL.GetBool("dojet", true);
+   bool DoMuon = CL.GetBool("domuon", true);
+   bool DoEG = CL.GetBool("doeg", true);
+   bool DoHT = CL.GetBool("doht", true);
 
    SetThesisStyle();
 
@@ -48,17 +47,16 @@ int main(int argc, char *argv[])
    vector<double> EGThresholds = {12, 15, 20, 25, 30};
    vector<double> MuonThresholds = {12, 15, 20, 25, 30};
    vector<double> JetThresholds = {15, 20, 25, 30, 40, 50, 75, 100, 150, 200};
-   vector<double> TkJetThresholds = {15, 20, 25, 30, 40, 50, 75, 100, 150};
-   vector<double> CaloJetThresholds = {50, 75, 100, 125, 150, 175, 200};
+   vector<double> CaloJetThresholds = {20, 40, 50, 75, 100, 125, 150, 175, 200};
    vector<double> HTThresholds = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500};
-   vector<double> MHTThresholds = {70, 80, 90, 100, 125, 150, 175};
-   vector<double> METThresholds = {70, 80, 90, 100, 125, 150, 175, 200};
+   vector<double> MHTThresholds = {10, 20, 30, 40, 50, 60};
+   vector<double> METThresholds = {10, 20, 30, 40, 50, 60};
 
    if(DoJet == true)
    {
       ProcessFile(PdfFile, InputFileName, "Jet",          JetThresholds,  0.95, "Jet",       "PT", TYPE_FITFIX);
-      ProcessFile(PdfFile, InputFileName, "TkJet",        TkJetThresholds,  0.95, "TkJet",     "PT", TYPE_FITFIX);
-      ProcessFile(PdfFile, InputFileName, "TkJetCharged", JetThresholds, 0.95, "TkJetCharged", "PT", TYPE_FITFIX);
+      ProcessFile(PdfFile, InputFileName, "TkJet",        JetThresholds,  0.95, "TkJet",     "PT", TYPE_FITFIX);
+      ProcessFile(PdfFile, InputFileName, "TkJetCharged", JetThresholds,  0.95, "TkJetCharged", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, "TkCaloJet",    CaloJetThresholds, 0.95, "TkCaloJet", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, "PuppiJetWide", JetThresholds,  0.95, "PuppiJetWide", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, "PuppiJet",     JetThresholds,  0.95, "PuppiJet",  "PT", TYPE_FITFIX);
@@ -69,26 +67,23 @@ int main(int argc, char *argv[])
       ProcessFile(PdfFile, InputFileName, "MuonKF",       MuonThresholds, 0.95, "MuonKF",    "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, "TkGlbMuon",    MuonThresholds, 0.95, "TkGlbMuon", "PT", TYPE_FITFIX);
    }
-   if(DoE == true)
+   if(DoEG == true)
    {
       ProcessFile(PdfFile, InputFileName, "EGElectron",   EGThresholds,   0.95, "EG",        "PT");
       ProcessFile(PdfFile, InputFileName, "EGElectron",   EGThresholds,   0.95, "EG",        "PTEta15");
       ProcessFile(PdfFile, InputFileName, "EGElectron",   EGThresholds,   0.95, "EG",        "PTEtaLarge");
-      ProcessFile(PdfFile, InputFileName, "TkEGIso",      EGThresholds,   0.95, "TkEG",      "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkEGIso",      EGThresholds,   0.95, "TkEG",      "PTEta15", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkEGIso",      EGThresholds,   0.95, "TkEG",      "PTEtaLarge", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkIsoEGIso",   EGThresholds,   0.95, "TkIsoEG",   "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkIsoEGIso",   EGThresholds,   0.95, "TkIsoEG",   "PTEta15", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkIsoEGIso",   EGThresholds,   0.95, "TkIsoEG",   "PTEtaLarge", TYPE_SMOOTH_TIGHT);
-   }
-   if(DoG == true)
-   {
       ProcessFile(PdfFile, InputFileName, "EGPhoton",     EGThresholds,   0.95, "EG",        "PT");
       ProcessFile(PdfFile, InputFileName, "EGPhoton",     EGThresholds,   0.95, "EG",        "PTEta15");
       ProcessFile(PdfFile, InputFileName, "EGPhoton",     EGThresholds,   0.95, "EG",        "PTEtaLarge");
+      ProcessFile(PdfFile, InputFileName, "TkEGIso",      EGThresholds,   0.95, "TkEG",      "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkEGIso",      EGThresholds,   0.95, "TkEG",      "PTEta15", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkEGIso",      EGThresholds,   0.95, "TkEG",      "PTEtaLarge", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkEMIso",      EGThresholds,   0.95, "TkEM",      "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkEMIso",      EGThresholds,   0.95, "TkEM",      "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkEMIso",      EGThresholds,   0.95, "TkEM",      "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkIsoEGIso",   EGThresholds,   0.95, "TkIsoEG",   "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkIsoEGIso",   EGThresholds,   0.95, "TkIsoEG",   "PTEta15", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkIsoEGIso",   EGThresholds,   0.95, "TkIsoEG",   "PTEtaLarge", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkIsoEMIso",   EGThresholds,   0.95, "TkIsoEM",   "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkIsoEMIso",   EGThresholds,   0.95, "TkIsoEM",   "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkIsoEMIso",   EGThresholds,   0.95, "TkIsoEM",   "PTEtaLarge", TYPE_SMOOTH_TIGHT);
@@ -96,23 +91,23 @@ int main(int argc, char *argv[])
    if(DoHT == true)
    {
       ProcessFile(PdfFile, InputFileName, "TkHT1",        HTThresholds,   0.95, "TkHT1",     "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkMHT1",       MHTThresholds,  0.95, "TkMHT1",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT1",       MHTThresholds,  0.95, "TkMHT1",    "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkHT2",        HTThresholds,   0.95, "TkHT2",     "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkMHT2",       MHTThresholds,  0.95, "TkMHT2",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT2",       MHTThresholds,  0.95, "TkMHT2",    "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkHT3",        HTThresholds,   0.95, "TkHT3",     "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkMHT3",       MHTThresholds,  0.95, "TkMHT3",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT3",       MHTThresholds,  0.95, "TkMHT3",    "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkHT4",        HTThresholds,   0.95, "TkHT4",     "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkMHT4",       MHTThresholds,  0.95, "TkMHT4",    "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT4",       MHTThresholds,  0.95, "TkMHT4",    "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "TkHT5",        HTThresholds,   0.95, "TkHT5",     "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "TkMHT5",       MHTThresholds,  0.95, "TkMHT5",    "PT", TYPE_FITFIX2);
-      ProcessFile(PdfFile, InputFileName, "TkMET",        METThresholds,  0.95, "TkMET",     "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "TkMHT5",       MHTThresholds,  0.95, "TkMHT5",    "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, "TkMET",        METThresholds,  0.95, "TkMET",     "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, "PuppiHT1",     HTThresholds,   0.95, "PuppiHT1",  "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "PuppiMHT1",    MHTThresholds,  0.95, "PuppiMHT1", "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "PuppiMHT1",    MHTThresholds,  0.95, "PuppiMHT1", "PT", TYPE_FIT);
       ProcessFile(PdfFile, InputFileName, "PuppiHT2",     HTThresholds,   0.95, "PuppiHT2",  "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "PuppiMHT2",    MHTThresholds,  0.95, "PuppiMHT2", "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "PuppiMHT2",    MHTThresholds,  0.95, "PuppiMHT2", "PT", TYPE_FIT);
       ProcessFile(PdfFile, InputFileName, "PuppiHT3",     HTThresholds,   0.95, "PuppiHT3",  "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, "PuppiMHT3",    MHTThresholds,  0.95, "PuppiMHT3", "PT", TYPE_FITFIX2);
-      ProcessFile(PdfFile, InputFileName, "PuppiMET",     METThresholds,  0.95, "PuppiMET",  "PT", TYPE_FITFIX2);
+      ProcessFile(PdfFile, InputFileName, "PuppiMHT3",    MHTThresholds,  0.95, "PuppiMHT3", "PT", TYPE_FIT);
+      ProcessFile(PdfFile, InputFileName, "PuppiMET",     METThresholds,  0.95, "PuppiMET",  "PT", TYPE_FIT);
    }
    
    PdfFile.AddTimeStampPage();
@@ -130,8 +125,6 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName,
       TypeString = "Fit";
    if(Type == TYPE_FITFIX)
       TypeString = "Fit (plateau == 1)";
-   if(Type == TYPE_FITFIX2)
-      TypeString = "Fit (plateau == 1 && float baseline)";
    if(Type == TYPE_SMOOTH_LOOSE)
       TypeString = "Stringterpolate (loose)";
    if(Type == TYPE_SMOOTH_TIGHT)
@@ -172,15 +165,11 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName,
       if(Type == TYPE_FIT)
          CrossOver[i] = FitTurnOn(PdfFile,
             (TH1D *)File.Get(Form("%s_%s_%06d", Prefix.c_str(), Name.c_str(), (int)Thresholds[i] * 100)),
-            (TH1D *)File.Get(Form("%s_%s_000000", Prefix.c_str(), Name.c_str())), Target, false, false, false, false);
+            (TH1D *)File.Get(Form("%s_%s_000000", Prefix.c_str(), Name.c_str())), Target, false, false);
       if(Type == TYPE_FITFIX)
          CrossOver[i] = FitTurnOn(PdfFile,
             (TH1D *)File.Get(Form("%s_%s_%06d", Prefix.c_str(), Name.c_str(), (int)Thresholds[i] * 100)),
-            (TH1D *)File.Get(Form("%s_%s_000000", Prefix.c_str(), Name.c_str())), Target, false, false, true, false);
-      if(Type == TYPE_FITFIX2)
-         CrossOver[i] = FitTurnOn(PdfFile,
-            (TH1D *)File.Get(Form("%s_%s_%06d", Prefix.c_str(), Name.c_str(), (int)Thresholds[i] * 100)),
-            (TH1D *)File.Get(Form("%s_%s_000000", Prefix.c_str(), Name.c_str())), Target, false, false, true, true);
+            (TH1D *)File.Get(Form("%s_%s_000000", Prefix.c_str(), Name.c_str())), Target, false, false, true);
    }
 
    File.Close();

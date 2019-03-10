@@ -17,7 +17,7 @@
 #include "include/L1AnalysisRecoVertexDataFormat.h"
 #include "include/L1AnalysisSimulationDataFormat.h"
 #include "include/L1AnalysisL1ExtraUpgradeDataFormat.h"
-#include "include/L1AnalysisPhaseIIDataFormatV7p3.h"
+#include "include/L1AnalysisPhaseIIDataFormatV7p4.h"
 
 namespace
 {

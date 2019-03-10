@@ -1,0 +1,20 @@
+SubmitDirectory       = /afs/cern.ch/user/c/chenyi/work/PhysicsWorkspace/JetEnergyCorrection/MCTruthStudies/21215_ReconstructPTScan
+
+Universe              = vanilla
+Executable            = $(SubmitDirectory)/RunFile.sh
+should_transfer_files = NO
++JobFlavour           = longlunch
++MaxRunTime           = 7200
+
+SetupScript           = $(SubmitDirectory)/Setup.sh
+CMSSWScript           = $(SubmitDirectory)/RunFlatPU.sh
+InputRootFile         = $(SubmitDirectory)/pickevents.root
+OutputLocation        = /eos/user/c/chenyi/Share/21215_ReconstructPTScan/FlatPU/Run$(Process)/
+
+Arguments             = "$(SetupScript) $(CMSSWScript) $(InputRootFile) $(OutputLocation) $(Process) $(SubmitDirectory)"
+Log                   = Log/FlatPU/Log.$(Process)
+Output                = Log/FlatPU/Out.$(Process)
+Error                 = Log/FlatPU/Err.$(Process)
+Queue 100
+
+

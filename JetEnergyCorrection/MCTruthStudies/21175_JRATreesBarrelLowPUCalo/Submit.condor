@@ -1,0 +1,17 @@
+Universe   = vanilla
+Executable = ProcessOneTree.sh
+should_transfer_files = NO
+
+Here       = /afs/cern.ch/user/c/chenyi/work/PhysicsWorkspace/JetEnergyCorrection/MCTruthStudies/21175_JRATreesBarrelLowPUCalo/
+
+InputFile  = $(Here)/InputTrees/FlatPU/Run$(Process)/JME-RunIIAutumn18DR-00003.root
+WithPUJRA  = $(Here)/Output/JRAFlatPU/JRA_$(Process).root
+NoPUJRA    = $(Here)/Output/JRANoPU/JRA.root
+SynchFile  = $(Here)/Output/SynchTree/SynchTree_$(Process).root
+
+Arguments  = "$(InputFile) $(WithPUJRA) $(NoPUJRA) $(SynchFile) $(Here)"
+Log        = Log/Log.$(Process)
+Output     = Log/Out.$(Process)
+Error      = Log/Err.$(Process)
+Queue 1000
+

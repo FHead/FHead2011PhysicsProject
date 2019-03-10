@@ -285,7 +285,7 @@ bool SanityCheck(map<string, L1Record> &L1List, map<string, HLTRecord> &HLTList)
 
 void SetupBranches(TTree *Tree, map<string, HLTRecord> HLTList, map<string, int> &Index, vector<int> &Decision)
 {
-   // List of all triggers (both HLT and L10
+   // List of all triggers (both HLT and L1)
    vector<string> List;
 
    for(auto R : HLTList)

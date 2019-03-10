@@ -1,4 +1,4 @@
-default: TestRun
+default: TestRunFHeadMac
 
 Execute: CalculateOverlap.cpp
 	g++ CalculateOverlap.cpp `root-config --cflags --libs` -o Execute

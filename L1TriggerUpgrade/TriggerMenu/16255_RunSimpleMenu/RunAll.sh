@@ -6,11 +6,13 @@ ls -l $SampleBase/Neutrinos200PU/* | awk '{if($5>1000) print $9}' > SampleNu200.
 ls -l $SampleBase/TTBar140PU/* | awk '{if($5>1000) print $9}' > SampleTT140.txt
 ls -l $SampleBase/TTBar200PU/* | awk '{if($5>1000) print $9}' > SampleTT200.txt
 
-for MenuFile in L1Menu_std.txt L1Menu_trk.txt L1Menu_v19m20_std.txt
+for MenuFile in L1Menu_trkL1TDREta_v3p4.xml # L1Menu_std.txt L1Menu_trk.txt L1Menu_v19m20_std.txt L1Menu_trkL1TDREta_v3p4.xml
 do
    for Type in Nu200 TT140 TT200
    do
-      Tag=${MenuFile/.txt}_$Type
+      Base=${MenuFile/.txt}
+      Base=${Base/.xml}
+      Tag=${Base}_$Type
 
       echo Now Running with tag $Tag
 
@@ -19,7 +21,8 @@ do
 
       l1menuCreateRatePlots --output ${Tag}.root ${Tag}.proto $MenuFile
 
-      # l1menuFitMenu --rateplots output_rates_PU140_v22.root --output georgiaUnscaled.xml reducedSample.proto L1Menu_v19m20_std.txt 100
-      # l1menuScaleMenuRates --rateplots output_rates_PU140_v22.root --muonscaling MuonScales_Scale_Iso50PU_3pt.root --datascaling output_rates_Fallback_Run2012C_ZeroBias_PU66_v22.root --montecarloscaling output_rates_FallBack_NeutrinoGun_8TeV_PU66_v22.root --offlinescaling L12Offline_Fallback_95-85_LowPtMu_v5_uncalibratedJets_updated.txt --format OLD georgiaUnscaled.xml
+      l1menuFitMenu --rateplots ${Tag}.root --output ${Tag}.xml ${Tag}.proto $MenuFile 180
+      
+      l1menuScaleMenuRates --rateplots ${Tag}.root --offlinescaling scaling/L12Offline_Fallback_95-85_LowPtMu_v5_uncalibratedJets_trkupdated.txt --format OLD ${Tag}.xml
    done
 done

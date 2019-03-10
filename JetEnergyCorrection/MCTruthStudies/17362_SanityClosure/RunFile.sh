@@ -15,13 +15,7 @@ echo Input files are: __FILE__
 
 hadd -k -f Input.root __FILE__
 
-# L1=Fall17_17Nov2017_V8_MC_L1FastJet_AK4PFchs.txt
-L2L3=Fall17_17Nov2017_V8_MC_L2Relative_AK4PFchs.txt
-
-# L1=bias2SelectionPow_20180523_25nsV1_MC_L1FastJet_AK4PFchs.txt
-L1=bias2SelectionPow_20180523_25nsV1_MC_L1FastJet_AK4PFchs_bigrho.txt
-
-$WorkDir/Execute -input Input.root -output Output.root -tree ak4pfchs/t -l1 $L1 -l2l3 $L2L3
+$WorkDir/Execute -input Input.root -output Output.root -l1 __L1__ -l2l3 __L2L3__ -tree __TREE__
 
 cp Output.root __OUTPUT__/Output___ID__.root
 

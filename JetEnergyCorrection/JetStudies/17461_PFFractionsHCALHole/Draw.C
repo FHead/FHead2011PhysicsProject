@@ -1,0 +1,32 @@
+{
+   TCanvas Canvas("Canvas", "", 2048, 1024);
+   Canvas.Divide(2);
+   Canvas.cd(1);
+   Events->Draw("AK4PFCHF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFCHF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "prof same");
+   Canvas.cd(2);
+   Events->Draw("AK4PFCHF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFCHF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "prof same");
+   Canvas.SaveAs("CHF.pdf");
+   Canvas.cd(1);
+   Events->Draw("AK4PFCEF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFCEF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "prof same");
+   Canvas.cd(2);
+   Events->Draw("AK4PFCEF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFCEF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "prof same");
+   Canvas.SaveAs("CEF.pdf");
+   Canvas.cd(1);
+   Events->Draw("AK4PFNHF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFNHF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "prof same");
+   Canvas.cd(2);
+   Events->Draw("AK4PFNHF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFNHF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "prof same");
+   Canvas.SaveAs("NHF.pdf");
+   Canvas.cd(1);
+   Events->Draw("AK4PFNEF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFNEF:AK4PFPhi", "AK4PFEta > -2.5 && AK4PFEta < -1.5 && AK4PFPT > 50", "prof same");
+   Canvas.cd(2);
+   Events->Draw("AK4PFNEF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "colz");
+   Events->Draw("AK4PFNEF:AK4PFPhi", "AK4PFEta < 2.5 && AK4PFEta > 1.5 && AK4PFPT > 50", "prof same");
+   Canvas.SaveAs("NEF.pdf");
+}

@@ -57,6 +57,25 @@ int main(int argc, char *argv[])
       AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 70 && refpt > 110",
          "Response (GenPT = 110-inf);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
       
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 15 && refpt < 30",
+         "Response (GenPT = 15-30);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 30 && refpt < 45",
+         "Response (GenPT = 30-45);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 45 && refpt < 70",
+         "Response (GenPT = 45-70);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 70 && refpt < 90",
+         "Response (GenPT = 70-90);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 90 && refpt < 110",
+         "Response (GenPT = 90-110);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 110 && refpt < 140",
+         "Response (GenPT = 110-140);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 140 && refpt < 180",
+         "Response (GenPT = 140-180);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 180 && refpt < 250",
+         "Response (GenPT = 180-250);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 250 && refpt < 10000",
+         "Response (GenPT = 250-inf);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);
+      
       /*
       AddPlot2D(PdfFile, Tree, "jtpt/refpt:jtphi", "jteta > -2.8 && jteta < -1.5 && refpt > 15 && refpt < 40 && PFMET < 50",
          "Response (GenPT = 15-40, raw PFMET < 50);#phi;Response", 100, -3.14, 3.14, 100, 0, 2.5);

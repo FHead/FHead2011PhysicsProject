@@ -17,15 +17,12 @@ RunPercentagePlot: MakePercentagePlot.cpp
 	./RunPercentagePlot ScaledResult/PP6Dijet.root PP6MixedC1 NONE 0.1 0.3 PP6DijetMixedC1
 	./RunPercentagePlot ScaledResult/PP6Dijet.root PP6MixedC2 NONE 0.3 0.5 PP6DijetMixedC2
 	./RunPercentagePlot ScaledResult/PP6Dijet.root PP6MixedC3 NONE 0.5 0.8 PP6DijetMixedC3
-	./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixed NONE -1 -1 PPDataMixed
-	./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC0 NONE 0.0 0.1 PPDataMixedC0
-	./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC1 NONE 0.1 0.3 PPDataMixedC1
-	./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC2 NONE 0.3 0.5 PPDataMixedC2
-	./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC3 NONE 0.5 0.8 PPDataMixedC3
+	# ./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixed NONE -1 -1 PPDataMixed
+	# ./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC0 NONE 0.0 0.1 PPDataMixedC0
+	# ./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC1 NONE 0.1 0.3 PPDataMixedC1
+	# ./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC2 NONE 0.3 0.5 PPDataMixedC2
+	# ./RunPercentagePlot ScaledResult/PPDataHighPTJet.root PPDataMixedC3 NONE 0.5 0.8 PPDataMixedC3
 
 RunQuickPlot: MakeQuickPlot.cpp
 	CompileRootMacro MakeQuickPlot.cpp RunQuickPlot
 	./RunQuickPlot
-
-TestRun: RunSmear
-	./RunSmear /afs/cern.ch/user/c/chenyi/EOS/cms///store/cmst3/group/hintt/mverweij/jetsPbPb/Run2/MC/PP/Pythia6_Dijet220_pp502_TuneCUETP8M1/local/v1//HiForest_0.root Meow.root PP6Dijet220 0 100000 /afs/cern.ch/user/c/chenyi/EOS/cms///store/cmst3/user/chenyi/Samples/CymbalMB//HiForestAOD_2.root 0.07 6.00 1 -1 -1

@@ -1,0 +1,14 @@
+MCWeight      MCWeight     double
+BestJetPT     JetPT        double
+BestJetEta    JetEta       double
+PTHat         PTHat        double
+BestJetDR     DR           double
+Centrality    Centrality   double
+Rho           Rho          double
+BestJetSDMass Mass         double
+BestJetWTADR  WTADR        double
+BestJetSDPT   SDPT         double
+BestJetSJ1PT  SJ1PT        double
+BestJetSJ2PT  SJ2PT        double
+
+

@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
    int BinZ = 7;
    double Z[7] = {0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45};
-   string ZStr[7] = {"SubJetDR0", "SubJetDRs[0]", "SubJetDRs[1]",
+   string ZStr[7] = {"BestJetDR", "SubJetDRs[0]", "SubJetDRs[1]",
       "SubJetDRs[2]", "SubJetDRs[3]", "SubJetDRs[4]", "SubJetDRs[5]"};
 
    int BinDR = 7;
@@ -53,7 +53,16 @@ int main(int argc, char *argv[])
       H.GetXaxis()->SetBinLabel(i + 1, Form("%.2f", DR[i]));
 
    TFile File(argv[1]);
-   TTree *T = (TTree *)File.Get("T");
+   TTree *T = (TTree *)File.Get("OutputTree");
+
+   T->SetAlias("CWeight1", "(9.213e4-3.165e5*Centrality+1.246e6*Centrality*Centrality-2.297e6*Centrality*Centrality*Centrality+1.605e6*Centrality*Centrality*Centrality*Centrality)");
+   T->SetAlias("CWeight2", "(1.173e5*exp(-(Centrality-0.7545)*(Centrality-0.7545)/(2*0.05989*0.05989)))");
+   T->SetAlias("CWeight", "((Centrality<0.74)*CWeight1+(Centrality>0.74)*CWeight2)");
+
+   T->SetAlias("DEta", "(BestJetEta-JetEta)");
+   T->SetAlias("DPhiRaw", "(BestJetPhi-JetPhi)");
+   T->SetAlias("DPhi", "(DPhiRaw+(DPhiRaw<-3.14159)*2*3.14159-(DPhiRaw>3.14159)*2*3.14159)");
+   T->SetAlias("DR2", "(DEta*DEta+DPhi*DPhi)");
 
    DataHelper DHFile("PercentageResult.dh");
 
@@ -90,7 +99,7 @@ pair<double, double> GetPercentage(TTree *T, string Cut, int TriggerType, double
    if(T == NULL)
       return pair<double, double>(0, 0);
 
-   string Selection = "(MatchPT > 180 && abs(MatchEta) < 1.3)";
+   string Selection = "(BestJetPT > 180 && abs(BestJetEta) < 1.3)";
    if(T->GetBranch("MCWeight") != NULL)
       Selection = Selection + " * MCWeight";
 
@@ -98,9 +107,11 @@ pair<double, double> GetPercentage(TTree *T, string Cut, int TriggerType, double
       Selection = Selection + " * PassPbPb100";
 
    if(CMin >= 0)
-      Selection = Selection + Form(" * (Centrality >= %f)", CMin);
+      Selection = Selection + Form(" * (Centrality >= %f) * CWeight", CMin);
    if(CMax >= 0)
-      Selection = Selection + Form(" * (Centrality <= %f)", CMax);
+      Selection = Selection + Form(" * (Centrality <= %f) * CWeight", CMax);
+
+   Selection = Selection + " * (DR2 < 0.1 * 0.1)";
 
    TH1D HTemp("HTemp", "HTemp", 2, 0, 2);
    T->Draw((Cut + ">>HTemp").c_str(), Selection.c_str());

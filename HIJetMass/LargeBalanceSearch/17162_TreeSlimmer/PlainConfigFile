@@ -1,0 +1,12 @@
+MCWeight      MCWeight     double
+MatchPT       JetPT        double
+MatchEta      JetEta       double
+PTHat         PTHat        double
+SubJetDR0     DR           double
+Centrality    Centrality   double
+Rho           Rho          double
+SDMass0       Mass         double
+SubJetWTADR0  WTADR        double
+SDPT0         SDPT         double
+SubJet1PT0    SJ1PT        double
+SubJet2PT0    SJ2PT        double

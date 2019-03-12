@@ -28,9 +28,9 @@ RunAll: Execute
 	./Execute --input VBFHInv.root           --output 015_PuppiMET.pdf              --DoPuppiMET true
 	./Execute --input HTauTau.root           --output 016_PFTau.pdf                 --DoPFTau true
 	./Execute --input HTauTau.root           --output 017_PFIsoTau.pdf              --DoPFIsoTau true
-	./Execute --input DYLL.root              --output 018_CaloJet.pdf               --DoCaloJet true
-	./Execute --input DYLL.root              --output 019_CaloHT.pdf                --DoCaloHT true
-	./Execute --input DYLL.root              --output 020_TrackerJet.pdf            --DoTrackerJet true
+	./Execute --input TTbar.root             --output 018_CaloJet.pdf               --DoCaloJet true
+	./Execute --input TTbar.root             --output 019_CaloHT.pdf                --DoCaloHT true
+	./Execute --input TTbar.root             --output 020_TrackerJet.pdf            --DoTrackerJet true
 	./Execute --input TTbar.root             --output 021_TrackerHT.pdf             --DoTrackerHT true
 	./Execute --input VBFHInv.root           --output 022_TrackerMET.pdf            --DoTrackerMET true
 	cp *.pdf ~/public/html/

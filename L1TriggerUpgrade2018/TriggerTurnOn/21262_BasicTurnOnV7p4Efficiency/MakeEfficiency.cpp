@@ -379,7 +379,18 @@ int main(int argc, char *argv[])
    if(DoTrackerJet == true)
    {
       PdfFile.AddTextPage("TrackerJet");
-      PdfFile.AddTextPage("Coming soon!");
+      PdfFile.AddTextPage("DR plots");
+      AddSimplePlot(PdfFile, File, "TrackerJetLDR_DR_000000");
+      AddSimplePlot(PdfFile, File, "TrackerJetLDR_DRPT50_000000");
+      AddSimplePlot(PdfFile, File, "TrackerJetChargedLDR_DR_000000");
+      AddSimplePlot(PdfFile, File, "TrackerJetChargedLDR_DRPT50_000000");
+      PdfFile.AddTextPage("Efficiency Plots");
+      AddEfficiencyPlot(PdfFile, File, "TrackerJet_Eta_000000");
+      AddEfficiencyPlot(PdfFile, File, "TrackerJet_EtaPT100_000000");
+      AddEfficiencyPlot(PdfFile, File, "TrackerJet_PT_000000");
+      AddEfficiencyPlot(PdfFile, File, "TrackerJetCharged_Eta_000000");
+      AddEfficiencyPlot(PdfFile, File, "TrackerJetCharged_EtaPT100_000000");
+      AddEfficiencyPlot(PdfFile, File, "TrackerJetCharged_PT_000000");
    }
    if(DoTrackerHT == true)
    {

@@ -13,6 +13,7 @@ using namespace std;
 #include "TPaveStats.h"
 
 #include "PlotHelper4.h"
+#include "DataHelper.h"
 #include "SetStyle.h"
 #include "CommandLine.h"
 
@@ -62,17 +63,15 @@ int main(int argc, char *argv[])
 
    PdfFile.SetAutomaticHomeButton();
    
-   // TFile OutputFile(CurvesFileName.c_str(), "RECREATE");
-   // OutputFile.Close();
-
    vector<double> EGThresholds = {12, 15, 20, 25, 30};
    vector<double> MuonThresholds = {3, 5, 12, 15, 20, 25, 30};
    vector<double> TauThresholds = {20, 25, 27, 30, 40};
    vector<double> JetThresholds = {15, 20, 25, 30, 40, 50, 75, 100, 150, 200};
    vector<double> PuppiJetThresholds = {30, 40, 50, 75, 100, 150};
-   vector<double> TkJetThresholds = {15, 20, 25, 30, 40, 50, 75, 100, 150};
+   vector<double> TkJetThresholds = {15, 20, 25, 30, 40, 50, 75, 100};
    vector<double> CaloJetThresholds = {50, 75, 100, 125, 150};
    vector<double> HTThresholds = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500};
+   vector<double> TkHTThresholds = {50, 100, 150, 200, 250, 300, 350};
    vector<double> LowMHTThresholds = {20, 30, 40, 50, 60, 70};
    vector<double> MHTThresholds = {70, 80, 90, 100, 125, 150, 175};
    vector<double> LowMETThresholds = {20, 30, 40, 50, 60, 70};
@@ -84,6 +83,8 @@ int main(int argc, char *argv[])
          "StandaloneMuonIsoSmooth", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "StandaloneMuonIso", MuonThresholds, Reference,
          "StandaloneMuonIso", "PT", TYPE_FITFLOAT);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "StandaloneMuonIso", MuonThresholds, Reference,
+         "StandaloneMuonIsoTanh", "PT", TYPE_FITTANH);
    }
    if(DoSTADisplacedMuon == true)
    {
@@ -222,29 +223,37 @@ int main(int argc, char *argv[])
    //    ProcessFile(PdfFile, InputFileName, CurvesFileName, "", Thresholds, Reference,
    //       "", "PT", TYPE_SMOOTH_TIGHT);
    if(DoTrackerJet == true)
+   {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJet", TkJetThresholds, Reference,
          "TrackerJet", "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJet", TkJetThresholds, Reference,
+         "TrackerJetFit", "PT", TYPE_FITFIX);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJetCharged", TkJetThresholds, Reference,
+         "TrackerJetCharged", "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJetCharged", TkJetThresholds, Reference,
+         "TrackerJetChargedFit", "PT", TYPE_FITFIX);
+   }
    if(DoTrackerHT == true)
    {
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT5", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT5", TkHTThresholds, Reference,
          "TrackerHT5", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT10", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT10", TkHTThresholds, Reference,
          "TrackerHT10", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT15", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT15", TkHTThresholds, Reference,
          "TrackerHT15", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT20", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT20", TkHTThresholds, Reference,
          "TrackerHT20", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT30", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT30", TkHTThresholds, Reference,
          "TrackerHT30", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged5", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged5", TkHTThresholds, Reference,
          "TrackerHTCharged5", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged10", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged10", TkHTThresholds, Reference,
          "TrackerHTCharged10", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged15", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged15", TkHTThresholds, Reference,
          "TrackerHTCharged15", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged20", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged20", TkHTThresholds, Reference,
          "TrackerHTCharged20", "PT", TYPE_SMOOTH_TIGHT);
-      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged30", HTThresholds, Reference,
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged30", TkHTThresholds, Reference,
          "TrackerHTCharged30", "PT", TYPE_SMOOTH_TIGHT);
    }
    if(DoTrackerMET == true)
@@ -275,6 +284,10 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
       TypeString = "Fit (plateau == 1)";
    if(Type == TYPE_FITFIX2)
       TypeString = "Fit (plateau == 1 && float baseline)";
+   if(Type == TYPE_FITFLOAT)
+      TypeString = "Fit (float plateau and baseline)";
+   if(Type == TYPE_FITTANH)
+      TypeString = "Fit (tanh)";
    if(Type == TYPE_SMOOTH_LOOSE)
       TypeString = "Stringterpolate (loose)";
    if(Type == TYPE_SMOOTH_TIGHT)
@@ -328,14 +341,16 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
          CrossOver[i] = FitTurnOn(PdfFile,
             (TH1D *)File.Get(Form("%s_%s_%06d", Prefix.c_str(), Name.c_str(), (int)Thresholds[i] * 100)),
             (TH1D *)File.Get(Form("%s_%s_000000", Prefix.c_str(), Name.c_str())), Target, false, false, true, true);
+      if(Type == TYPE_FITTANH)
+         CrossOver[i] = FitTurnOn(PdfFile,
+            (TH1D *)File.Get(Form("%s_%s_%06d", Prefix.c_str(), Name.c_str(), (int)Thresholds[i] * 100)),
+            (TH1D *)File.Get(Form("%s_%s_000000", Prefix.c_str(), Name.c_str())), Target, true, false, true, true);
    }
 
    File.Close();
    
    PdfFile.AddTextPage("Scaling Curve for " + Prefix);
    
-   TFile OutputFile(OutputFileName.c_str(), "UPDATE");
-
    TGraph G;
    G.SetNameTitle(Tag.c_str(), "");
    G.GetXaxis()->SetTitle("Threshold");
@@ -387,10 +402,22 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
    Latex.DrawLatex(0.15, 0.75, Form("p1 = %.03f #pm %.03f", Function.GetParameter(1), Function.GetParError(1)));
 
    PdfFile.AddCanvas(Canvas);
+   
+   DataHelper DHFile(OutputFileName);
 
-   G.Write();
+   DHFile.Erase(Tag);
+   DHFile[Tag]["Percentage"] = Target;
+   DHFile[Tag]["N"] = G.GetN();
 
-   OutputFile.Close();
+   for(int i = 0; i < G.GetN(); i++)
+   {
+      double X, Y;
+      G.GetPoint(i, X, Y);
+      DHFile[Tag][Form("X%d",i)] = X;
+      DHFile[Tag][Form("Y%d",i)] = Y;
+   }
+
+   DHFile.SaveToFile(OutputFileName);
 }
 
 

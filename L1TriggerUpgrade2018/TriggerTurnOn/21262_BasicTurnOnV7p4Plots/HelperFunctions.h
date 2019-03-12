@@ -12,6 +12,7 @@
 #define TYPE_FITFIX 5
 #define TYPE_FITFIX2 6
 #define TYPE_FITFLOAT 7
+#define TYPE_FITTANH 8
 #define TYPE_SMOOTH_LOOSE 1
 #define TYPE_SMOOTH_TIGHT 2
 #define TYPE_SMOOTH_SUPERTIGHT 3
@@ -86,20 +87,22 @@ double FitTurnOn(PdfFileHelper &PdfFile, TH1D *H1, TH1D *H2, double Target, bool
 
    TF1 Fit("Fit", Function.c_str(), MinX, MaxX);
 
-   Fit.SetParameters(0.02, 80, 20, 1.0, 0.0);
-   Fit.SetParNames("#lambda", "#mu", "#sigma", "Plateau", "Baseline");
-   if(Fix == true)
-      Fit.FixParameter(3, 1.0);
-   if(Baseline == false)
-      Fit.FixParameter(4, 0.0);
-   else
+   if(tanh == false)
    {
-      double x, y;
-      G.GetPoint(0, x, y);
-      Fit.SetParameter(4, y);
+      Fit.SetParameters(0.02, 80, 20, 1.0, 0.0);
+      Fit.SetParNames("#lambda", "#mu", "#sigma", "Plateau", "Baseline");
+      if(Fix == true)
+         Fit.FixParameter(3, 1.0);
+      if(Baseline == false)
+         Fit.FixParameter(4, 0.0);
+      else
+      {
+         double x, y;
+         G.GetPoint(0, x, y);
+         Fit.SetParameter(4, y);
+      }
    }
-   
-   if(tanh == true)
+   else   // tanh = true
    {
       Fit.SetParameters(0.5, 15, 0.5, 0.5);
       Fit.SetParNames("Steepness", "Midpoint");

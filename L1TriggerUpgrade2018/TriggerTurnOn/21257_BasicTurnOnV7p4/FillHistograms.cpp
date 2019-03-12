@@ -131,7 +131,6 @@ int main(int argc, char *argv[])
    vector<string> InputFileNames = CL.GetStringVector("input", ',');
    string OutputFileName         = CL.Get("output");
    bool UseStoredGen             = CL.GetBool("StoredGen", true);
-   bool DoChargedJet             = CL.GetBool("DoCharged", false);
    string ConfigFileName         = CL.Get("config");
 
    vector<Configuration> Configurations = ReadConfigFile(ConfigFileName);
@@ -252,7 +251,7 @@ int main(int argc, char *argv[])
          
          // Gather MET
          FourVector GenMETForPuppi    = (UseStoredGen ? MGen.GenMETTrue : CalculateMHT(Particles, 2.4, 0));
-         FourVector GenMETForTk       = (DoChargedJet ? CalculateMHT(ChargedParticles, 2.4, 0) : GenMETForPuppi);
+         FourVector GenMETForTk       = CalculateMHT(ChargedParticles, 2.4, 0);
 
          vector<FourVector> ReferenceObjects;
          vector<int> ReferenceSigns;
@@ -278,6 +277,14 @@ int main(int argc, char *argv[])
             }
             else if(Configurations[i].ReferenceObject == "Tau")
                Best = BestInRange(Taus, Configurations[i].AbsEtaMin, Configurations[i].AbsEtaMax);
+            else if(Configurations[i].ReferenceObject == "HT5")
+               Best = CalculateHT(GenJets, 2.4, 5);
+            else if(Configurations[i].ReferenceObject == "MHT5")
+               Best = CalculateMHT(GenJets, 2.4, 5);
+            else if(Configurations[i].ReferenceObject == "HT10")
+               Best = CalculateHT(GenJets, 2.4, 10);
+            else if(Configurations[i].ReferenceObject == "MHT10")
+               Best = CalculateMHT(GenJets, 2.4, 10);
             else if(Configurations[i].ReferenceObject == "HT15")
                Best = CalculateHT(GenJets, 2.4, 15);
             else if(Configurations[i].ReferenceObject == "MHT15")
@@ -292,28 +299,28 @@ int main(int argc, char *argv[])
                Best = CalculateMHT(GenJets, 2.4, 30);
             else if(Configurations[i].ReferenceObject == "MET")
                Best = (UseStoredGen ? MGen.GenMETTrue : CalculateMHT(Particles, 2.4, 0));
-            else if(Configurations[i].ReferenceObject == "TkHT5")
-               Best = CalculateHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 5);
-            else if(Configurations[i].ReferenceObject == "TkMHT5")
-               Best = CalculateMHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 5);
-            else if(Configurations[i].ReferenceObject == "TkHT10")
-               Best = CalculateHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 10);
-            else if(Configurations[i].ReferenceObject == "TkMHT10")
-               Best = CalculateMHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 10);
-            else if(Configurations[i].ReferenceObject == "TkHT15")
-               Best = CalculateHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 15);
-            else if(Configurations[i].ReferenceObject == "TkMHT15")
-               Best = CalculateMHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 15);
-            else if(Configurations[i].ReferenceObject == "TkHT20")
-               Best = CalculateHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 20);
-            else if(Configurations[i].ReferenceObject == "TkMHT20")
-               Best = CalculateMHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 20);
-            else if(Configurations[i].ReferenceObject == "TkHT30")
-               Best = CalculateHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 30);
-            else if(Configurations[i].ReferenceObject == "TkMHT30")
-               Best = CalculateMHT((DoChargedJet ? ChargedGenJets : GenJets), 2.4, 30);
-            else if(Configurations[i].ReferenceObject == "TkMET")
-               Best = (DoChargedJet ? CalculateMHT(ChargedParticles, 2.4, 0) : GenMETForPuppi);
+            else if(Configurations[i].ReferenceObject == "ChargedHT5")
+               Best = CalculateHT(ChargedGenJets, 2.4, 5);
+            else if(Configurations[i].ReferenceObject == "ChargedMHT5")
+               Best = CalculateMHT(ChargedGenJets, 2.4, 5);
+            else if(Configurations[i].ReferenceObject == "ChargedHT10")
+               Best = CalculateHT(ChargedGenJets, 2.4, 10);
+            else if(Configurations[i].ReferenceObject == "ChargedMHT10")
+               Best = CalculateMHT(ChargedGenJets, 2.4, 10);
+            else if(Configurations[i].ReferenceObject == "ChargedHT15")
+               Best = CalculateHT(ChargedGenJets, 2.4, 15);
+            else if(Configurations[i].ReferenceObject == "ChargedMHT15")
+               Best = CalculateMHT(ChargedGenJets, 2.4, 15);
+            else if(Configurations[i].ReferenceObject == "ChargedHT20")
+               Best = CalculateHT(ChargedGenJets, 2.4, 20);
+            else if(Configurations[i].ReferenceObject == "ChargedMHT20")
+               Best = CalculateMHT(ChargedGenJets, 2.4, 20);
+            else if(Configurations[i].ReferenceObject == "ChargedHT30")
+               Best = CalculateHT(ChargedGenJets, 2.4, 30);
+            else if(Configurations[i].ReferenceObject == "ChargedMHT30")
+               Best = CalculateMHT(ChargedGenJets, 2.4, 30);
+            else if(Configurations[i].ReferenceObject == "ChargedMET")
+               Best = CalculateMHT(ChargedParticles, 2.4, 0);
          
             if(Configurations[i].ReferenceIsolation > 0)
             {
@@ -440,13 +447,13 @@ int main(int argc, char *argv[])
             {
                double IsoBB, IsoEC;
                IsoBB = (C.IsolationBB < 0) ? -1 : 0.12;
-               IsoEC = (C.IsolationEC < 0) ? -1 : 0.40;
+               IsoEC = (C.IsolationEC < 0) ? -1 : 0.20;
                Best = BestInRange(MPhaseII.TkElectronTrackID, Ref, C.AbsEtaMin, C.AbsEtaMax, C.DRCut, QUAL_USEFLAG, Range, IsoBB, IsoEC);
 
                if(Best.P[0] < 0)
                {
                   IsoBB = (C.IsolationBB < 0) ? -1 : 0.06;
-                  IsoEC = (C.IsolationEC < 0) ? -1 : 0.09;
+                  IsoEC = (C.IsolationEC < 0) ? -1 : 0.055;
                   Best = BestInRange(MPhaseII.TkPhotonPVTrackID, Ref, C.AbsEtaMin, C.AbsEtaMax, C.DRCut, QUAL_USEFLAG, Range, IsoBB, IsoEC);
                }
 

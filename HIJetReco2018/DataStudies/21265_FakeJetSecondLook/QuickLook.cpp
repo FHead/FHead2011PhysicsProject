@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
    string JetTreeName            = CL.Get("Tree", "akCs4PFJetAnalyzer/t");
    bool CheckFraction            = CL.GetBool("CheckFraction", true);
    bool ReducedEta               = CL.GetBool("ReducedEta", false);
+   bool PrintDebug               = CL.GetBool("PrintDebug", false);
 
    double MaxEta = 2.5;
    if(ReducedEta == true)
@@ -45,6 +46,14 @@ int main(int argc, char *argv[])
    TH2D HEtaPhiPT30("HEtaPhiPT30", "PT > 30;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
    TH2D HEtaPhiPT50("HEtaPhiPT50", "PT > 50;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
    TH2D HEtaPhiPT70("HEtaPhiPT70", "PT > 70;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HEtaPhiPT70FailL156("HEtaPhiPT70FailL156", "PT > 70, fail L1_SingleJet56;eta;phi",
+      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HEtaPhiPT80FailL156("HEtaPhiPT80FailL156", "PT > 80, fail L1_SingleJet56;eta;phi",
+      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HEtaPhiPT100FailL156("HEtaPhiPT100FailL156", "PT > 100, fail L1_SingleJet56;eta;phi",
+      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HEtaPhiPT120FailL156("HEtaPhiPT120FailL156", "PT > 120, fail L1_SingleJet56;eta;phi",
+      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
 
    TH1D HJetPT("HJetPT", "Leading jet in full range;p_{T};", 100, 0, 200);
    TH1D HJetPT_EtaN15P15("HJetPT_EtaN15P15", "Leading jet in |eta| < 1.5;p_{T};", 100, 0, 200);
@@ -287,6 +296,8 @@ int main(int argc, char *argv[])
                   continue;
                if(MJet.JetPFCHF[iJ] < 0.01)
                   continue;
+               if(MJet.JetPFNHF[iJ] < 0.01)
+                  continue;
             }
 
             if(fabs(MJet.JetEta[iJ]) < MaxEta)
@@ -346,6 +357,26 @@ int main(int argc, char *argv[])
                HJetPTPassL156_EtaP15P25.Fill(MJet.JetPT[BestJetIndex]);
             if(MJet.JetEta[BestJetIndex] > -MaxEta && MJet.JetEta[BestJetIndex] < -1.5 && PassL156)
                HJetPTPassL156_EtaN25N15.Fill(MJet.JetPT[BestJetIndex]);
+
+            if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false)
+               HEtaPhiPT70FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+            if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false)
+               HEtaPhiPT80FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+            if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false)
+               HEtaPhiPT100FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+            if(MJet.JetPT[BestJetIndex] > 120 && PassL156 == false)
+               HEtaPhiPT120FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+
+            if(PrintDebug == true)
+            {
+               if(fabs(MJet.JetEta[BestJetIndex]) < 1.5 && PassL156 == false && MJet.JetPT[BestJetIndex] > 100)
+               {
+                  cout << endl;
+                  cout << "[DEBUG] " << MHiEvent.Run << " " << MHiEvent.Lumi << " " << MHiEvent.Event << endl;
+                  cout << "[DEBUG] Jet " << MJet.JetPT[BestJetIndex] << " " << MJet.JetEta[BestJetIndex]
+                     << " " << MJet.JetPhi[BestJetIndex] << endl;
+               }
+            }
          }
       }
 
@@ -356,18 +387,19 @@ int main(int argc, char *argv[])
       InputFile.Close();
    }
 
-   vector<string> Explanation(10);
+   vector<string> Explanation(15);
    Explanation[0] = "Selections";
    Explanation[1] = "";
    Explanation[2] = "Other than fraction plots, all jets have";
    Explanation[3] = "   * CHF > 0.01";
-   Explanation[4] = "   * MUF < 0.01";
-   Explanation[5] = "";
-   Explanation[6] = "Good lumi selected based on JSON";
-   Explanation[7] = "";
+   Explanation[4] = "   * NHF > 0.01";
+   Explanation[5] = "   * MUF < 0.01";
+   Explanation[6] = "";
+   Explanation[7] = "Good lumi selected based on JSON";
    Explanation[8] = "";
+   Explanation[9] = "";
    if(ReducedEta == true)
-      Explanation[8] = "Reject jets between |eta| = 2.2 - 2.5";
+      Explanation[9] = "Reject jets between |eta| = 2.2 - 2.5";
    PdfFile.AddTextPage(Explanation);
 
    HEtaPhiPT30.SetStats(0);
@@ -601,6 +633,16 @@ int main(int argc, char *argv[])
    Legend2.AddEntry(&GTurnOn_EtaP15P25, "1.5 < #eta < 2.5", "pl");
    Legend2.Draw();
    PdfFile.AddCanvas(Canvas);
+
+   HEtaPhiPT70FailL156.SetStats(0);
+   HEtaPhiPT80FailL156.SetStats(0);
+   HEtaPhiPT100FailL156.SetStats(0);
+   HEtaPhiPT120FailL156.SetStats(0);
+
+   PdfFile.AddPlot(HEtaPhiPT70FailL156, "colz");
+   PdfFile.AddPlot(HEtaPhiPT80FailL156, "colz");
+   PdfFile.AddPlot(HEtaPhiPT100FailL156, "colz");
+   PdfFile.AddPlot(HEtaPhiPT120FailL156, "colz");
 
    HJetPTVsRawPT.SetStats(0);
    HRawPTVsJEC.SetStats(0);
@@ -1117,6 +1159,11 @@ int main(int argc, char *argv[])
    HEtaPhiPT30.Write();
    HEtaPhiPT50.Write();
    HEtaPhiPT70.Write();
+   
+   HEtaPhiPT70FailL156.Write();
+   HEtaPhiPT80FailL156.Write();
+   HEtaPhiPT100FailL156.Write();
+   HEtaPhiPT120FailL156.Write();
 
    HJetPT.Write();
    HJetPT_EtaN15P15.Write();

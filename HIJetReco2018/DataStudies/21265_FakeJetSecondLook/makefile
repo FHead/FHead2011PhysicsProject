@@ -2,7 +2,7 @@ default: TestRunCS TestRunPU RunMVA1p0CS RunMVA1p0PU RunPromptRecoCS RunPromptRe
 
 TestRunCS: Execute
 	./Execute --Input `ls MB/0000/HiForestAOD_5[1234]* | tr '\n' ','` \
-		--Tree "akCs4PFJetAnalyzer/t" --OutputBase TestRunCS
+		--Tree "akCs4PFJetAnalyzer/t" --OutputBase TestRunCS --PrintDebug true
 	cp TestRunCS.pdf ~/public/html/
 
 TestRunPU: Execute
@@ -22,7 +22,7 @@ FullRunPU: Execute
 
 RunMVA1p0CS: Execute
 	./Execute --Input /eos/cms/store/group/phys_heavyions/bdiab/rerecocrisis2019/HIMinimumBias0/HP1p0/327524/517/HiForestAOD_merged_517.root,/eos/cms/store/group/phys_heavyions/bdiab/rerecocrisis2019/HIMinimumBias0/HP1p0/327524/526/HiForestAOD_merged_526.root \
-		--Tree "akCs4PFJetAnalyzer/t" --OutputBase MVA1p0CS
+		--Tree "akCs4PFJetAnalyzer/t" --OutputBase MVA1p0CS --PrintDebug true
 	cp MVA1p0CS.pdf ~/public/html/
 
 RunMVA1p0PU: Execute

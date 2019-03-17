@@ -10,6 +10,7 @@ using namespace std;
 #include "TLegend.h"
 #include "TPaveStats.h"
 #include "TF1.h"
+#include "TLatex.h"
 
 #include "ProgressBar.h"
 #include "PlotHelper4.h"
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
    bool CheckFraction            = CL.GetBool("CheckFraction", true);
    bool ReducedEta               = CL.GetBool("ReducedEta", false);
    bool PrintDebug               = CL.GetBool("PrintDebug", false);
+   double MinPTForTrack          = CL.GetDouble("MinPTForTrack", 50);
 
    double MaxEta = 2.5;
    if(ReducedEta == true)
@@ -43,16 +45,16 @@ int main(int argc, char *argv[])
    TFile OutputFile((OutputBase + ".root").c_str(), "RECREATE");
 
    TH1D HN("HN", "", 1, 0, 1);
-   TH2D HEtaPhiPT30("HEtaPhiPT30", "PT > 30;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HEtaPhiPT50("HEtaPhiPT50", "PT > 50;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HEtaPhiPT70("HEtaPhiPT70", "PT > 70;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HEtaPhiPT70FailL156("HEtaPhiPT70FailL156", "PT > 70, fail L1_SingleJet56;eta;phi",
+   TH2D HJetEtaPhiPT30("HJetEtaPhiPT30", "PT > 30;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HJetEtaPhiPT50("HJetEtaPhiPT50", "PT > 50;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HJetEtaPhiPT70("HJetEtaPhiPT70", "PT > 70;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HJetEtaPhiPT70FailL156("HJetEtaPhiPT70FailL156", "PT > 70, fail L1_SingleJet56;eta;phi",
       75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HEtaPhiPT80FailL156("HEtaPhiPT80FailL156", "PT > 80, fail L1_SingleJet56;eta;phi",
+   TH2D HJetEtaPhiPT80FailL156("HJetEtaPhiPT80FailL156", "PT > 80, fail L1_SingleJet56;eta;phi",
       75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HEtaPhiPT100FailL156("HEtaPhiPT100FailL156", "PT > 100, fail L1_SingleJet56;eta;phi",
+   TH2D HJetEtaPhiPT100FailL156("HJetEtaPhiPT100FailL156", "PT > 100, fail L1_SingleJet56;eta;phi",
       75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HEtaPhiPT120FailL156("HEtaPhiPT120FailL156", "PT > 120, fail L1_SingleJet56;eta;phi",
+   TH2D HJetEtaPhiPT120FailL156("HJetEtaPhiPT120FailL156", "PT > 120, fail L1_SingleJet56;eta;phi",
       75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
 
    TH1D HJetPT("HJetPT", "Leading jet in full range;p_{T};", 100, 0, 200);
@@ -145,15 +147,134 @@ int main(int argc, char *argv[])
    TH1D HJetHad_PT70_EtaN15P15("HJetHad_PT70_EtaN15P15", "PT > 70, -1.5 < #eta < 1.5;Had;", 100, 0, 200);
    TH1D HJetHad_PT70_EtaP15P25("HJetHad_PT70_EtaP15P25", "PT > 70, 1.5 < #eta < 2.5;Had;", 100, 0, 200);
 
+   TH1D HCaloPFMatchDR_PassL156("HCaloPFMatchDR_PassL156", ";#DeltaR;", 100, 0, 1.0);
+   TH1D HCaloPFMatchDR_FailL156("HCaloPFMatchDR_FailL156", ";#DeltaR;", 100, 0, 1.0);
+
+   TH1D HTrackAlgo_PT70_Matched("HTrackAlgo_PT70_Matched",
+      "Track algo, Jet PT > 70, pass L1_SingleJet56 and matched", 64, 0, 64);
+   TH1D HTrackAlgo_PT70_NonMatch("HTrackAlgo_PT70_NonMatch",
+      "Track algo, Jet PT > 70, fail L1_SingleJet56 and no-match", 64, 0, 64);
+   TH1D HTrackPT_Algo6_PT70_Matched("HTrackPT_Algo6_PT70_Matched",
+      "Track PT, Algo 6, Jet PT > 70, pass L1_SingleJet56 and matched", 100, 0, 25);
+   TH1D HTrackPT_Algo6_PT70_NonMatch("HTrackPT_Algo6_PT70_NonMatch",
+      "Track PT, Algo 6, Jet PT > 70, fail L1_SingleJet56 and no-match", 100, 0, 25);
+   TH1D HTrackMVA_Algo6_PT70_Matched("HTrackMVA_Algo6_PT70_Matched",
+      "Track MVA, Algo 6, Jet PT > 70, pass L1_SingleJet56 and matched", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6_PT70_NonMatch("HTrackMVA_Algo6_PT70_NonMatch",
+      "Track MVA, Algo 6, Jet PT > 70, fail L1_SingleJet56 and no-match", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6MinPT_PT70_Matched("HTrackMVA_Algo6MinPT_PT70_Matched",
+      "Track MVA, Algo 6, Jet PT > 70, pass L1_SingleJet56 and matched", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6MinPT_PT70_NonMatch("HTrackMVA_Algo6MinPT_PT70_NonMatch",
+      "Track MVA, Algo 6, Jet PT > 70, fail L1_SingleJet56 and no-match", 100, 0.88, 1.02);
+   TH2D HTrackPTVsMVA_Algo6_PT70_Matched("HTrackPTVsMVA_Algo6_PT70_Matched",
+      "Track PT Vs MVA, Algo 6, Jet PT > 70, pass L1_SingleJet56 and matched", 100, 0, 4, 100, 0.88, 1.02);
+   TH2D HTrackPTVsMVA_Algo6_PT70_NonMatch("HTrackPTVsMVA_Algo6_PT70_NonMatch",
+      "Track PT Vs MVA, Algo 6, Jet PT > 70, fail L1_SingleJet56 and no-match", 100, 0, 4, 100, 0.88, 1.02);
+   TH1D HTrackAlgo_PT80_Matched("HTrackAlgo_PT80_Matched",
+      "Track algo, Jet PT > 80, pass L1_SingleJet56 and matched", 64, 0, 64);
+   TH1D HTrackAlgo_PT80_NonMatch("HTrackAlgo_PT80_NonMatch",
+      "Track algo, Jet PT > 80, fail L1_SingleJet56 and no-match", 64, 0, 64);
+   TH1D HTrackPT_Algo6_PT80_Matched("HTrackPT_Algo6_PT80_Matched",
+      "Track PT, Algo 6, Jet PT > 80, pass L1_SingleJet56 and matched", 100, 0, 25);
+   TH1D HTrackPT_Algo6_PT80_NonMatch("HTrackPT_Algo6_PT80_NonMatch",
+      "Track PT, Algo 6, Jet PT > 80, fail L1_SingleJet56 and no-match", 100, 0, 25);
+   TH1D HTrackMVA_Algo6_PT80_Matched("HTrackMVA_Algo6_PT80_Matched",
+      "Track MVA, Algo 6, Jet PT > 80, pass L1_SingleJet56 and matched", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6_PT80_NonMatch("HTrackMVA_Algo6_PT80_NonMatch",
+      "Track MVA, Algo 6, Jet PT > 80, fail L1_SingleJet56 and no-match", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6MinPT_PT80_Matched("HTrackMVA_Algo6MinPT_PT80_Matched",
+      "Track MVA, Algo 6, Jet PT > 80, pass L1_SingleJet56 and matched", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6MinPT_PT80_NonMatch("HTrackMVA_Algo6MinPT_PT80_NonMatch",
+      "Track MVA, Algo 6, Jet PT > 80, fail L1_SingleJet56 and no-match", 100, 0.88, 1.02);
+   TH2D HTrackPTVsMVA_Algo6_PT80_Matched("HTrackPTVsMVA_Algo6_PT80_Matched",
+      "Track PT Vs MVA, Algo 6, Jet PT > 80, pass L1_SingleJet56 and matched", 100, 0, 4, 100, 0.88, 1.02);
+   TH2D HTrackPTVsMVA_Algo6_PT80_NonMatch("HTrackPTVsMVA_Algo6_PT80_NonMatch",
+      "Track PT Vs MVA, Algo 6, Jet PT > 80, fail L1_SingleJet56 and no-match", 100, 0, 4, 100, 0.88, 1.02);
+   TH1D HTrackAlgo_PT100_Matched("HTrackAlgo_PT100_Matched",
+      "Track algo, Jet PT > 100, pass L1_SingleJet56 and matched", 64, 0, 64);
+   TH1D HTrackAlgo_PT100_NonMatch("HTrackAlgo_PT100_NonMatch",
+      "Track algo, Jet PT > 100, fail L1_SingleJet56 and no-match", 64, 0, 64);
+   TH1D HTrackPT_Algo6_PT100_Matched("HTrackPT_Algo6_PT100_Matched",
+      "Track PT, Algo 6, Jet PT > 100, pass L1_SingleJet56 and matched", 100, 0, 25);
+   TH1D HTrackPT_Algo6_PT100_NonMatch("HTrackPT_Algo6_PT100_NonMatch",
+      "Track PT, Algo 6, Jet PT > 100, fail L1_SingleJet56 and no-match", 100, 0, 25);
+   TH1D HTrackMVA_Algo6_PT100_Matched("HTrackMVA_Algo6_PT100_Matched",
+      "Track MVA, Algo 6, Jet PT > 100, pass L1_SingleJet56 and matched", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6_PT100_NonMatch("HTrackMVA_Algo6_PT100_NonMatch",
+      "Track MVA, Algo 6, Jet PT > 100, fail L1_SingleJet56 and no-match", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6MinPT_PT100_Matched("HTrackMVA_Algo6MinPT_PT100_Matched",
+      "Track MVA, Algo 6, Jet PT > 100, pass L1_SingleJet56 and matched", 100, 0.88, 1.02);
+   TH1D HTrackMVA_Algo6MinPT_PT100_NonMatch("HTrackMVA_Algo6MinPT_PT100_NonMatch",
+      "Track MVA, Algo 6, Jet PT > 100, fail L1_SingleJet56 and no-match", 100, 0.88, 1.02);
+   TH2D HTrackPTVsMVA_Algo6_PT100_Matched("HTrackPTVsMVA_Algo6_PT100_Matched",
+      "Track PT Vs MVA, Algo 6, Jet PT > 100, pass L1_SingleJet56 and matched", 100, 0, 4, 100, 0.88, 1.02);
+   TH2D HTrackPTVsMVA_Algo6_PT100_NonMatch("HTrackPTVsMVA_Algo6_PT100_NonMatch",
+      "Track PT Vs MVA, Algo 6, Jet PT > 100, fail L1_SingleJet56 and no-match", 100, 0, 4, 100, 0.88, 1.02);
+
+   TH1D HTrackAlgo6Fraction_PT70_Matched("HTrackAlgo6Fraction_PT70_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT80_Matched("HTrackAlgo6Fraction_PT80_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT100_Matched("HTrackAlgo6Fraction_PT100_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT70_NonMatch("HTrackAlgo6Fraction_PT70_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT80_NonMatch("HTrackAlgo6Fraction_PT80_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT100_NonMatch("HTrackAlgo6Fraction_PT100_NonMatch", "", 100, 0, 1.0);
+   
+   TH1D HTrackAlgo6Fraction_PT70_PassL156("HTrackAlgo6Fraction_PT70_PassL156", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT80_PassL156("HTrackAlgo6Fraction_PT80_PassL156", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT100_PassL156("HTrackAlgo6Fraction_PT100_PassL156", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT70_FailL156("HTrackAlgo6Fraction_PT70_FailL156", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT80_FailL156("HTrackAlgo6Fraction_PT80_FailL156", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_PT100_FailL156("HTrackAlgo6Fraction_PT100_FailL156", "", 100, 0, 1.0);
+   
+   TH1D HTrackAlgo6Fraction_MinPT_PT70_Matched("HTrackAlgo6Fraction_MinPT_PT70_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MinPT_PT80_Matched("HTrackAlgo6Fraction_MinPT_PT80_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MinPT_PT100_Matched("HTrackAlgo6Fraction_MinPT_PT100_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MinPT_PT70_NonMatch("HTrackAlgo6Fraction_MinPT_PT70_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MinPT_PT80_NonMatch("HTrackAlgo6Fraction_MinPT_PT80_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MinPT_PT100_NonMatch("HTrackAlgo6Fraction_MinPT_PT100_NonMatch", "", 100, 0, 1.0);
+   
+   TH1D HTrackAlgo6Fraction_MVA095_PT70_Matched("HTrackAlgo6Fraction_MVA095_PT70_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA095_PT80_Matched("HTrackAlgo6Fraction_MVA095_PT80_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA095_PT100_Matched("HTrackAlgo6Fraction_MVA095_PT100_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA095_PT70_NonMatch("HTrackAlgo6Fraction_MVA095_PT70_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA095_PT80_NonMatch("HTrackAlgo6Fraction_MVA095_PT80_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA095_PT100_NonMatch("HTrackAlgo6Fraction_MVA095_PT100_NonMatch", "", 100, 0, 1.0);
+
+   TH1D HTrackAlgo6Fraction_MVA098_PT70_Matched("HTrackAlgo6Fraction_MVA098_PT70_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA098_PT80_Matched("HTrackAlgo6Fraction_MVA098_PT80_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA098_PT100_Matched("HTrackAlgo6Fraction_MVA098_PT100_Matched", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA098_PT70_NonMatch("HTrackAlgo6Fraction_MVA098_PT70_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA098_PT80_NonMatch("HTrackAlgo6Fraction_MVA098_PT80_NonMatch", "", 100, 0, 1.0);
+   TH1D HTrackAlgo6Fraction_MVA098_PT100_NonMatch("HTrackAlgo6Fraction_MVA098_PT100_NonMatch", "", 100, 0, 1.0);
+
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched("HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched", "PT > 70, pass L156, matched, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch("HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch", "PT > 70, fail L156, no match, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156("HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156", "PT > 70, pass L156, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156("HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156", "PT > 70, fail L156, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched("HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched", "PT > 70, Pass l156, matched, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch("HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch", "PT > 70, fail L156, no match, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156("HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156", "PT > 70, pass L156, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156("HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156", "PT > 70, fail L156, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT50("HJetEtaPhi_GoodTrackAlgoFraction_PT50", "PT > 50, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT50("HJetEtaPhi_BadTrackAlgoFraction_PT50", "PT > 50, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70("HJetEtaPhi_GoodTrackAlgoFraction_PT70", "PT > 70, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70("HJetEtaPhi_BadTrackAlgoFraction_PT70", "PT > 70, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+
    for(string FileName : InputFileName)
    {
       cout << "Processing file " << FileName << endl;
 
       TFile InputFile(FileName.c_str());
 
+      string CaloTreeName = "akPu4CaloJetAnalyzer/t";
+      if(CaloTreeName == JetTreeName)
+         CaloTreeName = "NULL";
+
       HiEventTreeMessenger MHiEvent(InputFile);
       JetTreeMessenger MJet(InputFile, JetTreeName);
+      JetTreeMessenger MCaloJet(InputFile, CaloTreeName);
       TriggerTreeMessenger MHLT(InputFile);
+      TrackTreeMessenger MTrack(InputFile);
 
       if(MHiEvent.Tree == nullptr)
       {
@@ -175,7 +296,9 @@ int main(int argc, char *argv[])
 
          MHiEvent.GetEntry(iE);
          MJet.GetEntry(iE);
+         MCaloJet.GetEntry(iE);
          MHLT.GetEntry(iE);
+         MTrack.GetEntry(iE);
 
          bool GoodLumi = false;
          if(MHiEvent.Run == 327400 && (MHiEvent.Lumi >= 38 && MHiEvent.Lumi <= 578))
@@ -307,11 +430,11 @@ int main(int argc, char *argv[])
             }
 
             if(MJet.JetPT[iJ] > 30)
-               HEtaPhiPT30.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
+               HJetEtaPhiPT30.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
             if(MJet.JetPT[iJ] > 50)
-               HEtaPhiPT50.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
+               HJetEtaPhiPT50.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
             if(MJet.JetPT[iJ] > 70)
-               HEtaPhiPT70.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
+               HJetEtaPhiPT70.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
 
             if(MJet.JetEta[iJ] > -MaxEta && MJet.JetEta[iJ] < -1.5)
                HAllJetPT_EtaN25N15.Fill(MJet.JetPT[iJ]);
@@ -359,14 +482,260 @@ int main(int argc, char *argv[])
                HJetPTPassL156_EtaN25N15.Fill(MJet.JetPT[BestJetIndex]);
 
             if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false)
-               HEtaPhiPT70FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               HJetEtaPhiPT70FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
             if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false)
-               HEtaPhiPT80FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               HJetEtaPhiPT80FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
             if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false)
-               HEtaPhiPT100FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               HJetEtaPhiPT100FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
             if(MJet.JetPT[BestJetIndex] > 120 && PassL156 == false)
-               HEtaPhiPT120FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               HJetEtaPhiPT120FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+            
+            if(MinPTForTrack > 0 && MJet.JetPT[BestJetIndex] > MinPTForTrack)
+            {
+               bool Matched = false;
 
+               double BestDR2 = -1;
+               for(int iJ = 0; iJ < MCaloJet.JetCount; iJ++)
+               {
+                  if(MCaloJet.JetPT[iJ] < 40)
+                     continue;
+
+                  double DEta = MJet.JetEta[BestJetIndex] - MCaloJet.JetEta[iJ];
+                  double DPhi = MJet.JetPhi[BestJetIndex] - MCaloJet.JetPhi[iJ];
+                  if(DPhi > M_PI)    DPhi = DPhi - 2 * M_PI;
+                  if(DPhi < -M_PI)   DPhi = DPhi + 2 * M_PI;
+                  double DR2 = DEta * DEta + DPhi * DPhi;
+
+                  if(BestDR2 < 0 || BestDR2 > DR2)
+                     BestDR2 = DR2;
+               }
+
+               if(BestDR2 > 0 && BestDR2 < 0.2 * 0.2)
+                  Matched = true;
+               
+               double BestDR = ((BestDR2 > 0 && BestDR2 < 1) ? sqrt(BestDR2) : 0.999);
+               if(PassL156 == true)
+                  HCaloPFMatchDR_PassL156.Fill(BestDR);
+               else
+                  HCaloPFMatchDR_FailL156.Fill(BestDR);
+
+               double AllPT = 0;
+               double Algo6PT = 0;
+               double AllPTMinPT = 0;
+               double Algo6PTMinPT = 0;
+               double Algo6PTMVA095 = 0;
+               double Algo6PTMVA098 = 0;
+
+               for(int iT = 0; iT < MTrack.TrackCount; iT++)
+               {
+                  if(MTrack.HighPurity[iT] == false)
+                     continue;
+
+                  double DEta = MJet.JetEta[BestJetIndex] - MTrack.TrackEta[iT];
+                  double DPhi = MJet.JetPhi[BestJetIndex] - MTrack.TrackPhi[iT];
+                  if(DPhi > M_PI)    DPhi = DPhi - 2 * M_PI;
+                  if(DPhi < -M_PI)   DPhi = DPhi + 2 * M_PI;
+                  
+                  if(DEta * DEta + DPhi * DPhi > 0.4 * 0.4)
+                     continue;
+
+                  AllPT = AllPT + MTrack.TrackPT[iT];
+                  if(MTrack.TrackPT[iT] > 0.75)
+                     AllPTMinPT = AllPTMinPT + MTrack.TrackPT[iT];
+                  if(MTrack.TrackAlgo[iT] == 6)
+                     Algo6PT = Algo6PT + MTrack.TrackPT[iT];
+                  if(MTrack.TrackAlgo[iT] == 6 && MTrack.TrackPT[iT] > 0.75)
+                     Algo6PTMinPT = Algo6PTMinPT + MTrack.TrackPT[iT];
+                  if(MTrack.TrackAlgo[iT] == 6 && MTrack.TrackMVA[iT] < 0.95)
+                     Algo6PTMVA095 = Algo6PTMVA095 + MTrack.TrackPT[iT];
+                  if(MTrack.TrackAlgo[iT] == 6 && MTrack.TrackMVA[iT] < 0.98)
+                     Algo6PTMVA098 = Algo6PTMVA098 + MTrack.TrackPT[iT];
+
+                  if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == true && Matched == true)
+                     HTrackAlgo_PT70_Matched.Fill(MTrack.TrackAlgo[iT]);
+                  if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false && Matched == false)
+                     HTrackAlgo_PT70_NonMatch.Fill(MTrack.TrackAlgo[iT]);
+                  if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == true && Matched == true)
+                     HTrackAlgo_PT80_Matched.Fill(MTrack.TrackAlgo[iT]);
+                  if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false && Matched == false)
+                     HTrackAlgo_PT80_NonMatch.Fill(MTrack.TrackAlgo[iT]);
+                  if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == true && Matched == true)
+                     HTrackAlgo_PT100_Matched.Fill(MTrack.TrackAlgo[iT]);
+                  if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false && Matched == false)
+                     HTrackAlgo_PT100_NonMatch.Fill(MTrack.TrackAlgo[iT]);
+
+  
+                  if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == true && MTrack.TrackAlgo[iT] == 6 && Matched == true)
+                  {
+                     HTrackPT_Algo6_PT70_Matched.Fill(MTrack.TrackPT[iT]);
+                     HTrackMVA_Algo6_PT70_Matched.Fill(MTrack.TrackMVA[iT]);
+                     if(MTrack.TrackPT[iT] > 0.75)
+                        HTrackMVA_Algo6MinPT_PT70_Matched.Fill(MTrack.TrackMVA[iT]);
+                     HTrackPTVsMVA_Algo6_PT70_Matched.Fill(MTrack.TrackPT[iT], MTrack.TrackMVA[iT]);
+                  }
+                  if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false && MTrack.TrackAlgo[iT] == 6 && Matched == false)
+                  {
+                     HTrackPT_Algo6_PT70_NonMatch.Fill(MTrack.TrackPT[iT]);
+                     HTrackMVA_Algo6_PT70_NonMatch.Fill(MTrack.TrackMVA[iT]);
+                     if(MTrack.TrackPT[iT] > 0.75)
+                        HTrackMVA_Algo6MinPT_PT70_NonMatch.Fill(MTrack.TrackMVA[iT]);
+                     HTrackPTVsMVA_Algo6_PT70_NonMatch.Fill(MTrack.TrackPT[iT], MTrack.TrackMVA[iT]);
+                  }
+                  if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == true && MTrack.TrackAlgo[iT] == 6 && Matched == true)
+                  {
+                     HTrackPT_Algo6_PT80_Matched.Fill(MTrack.TrackPT[iT]);
+                     HTrackMVA_Algo6_PT80_Matched.Fill(MTrack.TrackMVA[iT]);
+                     if(MTrack.TrackPT[iT] > 0.75)
+                        HTrackMVA_Algo6MinPT_PT80_Matched.Fill(MTrack.TrackMVA[iT]);
+                     HTrackPTVsMVA_Algo6_PT80_Matched.Fill(MTrack.TrackPT[iT], MTrack.TrackMVA[iT]);
+                  }
+                  if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false && MTrack.TrackAlgo[iT] == 6 && Matched == false)
+                  {
+                     HTrackPT_Algo6_PT80_NonMatch.Fill(MTrack.TrackPT[iT]);
+                     HTrackMVA_Algo6_PT80_NonMatch.Fill(MTrack.TrackMVA[iT]);
+                     if(MTrack.TrackPT[iT] > 0.75)
+                        HTrackMVA_Algo6MinPT_PT80_NonMatch.Fill(MTrack.TrackMVA[iT]);
+                     HTrackPTVsMVA_Algo6_PT80_NonMatch.Fill(MTrack.TrackPT[iT], MTrack.TrackMVA[iT]);
+                  }
+                  if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == true && MTrack.TrackAlgo[iT] == 6 && Matched == true)
+                  {
+                     HTrackPT_Algo6_PT100_Matched.Fill(MTrack.TrackPT[iT]);
+                     HTrackMVA_Algo6_PT100_Matched.Fill(MTrack.TrackMVA[iT]);
+                     if(MTrack.TrackPT[iT] > 0.75)
+                        HTrackMVA_Algo6MinPT_PT100_Matched.Fill(MTrack.TrackMVA[iT]);
+                     HTrackPTVsMVA_Algo6_PT100_Matched.Fill(MTrack.TrackPT[iT], MTrack.TrackMVA[iT]);
+                  }
+                  if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false && MTrack.TrackAlgo[iT] == 6 && Matched == false)
+                  {
+                     HTrackPT_Algo6_PT100_NonMatch.Fill(MTrack.TrackPT[iT]);
+                     HTrackMVA_Algo6_PT100_NonMatch.Fill(MTrack.TrackMVA[iT]);
+                     if(MTrack.TrackPT[iT] > 0.75)
+                        HTrackMVA_Algo6MinPT_PT100_NonMatch.Fill(MTrack.TrackMVA[iT]);
+                     HTrackPTVsMVA_Algo6_PT100_NonMatch.Fill(MTrack.TrackPT[iT], MTrack.TrackMVA[iT]);
+                  }
+               }
+
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_PT70_Matched.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_PT70_NonMatch.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_PT80_Matched.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_PT80_NonMatch.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_PT100_Matched.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_PT100_NonMatch.Fill(Algo6PT / AllPT);
+               
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == true)
+                  HTrackAlgo6Fraction_PT70_PassL156.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false)
+                  HTrackAlgo6Fraction_PT70_FailL156.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == true)
+                  HTrackAlgo6Fraction_PT80_PassL156.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false)
+                  HTrackAlgo6Fraction_PT80_FailL156.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == true)
+                  HTrackAlgo6Fraction_PT100_PassL156.Fill(Algo6PT / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false)
+                  HTrackAlgo6Fraction_PT100_FailL156.Fill(Algo6PT / AllPT);
+
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MinPT_PT70_Matched.Fill(Algo6PTMinPT / AllPTMinPT);
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MinPT_PT70_NonMatch.Fill(Algo6PTMinPT / AllPTMinPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MinPT_PT80_Matched.Fill(Algo6PTMinPT / AllPTMinPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MinPT_PT80_NonMatch.Fill(Algo6PTMinPT / AllPTMinPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MinPT_PT100_Matched.Fill(Algo6PTMinPT / AllPTMinPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MinPT_PT100_NonMatch.Fill(Algo6PTMinPT / AllPTMinPT);
+
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MVA095_PT70_Matched.Fill(Algo6PTMVA095 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MVA095_PT70_NonMatch.Fill(Algo6PTMVA095 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MVA095_PT80_Matched.Fill(Algo6PTMVA095 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MVA095_PT80_NonMatch.Fill(Algo6PTMVA095 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MVA095_PT100_Matched.Fill(Algo6PTMVA095 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MVA095_PT100_NonMatch.Fill(Algo6PTMVA095 / AllPT);
+
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MVA098_PT70_Matched.Fill(Algo6PTMVA098 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 70 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MVA098_PT70_NonMatch.Fill(Algo6PTMVA098 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MVA098_PT80_Matched.Fill(Algo6PTMVA098 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 80 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MVA098_PT80_NonMatch.Fill(Algo6PTMVA098 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == true && Matched == true)
+                  HTrackAlgo6Fraction_MVA098_PT100_Matched.Fill(Algo6PTMVA098 / AllPT);
+               if(MJet.JetPT[BestJetIndex] > 100 && PassL156 == false && Matched == false)
+                  HTrackAlgo6Fraction_MVA098_PT100_NonMatch.Fill(Algo6PTMVA098 / AllPT);
+
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT < 0.2 && PassL156 == true && Matched == true)
+                  HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT < 0.2 && PassL156 == false && Matched == false)
+                  HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT < 0.2 && PassL156 == true)
+                  HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT < 0.2 && PassL156 == false)
+                  HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.2 && PassL156 == true && Matched == true)
+                  HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.2 && PassL156 == false && Matched == false)
+                  HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.2 && PassL156 == true)
+                  HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.2 && PassL156 == false)
+                  HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               
+               if(MJet.JetPT[BestJetIndex] > 50 && Algo6PT / AllPT < 0.2)
+                  HJetEtaPhi_GoodTrackAlgoFraction_PT50.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 50 && Algo6PT / AllPT > 0.2)
+                  HJetEtaPhi_BadTrackAlgoFraction_PT50.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT < 0.2)
+                  HJetEtaPhi_GoodTrackAlgoFraction_PT70.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.2)
+                  HJetEtaPhi_BadTrackAlgoFraction_PT70.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
+
+               if(PrintDebug == true)
+               {
+                  if(Algo6PT / AllPT > 0.2 && MJet.JetPT[BestJetIndex] > 80)
+                  {
+                     cout << endl;
+                     cout << "[DEBUG][A6F] " << MHiEvent.Run << " " << MHiEvent.Lumi << " " << MHiEvent.Event << endl;
+                     cout << "[DEBUG][A6F] Jet " << MJet.JetPT[BestJetIndex] << " " << MJet.JetEta[BestJetIndex]
+                        << " " << MJet.JetPhi[BestJetIndex] << endl;
+                     cout << "[DEBUG][A6F] Algo6/TrackPT " << Algo6PT << "/" << AllPT << " " << Algo6PT / AllPT << endl;
+                     cout << endl;
+
+                     for(int iT = 0; iT < MTrack.TrackCount; iT++)
+                     {
+                        if(MTrack.HighPurity[iT] == false)
+                           continue;
+
+                        double DEta = MJet.JetEta[BestJetIndex] - MTrack.TrackEta[iT];
+                        double DPhi = MJet.JetPhi[BestJetIndex] - MTrack.TrackPhi[iT];
+                        if(DPhi > M_PI)    DPhi = DPhi - 2 * M_PI;
+                        if(DPhi < -M_PI)   DPhi = DPhi + 2 * M_PI;
+
+                        if(DEta * DEta + DPhi * DPhi > 0.4 * 0.4)
+                           continue;
+
+                        cout << "[DEBUG][A6F] T[" << (int)MTrack.TrackAlgo[iT] << "] " << MTrack.TrackPT[iT] << " " << MTrack.TrackEta[iT] << " " << MTrack.TrackPhi[iT] << " " << MTrack.TrackMVA[iT] << endl;
+                     }
+                  }
+               }
+            }
+ 
             if(PrintDebug == true)
             {
                if(fabs(MJet.JetEta[BestJetIndex]) < 1.5 && PassL156 == false && MJet.JetPT[BestJetIndex] > 100)
@@ -387,6 +756,11 @@ int main(int argc, char *argv[])
       InputFile.Close();
    }
 
+   TLatex Latex;
+   Latex.SetTextFont(42);
+   Latex.SetTextSize(0.03);
+   Latex.SetNDC();
+
    vector<string> Explanation(15);
    Explanation[0] = "Selections";
    Explanation[1] = "";
@@ -402,13 +776,13 @@ int main(int argc, char *argv[])
       Explanation[9] = "Reject jets between |eta| = 2.2 - 2.5";
    PdfFile.AddTextPage(Explanation);
 
-   HEtaPhiPT30.SetStats(0);
-   HEtaPhiPT50.SetStats(0);
-   HEtaPhiPT70.SetStats(0);
+   HJetEtaPhiPT30.SetStats(0);
+   HJetEtaPhiPT50.SetStats(0);
+   HJetEtaPhiPT70.SetStats(0);
 
-   PdfFile.AddPlot(HEtaPhiPT30, "colz");
-   PdfFile.AddPlot(HEtaPhiPT50, "colz");
-   PdfFile.AddPlot(HEtaPhiPT70, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT30, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT50, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT70, "colz");
 
    HJetPT.SetStats(0);
    HJetPTPassL156.SetLineColor(kRed);
@@ -585,20 +959,34 @@ int main(int argc, char *argv[])
    Canvas.SetGridx(false);
    Canvas.SetGridy(false);
 
-   ((TPaveStats *)GTurnOn.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
-   ((TPaveStats *)GTurnOn.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
-   ((TPaveStats *)GTurnOn_EtaN15P15.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
-   ((TPaveStats *)GTurnOn_EtaN15P15.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
-   ((TPaveStats *)GTurnOn_EtaN25P25.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
-   ((TPaveStats *)GTurnOn_EtaN25P25.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
-   ((TPaveStats *)GTurnOn_EtaN00P25.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
-   ((TPaveStats *)GTurnOn_EtaN00P25.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
-   ((TPaveStats *)GTurnOn_EtaN25P00.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
-   ((TPaveStats *)GTurnOn_EtaN25P00.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
-   ((TPaveStats *)GTurnOn_EtaP15P25.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
-   ((TPaveStats *)GTurnOn_EtaP15P25.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
-   ((TPaveStats *)GTurnOn_EtaN25N15.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
-   ((TPaveStats *)GTurnOn_EtaN25N15.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
+   if(GTurnOn.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
+   if(GTurnOn.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
+   if(GTurnOn_EtaN15P15.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN15P15.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
+   if(GTurnOn_EtaN15P15.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN15P15.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
+   if(GTurnOn_EtaN25P25.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN25P25.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
+   if(GTurnOn_EtaN25P25.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN25P25.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
+   if(GTurnOn_EtaN00P25.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN00P25.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
+   if(GTurnOn_EtaN00P25.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN00P25.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
+   if(GTurnOn_EtaN25P00.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN25P00.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
+   if(GTurnOn_EtaN25P00.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN25P00.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
+   if(GTurnOn_EtaP15P25.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaP15P25.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
+   if(GTurnOn_EtaP15P25.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaP15P25.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
+   if(GTurnOn_EtaN25N15.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN25N15.GetListOfFunctions()->FindObject("stats"))->SetX1NDC(1.10);
+   if(GTurnOn_EtaN25N15.GetListOfFunctions()->FindObject("stats") != nullptr)
+      ((TPaveStats *)GTurnOn_EtaN25N15.GetListOfFunctions()->FindObject("stats"))->SetX2NDC(1.20);
 
    GTurnOn_EtaN25P00.SetLineColor(kRed);
    GTurnOn_EtaN25P00.SetMarkerColor(kRed);
@@ -634,15 +1022,15 @@ int main(int argc, char *argv[])
    Legend2.Draw();
    PdfFile.AddCanvas(Canvas);
 
-   HEtaPhiPT70FailL156.SetStats(0);
-   HEtaPhiPT80FailL156.SetStats(0);
-   HEtaPhiPT100FailL156.SetStats(0);
-   HEtaPhiPT120FailL156.SetStats(0);
+   HJetEtaPhiPT70FailL156.SetStats(0);
+   HJetEtaPhiPT80FailL156.SetStats(0);
+   HJetEtaPhiPT100FailL156.SetStats(0);
+   HJetEtaPhiPT120FailL156.SetStats(0);
 
-   PdfFile.AddPlot(HEtaPhiPT70FailL156, "colz");
-   PdfFile.AddPlot(HEtaPhiPT80FailL156, "colz");
-   PdfFile.AddPlot(HEtaPhiPT100FailL156, "colz");
-   PdfFile.AddPlot(HEtaPhiPT120FailL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT70FailL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT80FailL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT100FailL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT120FailL156, "colz");
 
    HJetPTVsRawPT.SetStats(0);
    HRawPTVsJEC.SetStats(0);
@@ -1152,18 +1540,370 @@ int main(int argc, char *argv[])
    PdfFile.AddCanvas(Canvas);
    Canvas.SetLogy(false);
    PdfFile.AddCanvas(Canvas);
+   
+   HCaloPFMatchDR_PassL156.SetStats(0);
+   HCaloPFMatchDR_FailL156.SetStats(0);
+   
+   HCaloPFMatchDR_PassL156.SetLineColor(kBlack);
+   HCaloPFMatchDR_FailL156.SetLineColor(kRed);
+   
+   TH2D HWorldDR("HWorldDR", ";#DeltaR;", 100, 0, 1, 100, 1e-5, 1);
+   HWorldDR.SetStats(0);
+   HWorldDR.Draw("axis");
+   HWorldDR.SetTitle("Matching between Calo and PF");
+   HCaloPFMatchDR_PassL156.DrawNormalized("same");
+   HCaloPFMatchDR_FailL156.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Pass L1} #color[2]{Fail L1}");
+   PdfFile.AddCanvas(Canvas);
+ 
+   HTrackAlgo_PT70_Matched.SetStats(0);
+   HTrackAlgo_PT70_NonMatch.SetStats(0);
+   HTrackPT_Algo6_PT70_Matched.SetStats(0);
+   HTrackPT_Algo6_PT70_NonMatch.SetStats(0);
+   HTrackMVA_Algo6_PT70_Matched.SetStats(0);
+   HTrackMVA_Algo6_PT70_NonMatch.SetStats(0);
+   HTrackMVA_Algo6MinPT_PT70_Matched.SetStats(0);
+   HTrackMVA_Algo6MinPT_PT70_NonMatch.SetStats(0);
+   HTrackPTVsMVA_Algo6_PT70_Matched.SetStats(0);
+   HTrackPTVsMVA_Algo6_PT70_NonMatch.SetStats(0);
+   HTrackAlgo_PT80_Matched.SetStats(0);
+   HTrackAlgo_PT80_NonMatch.SetStats(0);
+   HTrackPT_Algo6_PT80_Matched.SetStats(0);
+   HTrackPT_Algo6_PT80_NonMatch.SetStats(0);
+   HTrackMVA_Algo6_PT80_Matched.SetStats(0);
+   HTrackMVA_Algo6_PT80_NonMatch.SetStats(0);
+   HTrackMVA_Algo6MinPT_PT80_Matched.SetStats(0);
+   HTrackMVA_Algo6MinPT_PT80_NonMatch.SetStats(0);
+   HTrackPTVsMVA_Algo6_PT80_Matched.SetStats(0);
+   HTrackPTVsMVA_Algo6_PT80_NonMatch.SetStats(0);
+   HTrackAlgo_PT100_Matched.SetStats(0);
+   HTrackAlgo_PT100_NonMatch.SetStats(0);
+   HTrackPT_Algo6_PT100_Matched.SetStats(0);
+   HTrackPT_Algo6_PT100_NonMatch.SetStats(0);
+   HTrackMVA_Algo6_PT100_Matched.SetStats(0);
+   HTrackMVA_Algo6_PT100_NonMatch.SetStats(0);
+   HTrackMVA_Algo6MinPT_PT100_Matched.SetStats(0);
+   HTrackMVA_Algo6MinPT_PT100_NonMatch.SetStats(0);
+   HTrackPTVsMVA_Algo6_PT100_Matched.SetStats(0);
+   HTrackPTVsMVA_Algo6_PT100_NonMatch.SetStats(0);
+
+   PdfFile.AddPlot(HTrackAlgo_PT70_Matched, "hist text00");
+   PdfFile.AddPlot(HTrackAlgo_PT70_NonMatch, "hist text00");
+
+   HTrackPT_Algo6_PT70_NonMatch.SetLineColor(kRed);
+
+   TH2D HWorldTrackPT("HWorldTrackPT", ";Track p_{T};", 100, 0, 25, 100, 1e-5, 1);
+   HWorldTrackPT.SetStats(0);
+   HWorldTrackPT.Draw("axis");
+   HWorldTrackPT.SetTitle("Algo 6, jet PT > 70");
+   HTrackPT_Algo6_PT70_Matched.DrawNormalized("same");
+   HTrackPT_Algo6_PT70_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   
+   HTrackMVA_Algo6_PT70_NonMatch.SetLineColor(kRed);
+   HTrackMVA_Algo6MinPT_PT70_NonMatch.SetLineColor(kRed);
+
+   TH2D HWorldTrackMVA("HWorldTrackMVA", ";Track MVA;", 100, 0.88, 1.02, 100, 0, 0.1);
+   HWorldTrackMVA.SetStats(0);
+   HWorldTrackMVA.Draw("axis");
+   HWorldTrackMVA.SetTitle("Algo 6, jet PT > 70");
+   HTrackMVA_Algo6_PT70_Matched.DrawNormalized("same");
+   HTrackMVA_Algo6_PT70_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   PdfFile.AddCanvas(Canvas);
+
+   HWorldTrackMVA.Draw("axis");
+   HWorldTrackMVA.SetTitle("Algo 6, jet PT > 70, track PT > 750 MeV");
+   HTrackMVA_Algo6MinPT_PT70_Matched.DrawNormalized("same");
+   HTrackMVA_Algo6MinPT_PT70_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   PdfFile.AddCanvas(Canvas);
+
+   PdfFile.AddPlot(HTrackPTVsMVA_Algo6_PT70_Matched, "colz");
+   PdfFile.AddPlot(HTrackPTVsMVA_Algo6_PT70_NonMatch, "colz");
+
+   PdfFile.AddPlot(HTrackAlgo_PT80_Matched, "hist text00");
+   PdfFile.AddPlot(HTrackAlgo_PT80_NonMatch, "hist text00");
+
+   HTrackPT_Algo6_PT80_NonMatch.SetLineColor(kRed);
+
+   HWorldTrackPT.Draw("axis");
+   HWorldTrackPT.SetTitle("Algo 6, jet PT > 80");
+   HTrackPT_Algo6_PT80_Matched.DrawNormalized("same");
+   HTrackPT_Algo6_PT80_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   
+   HTrackMVA_Algo6_PT80_NonMatch.SetLineColor(kRed);
+   HTrackMVA_Algo6MinPT_PT80_NonMatch.SetLineColor(kRed);
+
+   HWorldTrackMVA.Draw("axis");
+   HWorldTrackMVA.SetTitle("Algo 6, jet PT > 80");
+   HTrackMVA_Algo6_PT80_Matched.DrawNormalized("same");
+   HTrackMVA_Algo6_PT80_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   PdfFile.AddCanvas(Canvas);
+
+   HWorldTrackMVA.Draw("axis");
+   HWorldTrackMVA.SetTitle("Algo 6, jet PT > 80, track PT > 750 MeV");
+   HTrackMVA_Algo6MinPT_PT80_Matched.DrawNormalized("same");
+   HTrackMVA_Algo6MinPT_PT80_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   PdfFile.AddCanvas(Canvas);
+
+   PdfFile.AddPlot(HTrackPTVsMVA_Algo6_PT80_Matched, "colz");
+   PdfFile.AddPlot(HTrackPTVsMVA_Algo6_PT80_NonMatch, "colz");
+
+   PdfFile.AddPlot(HTrackAlgo_PT100_Matched, "hist text00");
+   PdfFile.AddPlot(HTrackAlgo_PT100_NonMatch, "hist text00");
+
+   HTrackPT_Algo6_PT100_NonMatch.SetLineColor(kRed);
+
+   HWorldTrackPT.Draw("axis");
+   HWorldTrackPT.SetTitle("Algo 6, jet PT > 100");
+   HTrackPT_Algo6_PT100_Matched.DrawNormalized("same");
+   HTrackPT_Algo6_PT100_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   
+   HTrackMVA_Algo6_PT100_NonMatch.SetLineColor(kRed);
+   HTrackMVA_Algo6MinPT_PT100_NonMatch.SetLineColor(kRed);
+
+   HWorldTrackMVA.Draw("axis");
+   HWorldTrackMVA.SetTitle("Algo 6, jet PT > 100");
+   HTrackMVA_Algo6_PT100_Matched.DrawNormalized("same");
+   HTrackMVA_Algo6_PT100_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   PdfFile.AddCanvas(Canvas);
+
+   HWorldTrackMVA.Draw("axis");
+   HWorldTrackMVA.SetTitle("Algo 6, jet PT > 100, track PT > 750 MeV");
+   HTrackMVA_Algo6MinPT_PT100_Matched.DrawNormalized("same");
+   HTrackMVA_Algo6MinPT_PT100_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   PdfFile.AddCanvas(Canvas);
+
+   PdfFile.AddPlot(HTrackPTVsMVA_Algo6_PT100_Matched, "colz");
+   PdfFile.AddPlot(HTrackPTVsMVA_Algo6_PT100_NonMatch, "colz");
+
+   TH2D HWorldAlgo6Fraction("HWorldAlgo6Fraction", ";Sum(Algo 6) / Sum(Track);", 100, 0, 1, 100, 1e-5, 1);
+   HWorldAlgo6Fraction.SetStats(0);
+
+   HTrackAlgo6Fraction_PT70_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 70");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_PT70_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_PT70_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_PT80_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 80");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_PT80_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_PT80_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_PT100_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 100");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_PT100_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_PT100_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_PT70_FailL156.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 70");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_PT70_PassL156.DrawNormalized("same");
+   HTrackAlgo6Fraction_PT70_FailL156.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Pass} #color[2]{Fail}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_PT80_FailL156.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 80");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_PT80_PassL156.DrawNormalized("same");
+   HTrackAlgo6Fraction_PT80_FailL156.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Pass} #color[2]{Fail}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_PT100_FailL156.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 100");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_PT100_PassL156.DrawNormalized("same");
+   HTrackAlgo6Fraction_PT100_FailL156.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Pass} #color[2]{Fail}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MinPT_PT70_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 70, track PT > 750 MeV");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MinPT_PT70_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MinPT_PT70_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MinPT_PT80_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 80, track PT > 750 MeV");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MinPT_PT80_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MinPT_PT80_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MinPT_PT100_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 100, track PT > 750 MeV");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MinPT_PT100_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MinPT_PT100_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MVA095_PT70_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 70");
+   HWorldAlgo6Fraction.GetXaxis()->SetTitle("Sum(Algo6 with MVA < 0.95) / Sum(Track)");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MVA095_PT70_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MVA095_PT70_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MVA095_PT80_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 80");
+   HWorldAlgo6Fraction.GetXaxis()->SetTitle("Sum(Algo6 with MVA < 0.95) / Sum(Track)");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MVA095_PT80_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MVA095_PT80_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MVA095_PT100_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 100");
+   HWorldAlgo6Fraction.GetXaxis()->SetTitle("Sum(Algo6 with MVA < 0.95) / Sum(Track)");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MVA095_PT100_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MVA095_PT100_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MVA098_PT70_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 70");
+   HWorldAlgo6Fraction.GetXaxis()->SetTitle("Sum(Algo6 with MVA < 0.98) / Sum(Track)");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MVA098_PT70_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MVA098_PT70_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MVA098_PT80_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 80");
+   HWorldAlgo6Fraction.GetXaxis()->SetTitle("Sum(Algo6 with MVA < 0.98) / Sum(Track)");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MVA098_PT80_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MVA098_PT80_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+
+   HTrackAlgo6Fraction_MVA098_PT100_NonMatch.SetLineColor(kRed);
+   HWorldAlgo6Fraction.SetTitle("Jet PT > 100");
+   HWorldAlgo6Fraction.GetXaxis()->SetTitle("Sum(Algo6 with MVA < 0.98) / Sum(Track)");
+   HWorldAlgo6Fraction.Draw("axis");
+   HTrackAlgo6Fraction_MVA098_PT100_Matched.DrawNormalized("same");
+   HTrackAlgo6Fraction_MVA098_PT100_NonMatch.DrawNormalized("same");
+   Latex.DrawLatex(0.10, 0.915, "#color[1]{Good} #color[2]{Fake}");
+   Canvas.SetLogy(true);
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+   PdfFile.AddCanvas(Canvas);
+   
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched.SetStats(0);
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch.SetStats(0);
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156.SetStats(0);
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156.SetStats(0);
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched.SetStats(0);
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch.SetStats(0);
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156.SetStats(0);
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156.SetStats(0);
+   HJetEtaPhi_GoodTrackAlgoFraction_PT50.SetStats(0);
+   HJetEtaPhi_BadTrackAlgoFraction_PT50.SetStats(0);
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70.SetStats(0);
+   HJetEtaPhi_BadTrackAlgoFraction_PT70.SetStats(0);
+   
+   PdfFile.AddPlot(HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_GoodTrackAlgoFraction_PT50, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_BadTrackAlgoFraction_PT50, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_GoodTrackAlgoFraction_PT70, "colz");
+   PdfFile.AddPlot(HJetEtaPhi_BadTrackAlgoFraction_PT70, "colz");
 
    OutputFile.cd();
 
    HN.Write();
-   HEtaPhiPT30.Write();
-   HEtaPhiPT50.Write();
-   HEtaPhiPT70.Write();
+   HJetEtaPhiPT30.Write();
+   HJetEtaPhiPT50.Write();
+   HJetEtaPhiPT70.Write();
    
-   HEtaPhiPT70FailL156.Write();
-   HEtaPhiPT80FailL156.Write();
-   HEtaPhiPT100FailL156.Write();
-   HEtaPhiPT120FailL156.Write();
+   HJetEtaPhiPT70FailL156.Write();
+   HJetEtaPhiPT80FailL156.Write();
+   HJetEtaPhiPT100FailL156.Write();
+   HJetEtaPhiPT120FailL156.Write();
 
    HJetPT.Write();
    HJetPT_EtaN15P15.Write();
@@ -1247,6 +1987,84 @@ int main(int argc, char *argv[])
    HJetMU_PT70_EtaN25N15.Write();
    HJetMU_PT70_EtaN15P15.Write();
    HJetMU_PT70_EtaP15P25.Write();
+
+   HCaloPFMatchDR_PassL156.Write();
+   HCaloPFMatchDR_FailL156.Write();
+
+   HTrackAlgo_PT70_Matched.Write();
+   HTrackAlgo_PT70_NonMatch.Write();
+   HTrackPT_Algo6_PT70_Matched.Write();
+   HTrackPT_Algo6_PT70_NonMatch.Write();
+   HTrackMVA_Algo6_PT70_Matched.Write();
+   HTrackMVA_Algo6_PT70_NonMatch.Write();
+   HTrackMVA_Algo6MinPT_PT70_Matched.Write();
+   HTrackMVA_Algo6MinPT_PT70_NonMatch.Write();
+   HTrackPTVsMVA_Algo6_PT70_Matched.Write();
+   HTrackPTVsMVA_Algo6_PT70_NonMatch.Write();
+   HTrackAlgo_PT80_Matched.Write();
+   HTrackAlgo_PT80_NonMatch.Write();
+   HTrackPT_Algo6_PT80_Matched.Write();
+   HTrackPT_Algo6_PT80_NonMatch.Write();
+   HTrackMVA_Algo6_PT80_Matched.Write();
+   HTrackMVA_Algo6_PT80_NonMatch.Write();
+   HTrackMVA_Algo6MinPT_PT80_Matched.Write();
+   HTrackMVA_Algo6MinPT_PT80_NonMatch.Write();
+   HTrackPTVsMVA_Algo6_PT80_Matched.Write();
+   HTrackPTVsMVA_Algo6_PT80_NonMatch.Write();
+   HTrackAlgo_PT100_Matched.Write();
+   HTrackAlgo_PT100_NonMatch.Write();
+   HTrackPT_Algo6_PT100_Matched.Write();
+   HTrackPT_Algo6_PT100_NonMatch.Write();
+   HTrackMVA_Algo6_PT100_Matched.Write();
+   HTrackMVA_Algo6_PT100_NonMatch.Write();
+   HTrackMVA_Algo6MinPT_PT100_Matched.Write();
+   HTrackMVA_Algo6MinPT_PT100_NonMatch.Write();
+   HTrackPTVsMVA_Algo6_PT100_Matched.Write();
+   HTrackPTVsMVA_Algo6_PT100_NonMatch.Write();
+
+   HTrackAlgo6Fraction_PT70_Matched.Write();
+   HTrackAlgo6Fraction_PT70_NonMatch.Write();
+   HTrackAlgo6Fraction_PT80_Matched.Write();
+   HTrackAlgo6Fraction_PT80_NonMatch.Write();
+   HTrackAlgo6Fraction_PT100_Matched.Write();
+   HTrackAlgo6Fraction_PT100_NonMatch.Write();
+   HTrackAlgo6Fraction_PT70_PassL156.Write();
+   HTrackAlgo6Fraction_PT70_FailL156.Write();
+   HTrackAlgo6Fraction_PT80_PassL156.Write();
+   HTrackAlgo6Fraction_PT80_FailL156.Write();
+   HTrackAlgo6Fraction_PT100_PassL156.Write();
+   HTrackAlgo6Fraction_PT100_FailL156.Write();
+   HTrackAlgo6Fraction_MinPT_PT70_Matched.Write();
+   HTrackAlgo6Fraction_MinPT_PT70_NonMatch.Write();
+   HTrackAlgo6Fraction_MinPT_PT80_Matched.Write();
+   HTrackAlgo6Fraction_MinPT_PT80_NonMatch.Write();
+   HTrackAlgo6Fraction_MinPT_PT100_Matched.Write();
+   HTrackAlgo6Fraction_MinPT_PT100_NonMatch.Write();
+   HTrackAlgo6Fraction_MVA095_PT70_Matched.Write();
+   HTrackAlgo6Fraction_MVA095_PT70_NonMatch.Write();
+   HTrackAlgo6Fraction_MVA095_PT80_Matched.Write();
+   HTrackAlgo6Fraction_MVA095_PT80_NonMatch.Write();
+   HTrackAlgo6Fraction_MVA095_PT100_Matched.Write();
+   HTrackAlgo6Fraction_MVA095_PT100_NonMatch.Write();
+   HTrackAlgo6Fraction_MVA098_PT70_Matched.Write();
+   HTrackAlgo6Fraction_MVA098_PT70_NonMatch.Write();
+   HTrackAlgo6Fraction_MVA098_PT80_Matched.Write();
+   HTrackAlgo6Fraction_MVA098_PT80_NonMatch.Write();
+   HTrackAlgo6Fraction_MVA098_PT100_Matched.Write();
+   HTrackAlgo6Fraction_MVA098_PT100_NonMatch.Write();
+
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched.Write();
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch.Write();
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156.Write();
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156.Write();
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched.Write();
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch.Write();
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156.Write();
+   HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156.Write();
+   HJetEtaPhi_GoodTrackAlgoFraction_PT50.Write();
+   HJetEtaPhi_BadTrackAlgoFraction_PT50.Write();
+   HJetEtaPhi_GoodTrackAlgoFraction_PT70.Write();
+   HJetEtaPhi_BadTrackAlgoFraction_PT70.Write();
 
    OutputFile.Close();
 

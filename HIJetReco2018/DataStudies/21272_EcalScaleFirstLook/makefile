@@ -1,8 +1,12 @@
 default: RunGoodCalo 
 
 TestRun: Execute
-	time ./Execute --Input SmallTestInputFile.root \
-		--Tree "ak4PFJetAnalyzer/t" --Output TestRun.root --PrintDebug false --RemoveHEM true --IsCalo false
+	time ./Execute --Input SmallTestInputFileGood.root \
+		--Tree "ak4CaloJetAnalyzer/t" --Output TestRunGood.root --PrintDebug false --RemoveHEM true --IsCalo true
+	./ExecutePlots --Input TestRunGood.root --Output TestRunGood.pdf
+	time ./Execute --Input SmallTestInputFileBad.root \
+		--Tree "ak4CaloJetAnalyzer/t" --Output TestRunBad.root --PrintDebug false --RemoveHEM true --IsCalo true
+	./ExecutePlots --Input TestRunBad.root --Output TestRunBad.pdf
 
 RunGoodCalo: Execute ExecutePlots
 	time ./Execute --Input `ls SampleGoodEE/*root | tr '\n' ','` \
@@ -40,6 +44,12 @@ RunBadPF: Execute ExecutePlots
 	./ExecutePlots --Input ResultBadEEPF.root --Output ResultBadEEPF.pdf
 	cp ResultBadEEPF.pdf ~/public/html
 
+RunAnalysis: ExecuteAnalysis
+	./ExecuteAnalysis --Input ResultBadEEPF.root --OutputBase AnalyzeBadEEPF
+	./ExecuteAnalysis --Input TestRun.root --OutputBase AnalyzeGoodEEPF
+	cp AnalyzeBadEEPF.pdf ~/public/html/
+	cp AnalyzeGoodEEPF.pdf ~/public/html/
+
 Execute: QuickLook.cpp
 	CompileRootMacro QuickLook.cpp Execute \
 		-I../../CommonCode/include ../../CommonCode/library/*o
@@ -48,4 +58,6 @@ ExecutePlots: MakePlot.cpp
 	CompileRootMacro MakePlot.cpp ExecutePlots \
 		-I../../CommonCode/include ../../CommonCode/library/*o
 
+ExecuteAnalysis: Analyze.cpp
+	CompileRootMacro Analyze.cpp ExecuteAnalysis
 

@@ -1,6 +1,8 @@
 {
-   TFile F1("ResultBadEEPF.root");
-   TFile F2("TestRun.root");
+   // TFile F1("ResultBadEEPF.root");
+   // TFile F2("TestRun.root");
+   TFile F1("TestRunBad.root");
+   TFile F2("TestRunGood.root");
 
    TProfile *P1 = (TProfile *)F1.Get("PRVsAbsEta_PT75_PT100");
    TProfile *P2 = (TProfile *)F2.Get("PRVsAbsEta_PT75_PT100");

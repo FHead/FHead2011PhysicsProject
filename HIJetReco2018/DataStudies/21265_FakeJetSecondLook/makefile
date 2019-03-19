@@ -7,7 +7,7 @@ LongRunCS: Execute
 
 TestRunCS: Execute
 	time ./Execute --Input `ls MB/0000/HiForestAOD_5[1234]* | tr '\n' ','` \
-		--Tree "akCs4PFJetAnalyzer/t" --OutputBase TestRunCS --PrintDebug true
+		--Tree "akCs4PFJetAnalyzer/t" --OutputBase TestRunCS --PrintDebug false
 	cp TestRunCS.pdf ~/public/html/
 
 TestRunPU: Execute

@@ -45,17 +45,17 @@ int main(int argc, char *argv[])
    TFile OutputFile((OutputBase + ".root").c_str(), "RECREATE");
 
    TH1D HN("HN", "", 1, 0, 1);
-   TH2D HJetEtaPhiPT30("HJetEtaPhiPT30", "PT > 30;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HJetEtaPhiPT50("HJetEtaPhiPT50", "PT > 50;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
-   TH2D HJetEtaPhiPT70("HJetEtaPhiPT70", "PT > 70;eta;phi", 75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+   TH2D HJetEtaPhiPT30("HJetEtaPhiPT30", "PT > 30;eta;phi", 75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
+   TH2D HJetEtaPhiPT50("HJetEtaPhiPT50", "PT > 50;eta;phi", 75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
+   TH2D HJetEtaPhiPT70("HJetEtaPhiPT70", "PT > 70;eta;phi", 75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT70FailL156("HJetEtaPhiPT70FailL156", "PT > 70, fail L1_SingleJet56;eta;phi",
-      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+      75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT80FailL156("HJetEtaPhiPT80FailL156", "PT > 80, fail L1_SingleJet56;eta;phi",
-      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+      75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT100FailL156("HJetEtaPhiPT100FailL156", "PT > 100, fail L1_SingleJet56;eta;phi",
-      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+      75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT120FailL156("HJetEtaPhiPT120FailL156", "PT > 120, fail L1_SingleJet56;eta;phi",
-      75, -MaxEta, MaxEta, 75, -3.14159, 3.14159);
+      75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
 
    TH1D HJetPT("HJetPT", "Leading jet in full range;p_{T};", 100, 0, 200);
    TH1D HJetPT_EtaN15P15("HJetPT_EtaN15P15", "Leading jet in |eta| < 1.5;p_{T};", 100, 0, 200);
@@ -246,19 +246,91 @@ int main(int argc, char *argv[])
    TH1D HTrackAlgo6Fraction_MVA098_PT80_NonMatch("HTrackAlgo6Fraction_MVA098_PT80_NonMatch", "", 100, 0, 1.0);
    TH1D HTrackAlgo6Fraction_MVA098_PT100_NonMatch("HTrackAlgo6Fraction_MVA098_PT100_NonMatch", "", 100, 0, 1.0);
 
-   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched("HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched", "PT > 70, pass L156, matched, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch("HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch", "PT > 70, fail L156, no match, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156("HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156", "PT > 70, pass L156, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156("HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156", "PT > 70, fail L156, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched("HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched", "PT > 70, Pass l156, matched, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch("HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch", "PT > 70, fail L156, no match, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156("HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156", "PT > 70, pass L156, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156("HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156", "PT > 70, fail L156, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched("HJetEtaPhi_GoodTrackAlgoFraction_PT70_Matched", "PT > 70, pass L156, matched, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch("HJetEtaPhi_GoodTrackAlgoFraction_PT70_NonMatch", "PT > 70, fail L156, no match, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156("HJetEtaPhi_GoodTrackAlgoFraction_PT70_PassL156", "PT > 70, pass L156, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156("HJetEtaPhi_GoodTrackAlgoFraction_PT70_FailL156", "PT > 70, fail L156, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched("HJetEtaPhi_BadTrackAlgoFraction_PT70_Matched", "PT > 70, Pass l156, matched, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch("HJetEtaPhi_BadTrackAlgoFraction_PT70_NonMatch", "PT > 70, fail L156, no match, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156("HJetEtaPhi_BadTrackAlgoFraction_PT70_PassL156", "PT > 70, pass L156, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156("HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156", "PT > 70, fail L156, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
    
-   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT50("HJetEtaPhi_GoodTrackAlgoFraction_PT50", "PT > 50, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT50("HJetEtaPhi_BadTrackAlgoFraction_PT50", "PT > 50, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70("HJetEtaPhi_GoodTrackAlgoFraction_PT70", "PT > 70, Algo6/Track < 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
-   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70("HJetEtaPhi_BadTrackAlgoFraction_PT70", "PT > 70, Algo6/Track > 0.2;eta;phi", 100, -MaxEta, MaxEta, 100, -3.14159, 3.14159);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT50("HJetEtaPhi_GoodTrackAlgoFraction_PT50", "PT > 50, Algo6/Track < 0.25;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT50("HJetEtaPhi_BadTrackAlgoFraction_PT50", "PT > 50, Algo6/Track > 0.25;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_GoodTrackAlgoFraction_PT70("HJetEtaPhi_GoodTrackAlgoFraction_PT70", "PT > 70, Algo6/Track < 0.25;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+   TH2D HJetEtaPhi_BadTrackAlgoFraction_PT70("HJetEtaPhi_BadTrackAlgoFraction_PT70", "PT > 70, Algo6/Track > 0.25;eta;phi", 100, -MaxEta, MaxEta, 100, -M_PI, M_PI);
+
+   TH1D HPFPT_ID1_EtaN25N15("HPFPT_ID1_EtaN25N15", "PF Candidate PT, ID = 1, -2.5 < #eta < -1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID1_EtaN15P15("HPFPT_ID1_EtaN15P15", "PF Candidate PT, ID = 1, -1.5 < #eta < 1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID1_EtaP15P25("HPFPT_ID1_EtaP15P25", "PF Candidate PT, ID = 1, 1.5 < #eta < 2.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID2_EtaN25N15("HPFPT_ID2_EtaN25N15", "PF Candidate PT, ID = 2, -2.5 < #eta < -1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID2_EtaN15P15("HPFPT_ID2_EtaN15P15", "PF Candidate PT, ID = 2, -1.5 < #eta < 1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID2_EtaP15P25("HPFPT_ID2_EtaP15P25", "PF Candidate PT, ID = 2, 1.5 < #eta < 2.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID3_EtaN25N15("HPFPT_ID3_EtaN25N15", "PF Candidate PT, ID = 3, -2.5 < #eta < -1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID3_EtaN15P15("HPFPT_ID3_EtaN15P15", "PF Candidate PT, ID = 3, -1.5 < #eta < 1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID3_EtaP15P25("HPFPT_ID3_EtaP15P25", "PF Candidate PT, ID = 3, 1.5 < #eta < 2.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID4_EtaN25N15("HPFPT_ID4_EtaN25N15", "PF Candidate PT, ID = 4, -2.5 < #eta < -1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID4_EtaN15P15("HPFPT_ID4_EtaN15P15", "PF Candidate PT, ID = 4, -1.5 < #eta < 1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID4_EtaP15P25("HPFPT_ID4_EtaP15P25", "PF Candidate PT, ID = 4, 1.5 < #eta < 2.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID5_EtaN25N15("HPFPT_ID5_EtaN25N15", "PF Candidate PT, ID = 5, -2.5 < #eta < -1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID5_EtaN15P15("HPFPT_ID5_EtaN15P15", "PF Candidate PT, ID = 5, -1.5 < #eta < 1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID5_EtaP15P25("HPFPT_ID5_EtaP15P25", "PF Candidate PT, ID = 5, 1.5 < #eta < 2.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID6_EtaN25N15("HPFPT_ID6_EtaN25N15", "PF Candidate PT, ID = 6, -2.5 < #eta < -1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID6_EtaN15P15("HPFPT_ID6_EtaN15P15", "PF Candidate PT, ID = 6, -1.5 < #eta < 1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID6_EtaP15P25("HPFPT_ID6_EtaP15P25", "PF Candidate PT, ID = 6, 1.5 < #eta < 2.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID7_EtaN25N15("HPFPT_ID7_EtaN25N15", "PF Candidate PT, ID = 7, -2.5 < #eta < -1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID7_EtaN15P15("HPFPT_ID7_EtaN15P15", "PF Candidate PT, ID = 7, -1.5 < #eta < 1.5;p_{T}", 100, 0, 75);
+   TH1D HPFPT_ID7_EtaP15P25("HPFPT_ID7_EtaP15P25", "PF Candidate PT, ID = 7, 1.5 < #eta < 2.5;p_{T}", 100, 0, 75);
+
+   TH2D HPFEtaPhi_ID1_PT05("HPFEtaPhi_ID1_PT05", "ID = 1, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID2_PT05("HPFEtaPhi_ID2_PT05", "ID = 2, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID3_PT05("HPFEtaPhi_ID3_PT05", "ID = 3, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID4_PT05("HPFEtaPhi_ID4_PT05", "ID = 4, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID5_PT05("HPFEtaPhi_ID5_PT05", "ID = 5, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID6_PT05("HPFEtaPhi_ID6_PT05", "ID = 6, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID7_PT05("HPFEtaPhi_ID7_PT05", "ID = 7, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID1_PT10("HPFEtaPhi_ID1_PT10", "ID = 1, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID2_PT10("HPFEtaPhi_ID2_PT10", "ID = 2, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID3_PT10("HPFEtaPhi_ID3_PT10", "ID = 3, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID4_PT10("HPFEtaPhi_ID4_PT10", "ID = 4, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID5_PT10("HPFEtaPhi_ID5_PT10", "ID = 5, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID6_PT10("HPFEtaPhi_ID6_PT10", "ID = 6, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID7_PT10("HPFEtaPhi_ID7_PT10", "ID = 7, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID1_PT20("HPFEtaPhi_ID1_PT20", "ID = 1, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID2_PT20("HPFEtaPhi_ID2_PT20", "ID = 2, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID3_PT20("HPFEtaPhi_ID3_PT20", "ID = 3, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID4_PT20("HPFEtaPhi_ID4_PT20", "ID = 4, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID5_PT20("HPFEtaPhi_ID5_PT20", "ID = 5, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID6_PT20("HPFEtaPhi_ID6_PT20", "ID = 6, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID7_PT20("HPFEtaPhi_ID7_PT20", "ID = 7, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID1_PT50("HPFEtaPhi_ID1_PT50", "ID = 1, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID2_PT50("HPFEtaPhi_ID2_PT50", "ID = 2, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID3_PT50("HPFEtaPhi_ID3_PT50", "ID = 3, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID4_PT50("HPFEtaPhi_ID4_PT50", "ID = 4, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID5_PT50("HPFEtaPhi_ID5_PT50", "ID = 5, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID6_PT50("HPFEtaPhi_ID6_PT50", "ID = 6, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID7_PT50("HPFEtaPhi_ID7_PT50", "ID = 7, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID1_PT100("HPFEtaPhi_ID1_PT100", "ID = 1, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID2_PT100("HPFEtaPhi_ID2_PT100", "ID = 2, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID3_PT100("HPFEtaPhi_ID3_PT100", "ID = 3, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID4_PT100("HPFEtaPhi_ID4_PT100", "ID = 4, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID5_PT100("HPFEtaPhi_ID5_PT100", "ID = 5, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID6_PT100("HPFEtaPhi_ID6_PT100", "ID = 6, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID7_PT100("HPFEtaPhi_ID7_PT100", "ID = 7, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID1_PT200("HPFEtaPhi_ID1_PT200", "ID = 1, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID2_PT200("HPFEtaPhi_ID2_PT200", "ID = 2, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID3_PT200("HPFEtaPhi_ID3_PT200", "ID = 3, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID4_PT200("HPFEtaPhi_ID4_PT200", "ID = 4, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID5_PT200("HPFEtaPhi_ID5_PT200", "ID = 5, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID6_PT200("HPFEtaPhi_ID6_PT200", "ID = 6, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID7_PT200("HPFEtaPhi_ID7_PT200", "ID = 7, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID1_PT500("HPFEtaPhi_ID1_PT500", "ID = 1, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID2_PT500("HPFEtaPhi_ID2_PT500", "ID = 2, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID3_PT500("HPFEtaPhi_ID3_PT500", "ID = 3, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID4_PT500("HPFEtaPhi_ID4_PT500", "ID = 4, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID5_PT500("HPFEtaPhi_ID5_PT500", "ID = 5, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID6_PT500("HPFEtaPhi_ID6_PT500", "ID = 6, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_ID7_PT500("HPFEtaPhi_ID7_PT500", "ID = 7, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
 
    for(string FileName : InputFileName)
    {
@@ -275,6 +347,8 @@ int main(int argc, char *argv[])
       JetTreeMessenger MCaloJet(InputFile, CaloTreeName);
       TriggerTreeMessenger MHLT(InputFile);
       TrackTreeMessenger MTrack(InputFile);
+      PFTreeMessenger MPF(InputFile);
+      SkimTreeMessenger MSkim(InputFile);
 
       if(MHiEvent.Tree == nullptr)
       {
@@ -299,6 +373,11 @@ int main(int argc, char *argv[])
          MCaloJet.GetEntry(iE);
          MHLT.GetEntry(iE);
          MTrack.GetEntry(iE);
+         MPF.GetEntry(iE);
+         MSkim.GetEntry(iE);
+
+         if(MSkim.HBHENoiseRun2Loose == false)
+            continue;
 
          bool GoodLumi = false;
          if(MHiEvent.Run == 327400 && (MHiEvent.Lumi >= 38 && MHiEvent.Lumi <= 578))
@@ -697,13 +776,13 @@ int main(int argc, char *argv[])
                if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.2 && PassL156 == false)
                   HJetEtaPhi_BadTrackAlgoFraction_PT70_FailL156.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
                
-               if(MJet.JetPT[BestJetIndex] > 50 && Algo6PT / AllPT < 0.2)
+               if(MJet.JetPT[BestJetIndex] > 50 && Algo6PT / AllPT < 0.25)
                   HJetEtaPhi_GoodTrackAlgoFraction_PT50.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
-               if(MJet.JetPT[BestJetIndex] > 50 && Algo6PT / AllPT > 0.2)
+               if(MJet.JetPT[BestJetIndex] > 50 && Algo6PT / AllPT > 0.25)
                   HJetEtaPhi_BadTrackAlgoFraction_PT50.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
-               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT < 0.2)
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT < 0.25)
                   HJetEtaPhi_GoodTrackAlgoFraction_PT70.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
-               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.2)
+               if(MJet.JetPT[BestJetIndex] > 70 && Algo6PT / AllPT > 0.25)
                   HJetEtaPhi_BadTrackAlgoFraction_PT70.Fill(MJet.JetEta[BestJetIndex], MJet.JetPhi[BestJetIndex]);
 
                if(PrintDebug == true)
@@ -744,6 +823,115 @@ int main(int argc, char *argv[])
                   cout << "[DEBUG] " << MHiEvent.Run << " " << MHiEvent.Lumi << " " << MHiEvent.Event << endl;
                   cout << "[DEBUG] Jet " << MJet.JetPT[BestJetIndex] << " " << MJet.JetEta[BestJetIndex]
                      << " " << MJet.JetPhi[BestJetIndex] << endl;
+               }
+            }
+         }
+
+         // PF plots
+         if(MPF.Tree != NULL)
+         {
+            for(int iPF = 0; iPF < (int)MPF.ID->size(); iPF++)
+            {
+               if((*MPF.Eta)[iPF] > -2.5 && (*MPF.Eta)[iPF] < -1.5)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFPT_ID1_EtaN25N15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFPT_ID2_EtaN25N15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFPT_ID3_EtaN25N15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFPT_ID4_EtaN25N15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFPT_ID5_EtaN25N15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFPT_ID6_EtaN25N15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFPT_ID7_EtaN25N15.Fill((*MPF.PT)[iPF]);
+               }
+               if((*MPF.Eta)[iPF] > -1.5 && (*MPF.Eta)[iPF] < 1.5)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFPT_ID1_EtaN15P15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFPT_ID2_EtaN15P15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFPT_ID3_EtaN15P15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFPT_ID4_EtaN15P15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFPT_ID5_EtaN15P15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFPT_ID6_EtaN15P15.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFPT_ID7_EtaN15P15.Fill((*MPF.PT)[iPF]);
+               }
+               if((*MPF.Eta)[iPF] > 1.5 && (*MPF.Eta)[iPF] < 2.5)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFPT_ID1_EtaP15P25.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFPT_ID2_EtaP15P25.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFPT_ID3_EtaP15P25.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFPT_ID4_EtaP15P25.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFPT_ID5_EtaP15P25.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFPT_ID6_EtaP15P25.Fill((*MPF.PT)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFPT_ID7_EtaP15P25.Fill((*MPF.PT)[iPF]);
+               }
+
+               if((*MPF.PT)[iPF] > 0.5)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_ID1_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_ID2_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_ID3_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_ID4_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_ID5_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 1.0)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_ID1_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_ID2_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_ID3_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_ID4_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_ID5_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 2.0)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_ID1_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_ID2_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_ID3_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_ID4_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_ID5_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 5.0)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_ID1_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_ID2_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_ID3_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_ID4_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_ID5_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 10.0)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_ID1_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_ID2_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_ID3_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_ID4_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_ID5_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 20.0)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_ID1_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_ID2_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_ID3_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_ID4_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_ID5_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 50.0)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_ID1_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_ID2_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_ID3_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_ID4_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_ID5_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
                }
             }
          }
@@ -1893,6 +2081,209 @@ int main(int argc, char *argv[])
    PdfFile.AddPlot(HJetEtaPhi_GoodTrackAlgoFraction_PT70, "colz");
    PdfFile.AddPlot(HJetEtaPhi_BadTrackAlgoFraction_PT70, "colz");
 
+   TH2D HWorldPF("HWorldPF", ";p_{T};", 100, 0, 75, 100, 1e-8, 1);
+   HWorldPF.SetStats(0);
+
+   TLegend LegendPF(0.5, 0.8, 0.8, 0.6);
+   LegendPF.SetTextFont(42);
+   LegendPF.SetTextSize(0.035);
+   LegendPF.SetBorderSize(0);
+   LegendPF.SetFillStyle(0);
+   LegendPF.AddEntry(&HPFPT_ID1_EtaN25N15, "-2.5 < #eta < -1.5", "l");
+   LegendPF.AddEntry(&HPFPT_ID1_EtaN15P15, "-1.5 < #eta < 1.5", "l");
+   LegendPF.AddEntry(&HPFPT_ID1_EtaP15P25, "1.5 < #eta < 2.5", "l");
+
+   HWorldPF.SetTitle("ID = 1");
+   HWorldPF.Draw("axis");
+   HPFPT_ID1_EtaN25N15.SetLineColor(kBlack);
+   HPFPT_ID1_EtaN15P15.SetLineColor(kGreen);
+   HPFPT_ID1_EtaP15P25.SetLineColor(kRed);
+   HPFPT_ID1_EtaN25N15.DrawNormalized("same");
+   HPFPT_ID1_EtaN15P15.DrawNormalized("same");
+   HPFPT_ID1_EtaP15P25.DrawNormalized("same");
+   LegendPF.Draw();
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+
+   HWorldPF.SetTitle("ID = 2");
+   HWorldPF.Draw("axis");
+   HPFPT_ID2_EtaN25N15.SetLineColor(kBlack);
+   HPFPT_ID2_EtaN15P15.SetLineColor(kGreen);
+   HPFPT_ID2_EtaP15P25.SetLineColor(kRed);
+   HPFPT_ID2_EtaN25N15.DrawNormalized("same");
+   HPFPT_ID2_EtaN15P15.DrawNormalized("same");
+   HPFPT_ID2_EtaP15P25.DrawNormalized("same");
+   LegendPF.Draw();
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+
+   HWorldPF.SetTitle("ID = 3");
+   HWorldPF.Draw("axis");
+   HPFPT_ID3_EtaN25N15.SetLineColor(kBlack);
+   HPFPT_ID3_EtaN15P15.SetLineColor(kGreen);
+   HPFPT_ID3_EtaP15P25.SetLineColor(kRed);
+   HPFPT_ID3_EtaN25N15.DrawNormalized("same");
+   HPFPT_ID3_EtaN15P15.DrawNormalized("same");
+   HPFPT_ID3_EtaP15P25.DrawNormalized("same");
+   LegendPF.Draw();
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+
+   HWorldPF.SetTitle("ID = 4");
+   HWorldPF.Draw("axis");
+   HPFPT_ID4_EtaN25N15.SetLineColor(kBlack);
+   HPFPT_ID4_EtaN15P15.SetLineColor(kGreen);
+   HPFPT_ID4_EtaP15P25.SetLineColor(kRed);
+   HPFPT_ID4_EtaN25N15.DrawNormalized("same");
+   HPFPT_ID4_EtaN15P15.DrawNormalized("same");
+   HPFPT_ID4_EtaP15P25.DrawNormalized("same");
+   LegendPF.Draw();
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+
+   HWorldPF.SetTitle("ID = 5");
+   HWorldPF.Draw("axis");
+   HPFPT_ID5_EtaN25N15.SetLineColor(kBlack);
+   HPFPT_ID5_EtaN15P15.SetLineColor(kGreen);
+   HPFPT_ID5_EtaP15P25.SetLineColor(kRed);
+   HPFPT_ID5_EtaN25N15.DrawNormalized("same");
+   HPFPT_ID5_EtaN15P15.DrawNormalized("same");
+   HPFPT_ID5_EtaP15P25.DrawNormalized("same");
+   LegendPF.Draw();
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+
+   HWorldPF.SetTitle("ID = 6");
+   HWorldPF.Draw("axis");
+   HPFPT_ID6_EtaN25N15.SetLineColor(kBlack);
+   HPFPT_ID6_EtaN15P15.SetLineColor(kGreen);
+   HPFPT_ID6_EtaP15P25.SetLineColor(kRed);
+   HPFPT_ID6_EtaN25N15.DrawNormalized("same");
+   HPFPT_ID6_EtaN15P15.DrawNormalized("same");
+   HPFPT_ID6_EtaP15P25.DrawNormalized("same");
+   LegendPF.Draw();
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+
+   HWorldPF.SetTitle("ID = 7");
+   HWorldPF.Draw("axis");
+   HPFPT_ID7_EtaN25N15.SetLineColor(kBlack);
+   HPFPT_ID7_EtaN15P15.SetLineColor(kGreen);
+   HPFPT_ID7_EtaP15P25.SetLineColor(kRed);
+   HPFPT_ID7_EtaN25N15.DrawNormalized("same");
+   HPFPT_ID7_EtaN15P15.DrawNormalized("same");
+   HPFPT_ID7_EtaP15P25.DrawNormalized("same");
+   LegendPF.Draw();
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   Canvas.SetLogy(false);
+
+   HPFEtaPhi_ID1_PT05.SetStats(0);
+   HPFEtaPhi_ID2_PT05.SetStats(0);
+   HPFEtaPhi_ID3_PT05.SetStats(0);
+   HPFEtaPhi_ID4_PT05.SetStats(0);
+   HPFEtaPhi_ID5_PT05.SetStats(0);
+   HPFEtaPhi_ID6_PT05.SetStats(0);
+   HPFEtaPhi_ID7_PT05.SetStats(0);
+   HPFEtaPhi_ID1_PT10.SetStats(0);
+   HPFEtaPhi_ID2_PT10.SetStats(0);
+   HPFEtaPhi_ID3_PT10.SetStats(0);
+   HPFEtaPhi_ID4_PT10.SetStats(0);
+   HPFEtaPhi_ID5_PT10.SetStats(0);
+   HPFEtaPhi_ID6_PT10.SetStats(0);
+   HPFEtaPhi_ID7_PT10.SetStats(0);
+   HPFEtaPhi_ID1_PT20.SetStats(0);
+   HPFEtaPhi_ID2_PT20.SetStats(0);
+   HPFEtaPhi_ID3_PT20.SetStats(0);
+   HPFEtaPhi_ID4_PT20.SetStats(0);
+   HPFEtaPhi_ID5_PT20.SetStats(0);
+   HPFEtaPhi_ID6_PT20.SetStats(0);
+   HPFEtaPhi_ID7_PT20.SetStats(0);
+   HPFEtaPhi_ID1_PT50.SetStats(0);
+   HPFEtaPhi_ID2_PT50.SetStats(0);
+   HPFEtaPhi_ID3_PT50.SetStats(0);
+   HPFEtaPhi_ID4_PT50.SetStats(0);
+   HPFEtaPhi_ID5_PT50.SetStats(0);
+   HPFEtaPhi_ID6_PT50.SetStats(0);
+   HPFEtaPhi_ID7_PT50.SetStats(0);
+   HPFEtaPhi_ID1_PT100.SetStats(0);
+   HPFEtaPhi_ID2_PT100.SetStats(0);
+   HPFEtaPhi_ID3_PT100.SetStats(0);
+   HPFEtaPhi_ID4_PT100.SetStats(0);
+   HPFEtaPhi_ID5_PT100.SetStats(0);
+   HPFEtaPhi_ID6_PT100.SetStats(0);
+   HPFEtaPhi_ID7_PT100.SetStats(0);
+   HPFEtaPhi_ID1_PT200.SetStats(0);
+   HPFEtaPhi_ID2_PT200.SetStats(0);
+   HPFEtaPhi_ID3_PT200.SetStats(0);
+   HPFEtaPhi_ID4_PT200.SetStats(0);
+   HPFEtaPhi_ID5_PT200.SetStats(0);
+   HPFEtaPhi_ID6_PT200.SetStats(0);
+   HPFEtaPhi_ID7_PT200.SetStats(0);
+   HPFEtaPhi_ID1_PT500.SetStats(0);
+   HPFEtaPhi_ID2_PT500.SetStats(0);
+   HPFEtaPhi_ID3_PT500.SetStats(0);
+   HPFEtaPhi_ID4_PT500.SetStats(0);
+   HPFEtaPhi_ID5_PT500.SetStats(0);
+   HPFEtaPhi_ID6_PT500.SetStats(0);
+   HPFEtaPhi_ID7_PT500.SetStats(0);
+
+   PdfFile.AddPlot(HPFEtaPhi_ID1_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID2_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID3_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID4_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID5_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID6_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID7_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID1_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID2_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID3_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID4_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID5_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID6_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID7_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID1_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID2_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID3_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID4_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID5_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID6_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID7_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID1_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID2_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID3_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID4_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID5_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID6_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID7_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID1_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID2_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID3_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID4_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID5_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID6_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID7_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID1_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID2_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID3_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID4_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID5_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID6_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID7_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID1_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID2_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID3_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID4_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID5_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID6_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_ID7_PT500, "colz");
+
    OutputFile.cd();
 
    HN.Write();
@@ -2065,6 +2456,78 @@ int main(int argc, char *argv[])
    HJetEtaPhi_BadTrackAlgoFraction_PT50.Write();
    HJetEtaPhi_GoodTrackAlgoFraction_PT70.Write();
    HJetEtaPhi_BadTrackAlgoFraction_PT70.Write();
+
+   HPFPT_ID1_EtaN25N15.Write();
+   HPFPT_ID1_EtaN15P15.Write();
+   HPFPT_ID1_EtaP15P25.Write();
+   HPFPT_ID2_EtaN25N15.Write();
+   HPFPT_ID2_EtaN15P15.Write();
+   HPFPT_ID2_EtaP15P25.Write();
+   HPFPT_ID3_EtaN25N15.Write();
+   HPFPT_ID3_EtaN15P15.Write();
+   HPFPT_ID3_EtaP15P25.Write();
+   HPFPT_ID4_EtaN25N15.Write();
+   HPFPT_ID4_EtaN15P15.Write();
+   HPFPT_ID4_EtaP15P25.Write();
+   HPFPT_ID5_EtaN25N15.Write();
+   HPFPT_ID5_EtaN15P15.Write();
+   HPFPT_ID5_EtaP15P25.Write();
+   HPFPT_ID6_EtaN25N15.Write();
+   HPFPT_ID6_EtaN15P15.Write();
+   HPFPT_ID6_EtaP15P25.Write();
+   HPFPT_ID7_EtaN25N15.Write();
+   HPFPT_ID7_EtaN15P15.Write();
+   HPFPT_ID7_EtaP15P25.Write();
+
+   HPFEtaPhi_ID1_PT05.Write();
+   HPFEtaPhi_ID2_PT05.Write();
+   HPFEtaPhi_ID3_PT05.Write();
+   HPFEtaPhi_ID4_PT05.Write();
+   HPFEtaPhi_ID5_PT05.Write();
+   HPFEtaPhi_ID6_PT05.Write();
+   HPFEtaPhi_ID7_PT05.Write();
+   HPFEtaPhi_ID1_PT10.Write();
+   HPFEtaPhi_ID2_PT10.Write();
+   HPFEtaPhi_ID3_PT10.Write();
+   HPFEtaPhi_ID4_PT10.Write();
+   HPFEtaPhi_ID5_PT10.Write();
+   HPFEtaPhi_ID6_PT10.Write();
+   HPFEtaPhi_ID7_PT10.Write();
+   HPFEtaPhi_ID1_PT20.Write();
+   HPFEtaPhi_ID2_PT20.Write();
+   HPFEtaPhi_ID3_PT20.Write();
+   HPFEtaPhi_ID4_PT20.Write();
+   HPFEtaPhi_ID5_PT20.Write();
+   HPFEtaPhi_ID6_PT20.Write();
+   HPFEtaPhi_ID7_PT20.Write();
+   HPFEtaPhi_ID1_PT50.Write();
+   HPFEtaPhi_ID2_PT50.Write();
+   HPFEtaPhi_ID3_PT50.Write();
+   HPFEtaPhi_ID4_PT50.Write();
+   HPFEtaPhi_ID5_PT50.Write();
+   HPFEtaPhi_ID6_PT50.Write();
+   HPFEtaPhi_ID7_PT50.Write();
+   HPFEtaPhi_ID1_PT100.Write();
+   HPFEtaPhi_ID2_PT100.Write();
+   HPFEtaPhi_ID3_PT100.Write();
+   HPFEtaPhi_ID4_PT100.Write();
+   HPFEtaPhi_ID5_PT100.Write();
+   HPFEtaPhi_ID6_PT100.Write();
+   HPFEtaPhi_ID7_PT100.Write();
+   HPFEtaPhi_ID1_PT200.Write();
+   HPFEtaPhi_ID2_PT200.Write();
+   HPFEtaPhi_ID3_PT200.Write();
+   HPFEtaPhi_ID4_PT200.Write();
+   HPFEtaPhi_ID5_PT200.Write();
+   HPFEtaPhi_ID6_PT200.Write();
+   HPFEtaPhi_ID7_PT200.Write();
+   HPFEtaPhi_ID1_PT500.Write();
+   HPFEtaPhi_ID2_PT500.Write();
+   HPFEtaPhi_ID3_PT500.Write();
+   HPFEtaPhi_ID4_PT500.Write();
+   HPFEtaPhi_ID5_PT500.Write();
+   HPFEtaPhi_ID6_PT500.Write();
+   HPFEtaPhi_ID7_PT500.Write();
 
    OutputFile.Close();
 

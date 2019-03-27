@@ -8,6 +8,7 @@ using namespace fastjet;
 
 #include "TFile.h"
 #include "TH1D.h"
+#include "TProfile.h"
 #include "TH2D.h"
 
 #include "Code/TauHelperFunctions3.h"
@@ -35,6 +36,7 @@ int main(int argc, char *argv[])
 
    map<string, TH1D *> H1;
    map<string, TH2D *> H2;
+   map<string, TProfile *> P1;
 
    H1["N"] = new TH1D("HN", ";;", 1, 0, 1);
 
@@ -82,6 +84,11 @@ int main(int argc, char *argv[])
    H2["RawPTVsJEC"] = new TH2D("HRawPTVsJEC", ";Raw PT;JEC", 100, 0, 200, 100, 0, 2.5);
    H2["RawPTVsJetPT"] = new TH2D("HRawPTVsJetPT", ";Raw PT;JEC", 100, 0, 200, 100, 0, 200);
 
+   P1["JetEtaVsResponseGenPT30PT50"] = new TProfile("HJetEtaVsResponseGenPT30PT50", ";#eta;<r>", 100, -2.5, 2.5);
+   P1["JetEtaVsResponseGenPT50PT75"] = new TProfile("HJetEtaVsResponseGenPT50PT75", ";#eta;<r>", 100, -2.5, 2.5);
+   P1["JetEtaVsResponseGenPT75PT100"] = new TProfile("HJetEtaVsResponseGenPT75PT100", ";#eta;<r>", 100, -2.5, 2.5);
+   P1["JetEtaVsResponseGenPT100PT125"] = new TProfile("HJetEtaVsResponseGenPT100PT125", ";#eta;<r>", 100, -2.5, 2.5);
+
    // Jet distribution with triggering
    H2["JetEtaPhiPT30FailL156"]
       = new TH2D("HJetEtaPhiPT30FailL156", ";Jet #eta;Jet #phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
@@ -95,58 +102,58 @@ int main(int argc, char *argv[])
       = new TH2D("HJetEtaPhiPT125FailL156", ";Jet #eta;Jet #phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
 
    // Jet fraction distributions
-   H1["JetCHFPT50EtaN25N15"] = new TH1D("HJetCHFPT50EtaN25N15", ";CHF;", 100, 0, 1);
-   H1["JetCHFPT50EtaN15N00"] = new TH1D("HJetCHFPT50EtaN15N00", ";CHF;", 100, 0, 1);
-   H1["JetCHFPT50EtaP00P15"] = new TH1D("HJetCHFPT50EtaP00P15", ";CHF;", 100, 0, 1);
-   H1["JetCHFPT50EtaP15P25"] = new TH1D("HJetCHFPT50EtaP15P25", ";CHF;", 100, 0, 1);
-   H1["JetCEFPT50EtaN25N15"] = new TH1D("HJetCEFPT50EtaN25N15", ";CEF;", 100, 0, 1);
-   H1["JetCEFPT50EtaN15N00"] = new TH1D("HJetCEFPT50EtaN15N00", ";CEF;", 100, 0, 1);
-   H1["JetCEFPT50EtaP00P15"] = new TH1D("HJetCEFPT50EtaP00P15", ";CEF;", 100, 0, 1);
-   H1["JetCEFPT50EtaP15P25"] = new TH1D("HJetCEFPT50EtaP15P25", ";CEF;", 100, 0, 1);
-   H1["JetNHFPT50EtaN25N15"] = new TH1D("HJetNHFPT50EtaN25N15", ";NHF;", 100, 0, 1);
-   H1["JetNHFPT50EtaN15N00"] = new TH1D("HJetNHFPT50EtaN15N00", ";NHF;", 100, 0, 1);
-   H1["JetNHFPT50EtaP00P15"] = new TH1D("HJetNHFPT50EtaP00P15", ";NHF;", 100, 0, 1);
-   H1["JetNHFPT50EtaP15P25"] = new TH1D("HJetNHFPT50EtaP15P25", ";NHF;", 100, 0, 1);
-   H1["JetNEFPT50EtaN25N15"] = new TH1D("HJetNEFPT50EtaN25N15", ";NEF;", 100, 0, 1);
-   H1["JetNEFPT50EtaN15N00"] = new TH1D("HJetNEFPT50EtaN15N00", ";NEF;", 100, 0, 1);
-   H1["JetNEFPT50EtaP00P15"] = new TH1D("HJetNEFPT50EtaP00P15", ";NEF;", 100, 0, 1);
-   H1["JetNEFPT50EtaP15P25"] = new TH1D("HJetNEFPT50EtaP15P25", ";NEF;", 100, 0, 1);
-   H1["JetMUFPT50EtaN25N15"] = new TH1D("HJetMUFPT50EtaN25N15", ";MUF;", 100, 0, 1);
-   H1["JetMUFPT50EtaN15N00"] = new TH1D("HJetMUFPT50EtaN15N00", ";MUF;", 100, 0, 1);
-   H1["JetMUFPT50EtaP00P15"] = new TH1D("HJetMUFPT50EtaP00P15", ";MUF;", 100, 0, 1);
-   H1["JetMUFPT50EtaP15P25"] = new TH1D("HJetMUFPT50EtaP15P25", ";MUF;", 100, 0, 1);
-   H1["JetCHFPT70EtaN25N15"] = new TH1D("HJetCHFPT70EtaN25N15", ";CHF;", 100, 0, 1);
-   H1["JetCHFPT70EtaN15N00"] = new TH1D("HJetCHFPT70EtaN15N00", ";CHF;", 100, 0, 1);
-   H1["JetCHFPT70EtaP00P15"] = new TH1D("HJetCHFPT70EtaP00P15", ";CHF;", 100, 0, 1);
-   H1["JetCHFPT70EtaP15P25"] = new TH1D("HJetCHFPT70EtaP15P25", ";CHF;", 100, 0, 1);
-   H1["JetCEFPT70EtaN25N15"] = new TH1D("HJetCEFPT70EtaN25N15", ";CEF;", 100, 0, 1);
-   H1["JetCEFPT70EtaN15N00"] = new TH1D("HJetCEFPT70EtaN15N00", ";CEF;", 100, 0, 1);
-   H1["JetCEFPT70EtaP00P15"] = new TH1D("HJetCEFPT70EtaP00P15", ";CEF;", 100, 0, 1);
-   H1["JetCEFPT70EtaP15P25"] = new TH1D("HJetCEFPT70EtaP15P25", ";CEF;", 100, 0, 1);
-   H1["JetNHFPT70EtaN25N15"] = new TH1D("HJetNHFPT70EtaN25N15", ";NHF;", 100, 0, 1);
-   H1["JetNHFPT70EtaN15N00"] = new TH1D("HJetNHFPT70EtaN15N00", ";NHF;", 100, 0, 1);
-   H1["JetNHFPT70EtaP00P15"] = new TH1D("HJetNHFPT70EtaP00P15", ";NHF;", 100, 0, 1);
-   H1["JetNHFPT70EtaP15P25"] = new TH1D("HJetNHFPT70EtaP15P25", ";NHF;", 100, 0, 1);
-   H1["JetNEFPT70EtaN25N15"] = new TH1D("HJetNEFPT70EtaN25N15", ";NEF;", 100, 0, 1);
-   H1["JetNEFPT70EtaN15N00"] = new TH1D("HJetNEFPT70EtaN15N00", ";NEF;", 100, 0, 1);
-   H1["JetNEFPT70EtaP00P15"] = new TH1D("HJetNEFPT70EtaP00P15", ";NEF;", 100, 0, 1);
-   H1["JetNEFPT70EtaP15P25"] = new TH1D("HJetNEFPT70EtaP15P25", ";NEF;", 100, 0, 1);
-   H1["JetMUFPT70EtaN25N15"] = new TH1D("HJetMUFPT70EtaN25N15", ";MUF;", 100, 0, 1);
-   H1["JetMUFPT70EtaN15N00"] = new TH1D("HJetMUFPT70EtaN15N00", ";MUF;", 100, 0, 1);
-   H1["JetMUFPT70EtaP00P15"] = new TH1D("HJetMUFPT70EtaP00P15", ";MUF;", 100, 0, 1);
-   H1["JetMUFPT70EtaP15P25"] = new TH1D("HJetMUFPT70EtaP15P25", ";MUF;", 100, 0, 1);
+   H1["JetCHFPT50EtaN25N15"] = new TH1D("HJetCHFPT50EtaN25N15", ";CHF;", 35, 0, 1);
+   H1["JetCHFPT50EtaN15N00"] = new TH1D("HJetCHFPT50EtaN15N00", ";CHF;", 35, 0, 1);
+   H1["JetCHFPT50EtaP00P15"] = new TH1D("HJetCHFPT50EtaP00P15", ";CHF;", 35, 0, 1);
+   H1["JetCHFPT50EtaP15P25"] = new TH1D("HJetCHFPT50EtaP15P25", ";CHF;", 35, 0, 1);
+   H1["JetCEFPT50EtaN25N15"] = new TH1D("HJetCEFPT50EtaN25N15", ";CEF;", 35, 0, 1);
+   H1["JetCEFPT50EtaN15N00"] = new TH1D("HJetCEFPT50EtaN15N00", ";CEF;", 35, 0, 1);
+   H1["JetCEFPT50EtaP00P15"] = new TH1D("HJetCEFPT50EtaP00P15", ";CEF;", 35, 0, 1);
+   H1["JetCEFPT50EtaP15P25"] = new TH1D("HJetCEFPT50EtaP15P25", ";CEF;", 35, 0, 1);
+   H1["JetNHFPT50EtaN25N15"] = new TH1D("HJetNHFPT50EtaN25N15", ";NHF;", 35, 0, 1);
+   H1["JetNHFPT50EtaN15N00"] = new TH1D("HJetNHFPT50EtaN15N00", ";NHF;", 35, 0, 1);
+   H1["JetNHFPT50EtaP00P15"] = new TH1D("HJetNHFPT50EtaP00P15", ";NHF;", 35, 0, 1);
+   H1["JetNHFPT50EtaP15P25"] = new TH1D("HJetNHFPT50EtaP15P25", ";NHF;", 35, 0, 1);
+   H1["JetNEFPT50EtaN25N15"] = new TH1D("HJetNEFPT50EtaN25N15", ";NEF;", 35, 0, 1);
+   H1["JetNEFPT50EtaN15N00"] = new TH1D("HJetNEFPT50EtaN15N00", ";NEF;", 35, 0, 1);
+   H1["JetNEFPT50EtaP00P15"] = new TH1D("HJetNEFPT50EtaP00P15", ";NEF;", 35, 0, 1);
+   H1["JetNEFPT50EtaP15P25"] = new TH1D("HJetNEFPT50EtaP15P25", ";NEF;", 35, 0, 1);
+   H1["JetMUFPT50EtaN25N15"] = new TH1D("HJetMUFPT50EtaN25N15", ";MUF;", 35, 0, 1);
+   H1["JetMUFPT50EtaN15N00"] = new TH1D("HJetMUFPT50EtaN15N00", ";MUF;", 35, 0, 1);
+   H1["JetMUFPT50EtaP00P15"] = new TH1D("HJetMUFPT50EtaP00P15", ";MUF;", 35, 0, 1);
+   H1["JetMUFPT50EtaP15P25"] = new TH1D("HJetMUFPT50EtaP15P25", ";MUF;", 35, 0, 1);
+   H1["JetCHFPT70EtaN25N15"] = new TH1D("HJetCHFPT70EtaN25N15", ";CHF;", 35, 0, 1);
+   H1["JetCHFPT70EtaN15N00"] = new TH1D("HJetCHFPT70EtaN15N00", ";CHF;", 35, 0, 1);
+   H1["JetCHFPT70EtaP00P15"] = new TH1D("HJetCHFPT70EtaP00P15", ";CHF;", 35, 0, 1);
+   H1["JetCHFPT70EtaP15P25"] = new TH1D("HJetCHFPT70EtaP15P25", ";CHF;", 35, 0, 1);
+   H1["JetCEFPT70EtaN25N15"] = new TH1D("HJetCEFPT70EtaN25N15", ";CEF;", 35, 0, 1);
+   H1["JetCEFPT70EtaN15N00"] = new TH1D("HJetCEFPT70EtaN15N00", ";CEF;", 35, 0, 1);
+   H1["JetCEFPT70EtaP00P15"] = new TH1D("HJetCEFPT70EtaP00P15", ";CEF;", 35, 0, 1);
+   H1["JetCEFPT70EtaP15P25"] = new TH1D("HJetCEFPT70EtaP15P25", ";CEF;", 35, 0, 1);
+   H1["JetNHFPT70EtaN25N15"] = new TH1D("HJetNHFPT70EtaN25N15", ";NHF;", 35, 0, 1);
+   H1["JetNHFPT70EtaN15N00"] = new TH1D("HJetNHFPT70EtaN15N00", ";NHF;", 35, 0, 1);
+   H1["JetNHFPT70EtaP00P15"] = new TH1D("HJetNHFPT70EtaP00P15", ";NHF;", 35, 0, 1);
+   H1["JetNHFPT70EtaP15P25"] = new TH1D("HJetNHFPT70EtaP15P25", ";NHF;", 35, 0, 1);
+   H1["JetNEFPT70EtaN25N15"] = new TH1D("HJetNEFPT70EtaN25N15", ";NEF;", 35, 0, 1);
+   H1["JetNEFPT70EtaN15N00"] = new TH1D("HJetNEFPT70EtaN15N00", ";NEF;", 35, 0, 1);
+   H1["JetNEFPT70EtaP00P15"] = new TH1D("HJetNEFPT70EtaP00P15", ";NEF;", 35, 0, 1);
+   H1["JetNEFPT70EtaP15P25"] = new TH1D("HJetNEFPT70EtaP15P25", ";NEF;", 35, 0, 1);
+   H1["JetMUFPT70EtaN25N15"] = new TH1D("HJetMUFPT70EtaN25N15", ";MUF;", 35, 0, 1);
+   H1["JetMUFPT70EtaN15N00"] = new TH1D("HJetMUFPT70EtaN15N00", ";MUF;", 35, 0, 1);
+   H1["JetMUFPT70EtaP00P15"] = new TH1D("HJetMUFPT70EtaP00P15", ";MUF;", 35, 0, 1);
+   H1["JetMUFPT70EtaP15P25"] = new TH1D("HJetMUFPT70EtaP15P25", ";MUF;", 35, 0, 1);
 
    // Jet ID distributions
-   H1["JetAlgo6FractionPT30PassL156"] = new TH1D("HJetAlgo6FractionPT30PassL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT50PassL156"] = new TH1D("HJetAlgo6FractionPT50PassL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT70PassL156"] = new TH1D("HJetAlgo6FractionPT70PassL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT80PassL156"] = new TH1D("HJetAlgo6FractionPT80PassL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT100PassL156"] = new TH1D("HJetAlgo6FractionPT100PassL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT30FailL156"] = new TH1D("HJetAlgo6FractionPT30FailL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT50FailL156"] = new TH1D("HJetAlgo6FractionPT50FailL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT70FailL156"] = new TH1D("HJetAlgo6FractionPT70FailL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT80FailL156"] = new TH1D("HJetAlgo6FractionPT80FailL156", "", 100, 0, 1);
-   H1["JetAlgo6FractionPT100FailL156"] = new TH1D("HJetAlgo6FractionPT100FailL156", "", 100, 0, 1);
+   H1["JetAlgo6FractionPT30PassL156"] = new TH1D("HJetAlgo6FractionPT30PassL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT50PassL156"] = new TH1D("HJetAlgo6FractionPT50PassL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT70PassL156"] = new TH1D("HJetAlgo6FractionPT70PassL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT80PassL156"] = new TH1D("HJetAlgo6FractionPT80PassL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT100PassL156"] = new TH1D("HJetAlgo6FractionPT100PassL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT30FailL156"] = new TH1D("HJetAlgo6FractionPT30FailL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT50FailL156"] = new TH1D("HJetAlgo6FractionPT50FailL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT70FailL156"] = new TH1D("HJetAlgo6FractionPT70FailL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT80FailL156"] = new TH1D("HJetAlgo6FractionPT80FailL156", "", 40, 0, 1);
+   H1["JetAlgo6FractionPT100FailL156"] = new TH1D("HJetAlgo6FractionPT100FailL156", "", 40, 0, 1);
 
    H2["JetEtaPhiPT50GoodID"] = new TH2D("HJetEtaPhiPT50GoodID", ";#eta;#phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
    H2["JetEtaPhiPT50BadID"] = new TH2D("HJetEtaPhiPT50BadID", ";#eta;#phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
@@ -367,6 +374,7 @@ int main(int argc, char *argv[])
          // Fill basic jet distributions + trigger-correlated + PF fractions
          for(int iJ = 0; iJ < MJet.JetCount; iJ++)
          {
+            double RefPT = MJet.RefPT[iJ];
             double RawPT = MJet.JetRawPT[iJ];
             double PT = MJet.JetPT[iJ];
             double Eta = MJet.JetEta[iJ];
@@ -380,6 +388,11 @@ int main(int argc, char *argv[])
                H2["RawPTVsJEC"]->Fill(RawPT, PT / RawPT);
                H2["RawPTVsJetPT"]->Fill(RawPT, PT);
             }
+
+            if(RefPT > 30 && RefPT < 50)     P1["JetEtaVsResponseGenPT30PT50"]->Fill(Eta, PT / RefPT);
+            if(RefPT > 50 && RefPT < 75)     P1["JetEtaVsResponseGenPT50PT75"]->Fill(Eta, PT / RefPT);
+            if(RefPT > 75 && RefPT < 100)    P1["JetEtaVsResponseGenPT75PT100"]->Fill(Eta, PT / RefPT);
+            if(RefPT > 100 && RefPT < 125)   P1["JetEtaVsResponseGenPT100PT125"]->Fill(Eta, PT / RefPT);
             
             if(PT > 30)    H2["JetEtaPhiPT30"]->Fill(Eta, Phi);
             if(PT > 50)    H2["JetEtaPhiPT50"]->Fill(Eta, Phi);
@@ -695,6 +708,7 @@ int main(int argc, char *argv[])
 
    for(auto I : H1)   if(I.second != nullptr)   I.second->Write();
    for(auto I : H2)   if(I.second != nullptr)   I.second->Write();
+   for(auto I : P1)   if(I.second != nullptr)   I.second->Write();
 
    OutputFile.Close();
 

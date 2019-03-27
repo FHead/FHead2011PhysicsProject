@@ -46,11 +46,38 @@ int main(int argc, char *argv[])
    H2["JetEtaPhiPT75"] = new TH2D("HJetEtaPhiPT75", ";Jet #eta;Jet #phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
    H2["JetEtaPhiPT100"] = new TH2D("HJetEtaPhiPT100", ";Jet #eta;Jet #phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
    H2["JetEtaPhiPT125"] = new TH2D("HJetEtaPhiPT125", ";Jet #eta;Jet #phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+
+   H1["JetEtaPT30"] = new TH1D("HJetEtaPT30", ";#eta;", 100, -2.5, 2.5);
+   H1["JetEtaPT50"] = new TH1D("HJetEtaPT50", ";#eta;", 100, -2.5, 2.5);
+   H1["JetEtaPT75"] = new TH1D("HJetEtaPT75", ";#eta;", 100, -2.5, 2.5);
+   H1["JetEtaPT100"] = new TH1D("HJetEtaPT100", ";#eta;", 100, -2.5, 2.5);
+   H1["JetEtaPT125"] = new TH1D("HJetEtaPT125", ";#eta;", 100, -2.5, 2.5);
    
    H1["JetPTEtaN25N15"] = new TH1D("HJetPTEtaN25N15", ";Jet PT;", 100, 0, 200);
    H1["JetPTEtaN15N00"] = new TH1D("HJetPTEtaN15N00", ";Jet PT;", 100, 0, 200);
    H1["JetPTEtaP00P15"] = new TH1D("HJetPTEtaP00P15", ";Jet PT;", 100, 0, 200);
    H1["JetPTEtaP15P25"] = new TH1D("HJetPTEtaP15P25", ";Jet PT;", 100, 0, 200);
+
+   H1["JetPhiPT30EtaN25N15"] = new TH1D("HJetPhiPT30EtaN25N15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT30EtaN15N00"] = new TH1D("HJetPhiPT30EtaN15N00", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT30EtaP00P15"] = new TH1D("HJetPhiPT30EtaP00P15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT30EtaP15P25"] = new TH1D("HJetPhiPT30EtaP15P25", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT50EtaN25N15"] = new TH1D("HJetPhiPT50EtaN25N15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT50EtaN15N00"] = new TH1D("HJetPhiPT50EtaN15N00", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT50EtaP00P15"] = new TH1D("HJetPhiPT50EtaP00P15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT50EtaP15P25"] = new TH1D("HJetPhiPT50EtaP15P25", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT75EtaN25N15"] = new TH1D("HJetPhiPT75EtaN25N15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT75EtaN15N00"] = new TH1D("HJetPhiPT75EtaN15N00", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT75EtaP00P15"] = new TH1D("HJetPhiPT75EtaP00P15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT75EtaP15P25"] = new TH1D("HJetPhiPT75EtaP15P25", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT100EtaN25N15"] = new TH1D("HJetPhiPT100EtaN25N15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT100EtaN15N00"] = new TH1D("HJetPhiPT100EtaN15N00", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT100EtaP00P15"] = new TH1D("HJetPhiPT100EtaP00P15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT100EtaP15P25"] = new TH1D("HJetPhiPT100EtaP15P25", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT125EtaN25N15"] = new TH1D("HJetPhiPT125EtaN25N15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT125EtaN15N00"] = new TH1D("HJetPhiPT125EtaN15N00", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT125EtaP00P15"] = new TH1D("HJetPhiPT125EtaP00P15", ";Jet #phi;", 100, -M_PI, M_PI);
+   H1["JetPhiPT125EtaP15P25"] = new TH1D("HJetPhiPT125EtaP15P25", ";Jet #phi;", 100, -M_PI, M_PI);
 
    H2["RawPTVsJEC"] = new TH2D("HRawPTVsJEC", ";Raw PT;JEC", 100, 0, 200, 100, 0, 2.5);
    H2["RawPTVsJetPT"] = new TH2D("HRawPTVsJetPT", ";Raw PT;JEC", 100, 0, 200, 100, 0, 200);
@@ -360,10 +387,37 @@ int main(int argc, char *argv[])
             if(PT > 100)   H2["JetEtaPhiPT100"]->Fill(Eta, Phi);
             if(PT > 125)   H2["JetEtaPhiPT125"]->Fill(Eta, Phi);
 
+            if(PT > 30)    H1["JetEtaPT30"]->Fill(Eta);
+            if(PT > 50)    H1["JetEtaPT50"]->Fill(Eta);
+            if(PT > 75)    H1["JetEtaPT75"]->Fill(Eta);
+            if(PT > 100)   H1["JetEtaPT100"]->Fill(Eta);
+            if(PT > 125)   H1["JetEtaPT125"]->Fill(Eta);
+
             if(Eta > -2.5 && Eta < -1.5)   H1["JetPTEtaN25N15"]->Fill(PT);
             if(Eta > -1.5 && Eta < 0.0)    H1["JetPTEtaN15N00"]->Fill(PT);
             if(Eta > 0.0 && Eta < 1.5)     H1["JetPTEtaP00P15"]->Fill(PT);
             if(Eta > 1.5 && Eta < 2.5)     H1["JetPTEtaP15P25"]->Fill(PT);
+
+            if(Eta > -2.5 && Eta < -1.5 && PT > 30)    H1["JetPhiPT30EtaN25N15"]->Fill(Phi);
+            if(Eta > -1.5 && Eta < 0.0 && PT > 30)     H1["JetPhiPT30EtaN15N00"]->Fill(Phi);
+            if(Eta > 0.0 && Eta < 1.5 && PT > 30)      H1["JetPhiPT30EtaP00P15"]->Fill(Phi);
+            if(Eta > 1.5 && Eta < 2.5 && PT > 30)      H1["JetPhiPT30EtaP15P25"]->Fill(Phi);
+            if(Eta > -2.5 && Eta < -1.5 && PT > 50)    H1["JetPhiPT50EtaN25N15"]->Fill(Phi);
+            if(Eta > -1.5 && Eta < 0.0 && PT > 50)     H1["JetPhiPT50EtaN15N00"]->Fill(Phi);
+            if(Eta > 0.0 && Eta < 1.5 && PT > 50)      H1["JetPhiPT50EtaP00P15"]->Fill(Phi);
+            if(Eta > 1.5 && Eta < 2.5 && PT > 50)      H1["JetPhiPT50EtaP15P25"]->Fill(Phi);
+            if(Eta > -2.5 && Eta < -1.5 && PT > 75)    H1["JetPhiPT75EtaN25N15"]->Fill(Phi);
+            if(Eta > -1.5 && Eta < 0.0 && PT > 75)     H1["JetPhiPT75EtaN15N00"]->Fill(Phi);
+            if(Eta > 0.0 && Eta < 1.5 && PT > 75)      H1["JetPhiPT75EtaP00P15"]->Fill(Phi);
+            if(Eta > 1.5 && Eta < 2.5 && PT > 75)      H1["JetPhiPT75EtaP15P25"]->Fill(Phi);
+            if(Eta > -2.5 && Eta < -1.5 && PT > 100)   H1["JetPhiPT100EtaN25N15"]->Fill(Phi);
+            if(Eta > -1.5 && Eta < 0.0 && PT > 100)    H1["JetPhiPT100EtaN15N00"]->Fill(Phi);
+            if(Eta > 0.0 && Eta < 1.5 && PT > 100)     H1["JetPhiPT100EtaP00P15"]->Fill(Phi);
+            if(Eta > 1.5 && Eta < 2.5 && PT > 100)     H1["JetPhiPT100EtaP15P25"]->Fill(Phi);
+            if(Eta > -2.5 && Eta < -1.5 && PT > 125)   H1["JetPhiPT125EtaN25N15"]->Fill(Phi);
+            if(Eta > -1.5 && Eta < 0.0 && PT > 125)    H1["JetPhiPT125EtaN15N00"]->Fill(Phi);
+            if(Eta > 0.0 && Eta < 1.5 && PT > 125)     H1["JetPhiPT125EtaP00P15"]->Fill(Phi);
+            if(Eta > 1.5 && Eta < 2.5 && PT > 125)     H1["JetPhiPT125EtaP15P25"]->Fill(Phi);
             
             // Trigger-related
             if(PassL156 == false)

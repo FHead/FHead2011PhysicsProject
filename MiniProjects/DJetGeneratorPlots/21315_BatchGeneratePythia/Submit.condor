@@ -1,0 +1,12 @@
+Universe              = vanilla
+Executable            = /afs/cern.ch/user/c/chenyi/work/PhysicsWorkspace/MiniProjects/DJetGeneratorPlots/21315_BatchGeneratePythia/RunJob.sh
+should_transfer_files = NO
+requirements          = (OpSysAndVer =?= "SLCern6")
++JobFlavour           = "workday"
+
+Arguments = /eos/user/c/chenyi/Share/21315_BatchGeneratePythia//Result_$(Process).root
+Output    = Log/RunPythia.out.$(Process)
+Error     = Log/RunPythia.err.$(Process)
+Log       = Log/RunPythia.log.$(Process)
+Queue 10000
+

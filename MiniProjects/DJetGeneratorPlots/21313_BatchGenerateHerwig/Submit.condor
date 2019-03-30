@@ -1,0 +1,12 @@
+Universe              = vanilla
+Executable            = /afs/cern.ch/user/c/chenyi/work/PhysicsWorkspace/MiniProjects/DJetGeneratorPlots/21313_BatchGenerateHerwig/RunJob.sh
+should_transfer_files = NO
+requirements          = (OpSysAndVer =?= "SLCern6")
++JobFlavour           = "workday"
+
+Arguments = /eos/user/c/chenyi/Share/21313_BatchGenerateHerwig//Result_$(Process).root $(Process)
+Output    = Log/RunHerwig.out.$(Process)
+Error     = Log/RunHerwig.err.$(Process)
+Log       = Log/RunHerwig.log.$(Process)
+Queue 10000
+

@@ -60,6 +60,8 @@ int main(int argc, char *argv[])
    Tree->SetBranchAddress("PiEta", &PiEta);
    Tree->SetBranchAddress("PiPhi", &PiPhi);
 
+   TFile OutputFile((OutputBase + ".root").c_str(), "RECREATE");
+
    int BinCount = 4;
    double Bins[] = {0, 0.05, 0.1, 0.3, 0.5};
 
@@ -157,6 +159,20 @@ int main(int argc, char *argv[])
    NormalizeHistogram(HMatchedDRBin0Rebin, BinCount, Bins);
    NormalizeHistogram(HMatchedDRBin1Rebin, BinCount, Bins);
 
+   ((TH1D *)File.Get("HN"))->Write();
+   HJetCount.Write();
+   HD0Count.Write();
+   HGoodJetCount.Write();
+   HGoodD0Count.Write();
+   HMatchedCount.Write();
+   HMatchedDR.Write();
+   HMatchedDRBin0.Write();
+   HMatchedDRBin1.Write();
+   HMatchedDRBin0Rebin.Write();
+   HMatchedDRBin1Rebin.Write();
+
+   OutputFile.Close();
+
    PdfFile.AddPlot(HJetCount, "", true);
    PdfFile.AddPlot(HD0Count, "", true);
    PdfFile.AddPlot(HGoodJetCount, "", true);
@@ -169,10 +185,26 @@ int main(int argc, char *argv[])
    PdfFile.AddPlot(HMatchedDRBin1Rebin, "", true);
    HMatchedDRBin0Rebin.SetMarkerStyle(20);
    HMatchedDRBin1Rebin.SetMarkerStyle(20);
-   HMatchedDRBin0Rebin.SetMarkerSize(5);
-   HMatchedDRBin1Rebin.SetMarkerSize(5);
-   PdfFile.AddPlot(HMatchedDRBin0Rebin, "", true);
-   PdfFile.AddPlot(HMatchedDRBin1Rebin, "", true);
+   HMatchedDRBin0Rebin.SetMarkerSize(3);
+   HMatchedDRBin1Rebin.SetMarkerSize(3);
+   // PdfFile.AddPlot(HMatchedDRBin0Rebin, "", true);
+   // PdfFile.AddPlot(HMatchedDRBin1Rebin, "", true);
+
+   TCanvas Canvas;
+   
+   TH2D HWorld1("HWorld1", ";r;", 100, 0, 0.5, 100, 0.1, 100);
+   HWorld1.SetStats(0);
+   HWorld1.Draw("axis");
+   HMatchedDRBin0Rebin.Draw("same");
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
+   
+   TH2D HWorld2("HWorld2", ";r;", 100, 0, 0.5, 100, 0.01, 100);
+   HWorld2.SetStats(0);
+   HWorld2.Draw("axis");
+   HMatchedDRBin1Rebin.Draw("same");
+   Canvas.SetLogy();
+   PdfFile.AddCanvas(Canvas);
 
    File.Close();
 

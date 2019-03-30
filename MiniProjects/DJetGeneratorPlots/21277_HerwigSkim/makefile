@@ -12,6 +12,14 @@ RunAll: Execute
 	./Execute --Input `ls Output/*/*root | tr '\n' ','` --Output AllRun.root \
 		--JetPTMin 30
 
+RunPythia: Execute
+	./Execute --Input `ls PythiaOutput/Result_*_GEN.root | tr '\n' ','` --Output PythiaAllRun.root \
+		--JetPTMin 30
+
+RunPythiaWeighted: Execute
+	./Execute --Input `ls PythiaWeightedOutput/Result_*_GEN.root | tr '\n' ','` --Output PythiaWeightedAllRun.root \
+		--JetPTMin 30
+
 Execute: Skim.cpp
 	CompileRootMacro Skim.cpp Execute \
 		`$(FASTJET)/fastjet-config --cxxflags` `$(FASTJET)/fastjet-config --libs` \

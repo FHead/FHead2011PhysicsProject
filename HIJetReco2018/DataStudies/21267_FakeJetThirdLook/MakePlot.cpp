@@ -65,6 +65,28 @@ int main(int argc, char *argv[])
    AddMirrorPlot(PdfFile, InputFile, "HTrackMETXPeripheral");
    AddMirrorPlot(PdfFile, InputFile, "HPositiveTrackMETX");
    AddMirrorPlot(PdfFile, InputFile, "HPositiveTrackMETXPeripheral");
+   
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID2PT2MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID4PT2MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID5PT2MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID6PT2MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID7PT2MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID22PT2MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID23PT2MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID2PT5MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID4PT5MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID5PT5MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID6PT5MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID7PT5MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID22PT5MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID23PT5MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID2PT10MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID4PT10MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID5PT10MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID6PT10MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID7PT10MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID22PT10MVA090", "colz");
+   PdfFile.AddHistogramFromFile(InputFile, "HTrackEtaPhiID23PT10MVA090", "colz");
 
    InputFile.Close();
 

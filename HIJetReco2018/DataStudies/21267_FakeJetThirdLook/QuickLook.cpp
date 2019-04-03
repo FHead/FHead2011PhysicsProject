@@ -73,6 +73,34 @@ int main(int argc, char *argv[])
    vector<TH1D *> HPositiveTrackMETXPeripheral(MVALabel.size());
    vector<TH1D *> HPositiveTrackMETYPeripheral(MVALabel.size());
    vector<TH1D *> HPositiveTrackMETPeripheral(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID2PT1(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID2PT2(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID2PT5(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID2PT10(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID4PT1(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID4PT2(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID4PT5(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID4PT10(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID5PT1(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID5PT2(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID5PT5(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID5PT10(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID6PT1(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID6PT2(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID6PT5(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID6PT10(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID7PT1(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID7PT2(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID7PT5(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID7PT10(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID22PT1(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID22PT2(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID22PT5(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID22PT10(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID23PT1(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID23PT2(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID23PT5(MVALabel.size());
+   vector<TH2D *> HTrackEtaPhiID23PT10(MVALabel.size());
 
    for(int iM = 0; iM < (int)MVALabel.size(); iM++)
    {
@@ -105,6 +133,34 @@ int main(int argc, char *argv[])
       HPositiveTrackMETXPeripheral[iM] = new TH1D(Form("HPositiveTrackMETXPeripheral%s", MVALabel[iM].c_str()), ";MET(x);", 150, -100, 100);
       HPositiveTrackMETYPeripheral[iM] = new TH1D(Form("HPositiveTrackMETYPeripheral%s", MVALabel[iM].c_str()), ";MET(y);", 150, -100, 100);
       HPositiveTrackMETPeripheral[iM] = new TH1D(Form("HPositiveTrackMETPeripheral%s", MVALabel[iM].c_str()), ";MET;", 150, 0, 100);
+      HTrackEtaPhiID2PT1[iM] = new TH2D(Form("HTrackEtaPhiID2PT1%s", MVALabel[iM].c_str()), "PT > 1, ID = 2;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID2PT2[iM] = new TH2D(Form("HTrackEtaPhiID2PT2%s", MVALabel[iM].c_str()), "PT > 2, ID = 2;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID2PT5[iM] = new TH2D(Form("HTrackEtaPhiID2PT5%s", MVALabel[iM].c_str()), "PT > 5, ID = 2;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID2PT10[iM] = new TH2D(Form("HTrackEtaPhiID2PT10%s", MVALabel[iM].c_str()), "PT > 10, ID = 2;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID4PT1[iM] = new TH2D(Form("HTrackEtaPhiID4PT1%s", MVALabel[iM].c_str()), "PT > 1, ID = 4;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID4PT2[iM] = new TH2D(Form("HTrackEtaPhiID4PT2%s", MVALabel[iM].c_str()), "PT > 2, ID = 4;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID4PT5[iM] = new TH2D(Form("HTrackEtaPhiID4PT5%s", MVALabel[iM].c_str()), "PT > 5, ID = 4;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID4PT10[iM] = new TH2D(Form("HTrackEtaPhiID4PT10%s", MVALabel[iM].c_str()), "PT > 10, ID = 4;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID5PT1[iM] = new TH2D(Form("HTrackEtaPhiID5PT1%s", MVALabel[iM].c_str()), "PT > 1, ID = 5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID5PT2[iM] = new TH2D(Form("HTrackEtaPhiID5PT2%s", MVALabel[iM].c_str()), "PT > 2, ID = 5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID5PT5[iM] = new TH2D(Form("HTrackEtaPhiID5PT5%s", MVALabel[iM].c_str()), "PT > 5, ID = 5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID5PT10[iM] = new TH2D(Form("HTrackEtaPhiID5PT10%s", MVALabel[iM].c_str()), "PT > 10, ID = 5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID6PT1[iM] = new TH2D(Form("HTrackEtaPhiID6PT1%s", MVALabel[iM].c_str()), "PT > 1, ID = 6;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID6PT2[iM] = new TH2D(Form("HTrackEtaPhiID6PT2%s", MVALabel[iM].c_str()), "PT > 2, ID = 6;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID6PT5[iM] = new TH2D(Form("HTrackEtaPhiID6PT5%s", MVALabel[iM].c_str()), "PT > 5, ID = 6;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID6PT10[iM] = new TH2D(Form("HTrackEtaPhiID6PT10%s", MVALabel[iM].c_str()), "PT > 10, ID = 6;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID7PT1[iM] = new TH2D(Form("HTrackEtaPhiID7PT1%s", MVALabel[iM].c_str()), "PT > 1, ID = 7;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID7PT2[iM] = new TH2D(Form("HTrackEtaPhiID7PT2%s", MVALabel[iM].c_str()), "PT > 2, ID = 7;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID7PT5[iM] = new TH2D(Form("HTrackEtaPhiID7PT5%s", MVALabel[iM].c_str()), "PT > 5, ID = 7;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID7PT10[iM] = new TH2D(Form("HTrackEtaPhiID7PT10%s", MVALabel[iM].c_str()), "PT > 10, ID = 7;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID22PT1[iM] = new TH2D(Form("HTrackEtaPhiID22PT1%s", MVALabel[iM].c_str()), "PT > 1, ID = 22;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID22PT2[iM] = new TH2D(Form("HTrackEtaPhiID22PT2%s", MVALabel[iM].c_str()), "PT > 2, ID = 22;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID22PT5[iM] = new TH2D(Form("HTrackEtaPhiID22PT5%s", MVALabel[iM].c_str()), "PT > 5, ID = 22;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID22PT10[iM] = new TH2D(Form("HTrackEtaPhiID22PT10%s", MVALabel[iM].c_str()), "PT > 10, ID = 22;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID23PT1[iM] = new TH2D(Form("HTrackEtaPhiID23PT1%s", MVALabel[iM].c_str()), "PT > 1, ID = 23;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID23PT2[iM] = new TH2D(Form("HTrackEtaPhiID23PT2%s", MVALabel[iM].c_str()), "PT > 2, ID = 23;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID23PT5[iM] = new TH2D(Form("HTrackEtaPhiID23PT5%s", MVALabel[iM].c_str()), "PT > 5, ID = 23;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+      HTrackEtaPhiID23PT10[iM] = new TH2D(Form("HTrackEtaPhiID23PT10%s", MVALabel[iM].c_str()), "PT > 10, ID = 23;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
    }
 
    for(string FileName : InputFileName)
@@ -162,6 +218,64 @@ int main(int argc, char *argv[])
             vector<PseudoJet> Tracks;
             FourVector TrackMET;
             FourVector PositiveTrackMET;
+
+            for(int iT = 0; iT < MTrack.TrackCount; iT++)
+            {
+               if(MTrack.HighPurity[iT] == false)
+                  continue;
+               if(MTrack.TrackAlgo[iT] == 6 && MTrack.TrackMVA[iT] < MVACut[iM])
+                  continue;
+
+               if(MTrack.TrackAlgo[iT] == 2)
+               {
+                  if(MTrack.TrackPT[iT] > 1)    HTrackEtaPhiID2PT1[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 2)    HTrackEtaPhiID2PT2[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 5)    HTrackEtaPhiID2PT5[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 10)   HTrackEtaPhiID2PT10[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+               }
+               if(MTrack.TrackAlgo[iT] == 4)
+               {
+                  if(MTrack.TrackPT[iT] > 1)    HTrackEtaPhiID4PT1[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 2)    HTrackEtaPhiID4PT2[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 5)    HTrackEtaPhiID4PT5[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 10)   HTrackEtaPhiID4PT10[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+               }
+               if(MTrack.TrackAlgo[iT] == 5)
+               {
+                  if(MTrack.TrackPT[iT] > 1)    HTrackEtaPhiID5PT1[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 2)    HTrackEtaPhiID5PT2[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 5)    HTrackEtaPhiID5PT5[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 10)   HTrackEtaPhiID5PT10[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+               }
+               if(MTrack.TrackAlgo[iT] == 6)
+               {
+                  if(MTrack.TrackPT[iT] > 1)    HTrackEtaPhiID6PT1[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 2)    HTrackEtaPhiID6PT2[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 5)    HTrackEtaPhiID6PT5[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 10)   HTrackEtaPhiID6PT10[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+               }
+               if(MTrack.TrackAlgo[iT] == 7)
+               {
+                  if(MTrack.TrackPT[iT] > 1)    HTrackEtaPhiID7PT1[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 2)    HTrackEtaPhiID7PT2[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 5)    HTrackEtaPhiID7PT5[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 10)   HTrackEtaPhiID7PT10[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+               }
+               if(MTrack.TrackAlgo[iT] == 22)
+               {
+                  if(MTrack.TrackPT[iT] > 1)    HTrackEtaPhiID22PT1[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 2)    HTrackEtaPhiID22PT2[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 5)    HTrackEtaPhiID22PT5[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 10)   HTrackEtaPhiID22PT10[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+               }
+               if(MTrack.TrackAlgo[iT] == 23)
+               {
+                  if(MTrack.TrackPT[iT] > 1)    HTrackEtaPhiID23PT1[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 2)    HTrackEtaPhiID23PT2[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 5)    HTrackEtaPhiID23PT5[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+                  if(MTrack.TrackPT[iT] > 10)   HTrackEtaPhiID23PT10[iM]->Fill(MTrack.TrackEta[iT], MTrack.TrackPhi[iT]);
+               }
+            }
 
             for(int iT = 0; iT < MTrack.TrackCount; iT++)
             {
@@ -291,6 +405,34 @@ int main(int argc, char *argv[])
    for(auto H : HPositiveTrackMETXPeripheral)   if(H != nullptr)   H->Write();
    for(auto H : HPositiveTrackMETYPeripheral)   if(H != nullptr)   H->Write();
    for(auto H : HPositiveTrackMETPeripheral)    if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID2PT1)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID2PT2)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID2PT5)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID2PT10)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID4PT1)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID4PT2)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID4PT5)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID4PT10)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID5PT1)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID5PT2)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID5PT5)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID5PT10)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID6PT1)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID6PT2)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID6PT5)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID6PT10)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID7PT1)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID7PT2)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID7PT5)             if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID7PT10)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID22PT1)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID22PT2)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID22PT5)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID22PT10)           if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID23PT1)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID23PT2)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID23PT5)            if(H != nullptr)   H->Write();
+   for(auto H : HTrackEtaPhiID23PT10)           if(H != nullptr)   H->Write();
    
    OutputFile.Close();
 

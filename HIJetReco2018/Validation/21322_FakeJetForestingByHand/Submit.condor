@@ -1,0 +1,80 @@
+WorkDir   = /afs/cern.ch/user/c/chenyi/work/PhysicsWorkspace/HIJetReco2018/Validation/21322_FakeJetForestingByHand/
+
+Universe   = vanilla
+Executable = $(WorkDir)/RunJob.sh
+should_transfer_files = NO
+requirements = (OpSysAndVer =?= "SLCern6")
++JobFlavour = "workday"
+
+Output    = Log/RunForest.out.$(Process)
+Error     = Log/RunForest.err.$(Process)
+Log       = Log/RunForest.log.$(Process)
+
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/F2F4151E-099F-A44A-8C11-3B53407F051B.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/1197C347-1E9E-9A45-8E82-732277E16B83.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/F4ECDB94-CBC6-1345-A668-88B2BFB263AE.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/9C6BFA54-4C5A-9A41-A492-20ABB75461D1.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/757A9DEB-C4CE-FB49-AC0C-2873B7BD18A6.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/02348E7C-BD71-8348-AB4D-25D0C7B17E12.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/CC7F3552-5841-6D47-A0E5-46A5BF4C0E13.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/DDD01E66-2C36-1449-8C1E-5BE22491A240.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/FAAB9785-9915-EF4E-B099-9BC38D0B9088.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/D70CAB55-29E7-074A-8453-64DBABEFD669.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/0D3AC910-078E-4349-B800-43242173AFA4.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/980C4234-B2C6-7A41-B752-F6F8D50ECFFC.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/C6DF507F-8020-9B4E-B7B3-EB9484C4EC7F.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/1D2DAE54-735C-914C-A040-ABB9F77258E5.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/0008B47B-7B1E-8D4F-B42B-DC3C339A0DFE.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/9E9A3815-218B-0647-ACB3-FEB3E8C314EF.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/D5FF7B57-A015-C540-9B5A-565DF8E29BB9.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/6125E933-C312-FF43-9C8F-B3DDE70F9E7B.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/BE696B38-A1F8-E648-8CC9-E7437C74DB5D.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/84CE675A-962C-EF45-AF43-26A28FC12712.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/A002606C-7516-EF49-B28B-BA6591AF0750.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/863A71D5-57D8-C040-AABB-E7CD47D54598.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/5D8D72A9-5EBC-8E4E-919B-44714C42F1B3.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/ECEF9F21-E5FF-8A48-BA0A-135DA0C57481.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/311D3B03-1CEC-4641-9DF1-EB7D48FF41AE.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/15CB4F87-B4FE-7E41-9DF6-6A33116258D3.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/EACC8EF2-BFF9-5346-BA2E-07C356994FD5.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/2DD07144-CACB-4045-A74F-63231685695F.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/F7B78BDC-F2E3-B743-9222-1F68ED411BB1.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/AC08F2B0-EB99-1047-A252-54442F809F39.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/66CBCD29-E6E6-3E47-AC81-251E161B09A4.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/89E83DC3-C449-9F42-B683-C77B3D87281B.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/4F96CC4E-EFFA-EA49-8C06-C09E41E28ED3.root
+Queue
+Arguments = /store/relval/CMSSW_10_3_3/HIMinimumBias0/AOD/103X_dataRun2_Prompt_v2_newMVA_rsb_RelVal_hi2018-v1/10000/A885F75A-8F70-2441-9B36-D2F03328820D.root
+Queue

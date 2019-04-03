@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
    string JetTreeName            = CL.Get("Tree", "ak4PFJetAnalyzer/t");
    bool RemoveHEM                = CL.GetBool("RemoveHEM", false);
    bool IsCalo                   = CL.GetBool("IsCalo", true);
+   bool Algo6Rejection           = CL.GetBool("Algo6Rejection", false);
    double CBarrel                = CL.GetDouble("CBarrel", 0.99277375);
    double CEndcap                = CL.GetDouble("CEndcap", 1.1537139);
    double JetR                   = CL.GetDouble("JetR", 0.4);
@@ -69,10 +70,11 @@ int main(int argc, char *argv[])
    TH2D HJetEtaPhi_PT100("HJetEtaPhi_PT100", "Jet p_{T} > 100;Jet #eta;Jet #phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
    TH2D HJetEtaPhi_PT125("HJetEtaPhi_PT125", "Jet p_{T} > 125;Jet #eta;Jet #phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
 
-   TH2D HRVsEta_PT30_PT50("HRVsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Response", 100, -2.5, 2.5, 100, 0, 2.5);
-   TH2D HRVsEta_PT50_PT75("HRVsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Response", 100, -2.5, 2.5, 100, 0, 2.5);
-   TH2D HRVsEta_PT75_PT100("HRVsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Response", 100, -2.5, 2.5, 100, 0, 2.5);
-   TH2D HRVsEta_PT100_PT125("HRVsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Response", 100, -2.5, 2.5, 100, 0, 2.5);
+   TH2D HRVsEta_PT30_PT50("HRVsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HRVsEta_PT50_PT75("HRVsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HRVsEta_PT75_PT100("HRVsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HRVsEta_PT50_PT100("HRVsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HRVsEta_PT100_PT125("HRVsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Response", 100, -2.5, 2.5, 300, 0, 2.5);
    TH2D HRVsPT_EtaN25N15("HRVsPT_EtaN25N15", "-2.5 < #eta < -1.5;p_{T};Response", 100, 0, 300, 100, 0, 2.5);
    TH2D HRVsPT_EtaN15N00("HRVsPT_EtaN15N00", "-1.5 < #eta < 0.0;p_{T};Response", 100, 0, 300, 100, 0, 2.5);
    TH2D HRVsPT_EtaP00P15("HRVsPT_EtaP00P15", "0.0 < #eta < 1.5;p_{T};Response", 100, 0, 300, 100, 0, 2.5);
@@ -81,20 +83,23 @@ int main(int argc, char *argv[])
    TProfile PRVsEta_PT30_PT50("PRVsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Response", 100, -2.5, 2.5);
    TProfile PRVsEta_PT50_PT75("PRVsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Response", 100, -2.5, 2.5);
    TProfile PRVsEta_PT75_PT100("PRVsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Response", 100, -2.5, 2.5);
+   TProfile PRVsEta_PT50_PT100("PRVsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Response", 100, -2.5, 2.5);
    TProfile PRVsEta_PT100_PT125("PRVsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Response", 100, -2.5, 2.5);
    TProfile PRVsPT_EtaN25N15("PRVsPT_EtaN25N15", "-2.5 < #eta < -1.5;p_{T};Response", 100, 0, 200);
    TProfile PRVsPT_EtaN15N00("PRVsPT_EtaN15N00", "-1.5 < #eta < 0.0;p_{T};Response", 100, 0, 200);
    TProfile PRVsPT_EtaP00P15("PRVsPT_EtaP00P15", "0.0 < #eta < 1.5;p_{T};Response", 100, 0, 200);
    TProfile PRVsPT_EtaP15P25("PRVsPT_EtaP15P25", "1.5 < #eta < 2.5;p_{T};Response", 100, 0, 200);
 
-   TH2D HRVsAbsEta_PT30_PT50("HRVsAbsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Response", 40, 0.0, 2.5, 100, 0, 2.5);
-   TH2D HRVsAbsEta_PT50_PT75("HRVsAbsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Response", 40, 0.0, 2.5, 100, 0, 2.5);
-   TH2D HRVsAbsEta_PT75_PT100("HRVsAbsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Response", 40, 0.0, 2.5, 100, 0, 2.5);
-   TH2D HRVsAbsEta_PT100_PT125("HRVsAbsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Response", 40, 0.0, 2.5, 100, 0, 2.5);
+   TH2D HRVsAbsEta_PT30_PT50("HRVsAbsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HRVsAbsEta_PT50_PT75("HRVsAbsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HRVsAbsEta_PT75_PT100("HRVsAbsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HRVsAbsEta_PT50_PT100("HRVsAbsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HRVsAbsEta_PT100_PT125("HRVsAbsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Response", 40, 0.0, 2.5, 300, 0, 2.5);
    
    TProfile PRVsAbsEta_PT30_PT50("PRVsAbsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Response", 40, 0.0, 2.5);
    TProfile PRVsAbsEta_PT50_PT75("PRVsAbsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Response", 40, 0.0, 2.5);
    TProfile PRVsAbsEta_PT75_PT100("PRVsAbsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Response", 40, 0.0, 2.5);
+   TProfile PRVsAbsEta_PT50_PT100("PRVsAbsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Response", 40, 0.0, 2.5);
    TProfile PRVsAbsEta_PT100_PT125("PRVsAbsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Response", 40, 0.0, 2.5);
 
    TH2D HEtaVsFractionInEndcap("HEtaVsFractionInEndcap", ";#eta;f_{endcap}", 75, -2.5, 2.5, 75, -0.1, 1.1);
@@ -102,10 +107,11 @@ int main(int argc, char *argv[])
 
    TH2D HJetPTVsJetCPT("HJetPTVsJetCPT", ";Jet p_{T};Corrected jet p_{T}", 100, 0, 200, 100, 0, 200);
    
-   TH2D HCRVsEta_PT30_PT50("HCRVsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Corrected response", 100, -2.5, 2.5, 100, 0, 2.5);
-   TH2D HCRVsEta_PT50_PT75("HCRVsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Corrected response", 100, -2.5, 2.5, 100, 0, 2.5);
-   TH2D HCRVsEta_PT75_PT100("HCRVsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Corrected response", 100, -2.5, 2.5, 100, 0, 2.5);
-   TH2D HCRVsEta_PT100_PT125("HCRVsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Corrected response", 100, -2.5, 2.5, 100, 0, 2.5);
+   TH2D HCRVsEta_PT30_PT50("HCRVsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Corrected response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HCRVsEta_PT50_PT75("HCRVsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Corrected response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HCRVsEta_PT75_PT100("HCRVsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Corrected response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HCRVsEta_PT50_PT100("HCRVsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Corrected response", 100, -2.5, 2.5, 300, 0, 2.5);
+   TH2D HCRVsEta_PT100_PT125("HCRVsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Corrected response", 100, -2.5, 2.5, 300, 0, 2.5);
    TH2D HCRVsPT_EtaN25N15("HCRVsPT_EtaN25N15", "-2.5 < #eta < -1.5;p_{T};Corrected response", 100, 0, 300, 100, 0, 2.5);
    TH2D HCRVsPT_EtaN15N00("HCRVsPT_EtaN15N00", "-1.5 < #eta < 0.0;p_{T};Corrected response", 100, 0, 300, 100, 0, 2.5);
    TH2D HCRVsPT_EtaP00P15("HCRVsPT_EtaP00P15", "0.0 < #eta < 1.5;p_{T};Corrected response", 100, 0, 300, 100, 0, 2.5);
@@ -114,20 +120,23 @@ int main(int argc, char *argv[])
    TProfile PCRVsEta_PT30_PT50("PCRVsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Corrected response", 100, -2.5, 2.5);
    TProfile PCRVsEta_PT50_PT75("PCRVsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Corrected response", 100, -2.5, 2.5);
    TProfile PCRVsEta_PT75_PT100("PCRVsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Corrected response", 100, -2.5, 2.5);
+   TProfile PCRVsEta_PT50_PT100("PCRVsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Corrected response", 100, -2.5, 2.5);
    TProfile PCRVsEta_PT100_PT125("PCRVsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Corrected response", 100, -2.5, 2.5);
    TProfile PCRVsPT_EtaN25N15("PCRVsPT_EtaN25N15", "-2.5 < #eta < -1.5;p_{T};Corrected response", 100, 0, 200);
    TProfile PCRVsPT_EtaN15N00("PCRVsPT_EtaN15N00", "-1.5 < #eta < 0.0;p_{T};Corrected response", 100, 0, 200);
    TProfile PCRVsPT_EtaP00P15("PCRVsPT_EtaP00P15", "0.0 < #eta < 1.5;p_{T};Corrected response", 100, 0, 200);
    TProfile PCRVsPT_EtaP15P25("PCRVsPT_EtaP15P25", "1.5 < #eta < 2.5;p_{T};Corrected response", 100, 0, 200);
 
-   TH2D HCRVsAbsEta_PT30_PT50("HCRVsAbsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Corrected response", 40, 0.0, 2.5, 100, 0, 2.5);
-   TH2D HCRVsAbsEta_PT50_PT75("HCRVsAbsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Corrected response", 40, 0.0, 2.5, 100, 0, 2.5);
-   TH2D HCRVsAbsEta_PT75_PT100("HCRVsAbsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Corrected response", 40, 0.0, 2.5, 100, 0, 2.5);
-   TH2D HCRVsAbsEta_PT100_PT125("HCRVsAbsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Corrected response", 40, 0.0, 2.5, 100, 0, 2.5);
+   TH2D HCRVsAbsEta_PT30_PT50("HCRVsAbsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Corrected response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HCRVsAbsEta_PT50_PT75("HCRVsAbsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Corrected response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HCRVsAbsEta_PT75_PT100("HCRVsAbsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Corrected response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HCRVsAbsEta_PT50_PT100("HCRVsAbsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Corrected response", 40, 0.0, 2.5, 300, 0, 2.5);
+   TH2D HCRVsAbsEta_PT100_PT125("HCRVsAbsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Corrected response", 40, 0.0, 2.5, 300, 0, 2.5);
    
    TProfile PCRVsAbsEta_PT30_PT50("PCRVsAbsEta_PT30_PT50", "30 < p_{T}^{Gen} < 50;#eta;Corrected response", 40, 0.0, 2.5);
    TProfile PCRVsAbsEta_PT50_PT75("PCRVsAbsEta_PT50_PT75", "50 < p_{T}^{Gen} < 75;#eta;Corrected response", 40, 0.0, 2.5);
    TProfile PCRVsAbsEta_PT75_PT100("PCRVsAbsEta_PT75_PT100", "75 < p_{T}^{Gen} < 100;#eta;Corrected response", 40, 0.0, 2.5);
+   TProfile PCRVsAbsEta_PT50_PT100("PCRVsAbsEta_PT50_PT100", "50 < p_{T}^{Gen} < 100;#eta;Corrected response", 40, 0.0, 2.5);
    TProfile PCRVsAbsEta_PT100_PT125("PCRVsAbsEta_PT100_PT125", "100 < p_{T}^{Gen} < 125;#eta;Corrected response", 40, 0.0, 2.5);
 
    for(string FileName : InputFileName)
@@ -140,6 +149,7 @@ int main(int argc, char *argv[])
       JetTreeMessenger MJet(InputFile, JetTreeName);
       TriggerTreeMessenger MHLT(InputFile);
       PFTreeMessenger MPF(InputFile);
+      TrackTreeMessenger MTrack(InputFile);
 
       if(MHiEvent.Tree == nullptr)
       {
@@ -153,16 +163,18 @@ int main(int argc, char *argv[])
 
       for(int iE = 0; iE < EntryCount; iE++)
       {
-         if(iE < 200 || (iE % (EntryCount / 300)) == 0)
+         if(iE < 500 || (iE % (EntryCount / 300)) == 0)
          {
             Bar.Update(iE);
             Bar.Print();
          }
 
+
          MHiEvent.GetEntry(iE);
          MJet.GetEntry(iE);
          MHLT.GetEntry(iE);
          MPF.GetEntry(iE);
+         MTrack.GetEntry(iE);
 
          HPTHat.Fill(MJet.PTHat);
 
@@ -226,6 +238,32 @@ int main(int argc, char *argv[])
                JetCPT = MJet.JetPT[iJ] * AllCPT / AllPT;
             }
 
+            if(IsCalo == false && Algo6Rejection == true)
+            {
+               double AllPT = 0, Algo6PT = 0;
+
+               for(int iT = 0; iT < MTrack.TrackCount; iT++)
+               {
+                  if(MTrack.HighPurity[iT] == false)
+                     continue;
+
+                  double DEta = MJet.JetEta[iJ] - MTrack.TrackEta[iT];
+                  double DPhi = MJet.JetPhi[iJ] - MTrack.TrackPhi[iT];
+                  if(DPhi > M_PI)    DPhi = DPhi - 2 * M_PI;
+                  if(DPhi < -M_PI)   DPhi = DPhi + 2 * M_PI;
+
+                  if(DEta * DEta + DPhi * DPhi > 0.4 * 0.4)
+                     continue;
+
+                  AllPT = AllPT + MTrack.TrackPT[iT];
+                  if(MTrack.TrackAlgo[iT] == 6)
+                     Algo6PT = Algo6PT + MTrack.TrackPT[iT];
+               }
+
+               if(AllPT > 0 && Algo6PT / AllPT > 0.25)
+                  continue;
+            }
+
             HJetPTVsJetCPT.Fill(MJet.JetPT[iJ], JetCPT);
 
             HRefPT.Fill(MJet.RefPT[iJ]);
@@ -286,6 +324,17 @@ int main(int argc, char *argv[])
                PCRVsEta_PT75_PT100.Fill(MJet.RefEta[iJ], JetCPT / MJet.RefPT[iJ]);
                HCRVsAbsEta_PT75_PT100.Fill(fabs(MJet.RefEta[iJ]), JetCPT / MJet.RefPT[iJ]);
                PCRVsAbsEta_PT75_PT100.Fill(fabs(MJet.RefEta[iJ]), JetCPT / MJet.RefPT[iJ]);
+            }
+            if(MJet.RefPT[iJ] > 50 && MJet.RefPT[iJ] < 100)
+            {
+               HRVsEta_PT50_PT100.Fill(MJet.RefEta[iJ], MJet.JetPT[iJ] / MJet.RefPT[iJ]);
+               PRVsEta_PT50_PT100.Fill(MJet.RefEta[iJ], MJet.JetPT[iJ] / MJet.RefPT[iJ]);
+               HRVsAbsEta_PT50_PT100.Fill(fabs(MJet.RefEta[iJ]), MJet.JetPT[iJ] / MJet.RefPT[iJ]);
+               PRVsAbsEta_PT50_PT100.Fill(fabs(MJet.RefEta[iJ]), MJet.JetPT[iJ] / MJet.RefPT[iJ]);
+               HCRVsEta_PT50_PT100.Fill(MJet.RefEta[iJ], JetCPT / MJet.RefPT[iJ]);
+               PCRVsEta_PT50_PT100.Fill(MJet.RefEta[iJ], JetCPT / MJet.RefPT[iJ]);
+               HCRVsAbsEta_PT50_PT100.Fill(fabs(MJet.RefEta[iJ]), JetCPT / MJet.RefPT[iJ]);
+               PCRVsAbsEta_PT50_PT100.Fill(fabs(MJet.RefEta[iJ]), JetCPT / MJet.RefPT[iJ]);
             }
             if(MJet.RefPT[iJ] > 100 && MJet.RefPT[iJ] < 125)
             {
@@ -371,6 +420,7 @@ int main(int argc, char *argv[])
    HRVsEta_PT30_PT50.Write();
    HRVsEta_PT50_PT75.Write();
    HRVsEta_PT75_PT100.Write();
+   HRVsEta_PT50_PT100.Write();
    HRVsEta_PT100_PT125.Write();
    HRVsPT_EtaN25N15.Write();
    HRVsPT_EtaN15N00.Write();
@@ -380,6 +430,7 @@ int main(int argc, char *argv[])
    PRVsEta_PT30_PT50.Write();
    PRVsEta_PT50_PT75.Write();
    PRVsEta_PT75_PT100.Write();
+   PRVsEta_PT50_PT100.Write();
    PRVsEta_PT100_PT125.Write();
    PRVsPT_EtaN25N15.Write();
    PRVsPT_EtaN15N00.Write();
@@ -389,16 +440,19 @@ int main(int argc, char *argv[])
    HRVsAbsEta_PT30_PT50.Write();
    HRVsAbsEta_PT50_PT75.Write();
    HRVsAbsEta_PT75_PT100.Write();
+   HRVsAbsEta_PT50_PT100.Write();
    HRVsAbsEta_PT100_PT125.Write();
    
    PRVsAbsEta_PT30_PT50.Write();
    PRVsAbsEta_PT50_PT75.Write();
    PRVsAbsEta_PT75_PT100.Write();
+   PRVsAbsEta_PT50_PT100.Write();
    PRVsAbsEta_PT100_PT125.Write();
 
    HCRVsEta_PT30_PT50.Write();
    HCRVsEta_PT50_PT75.Write();
    HCRVsEta_PT75_PT100.Write();
+   HCRVsEta_PT50_PT100.Write();
    HCRVsEta_PT100_PT125.Write();
    HCRVsPT_EtaN25N15.Write();
    HCRVsPT_EtaN15N00.Write();
@@ -408,6 +462,7 @@ int main(int argc, char *argv[])
    PCRVsEta_PT30_PT50.Write();
    PCRVsEta_PT50_PT75.Write();
    PCRVsEta_PT75_PT100.Write();
+   PCRVsEta_PT50_PT100.Write();
    PCRVsEta_PT100_PT125.Write();
    PCRVsPT_EtaN25N15.Write();
    PCRVsPT_EtaN15N00.Write();
@@ -417,11 +472,13 @@ int main(int argc, char *argv[])
    HCRVsAbsEta_PT30_PT50.Write();
    HCRVsAbsEta_PT50_PT75.Write();
    HCRVsAbsEta_PT75_PT100.Write();
+   HCRVsAbsEta_PT50_PT100.Write();
    HCRVsAbsEta_PT100_PT125.Write();
    
    PCRVsAbsEta_PT30_PT50.Write();
    PCRVsAbsEta_PT50_PT75.Write();
    PCRVsAbsEta_PT75_PT100.Write();
+   PCRVsAbsEta_PT50_PT100.Write();
    PCRVsAbsEta_PT100_PT125.Write();
 
    HEtaVsFractionInEndcap.Write();

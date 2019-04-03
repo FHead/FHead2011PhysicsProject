@@ -6,6 +6,7 @@
    TTree *PFJet = (TTree *)_file0->Get("ak4PFJetAnalyzer/t");
    TTree *PuPFJet = (TTree *)_file0->Get("akPu4PFJetAnalyzer/t");
    TTree *CsPFJet = (TTree *)_file0->Get("akCs4PFJetAnalyzer/t");
+   TTree *Track = (TTree *)_file0->Get("ppTrack/trackTree");
 
    CaloJet->AddFriend(HiTree, "HI");
    CaloJet->AddFriend(HltTree, "HLT");
@@ -17,6 +18,8 @@
    PuPFJet->AddFriend(HltTree, "HLT");
    CsPFJet->AddFriend(HiTree, "HI");
    CsPFJet->AddFriend(HltTree, "HLT");
+   Track->AddFriend(HiTree, "HI");
+   Track->AddFriend(HltTree, "HLT");
 
    CaloJet->SetMarkerStyle(20);
    PuCaloJet->SetMarkerStyle(20);

@@ -1,18 +1,18 @@
 {
    // TFile F1("ResultBadEEPF.root");
-   // TFile F2("TestRun.root");
-   TFile F1("TestRunBad.root");
-   TFile F2("TestRunGood.root");
+   // TFile F2("ResultGoodEEPF.root");
+   TFile F1("ResultBadEECalo.root");
+   TFile F2("ResultGoodEECalo.root");
 
-   TProfile *P1 = (TProfile *)F1.Get("PRVsAbsEta_PT75_PT100");
-   TProfile *P2 = (TProfile *)F2.Get("PRVsAbsEta_PT75_PT100");
-   TProfile *P3 = (TProfile *)F1.Get("PCRVsAbsEta_PT75_PT100");
+   TProfile *P1 = (TProfile *)F1.Get("PRVsAbsEta_PT50_PT100");
+   TProfile *P2 = (TProfile *)F2.Get("PRVsAbsEta_PT50_PT100");
+   TProfile *P3 = (TProfile *)F1.Get("PCRVsAbsEta_PT50_PT100");
 
    P1->Rebin(2);
    P2->Rebin(2);
    P3->Rebin(2);
 
-   TH2D HWorld("HWorld", ";eta;response", 100, 0.0, 2.5, 100, 0.5, 1.5);
+   TH2D HWorld("HWorld", ";eta;response", 100, 0.0, 2.5, 100, 0.5, 2.0);
    HWorld.SetStats(0);
 
    HWorld.Draw("axis");

@@ -38,6 +38,10 @@ int main(int argc, char *argv[])
    AnalyzeMeanResolution(PdfFile, File, "HCRVsEta_PT75_PT100");
    AnalyzeMeanResolution(PdfFile, File, "HRVsAbsEta_PT75_PT100");
    AnalyzeMeanResolution(PdfFile, File, "HCRVsAbsEta_PT75_PT100");
+   AnalyzeMeanResolution(PdfFile, File, "HRVsEta_PT50_PT100");
+   AnalyzeMeanResolution(PdfFile, File, "HCRVsEta_PT50_PT100");
+   AnalyzeMeanResolution(PdfFile, File, "HRVsAbsEta_PT50_PT100");
+   AnalyzeMeanResolution(PdfFile, File, "HCRVsAbsEta_PT50_PT100");
    AnalyzeMeanResolution(PdfFile, File, "HRVsEta_PT100_PT125");
    AnalyzeMeanResolution(PdfFile, File, "HCRVsEta_PT100_PT125");
    AnalyzeMeanResolution(PdfFile, File, "HRVsAbsEta_PT100_PT125");
@@ -59,7 +63,7 @@ void AnalyzeMeanResolution(PdfFileHelper &PdfFile, TFile &File, string Histogram
    TH2D *H = (TH2D *)File.Get(HistogramName.c_str());
    Assert(H != NULL, Form("Histogram \"%s\" not found!", HistogramName.c_str()));
    
-   H->Rebin2D(5, 1);
+   H->Rebin2D(4, 1);
 
    TGraphErrors GCenter;
    TGraphErrors GResolution;
@@ -80,18 +84,18 @@ void AnalyzeMeanResolution(PdfFileHelper &PdfFile, TFile &File, string Histogram
 
       TF1 F("F", "gaus");
 
-      HProjection->Fit(&F);
+      HProjection->Fit(&F, "L", "", 0.5, 1.5);
 
       PdfFile.AddPlot(HProjection);
 
       GCenter.SetPoint(i - 1, Eta, F.GetParameter(1));
       GCenter.SetPointError(i - 1, 0, F.GetParError(1));
-      GResolution.SetPoint(i - 1, Eta, F.GetParameter(2));
-      GResolution.SetPointError(i - 1, 0, F.GetParError(2));
+      GResolution.SetPoint(i - 1, Eta, F.GetParameter(2) / F.GetParameter(1));
+      GResolution.SetPointError(i - 1, 0, F.GetParError(2) / F.GetParameter(1));
       GMean.SetPoint(i - 1, Eta, HProjection->GetMean());
       GMean.SetPointError(i - 1, 0, HProjection->GetMeanError());
-      GRMS.SetPoint(i - 1, Eta, HProjection->GetRMS());
-      GRMS.SetPointError(i - 1, 0, HProjection->GetRMSError());
+      GRMS.SetPoint(i - 1, Eta, HProjection->GetRMS() / HProjection->GetMean());
+      GRMS.SetPointError(i - 1, 0, HProjection->GetRMSError() / HProjection->GetMean());
    }
 
    PdfFile.AddPlot(GCenter, "ap");

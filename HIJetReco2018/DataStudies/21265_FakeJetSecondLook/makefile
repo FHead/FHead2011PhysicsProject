@@ -75,6 +75,14 @@ RunPromptRecoPU: Execute
 		--Tree "akPu4PFJetAnalyzer/t" --OutputBase PromptRecoPU --CheckFraction false --ReducedEta true
 	cp PromptRecoPU.pdf ~/public/html/
 
+RunRelValMBMVA: Execute
+	time ./Execute --Input `ls MB_NoEEFix_NewMVA/*root | tr '\n' ','` \
+		--Tree "akCs4PFJetAnalyzer/t" --OutputBase RelValMBMVA --PrintDebug false --MinPTForTrack 9999 --CheckFraction true
+
+RunRelValMBNoMVA: Execute
+	time ./Execute --Input `ls MB_NoEEFix_NoMVA/*root | tr '\n' ','` \
+		--Tree "akCs4PFJetAnalyzer/t" --OutputBase RelValMBNoMVA --PrintDebug false --MinPTForTrack 9999 --CheckFraction true
+
 Execute: QuickLook.cpp
 	CompileRootMacro QuickLook.cpp Execute \
 		-I../../CommonCode/include ../../CommonCode/library/*o

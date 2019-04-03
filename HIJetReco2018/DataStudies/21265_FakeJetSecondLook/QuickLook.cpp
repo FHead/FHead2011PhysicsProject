@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
    TH2D HJetEtaPhiPT30("HJetEtaPhiPT30", "PT > 30;eta;phi", 75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT50("HJetEtaPhiPT50", "PT > 50;eta;phi", 75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT70("HJetEtaPhiPT70", "PT > 70;eta;phi", 75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
+   TH2D HJetEtaPhiPT100("HJetEtaPhiPT100", "PT > 100;eta;phi", 75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT70FailL156("HJetEtaPhiPT70FailL156", "PT > 70, fail L1_SingleJet56;eta;phi",
       75, -MaxEta, MaxEta, 75, -M_PI, M_PI);
    TH2D HJetEtaPhiPT80FailL156("HJetEtaPhiPT80FailL156", "PT > 80, fail L1_SingleJet56;eta;phi",
@@ -332,6 +333,56 @@ int main(int argc, char *argv[])
    TH2D HPFEtaPhi_ID6_PT500("HPFEtaPhi_ID6_PT500", "ID = 6, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
    TH2D HPFEtaPhi_ID7_PT500("HPFEtaPhi_ID7_PT500", "ID = 7, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
 
+   TH2D HPFEtaPhi_Peripheral_ID1_PT05("HPFEtaPhi_Peripheral_ID1_PT05", "ID = 1, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID2_PT05("HPFEtaPhi_Peripheral_ID2_PT05", "ID = 2, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID3_PT05("HPFEtaPhi_Peripheral_ID3_PT05", "ID = 3, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID4_PT05("HPFEtaPhi_Peripheral_ID4_PT05", "ID = 4, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID5_PT05("HPFEtaPhi_Peripheral_ID5_PT05", "ID = 5, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID6_PT05("HPFEtaPhi_Peripheral_ID6_PT05", "ID = 6, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID7_PT05("HPFEtaPhi_Peripheral_ID7_PT05", "ID = 7, PT > 0.5;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID1_PT10("HPFEtaPhi_Peripheral_ID1_PT10", "ID = 1, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID2_PT10("HPFEtaPhi_Peripheral_ID2_PT10", "ID = 2, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID3_PT10("HPFEtaPhi_Peripheral_ID3_PT10", "ID = 3, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID4_PT10("HPFEtaPhi_Peripheral_ID4_PT10", "ID = 4, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID5_PT10("HPFEtaPhi_Peripheral_ID5_PT10", "ID = 5, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID6_PT10("HPFEtaPhi_Peripheral_ID6_PT10", "ID = 6, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID7_PT10("HPFEtaPhi_Peripheral_ID7_PT10", "ID = 7, PT > 1.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID1_PT20("HPFEtaPhi_Peripheral_ID1_PT20", "ID = 1, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID2_PT20("HPFEtaPhi_Peripheral_ID2_PT20", "ID = 2, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID3_PT20("HPFEtaPhi_Peripheral_ID3_PT20", "ID = 3, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID4_PT20("HPFEtaPhi_Peripheral_ID4_PT20", "ID = 4, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID5_PT20("HPFEtaPhi_Peripheral_ID5_PT20", "ID = 5, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID6_PT20("HPFEtaPhi_Peripheral_ID6_PT20", "ID = 6, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID7_PT20("HPFEtaPhi_Peripheral_ID7_PT20", "ID = 7, PT > 2.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID1_PT50("HPFEtaPhi_Peripheral_ID1_PT50", "ID = 1, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID2_PT50("HPFEtaPhi_Peripheral_ID2_PT50", "ID = 2, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID3_PT50("HPFEtaPhi_Peripheral_ID3_PT50", "ID = 3, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID4_PT50("HPFEtaPhi_Peripheral_ID4_PT50", "ID = 4, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID5_PT50("HPFEtaPhi_Peripheral_ID5_PT50", "ID = 5, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID6_PT50("HPFEtaPhi_Peripheral_ID6_PT50", "ID = 6, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID7_PT50("HPFEtaPhi_Peripheral_ID7_PT50", "ID = 7, PT > 5.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID1_PT100("HPFEtaPhi_Peripheral_ID1_PT100", "ID = 1, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID2_PT100("HPFEtaPhi_Peripheral_ID2_PT100", "ID = 2, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID3_PT100("HPFEtaPhi_Peripheral_ID3_PT100", "ID = 3, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID4_PT100("HPFEtaPhi_Peripheral_ID4_PT100", "ID = 4, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID5_PT100("HPFEtaPhi_Peripheral_ID5_PT100", "ID = 5, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID6_PT100("HPFEtaPhi_Peripheral_ID6_PT100", "ID = 6, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID7_PT100("HPFEtaPhi_Peripheral_ID7_PT100", "ID = 7, PT > 10.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID1_PT200("HPFEtaPhi_Peripheral_ID1_PT200", "ID = 1, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID2_PT200("HPFEtaPhi_Peripheral_ID2_PT200", "ID = 2, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID3_PT200("HPFEtaPhi_Peripheral_ID3_PT200", "ID = 3, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID4_PT200("HPFEtaPhi_Peripheral_ID4_PT200", "ID = 4, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID5_PT200("HPFEtaPhi_Peripheral_ID5_PT200", "ID = 5, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID6_PT200("HPFEtaPhi_Peripheral_ID6_PT200", "ID = 6, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID7_PT200("HPFEtaPhi_Peripheral_ID7_PT200", "ID = 7, PT > 20.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID1_PT500("HPFEtaPhi_Peripheral_ID1_PT500", "ID = 1, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID2_PT500("HPFEtaPhi_Peripheral_ID2_PT500", "ID = 2, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID3_PT500("HPFEtaPhi_Peripheral_ID3_PT500", "ID = 3, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID4_PT500("HPFEtaPhi_Peripheral_ID4_PT500", "ID = 4, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID5_PT500("HPFEtaPhi_Peripheral_ID5_PT500", "ID = 5, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID6_PT500("HPFEtaPhi_Peripheral_ID6_PT500", "ID = 6, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+   TH2D HPFEtaPhi_Peripheral_ID7_PT500("HPFEtaPhi_Peripheral_ID7_PT500", "ID = 7, PT > 50.0;eta;phi", 100, -2.5, 2.5, 100, -M_PI, M_PI);
+
    for(string FileName : InputFileName)
    {
       cout << "Processing file " << FileName << endl;
@@ -514,6 +565,8 @@ int main(int argc, char *argv[])
                HJetEtaPhiPT50.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
             if(MJet.JetPT[iJ] > 70)
                HJetEtaPhiPT70.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
+            if(MJet.JetPT[iJ] > 100)
+               HJetEtaPhiPT100.Fill(MJet.JetEta[iJ], MJet.JetPhi[iJ]);
 
             if(MJet.JetEta[iJ] > -MaxEta && MJet.JetEta[iJ] < -1.5)
                HAllJetPT_EtaN25N15.Fill(MJet.JetPT[iJ]);
@@ -933,6 +986,77 @@ int main(int argc, char *argv[])
                   if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_ID6_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
                   if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_ID7_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
                }
+               
+               if((*MPF.PT)[iPF] > 0.5 && MHiEvent.hiBin >= 100)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_Peripheral_ID1_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_Peripheral_ID2_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_Peripheral_ID3_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_Peripheral_ID4_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_Peripheral_ID5_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_Peripheral_ID6_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_Peripheral_ID7_PT05.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 1.0 && MHiEvent.hiBin >= 100)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_Peripheral_ID1_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_Peripheral_ID2_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_Peripheral_ID3_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_Peripheral_ID4_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_Peripheral_ID5_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_Peripheral_ID6_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_Peripheral_ID7_PT10.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 2.0 && MHiEvent.hiBin >= 100)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_Peripheral_ID1_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_Peripheral_ID2_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_Peripheral_ID3_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_Peripheral_ID4_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_Peripheral_ID5_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_Peripheral_ID6_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_Peripheral_ID7_PT20.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 5.0 && MHiEvent.hiBin >= 100)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_Peripheral_ID1_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_Peripheral_ID2_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_Peripheral_ID3_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_Peripheral_ID4_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_Peripheral_ID5_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_Peripheral_ID6_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_Peripheral_ID7_PT50.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 10.0 && MHiEvent.hiBin >= 100)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_Peripheral_ID1_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_Peripheral_ID2_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_Peripheral_ID3_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_Peripheral_ID4_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_Peripheral_ID5_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_Peripheral_ID6_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_Peripheral_ID7_PT100.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 20.0 && MHiEvent.hiBin >= 100)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_Peripheral_ID1_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_Peripheral_ID2_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_Peripheral_ID3_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_Peripheral_ID4_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_Peripheral_ID5_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_Peripheral_ID6_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_Peripheral_ID7_PT200.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
+               if((*MPF.PT)[iPF] > 50.0 && MHiEvent.hiBin >= 100)
+               {
+                  if((*MPF.ID)[iPF] == 1)   HPFEtaPhi_Peripheral_ID1_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 2)   HPFEtaPhi_Peripheral_ID2_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 3)   HPFEtaPhi_Peripheral_ID3_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 4)   HPFEtaPhi_Peripheral_ID4_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 5)   HPFEtaPhi_Peripheral_ID5_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 6)   HPFEtaPhi_Peripheral_ID6_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+                  if((*MPF.ID)[iPF] == 7)   HPFEtaPhi_Peripheral_ID7_PT500.Fill((*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
+               }
             }
          }
       }
@@ -967,10 +1091,12 @@ int main(int argc, char *argv[])
    HJetEtaPhiPT30.SetStats(0);
    HJetEtaPhiPT50.SetStats(0);
    HJetEtaPhiPT70.SetStats(0);
+   HJetEtaPhiPT100.SetStats(0);
 
    PdfFile.AddPlot(HJetEtaPhiPT30, "colz");
    PdfFile.AddPlot(HJetEtaPhiPT50, "colz");
    PdfFile.AddPlot(HJetEtaPhiPT70, "colz");
+   PdfFile.AddPlot(HJetEtaPhiPT100, "colz");
 
    HJetPT.SetStats(0);
    HJetPTPassL156.SetLineColor(kRed);
@@ -2234,6 +2360,56 @@ int main(int argc, char *argv[])
    HPFEtaPhi_ID6_PT500.SetStats(0);
    HPFEtaPhi_ID7_PT500.SetStats(0);
 
+   HPFEtaPhi_Peripheral_ID1_PT05.SetStats(0);
+   HPFEtaPhi_Peripheral_ID2_PT05.SetStats(0);
+   HPFEtaPhi_Peripheral_ID3_PT05.SetStats(0);
+   HPFEtaPhi_Peripheral_ID4_PT05.SetStats(0);
+   HPFEtaPhi_Peripheral_ID5_PT05.SetStats(0);
+   HPFEtaPhi_Peripheral_ID6_PT05.SetStats(0);
+   HPFEtaPhi_Peripheral_ID7_PT05.SetStats(0);
+   HPFEtaPhi_Peripheral_ID1_PT10.SetStats(0);
+   HPFEtaPhi_Peripheral_ID2_PT10.SetStats(0);
+   HPFEtaPhi_Peripheral_ID3_PT10.SetStats(0);
+   HPFEtaPhi_Peripheral_ID4_PT10.SetStats(0);
+   HPFEtaPhi_Peripheral_ID5_PT10.SetStats(0);
+   HPFEtaPhi_Peripheral_ID6_PT10.SetStats(0);
+   HPFEtaPhi_Peripheral_ID7_PT10.SetStats(0);
+   HPFEtaPhi_Peripheral_ID1_PT20.SetStats(0);
+   HPFEtaPhi_Peripheral_ID2_PT20.SetStats(0);
+   HPFEtaPhi_Peripheral_ID3_PT20.SetStats(0);
+   HPFEtaPhi_Peripheral_ID4_PT20.SetStats(0);
+   HPFEtaPhi_Peripheral_ID5_PT20.SetStats(0);
+   HPFEtaPhi_Peripheral_ID6_PT20.SetStats(0);
+   HPFEtaPhi_Peripheral_ID7_PT20.SetStats(0);
+   HPFEtaPhi_Peripheral_ID1_PT50.SetStats(0);
+   HPFEtaPhi_Peripheral_ID2_PT50.SetStats(0);
+   HPFEtaPhi_Peripheral_ID3_PT50.SetStats(0);
+   HPFEtaPhi_Peripheral_ID4_PT50.SetStats(0);
+   HPFEtaPhi_Peripheral_ID5_PT50.SetStats(0);
+   HPFEtaPhi_Peripheral_ID6_PT50.SetStats(0);
+   HPFEtaPhi_Peripheral_ID7_PT50.SetStats(0);
+   HPFEtaPhi_Peripheral_ID1_PT100.SetStats(0);
+   HPFEtaPhi_Peripheral_ID2_PT100.SetStats(0);
+   HPFEtaPhi_Peripheral_ID3_PT100.SetStats(0);
+   HPFEtaPhi_Peripheral_ID4_PT100.SetStats(0);
+   HPFEtaPhi_Peripheral_ID5_PT100.SetStats(0);
+   HPFEtaPhi_Peripheral_ID6_PT100.SetStats(0);
+   HPFEtaPhi_Peripheral_ID7_PT100.SetStats(0);
+   HPFEtaPhi_Peripheral_ID1_PT200.SetStats(0);
+   HPFEtaPhi_Peripheral_ID2_PT200.SetStats(0);
+   HPFEtaPhi_Peripheral_ID3_PT200.SetStats(0);
+   HPFEtaPhi_Peripheral_ID4_PT200.SetStats(0);
+   HPFEtaPhi_Peripheral_ID5_PT200.SetStats(0);
+   HPFEtaPhi_Peripheral_ID6_PT200.SetStats(0);
+   HPFEtaPhi_Peripheral_ID7_PT200.SetStats(0);
+   HPFEtaPhi_Peripheral_ID1_PT500.SetStats(0);
+   HPFEtaPhi_Peripheral_ID2_PT500.SetStats(0);
+   HPFEtaPhi_Peripheral_ID3_PT500.SetStats(0);
+   HPFEtaPhi_Peripheral_ID4_PT500.SetStats(0);
+   HPFEtaPhi_Peripheral_ID5_PT500.SetStats(0);
+   HPFEtaPhi_Peripheral_ID6_PT500.SetStats(0);
+   HPFEtaPhi_Peripheral_ID7_PT500.SetStats(0);
+
    PdfFile.AddPlot(HPFEtaPhi_ID1_PT05, "colz");
    PdfFile.AddPlot(HPFEtaPhi_ID2_PT05, "colz");
    PdfFile.AddPlot(HPFEtaPhi_ID3_PT05, "colz");
@@ -2284,12 +2460,63 @@ int main(int argc, char *argv[])
    PdfFile.AddPlot(HPFEtaPhi_ID6_PT500, "colz");
    PdfFile.AddPlot(HPFEtaPhi_ID7_PT500, "colz");
 
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID1_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID2_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID3_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID4_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID5_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID6_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID7_PT05, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID1_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID2_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID3_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID4_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID5_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID6_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID7_PT10, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID1_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID2_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID3_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID4_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID5_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID6_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID7_PT20, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID1_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID2_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID3_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID4_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID5_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID6_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID7_PT50, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID1_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID2_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID3_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID4_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID5_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID6_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID7_PT100, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID1_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID2_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID3_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID4_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID5_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID6_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID7_PT200, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID1_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID2_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID3_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID4_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID5_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID6_PT500, "colz");
+   PdfFile.AddPlot(HPFEtaPhi_Peripheral_ID7_PT500, "colz");
+
    OutputFile.cd();
 
    HN.Write();
    HJetEtaPhiPT30.Write();
    HJetEtaPhiPT50.Write();
    HJetEtaPhiPT70.Write();
+   HJetEtaPhiPT100.Write();
    
    HJetEtaPhiPT70FailL156.Write();
    HJetEtaPhiPT80FailL156.Write();
@@ -2528,6 +2755,56 @@ int main(int argc, char *argv[])
    HPFEtaPhi_ID5_PT500.Write();
    HPFEtaPhi_ID6_PT500.Write();
    HPFEtaPhi_ID7_PT500.Write();
+
+   HPFEtaPhi_Peripheral_ID1_PT05.Write();
+   HPFEtaPhi_Peripheral_ID2_PT05.Write();
+   HPFEtaPhi_Peripheral_ID3_PT05.Write();
+   HPFEtaPhi_Peripheral_ID4_PT05.Write();
+   HPFEtaPhi_Peripheral_ID5_PT05.Write();
+   HPFEtaPhi_Peripheral_ID6_PT05.Write();
+   HPFEtaPhi_Peripheral_ID7_PT05.Write();
+   HPFEtaPhi_Peripheral_ID1_PT10.Write();
+   HPFEtaPhi_Peripheral_ID2_PT10.Write();
+   HPFEtaPhi_Peripheral_ID3_PT10.Write();
+   HPFEtaPhi_Peripheral_ID4_PT10.Write();
+   HPFEtaPhi_Peripheral_ID5_PT10.Write();
+   HPFEtaPhi_Peripheral_ID6_PT10.Write();
+   HPFEtaPhi_Peripheral_ID7_PT10.Write();
+   HPFEtaPhi_Peripheral_ID1_PT20.Write();
+   HPFEtaPhi_Peripheral_ID2_PT20.Write();
+   HPFEtaPhi_Peripheral_ID3_PT20.Write();
+   HPFEtaPhi_Peripheral_ID4_PT20.Write();
+   HPFEtaPhi_Peripheral_ID5_PT20.Write();
+   HPFEtaPhi_Peripheral_ID6_PT20.Write();
+   HPFEtaPhi_Peripheral_ID7_PT20.Write();
+   HPFEtaPhi_Peripheral_ID1_PT50.Write();
+   HPFEtaPhi_Peripheral_ID2_PT50.Write();
+   HPFEtaPhi_Peripheral_ID3_PT50.Write();
+   HPFEtaPhi_Peripheral_ID4_PT50.Write();
+   HPFEtaPhi_Peripheral_ID5_PT50.Write();
+   HPFEtaPhi_Peripheral_ID6_PT50.Write();
+   HPFEtaPhi_Peripheral_ID7_PT50.Write();
+   HPFEtaPhi_Peripheral_ID1_PT100.Write();
+   HPFEtaPhi_Peripheral_ID2_PT100.Write();
+   HPFEtaPhi_Peripheral_ID3_PT100.Write();
+   HPFEtaPhi_Peripheral_ID4_PT100.Write();
+   HPFEtaPhi_Peripheral_ID5_PT100.Write();
+   HPFEtaPhi_Peripheral_ID6_PT100.Write();
+   HPFEtaPhi_Peripheral_ID7_PT100.Write();
+   HPFEtaPhi_Peripheral_ID1_PT200.Write();
+   HPFEtaPhi_Peripheral_ID2_PT200.Write();
+   HPFEtaPhi_Peripheral_ID3_PT200.Write();
+   HPFEtaPhi_Peripheral_ID4_PT200.Write();
+   HPFEtaPhi_Peripheral_ID5_PT200.Write();
+   HPFEtaPhi_Peripheral_ID6_PT200.Write();
+   HPFEtaPhi_Peripheral_ID7_PT200.Write();
+   HPFEtaPhi_Peripheral_ID1_PT500.Write();
+   HPFEtaPhi_Peripheral_ID2_PT500.Write();
+   HPFEtaPhi_Peripheral_ID3_PT500.Write();
+   HPFEtaPhi_Peripheral_ID4_PT500.Write();
+   HPFEtaPhi_Peripheral_ID5_PT500.Write();
+   HPFEtaPhi_Peripheral_ID6_PT500.Write();
+   HPFEtaPhi_Peripheral_ID7_PT500.Write();
 
    OutputFile.Close();
 

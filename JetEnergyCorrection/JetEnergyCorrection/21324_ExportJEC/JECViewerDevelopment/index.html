@@ -1,0 +1,73 @@
+<html>
+   <head>
+      <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript" src="Defaults.js"></script>
+      <script type="text/javascript" src="JECData.js"></script>
+      <script type="text/javascript" src="JEC.js"></script>
+      <script type="text/javascript" src="Selection.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css" />
+   </head>
+   <body>
+      <div id="Page">
+         <div class="Filler"></div>
+         <div id="Title">CMS JEC Viewer</div>
+         <div class="Filler"></div>
+         <div id="ChartDiv"></div>
+         <div id="Tip">Instructions: Drag-select to zoom, right click to reset.
+            Select curves to display from the drop-down boxes below.
+            All the underlined fields can be clicked.
+            Copy address to share with others.
+            Ask Yi if you want new curves or other versions.</div>
+         <div class="Filler"></div>
+         <div class="Selector" id="Selector0">
+            Number of curves:
+            <select id="CurveCount">
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3" selected>3</option>
+               <option value="4">4</option>
+               <option value="5">5</option>
+            </select>
+         </div>
+         <div class="Selector" id="Selector1">
+            <div class="color" id="color1"></div>
+            Version <select id="Version1"></select>
+            Algorithm <select id="Algorithm1"></select>
+            Level <select id="Level1"></select>
+            Curve <select id="Curve1"></select>
+         </div>
+         <div class="Selector" id="Selector2">
+            <div class="color" id="color2"></div>
+            Version <select id="Version2"></select>
+            Algorithm <select id="Algorithm2"></select>
+            Level <select id="Level2"></select>
+            Curve <select id="Curve2"></select>
+         </div>
+         <div class="Selector" id="Selector3">
+            <div class="color" id="color3"></div>
+            Version <select id="Version3"></select>
+            Algorithm <select id="Algorithm3"></select>
+            Level <select id="Level3"></select>
+            Curve <select id="Curve3"></select>
+         </div>
+         <div class="Selector" id="Selector4">
+            <div class="color" id="color4"></div>
+            Version <select id="Version4"></select>
+            Algorithm <select id="Algorithm4"></select>
+            Level <select id="Level4"></select>
+            Curve <select id="Curve4"></select>
+         </div>
+         <div class="Selector" id="Selector5">
+            <div class="color" id="color5"></div>
+            Version <select id="Version5"></select>
+            Algorithm <select id="Algorithm5"></select>
+            Level <select id="Level5"></select>
+            Curve <select id="Curve5"></select>
+         </div>
+         <div class="Filler"></div>
+         <div class="Filler"></div>
+      </div>
+      <div id="Footer">Developed and maintained by <a href="http://yichen.me">Yi Chen</a>.  Last update: 2019 Apr 5, with all major 2016-2018 JEC versions</div>
+   </body>
+</html>

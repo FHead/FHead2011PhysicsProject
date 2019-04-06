@@ -26,6 +26,38 @@ div#Title
    font-weight: bold;
 }
 
+div#Save
+{
+   width: 1em;
+   height: 1em;
+   position: absolute;
+   right: 0.5em;
+   background-image: url('download.svg');
+   background-size: contain;
+   display: inline-block;
+   cursor: pointer;
+}
+
+div#Share
+{
+   width: 1em;
+   height: 1em;
+   position: absolute;
+   right: 2.0em;
+   // background-image: url('share-2.svg');
+   background-size: contain;
+   display: inline-block;
+   // cursor: pointer;
+}
+
+div#ChartDivContainer
+{
+   transform: scale(1.0);
+   transform-origin: 0% 0%;
+   height: 600px;
+   width: 100%;
+}
+
 div#ChartDiv
 {
    width: 100%;

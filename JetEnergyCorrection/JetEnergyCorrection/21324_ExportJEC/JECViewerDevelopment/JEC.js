@@ -1,5 +1,6 @@
 google.charts.load('current', {packages: ['corechart', 'line']});
 // google.charts.setOnLoadCallback(UpdateGraph);
+var Chart;
 
 function GetCurve(Version, Algorithm, Level, Curve, Label)
 {
@@ -175,7 +176,7 @@ function UpdateGraph()
       Options["hAxis"]["scaleType"] = "linear";
    Options["vAxis"]["title"] = YTitle;
 
-   var Chart = new google.visualization.LineChart(document.getElementById('ChartDiv'));
+   Chart = new google.visualization.LineChart(document.getElementById('ChartDiv'));
    Chart.draw(Data, Options);
 }
 

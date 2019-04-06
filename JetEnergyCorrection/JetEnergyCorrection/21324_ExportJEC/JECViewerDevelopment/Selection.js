@@ -347,6 +347,16 @@ function Initialize()
    $('#Curve3').change(function(){CurveChange($('#Version3'), $('#Algorithm3'), $('#Level3'), $('#Curve3')); UpdateGraph(); UpdateHash();});
    $('#Curve4').change(function(){CurveChange($('#Version4'), $('#Algorithm4'), $('#Level4'), $('#Curve4')); UpdateGraph(); UpdateHash();});
    $('#Curve5').change(function(){CurveChange($('#Version5'), $('#Algorithm5'), $('#Level5'), $('#Curve5')); UpdateGraph(); UpdateHash();});
+
+   $('#Save').click(function()
+   {
+      // I think default is 96 dpi?
+      var Width = $('#ChartDiv').width() / 96.0;
+      var Height = $('#ChartDiv').height() / 96.0;
+      var PdfFile = new jsPDF({orientation: 'landscape', unit: 'in', format: [Width, Height]});
+      PdfFile.addImage(Chart.getImageURI(), 0, 0);
+      PdfFile.save('JECChart.pdf');
+   });
 }
 
 $(window).on('load', Initialize);

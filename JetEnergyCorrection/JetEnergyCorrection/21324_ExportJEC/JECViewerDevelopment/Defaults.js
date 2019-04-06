@@ -1,5 +1,7 @@
 var DefaultColors = ['#A52714', '#097138', '#00FF00', '#FF0000', '#0000FF']
 
+var Scale = 1;
+
 var DefaultOptions =
 {
    hAxis:
@@ -14,7 +16,7 @@ var DefaultOptions =
       textStyle: {color: '#1a237e', fontSize: 16, fontName: 'Arial', italic: false},
       titleTextStyle: {color: '#1a237e', fontSize: 16, fontName: 'Arial', italic: false}
    },
-   legend: {position: 'top', maxLines: 3},
+   legend: {position: 'top', maxLines: 3, textStyle: {fontSize: 16}},
    chartArea: {width: '85%', height: '75%', left: '10%', top: '15%'},
    colors: DefaultColors,
    explorer:

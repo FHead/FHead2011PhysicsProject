@@ -6,7 +6,7 @@ Execute: CheckDisplaced.cpp
 		`fastjet-config --cxxflags --libs`
 
 TestRun: Execute
-	./Execute --input SamplesDarkPhoton/L1NtuplePhaseII_1.root,SamplesDarkPhoton/L1NtuplePhaseII_2.root \
+	./Execute --input SamplesDarkPhoton/L1NtuplePhaseII_1.root \
 		--output Test.root
 
 

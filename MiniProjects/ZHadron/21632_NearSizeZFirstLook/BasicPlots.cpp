@@ -252,6 +252,8 @@ int main(int argc, char *argv[])
       HDiLeptonEtaPhi.Fill(LL.GetEta(), LL.GetPhi());
       HDiLeptonMass.Fill(LL.GetMass());
 
+      if(Charge1 == Charge2)
+         continue;
       if(LL.GetPT() < 30)
          continue;
       if(LL.GetMass() < 60 || LL.GetMass() > 120)
@@ -287,8 +289,8 @@ int main(int argc, char *argv[])
          HTrackEta.Fill(P.GetEta(), W);
          HTrackPhi.Fill(P.GetPhi(), W);
 
-         if(GetDR(P, P1) < 0.8)    continue;
-         if(GetDR(P, P2) < 0.8)    continue;
+         // if(GetDR(P, P1) < 0.8)    continue;
+         // if(GetDR(P, P2) < 0.8)    continue;
 
          HSelectedTrackPT.Fill(P.GetPT(), W);
          HSelectedTrackEta.Fill(P.GetEta(), W);
@@ -344,8 +346,8 @@ int main(int argc, char *argv[])
          HTrackEtaMix.Fill(P.GetEta(), W);
          HTrackPhiMix.Fill(P.GetPhi(), W);
 
-         if(GetDR(P, P1) < 0.8)    continue;
-         if(GetDR(P, P2) < 0.8)    continue;
+         // if(GetDR(P, P1) < 0.8)    continue;
+         // if(GetDR(P, P2) < 0.8)    continue;
 
          HSelectedTrackPTMix.Fill(P.GetPT(), W);
          HSelectedTrackEtaMix.Fill(P.GetEta(), W);

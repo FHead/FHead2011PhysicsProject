@@ -57,8 +57,10 @@ int main(int argc, char *argv[])
 
    double XMin = 0.15;
    double XMax = 1.10;
-   double YMin = 0.501;
-   double YMax = 1.5;
+   // double YMin = 0.501;
+   // double YMax = 1.5;
+   double YMin = 0.701;
+   double YMax = 1.999;
 
    string File = "RRAA_Smooth_RedStat.root";
 
@@ -177,6 +179,7 @@ int main(int argc, char *argv[])
 
    vector<TGraphAsymmErrors> Felix = GetTheory("Theory/Felix/FelixRRAA.txt", kBlack);
    vector<TGraphAsymmErrors> Daniel = GetTheory("Theory/Daniel/ForCMS/r_RAA/Daniel_wake.txt", kMagenta);
+   vector<TGraphAsymmErrors> Korinna = GetTheory("Theory/Korinna/JewelDataRRAA_0to10.txt", kCyan + 3);
   
    TLegend Legend1(0.1, 0.08, 0.5, 0.48);
    Legend1.SetTextFont(42);
@@ -193,9 +196,9 @@ int main(int argc, char *argv[])
    Legend2.SetTextSize(0.07);
    Legend2.SetFillStyle(0);
    Legend2.SetBorderSize(0);
-   Legend2.AddEntry(&Felix[0], "Felix", "plf");
-   Legend2.AddEntry(&Daniel[0], "Daniel", "plf");
-   Legend2.AddEntry("", "", "");
+   Legend2.AddEntry(&Felix[0], "Factorization", "lf");
+   Legend2.AddEntry(&Daniel[0], "Hybrid", "lf");
+   Legend2.AddEntry(&Korinna[0], "Jewel", "lf");
    Legend2.AddEntry("", "", "");
 
    Latex.SetTextFont(42);
@@ -205,14 +208,16 @@ int main(int argc, char *argv[])
    
    P1.cd();
    HWorld.Draw("axis");
-   if(DoTheory == true)    Felix[0].Draw("2");
-   if(DoTheory == true)    Daniel[0].Draw("2");
+   if(DoTheory == true)    Felix[0].Draw("3");
+   if(DoTheory == true)    Daniel[0].Draw("3");
+   if(DoTheory == true)    Korinna[0].Draw("3");
+   if(DoTheory == true)    Felix[0].Draw("lX");
+   if(DoTheory == true)    Daniel[0].Draw("lX");
+   if(DoTheory == true)    Korinna[0].Draw("lX");
    HP0C0RRAASys.Draw("2");
    HP0C1RRAASys.Draw("2");
    HP0C2RRAASys.Draw("2");
    HP0C3RRAASys.Draw("2");
-   if(DoTheory == true)    Felix[0].Draw("lXp");
-   if(DoTheory == true)    Daniel[0].Draw("lXp");
    HP0C0RRAA.Draw("p");
    HP0C1RRAA.Draw("p");
    HP0C2RRAA.Draw("p");
@@ -222,14 +227,16 @@ int main(int argc, char *argv[])
    Latex.DrawLatex(0.08, 0.9, "200 < p_{T} < 250 GeV");
    P2.cd();
    HWorld.Draw("axis");
-   if(DoTheory == true)    Felix[1].Draw("2");
-   if(DoTheory == true)    Daniel[1].Draw("2");
+   if(DoTheory == true)    Felix[1].Draw("3");
+   if(DoTheory == true)    Daniel[1].Draw("3");
+   if(DoTheory == true)    Korinna[1].Draw("3");
+   if(DoTheory == true)    Felix[1].Draw("lX");
+   if(DoTheory == true)    Daniel[1].Draw("lX");
+   if(DoTheory == true)    Korinna[1].Draw("lX");
    HP1C0RRAASys.Draw("2");
    HP1C1RRAASys.Draw("2");
    HP1C2RRAASys.Draw("2");
    HP1C3RRAASys.Draw("2");
-   if(DoTheory == true)    Felix[1].Draw("lXp");
-   if(DoTheory == true)    Daniel[1].Draw("lXp");
    HP1C0RRAA.Draw("p");
    HP1C1RRAA.Draw("p");
    HP1C2RRAA.Draw("p");
@@ -239,14 +246,16 @@ int main(int argc, char *argv[])
    Latex.DrawLatex(0.08, 0.9, "250 < p_{T} < 300 GeV");
    P3.cd();
    HWorld.Draw("axis");
-   if(DoTheory == true)    Felix[2].Draw("2");
-   if(DoTheory == true)    Daniel[2].Draw("2");
+   if(DoTheory == true)    Felix[2].Draw("3");
+   if(DoTheory == true)    Daniel[2].Draw("3");
+   if(DoTheory == true)    Korinna[2].Draw("3");
+   if(DoTheory == true)    Felix[2].Draw("lX");
+   if(DoTheory == true)    Daniel[2].Draw("lX");
+   if(DoTheory == true)    Korinna[2].Draw("lX");
    HP2C0RRAASys.Draw("2");
    HP2C1RRAASys.Draw("2");
    HP2C2RRAASys.Draw("2");
    HP2C3RRAASys.Draw("2");
-   if(DoTheory == true)    Felix[2].Draw("lXp");
-   if(DoTheory == true)    Daniel[2].Draw("lXp");
    HP2C0RRAA.Draw("p");
    HP2C1RRAA.Draw("p");
    HP2C2RRAA.Draw("p");
@@ -256,14 +265,16 @@ int main(int argc, char *argv[])
    Latex.DrawLatex(0.08, 0.9, "300 < p_{T} < 400 GeV");
    P4.cd();
    HWorld.Draw("axis");
-   if(DoTheory == true)    Felix[3].Draw("2");
-   if(DoTheory == true)    Daniel[3].Draw("2");
+   if(DoTheory == true)    Felix[3].Draw("3");
+   if(DoTheory == true)    Daniel[3].Draw("3");
+   if(DoTheory == true)    Korinna[3].Draw("3");
+   if(DoTheory == true)    Felix[3].Draw("lX");
+   if(DoTheory == true)    Daniel[3].Draw("lX");
+   if(DoTheory == true)    Korinna[3].Draw("lX");
    HP3C0RRAASys.Draw("2");
    HP3C1RRAASys.Draw("2");
    HP3C2RRAASys.Draw("2");
    HP3C3RRAASys.Draw("2");
-   if(DoTheory == true)    Felix[3].Draw("lXp");
-   if(DoTheory == true)    Daniel[3].Draw("lXp");
    HP3C0RRAA.Draw("p");
    HP3C1RRAA.Draw("p");
    HP3C2RRAA.Draw("p");
@@ -273,14 +284,16 @@ int main(int argc, char *argv[])
    Latex.DrawLatex(0.08, 0.9, "400 < p_{T} < 500 GeV");
    P5.cd();
    HWorld.Draw("axis");
-   if(DoTheory == true)    Felix[4].Draw("2");
-   if(DoTheory == true)    Daniel[4].Draw("2");
+   if(DoTheory == true)    Felix[4].Draw("3");
+   if(DoTheory == true)    Daniel[4].Draw("3");
+   if(DoTheory == true)    Korinna[4].Draw("3");
+   if(DoTheory == true)    Felix[4].Draw("lX");
+   if(DoTheory == true)    Daniel[4].Draw("lX");
+   if(DoTheory == true)    Korinna[4].Draw("lX");
    HP4C0RRAASys.Draw("2");
    HP4C1RRAASys.Draw("2");
    HP4C2RRAASys.Draw("2");
    HP4C3RRAASys.Draw("2");
-   if(DoTheory == true)    Felix[4].Draw("lXp");
-   if(DoTheory == true)    Daniel[4].Draw("lXp");
    HP4C0RRAA.Draw("p");
    HP4C1RRAA.Draw("p");
    HP4C2RRAA.Draw("p");

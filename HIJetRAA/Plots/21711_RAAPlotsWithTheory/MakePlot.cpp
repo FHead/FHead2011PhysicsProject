@@ -190,6 +190,7 @@ int main(int argc, char *argv[])
 
    vector<TGraphAsymmErrors> Felix = GetTheoryGraphs("Theory/Felix/FelixRAA.txt", kBlack);
    vector<TGraphAsymmErrors> Daniel = GetTheoryGraphs("Theory/Daniel/ForCMS/RAA_vs_R/Daniel_wake.txt", kMagenta);
+   vector<TGraphAsymmErrors> Korinna = GetTheoryGraphs("Theory/Korinna/JewelRAA_0to10.txt", kCyan + 3);
 
    TLegend Legend11(0.1, 0.08, 0.5, 0.28);
    Legend11.SetTextFont(42);
@@ -249,13 +250,14 @@ int main(int argc, char *argv[])
    LegendT2.AddEntry(&HR02C00RAA, "T_{AA}", "f");
    LegendT2.AddEntry(&HLumi, "Lumi", "f");
 
-   TLegend LegendT3(0.1, 0.08, 0.5, 0.28);
+   TLegend LegendT3(0.1, 0.08, 0.5, 0.38);
    LegendT3.SetTextFont(42);
    LegendT3.SetTextSize(0.07);
    LegendT3.SetFillStyle(0);
    LegendT3.SetBorderSize(0);
-   LegendT3.AddEntry(&Felix[0], "Felix", "pl");
-   LegendT3.AddEntry(&Daniel[0], "Daniel", "f");
+   LegendT3.AddEntry(&Felix[0], "Factorization", "pl");
+   LegendT3.AddEntry(&Daniel[0], "Hybrid", "f");
+   LegendT3.AddEntry(&Korinna[0], "Jewel", "pl");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.07);
@@ -266,6 +268,7 @@ int main(int argc, char *argv[])
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[0].Draw("3");
    if(DoTheory == true)   Felix[0].Draw("p");
+   if(DoTheory == true)   Korinna[0].Draw("p");
    HR02C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR02C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR02C02RAASys.Draw("same e2");
@@ -284,6 +287,7 @@ int main(int argc, char *argv[])
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[1].Draw("3");
    if(DoTheory == true)   Felix[1].Draw("p");
+   if(DoTheory == true)   Korinna[1].Draw("p");
    HR03C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR03C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR03C02RAASys.Draw("same e2");
@@ -300,6 +304,7 @@ int main(int argc, char *argv[])
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[2].Draw("3");
    if(DoTheory == true)   Felix[2].Draw("p");
+   if(DoTheory == true)   Korinna[2].Draw("p");
    HR04C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR04C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR04C02RAASys.Draw("same e2");
@@ -318,6 +323,7 @@ int main(int argc, char *argv[])
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[3].Draw("3");
    if(DoTheory == true)   Felix[3].Draw("p");
+   if(DoTheory == true)   Korinna[3].Draw("p");
    HR06C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR06C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR06C02RAASys.Draw("same e2");
@@ -337,6 +343,7 @@ int main(int argc, char *argv[])
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[4].Draw("3");
    if(DoTheory == true)   Felix[4].Draw("p");
+   if(DoTheory == true)   Korinna[4].Draw("p");
    HR08C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR08C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR08C02RAASys.Draw("same e2");
@@ -355,6 +362,7 @@ int main(int argc, char *argv[])
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[5].Draw("3");
    if(DoTheory == true)   Felix[5].Draw("p");
+   if(DoTheory == true)   Korinna[5].Draw("p");
    HR10C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR10C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR10C02RAASys.Draw("same e2");
@@ -506,6 +514,8 @@ vector<TGraphAsymmErrors> GetTheoryGraphs(string TheoryFileName, int BaseColor)
    {
       Result[i].SetLineColor(BaseColor);
       Result[i].SetFillColorAlpha(BaseColor, 0.25);
+      Result[i].SetMarkerStyle(20);
+      Result[i].SetMarkerColor(BaseColor);
    }
 
    ifstream in(TheoryFileName);

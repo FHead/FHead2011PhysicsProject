@@ -8,6 +8,7 @@ using namespace std;
 #include "TPad.h"
 #include "TGaxis.h"
 #include "TLatex.h"
+#include "TPaletteAxis.h"
 
 #include "SetStyle.h"
 #include "CommandLine.h"
@@ -23,18 +24,26 @@ int main(int argc, char *argv[])
 
    CommandLine CL(argc, argv);
 
+   bool PythiaAbove = CL.GetBool("PythiaAbove", false);
+
    // Preamble: sizing
    int PanelSize = 500;
    int PaddingWidthL = 100;
-   int PaddingWidthR = 50;
+   int PaddingWidthR = 100;
    int PaddingHeight = 100;
    int CanvasWidth = PanelSize * 2 + PaddingWidthL + PaddingWidthR;
    int CanvasHeight = PanelSize * 2 + PaddingHeight * 2;
+   int ColorBarSpacing = 10;
+   int ColorBarWidth = 25;
+   int ColorBarHeight = PanelSize * 2;
 
    double PadX0 = (double)PaddingWidthL / CanvasWidth;
    double PadY0 = (double)PaddingHeight / CanvasHeight;
    double PadDX = (double)PanelSize / CanvasWidth;
    double PadDY = (double)PanelSize / CanvasHeight;
+   double ColorSX = (double)ColorBarSpacing / CanvasWidth;
+   double ColorDX = (double)ColorBarWidth / CanvasWidth;
+   double ColorDY = (double)ColorBarHeight / CanvasHeight;
 
    double XMin = 200;
    double XMax = 1000;
@@ -105,14 +114,26 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.035);
    Latex.SetTextAlign(11);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #font[52]{Simulation}");
+   if(PythiaAbove == false)   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #font[52]{Simulation}");
+   if(PythiaAbove == true)    Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.60, "CMS #font[52]{Simulation}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.030);
    Latex.SetTextAlign(31);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 2, PadY0 + PadDY * 2 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV");
+   if(PythiaAbove == false)   Latex.DrawLatex(PadX0 + PadDX * 2, PadY0 + PadDY * 2 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV");
+   if(PythiaAbove == true)    Latex.DrawLatex(PadX0 + PadDX * 2, PadY0 + PadDY * 2 + PadY0 * 0.60, "#sqrt{s_{NN}} = 5.02 TeV");
    
+   if(PythiaAbove == true)
+   {
+      Latex.SetTextFont(42);
+      Latex.SetTextSize(0.030);
+      Latex.SetTextAlign(22);
+      Latex.SetTextAngle(0);
+      Latex.DrawLatex(PadX0 + PadDX * 0.5, PadY0 + PadDY * 2.0 + PadY0 * 0.20, "Pythia");
+      Latex.DrawLatex(PadX0 + PadDX * 1.5, PadY0 + PadDY * 2.0 + PadY0 * 0.20, "Pythia+Hydjet");
+   }
+
    double Max = 0.01;
    Max = max(Max, HPPR02.GetMaximum());
    Max = max(Max, HPPR10.GetMaximum());
@@ -121,7 +142,26 @@ int main(int argc, char *argv[])
 
    HWorld.SetMaximum(Max);
    HWorld.SetMinimum(Max / 1000);
+
+   TH2D HDummy("HDummy", ";;", 5, -10, -5, 5, -10, -5);
+   HDummy.SetStats(0);
+   HDummy.SetBinContent(1, 1, Max);
+   HDummy.SetBinContent(1, 2, Max / 1000);
+   HDummy.Draw("col same");
+
+   HDummy.GetXaxis()->SetLabelSize(0);
+   HDummy.GetYaxis()->SetLabelSize(0);
+   HDummy.GetZaxis()->SetLabelSize(0.03);
+   HDummy.GetXaxis()->SetTickLength(0);
+   HDummy.GetYaxis()->SetTickLength(0);
+   HDummy.GetZaxis()->SetTickLength(0.02);
+   HDummy.GetZaxis()->SetLabelOffset(0);
+
+   TPaletteAxis ColorBar(PadX0 + PadDX * 2 + ColorSX, PadY0 + PadDY - ColorDY * 0.5, PadX0 + PadDX * 2 + ColorSX + ColorDX, PadY0 + PadDY + ColorDY * 0.5, &HDummy);
+   ColorBar.Draw();
    
+   Canvas.SetLogz();
+
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.07);
    Latex.SetTextAngle(0);
@@ -131,31 +171,41 @@ int main(int argc, char *argv[])
    HPPR02.Draw("col same");
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
-   Latex.DrawLatex(0.05, 0.95, "Pythia");
-   Latex.DrawLatex(0.05, 0.86, "R = 0.2");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 0.2");
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 0.2");
    Latex.SetTextAlign(31);
    Latex.DrawLatex(0.95, 0.06, "|#eta_{jet}| < 2.0");
+   P1.Update();
    P2.cd();
    HWorld.Draw("axis");
    HPbPbR02.Draw("col same");
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
-   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet");
-   Latex.DrawLatex(0.05, 0.86, "R = 0.2");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 0.2");
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 0.2");
    P3.cd();
    HWorld.Draw("axis");
    HPPR10.Draw("col same");
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
-   Latex.DrawLatex(0.05, 0.95, "Pythia");
-   Latex.DrawLatex(0.05, 0.86, "R = 1.0");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 1.0");
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 1.0");
    P4.cd();
    HWorld.Draw("axis");
    HPbPbR10.Draw("col same");
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
-   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet");
-   Latex.DrawLatex(0.05, 0.86, "R = 1.0");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 1.0");
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 1.0");
+   
+   Canvas.cd();
+
+   if(PythiaAbove == true)
+      OutputBase = OutputBase + "PythiaAbove";
 
    Canvas.SaveAs((OutputBase + ".pdf").c_str());
    Canvas.SaveAs((OutputBase + ".png").c_str());

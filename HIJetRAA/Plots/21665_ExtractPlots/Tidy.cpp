@@ -13,17 +13,19 @@ void TidyRAA(string In, string Out);
 void TidyRRAA(string In, string Out);
 void TidySysSpectra(string In, string Out);
 void TidySpectra(string In, string Out);
+void TidySysRAA(string In, string Out);
 
 int main(int argc, char *argv[])
 {
    CommandLine CL(argc, argv);
 
-   string Input = CL.Get("Input");
-   string Output = CL.Get("Output");
-   bool IsRAA = CL.GetBool("IsRAA", false);
-   bool IsRRAA = CL.GetBool("IsRRAA", false);
+   string Input      = CL.Get("Input");
+   string Output     = CL.Get("Output");
+   bool IsRAA        = CL.GetBool("IsRAA", false);
+   bool IsRRAA       = CL.GetBool("IsRRAA", false);
    bool IsSysSpectra = CL.GetBool("IsSysSpectra", false);
-   bool IsSpectra = CL.GetBool("IsSpectra", false);
+   bool IsSpectra    = CL.GetBool("IsSpectra", false);
+   bool IsSysRAA     = CL.GetBool("IsSysRAA", false);
 
    if(IsRAA)
       TidyRAA(Input, Output);
@@ -33,6 +35,8 @@ int main(int argc, char *argv[])
       TidySysSpectra(Input, Output);
    else if(IsSpectra)
       TidySpectra(Input, Output);
+   else if(IsSysRAA)
+      TidySysRAA(Input, Output);
 
    return 0;
 }
@@ -203,5 +207,35 @@ void TidySpectra(string In, string Out)
 
    FIn.Close();
 }
+
+void TidySysRAA(string In, string Out)
+{
+   TFile FIn(In.c_str());
+
+   TFile FOut(Out.c_str(), "RECREATE");
+
+   TList *List = FIn.GetListOfKeys();
+   TIter next(List);
+   
+   TObject *object = nullptr;
+   while((object = next()))
+   {
+      string Name = object->GetName();
+      vector<string> Names = CommandLine::Parse(Name, '_');
+
+      if(Names.size() < 13)
+         continue;
+
+      string NewName = Names[3] + "_" + Names[5] + "_" + Names[13];
+
+      FOut.cd();
+      FIn.Get(Name.c_str())->Clone(NewName.c_str())->Write();
+   }
+
+   FOut.Close();
+
+   FIn.Close();
+}
+
 
 

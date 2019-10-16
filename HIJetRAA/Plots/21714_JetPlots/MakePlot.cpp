@@ -14,6 +14,7 @@ using namespace std;
 #include "TLegend.h"
 #include "TColor.h"
 #include "TBox.h"
+#include "TPaveText.h"
 #include "TGraphAsymmErrors.h"
 
 #include "CommandLine.h"
@@ -131,6 +132,23 @@ int main(int argc, char *argv[])
    Latex.SetTextAngle(0);
    Latex.DrawLatex(PadX0 + PadDX * 2, PadY0 + PadDY * 2 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV");
 
+   double PTX = 0.120;
+   double PTY = 0.045;
+   TPaveText PT4(PadX0 + PadDX * 0.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 0.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
+   TPaveText PT8(PadX0 + PadDX * 1.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 1.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
+
+   PT4.AddText("R = 0.4");
+   PT8.AddText("R = 0.8");
+
+   PT4.SetFillColor(kWhite);
+   PT4.SetBorderSize(1);
+   PT4.SetTextFont(42);
+   PT4.SetTextSize(0.035);
+   PT8.SetFillColor(kWhite);
+   PT8.SetBorderSize(1);
+   PT8.SetTextFont(42);
+   PT8.SetTextSize(0.035);
+
    TFile F4("AK4.root");
    TFile F8("AK8.root");
 
@@ -208,10 +226,10 @@ int main(int argc, char *argv[])
    HMuR4C3->Draw("same");
    HMuR4C4->Draw("same");
    Latex.SetTextAlign(11);
-   Latex.DrawLatex(0.08, 0.1, "anti-k_{T}, |#eta_{jet}| < 2");
-   Latex.DrawLatex(0.08, 0.2, "Pythia+Hydjet");
-   Latex.SetTextAlign(31);
-   Latex.DrawLatex(0.92, 0.9, "R = 0.4");
+   Latex.DrawLatex(0.08, 0.8, "anti-k_{T}, |#eta_{jet}| < 2");
+   Latex.DrawLatex(0.08, 0.9, "Pythia+Hydjet");
+   // Latex.SetTextAlign(31);
+   // Latex.DrawLatex(0.92, 0.9, "R = 0.4");
    P2.cd();
    HWorld1.Draw("axis");
    GLine.Draw("l");
@@ -220,8 +238,8 @@ int main(int argc, char *argv[])
    HMuR8C2->Draw("same");
    HMuR8C3->Draw("same");
    HMuR8C4->Draw("same");
-   Latex.SetTextAlign(31);
-   Latex.DrawLatex(0.92, 0.9, "R = 0.8");
+   // Latex.SetTextAlign(31);
+   // Latex.DrawLatex(0.92, 0.9, "R = 0.8");
    P3.cd();
    HWorld2.Draw("axis");
    HSigmaMuR4C0->Draw("same");
@@ -229,8 +247,8 @@ int main(int argc, char *argv[])
    HSigmaMuR4C2->Draw("same");
    HSigmaMuR4C3->Draw("same");
    HSigmaMuR4C4->Draw("same");
-   Latex.SetTextAlign(31);
-   Latex.DrawLatex(0.92, 0.9, "R = 0.4");
+   // Latex.SetTextAlign(31);
+   // Latex.DrawLatex(0.92, 0.9, "R = 0.4");
    Legend.Draw();
    P4.cd();
    HWorld2.Draw("axis");
@@ -239,8 +257,13 @@ int main(int argc, char *argv[])
    HSigmaMuR8C2->Draw("same");
    HSigmaMuR8C3->Draw("same");
    HSigmaMuR8C4->Draw("same");
-   Latex.SetTextAlign(31);
-   Latex.DrawLatex(0.92, 0.9, "R = 0.8");
+   // Latex.SetTextAlign(31);
+   // Latex.DrawLatex(0.92, 0.9, "R = 0.8");
+
+   Canvas.cd();
+
+   PT4.Draw();
+   PT8.Draw();
 
    string OutputBase = "PlotJet";
 

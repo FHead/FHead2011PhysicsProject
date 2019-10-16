@@ -57,13 +57,15 @@ int main(int argc, char *argv[])
    int PaddingWidthL = 50;
    int PaddingWidthR = 25;
    int PaddingHeight = 50;
-   int CanvasWidth = PanelSize * 2 + PaddingWidthL + PaddingWidthR;
+   int PaddingSpacing = 20;
+   int CanvasWidth = PanelSize * 2 + PaddingWidthL + PaddingWidthR + PaddingSpacing;
    int CanvasHeight = PanelSize * 1 + PaddingHeight * 2;
 
    double PadX0 = (double)PaddingWidthL / CanvasWidth;
    double PadY0 = (double)PaddingHeight / CanvasHeight;
    double PadDX = (double)PanelSize / CanvasWidth;
    double PadDY = (double)PanelSize / CanvasHeight;
+   double PadSX = (double)PaddingSpacing / CanvasWidth;
 
    double XMin = -M_PI;
    double XMax = M_PI;
@@ -137,7 +139,7 @@ int main(int argc, char *argv[])
       HWorld.SetStats(0);
 
       TPad P1("P1", "", PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 1, PadY0 + PadDY * 1, 0);
-      TPad P2("P2", "", PadX0 + PadDX * 1, PadY0 + PadDY * 0, PadX0 + PadDX * 2, PadY0 + PadDY * 1, 0);
+      TPad P2("P2", "", PadX0 + PadDX * 1 + PadSX, PadY0 + PadDY * 0, PadX0 + PadDX * 2 + PadSX, PadY0 + PadDY * 1, 0);
 
       SetPad(P1);
       SetPad(P2);
@@ -145,8 +147,8 @@ int main(int argc, char *argv[])
       Canvas.cd();
 
       TGaxis AxisX1(PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 1, PadY0 + PadDY * 0, XMin, XMax, 510, "");
-      TGaxis AxisX2(PadX0 + PadDX * 1, PadY0 + PadDY * 0, PadX0 + PadDX * 2, PadY0 + PadDY * 0, XMin, XMax, 510, "");
-      TGaxis AxisY(PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 0, PadY0 + PadDY * 1, YMin, YMax, 510, "");
+      TGaxis AxisX2(PadX0 + PadDX * 1 + PadSX, PadY0 + PadDY * 0, PadX0 + PadDX * 2 + PadSX, PadY0 + PadDY * 0, XMin, XMax, 510, "");
+      TGaxis AxisY(PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 0, PadY0 + PadDY * 1, YMin, YMax, 510, "S");
 
       SetAxis(AxisX1);
       SetAxis(AxisX2);
@@ -159,7 +161,7 @@ int main(int argc, char *argv[])
       Latex.SetTextSize(0.040);
       Latex.SetTextAlign(22);
       Latex.SetTextAngle(0);
-      Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.20, "PF Candidate #phi");
+      Latex.DrawLatex(PadX0 + PadDX * 1.0 + PadSX * 0.5, PadY0 * 0.20, "PF Candidate #phi");
 
       Latex.SetTextFont(42);
       Latex.SetTextSize(0.040);
@@ -177,7 +179,7 @@ int main(int argc, char *argv[])
       Latex.SetTextSize(0.040);
       Latex.SetTextAlign(31);
       Latex.SetTextAngle(0);
-      Latex.DrawLatex(PadX0 + PadDX * 2, PadY0 + PadDY * 1 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 2015");
+      Latex.DrawLatex(PadX0 + PadDX * 2 + PadSX, PadY0 + PadDY * 1 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 2015");
 
       TLegend Legend(0.40, 0.68, 0.80, 0.92);
       Legend.SetTextFont(42);
@@ -201,9 +203,9 @@ int main(int argc, char *argv[])
       F1.Draw("same");
       H1->Draw("hist e1 p same");
       Latex.SetTextAlign(11);
-      Latex.DrawLatex(0.08, 0.90, "0.3 < p_{T} < 3.0 GeV");
-      Latex.DrawLatex(0.08, 0.82, Form("Event centrality: %.1f%%", hiBin * 0.5));
-      Latex.DrawLatex(0.08, 0.74, "|#eta| < 1");
+      Latex.DrawLatex(0.08, 0.90, "#font[62]{|#eta| < 1}");
+      Latex.DrawLatex(0.08, 0.78, "0.3 < p_{T} < 3.0 GeV");
+      Latex.DrawLatex(0.08, 0.70, Form("Event centrality: %.1f%%", hiBin * 0.5));
       Latex.SetTextAlign(31);
       P2.cd();
       HWorld.Draw("axis");
@@ -213,7 +215,7 @@ int main(int argc, char *argv[])
       H2->Draw("hist e1 p same");
       Legend.Draw();
       Latex.SetTextAlign(11);
-      Latex.DrawLatex(0.08, 0.90, "1 < |#eta| < 2");
+      Latex.DrawLatex(0.08, 0.90, "#font[62]{1 < |#eta| < 2}");
 
       string OutputBase = "plots/PlotJet_" + Tag;
 
@@ -247,6 +249,7 @@ void SetAxis(TGaxis &A)
    A.SetMaxDigits(6);
    A.SetMoreLogLabels();
    A.SetNoExponent();
+   A.SetTickLength(0);
    A.Draw();
 }
 

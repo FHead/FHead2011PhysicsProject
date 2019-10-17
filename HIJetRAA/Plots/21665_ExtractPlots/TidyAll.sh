@@ -38,12 +38,21 @@ mkdir -p TidyRoot
 # hadd -f SysSpectra_Smooth.root TidyRoot/syst_spectra_*_Smooth_*.root
 # hadd -f SysSpectra_NotSmooth.root TidyRoot/syst_spectra_*_NotSmooth_*.root
 
-for i in `ls Root | grep ^syst_raa_`
+# for i in `ls Root | grep ^syst_raa_`
+# do
+#    echo $i
+#    ./Tidy --Input Root/$i --Output TidyRoot/$i --IsSysRAA true
+# done
+# 
+# hadd -f SysRAA_Smooth.root TidyRoot/syst_raa_*_Smooth_*.root
+# hadd -f SysRAA_NotSmooth.root TidyRoot/syst_raa_*_NotSmooth_*.root
+
+for i in `ls Root | grep ^syst_rraa_`
 do
    echo $i
-   ./Tidy --Input Root/$i --Output TidyRoot/$i --IsSysRAA true
+   ./Tidy --Input Root/$i --Output TidyRoot/$i --IsSysRRAA true
 done
 
-hadd -f SysRAA_Smooth.root TidyRoot/syst_raa_*_Smooth_*.root
-hadd -f SysRAA_NotSmooth.root TidyRoot/syst_raa_*_NotSmooth_*.root
+hadd -f SysRRAA_Smooth.root TidyRoot/syst_rraa_*_Smooth_*.root
+hadd -f SysRRAA_NotSmooth.root TidyRoot/syst_rraa_*_NotSmooth_*.root
 

@@ -400,6 +400,13 @@ bool L1PhaseIITreeV10Messenger::GetEntry(int Entry)
       &P->tkMuonStubsQual, &P->tkMuonStubsRegion, &D0, &P->tkMuonStubsChg,
       &D0);
 
+   // TkHSCP
+   FillObject(TkHSCP, P->nTkHSCPs,
+      &P->tkHSCPsPt, &P->tkHSCPsEta, &P->tkHSCPsPhi,
+      &P->tkHSCPsBx, &D0, &P->tkHSCPszVtx, &D0,
+      &D0, &D0, &D0, &P->tkHSCPsChg,
+      &D0);
+
    // TrackerMET
    FillObject(TrackerMET, P->nTrackerMet,
       &P->trackerMetEt, &D0, &P->trackerMetPhi,
@@ -484,6 +491,13 @@ bool L1PhaseIITreeV10Messenger::GetEntry(int Entry)
       &P->nnTauEt, &P->nnTauEta, &P->nnTauPhi,
       &D0, &P->nnTauFullIso, &D0, &D0,
       &D0, &P->nnTauID, &P->nnTauPassLooseNN, &P->nnTauChg,
+      &D0);
+
+   // HPSTau
+   FillObject(HPSTau, P->nHPSTaus,
+      &P->hpsTauEt, &P->hpsTauEta, &P->hpsTauPhi,
+      &D0, &D0, &D0, &D0,
+      &D0, &P->hpsTauType, &P->hpsTauPassTightRelIso, &P->hpsTauChg,
       &D0);
 
    // TkBsCand: mass, phi1(pt,eta,phi,mass), phi2(pt,eta,phi,mass), phi pair(dr, dxy, dz)

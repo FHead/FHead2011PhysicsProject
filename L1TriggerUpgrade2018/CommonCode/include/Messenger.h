@@ -181,6 +181,7 @@ public:   // Collections from the trees
    vector<GenericObject> TkGlbMuon;
    vector<GenericObject> TkMuon;
    vector<GenericObject> TkMuonStub;
+   vector<GenericObject> TkHSCP;
    vector<GenericObject> TrackerMET;
    vector<GenericObject> TrackerMHT;
    vector<GenericObject> TrackerHT;
@@ -193,6 +194,7 @@ public:   // Collections from the trees
    vector<GenericObject> PFTau;
    vector<GenericObject> NNTau;
    vector<GenericObject> NNTauLoose;
+   vector<GenericObject> HPSTau;
    vector<GenericObject> TkBsCand;
 public:
    L1PhaseIITreeV10Messenger(TFile &File, string TreeName = "l1PhaseIITree/L1PhaseIITree");

@@ -1,0 +1,43 @@
+Input Object   Directory   Reference   |Eta| Min   |Eta| Max   L1 PT Min   Reference Iso  Quality  DR Cut   Type / Region IsolationBB IsolationEC Histogram   Binning for PT       Binning for eta         Binning for iso         Binning for dxy        Thresholds
+# Gen objects                                                                          
+Gen   GenElectron Electron -1 2.4   -1 -1 None  -1 -1 -1 -1 GenElectron 100   0  150   30 -2.5  2.5   200   0  5  100 0  10 Gen
+Gen   GenMuon  Muon  -1 2.4   -1 -1 None  -1 -1 -1 -1 GenMuon  100   0  150   30 -2.5  2.5   200   0  5  100   0  10 Gen
+Gen   GenPhoton   Photon   -1 2.4   -1 -1 None  -1 -1 -1 -1 GenPhoton   100   0  150   30 -2.5  2.5   200   0  5  100 0  10 Gen
+Gen   GenJet   GenJet   -1 2.4   -1 -1 None  -1 -1 -1 -1 GenJet   200   0  600   50 -3 3  200   0  5  100   0  10 Gen
+Gen   GenTau   Tau   -1 2.4   -1 -1 None  -1 -1 -1 -1 GenTau   100   0  150   30 -2.5  2.5   200   0  5  100   0  10 Gen
+# PuppiJets                                                                         
+PuppiJet PuppiJet GenJet   -1 2.5   -1 -1 None  0.3   -1 -1 -1 PuppiJet 200   0  600   50 -3 3  200   0  5  100   0  10  Jet
+PuppiJet PuppiJetWide   GenJet   -1 5.2   -1 -1 None  0.3   -1 -1 -1 PuppiJetWide   200   0  600   50 -5.2  5.2   200 0  5  100   0  10 Jet
+PuppiJet PuppiJetABitForward  GenJet   2.5   3.5   -1 -1 None  0.3   -1 -1 -1 PuppiJetABitForward  200   0  600   50 -5.2   5.2   200   0  5  100   0  10 Jet
+PuppiJet PuppiJetForward   GenJet   2.5   5.2   -1 -1 None  0.3   -1 -1 -1 PuppiJetForward   200   0  600   50 -5.2  5.2 200   0  5  100   0  10 Jet
+PuppiJet PuppiJetLDR GenJet   -1 2.5   -1 -1 None  1.5   -1 -1 -1 PuppiJetLDR 200   0  600   50 -3 3  200   0  5  100 0  10 Jet
+PuppiJet PuppiJetForwardLDR   GenJet   2.5   5.2   -1 -1 None  1.5   -1 -1 -1 PuppiJetForwardLDR   200   0  600   50 -5.2   5.2   200   0  5  100   0  10 Jet
+PuppiJet PuppiJet25  GenJet   -1 2.5   25 -1 None  0.3   -1 -1 -1 PuppiJet25  200   0  600   50 -3 3  200   0  5  100 0  10 Jet
+PuppiJet PuppiJetWide25 GenJet   -1 5.2   25 -1 None  0.3   -1 -1 -1 PuppiJetWide25 200   0  600   50 -5.2  5.2   200 0  5  100   0  10 Jet
+PuppiJet PuppiJetABitForward25   GenJet   2.5   3.5   25 -1 None  0.3   -1 -1 -1 PuppiJetABitForward25   200   0  600 50 -5.2  5.2   200   0  5  100   0  10 Jet
+PuppiJet PuppiJetForward25 GenJet   2.5   5.2   25 -1 None  0.3   -1 -1 -1 PuppiJetForward25 200   0  600   50 -5.2  5.2 200   0  5  100   0  10 Jet
+PuppiJet PuppiJetLDR25  GenJet   -1 2.5   25 -1 None  1.5   -1 -1 -1 PuppiJetLDR25  200   0  600   50 -3 3  200   0  5   100   0  10 Jet
+PuppiJet PuppiJetForwardLDR25 GenJet   2.5   5.2   25 -1 None  1.5   -1 -1 -1 PuppiJetForwardLDR25 200   0  600   50 -5.2   5.2   200   0  5  100   0  10 Jet
+# PuppiJetsForMET                                                                         
+PuppiJetForMET PuppiJetForMET GenJet   -1 2.4   -1 -1 None  0.3   -1 -1 -1 PuppiJetForMET 200   0  600   50 -3 3  200 0  5  100   0  10 Jet
+PuppiJetForMET PuppiJetForMETWide   GenJet   -1 5.2   -1 -1 None  0.3   -1 -1 -1 PuppiJetForMETWide   200   0  600   50  -5.2  5.2   200   0  5  100   0  10 Jet
+PuppiJetForMET PuppiJetForMETForward   GenJet   3  5.2   -1 -1 None  0.3   -1 -1 -1 PuppiJetForMETForward   200   0  600 50 -5.2  5.2   200   0  5  100   0  10 Jet
+PuppiJetForMET PuppiJetForMETLDR GenJet   -1 2.4   -1 -1 None  1.5   -1 -1 -1 PuppiJetForMETLDR 200   0  600   50 -3 3 200   0  5  100   0  10 Jet
+PuppiJetForMET PuppiJetForMETForwardLDR   GenJet   3  5.2   -1 -1 None  1.5   -1 -1 -1 PuppiJetForMETForwardLDR   200 0  600   50 -5.2  5.2   200   0  5  100   0  10 Jet
+# PFTau, no isolation requirement; and PFIsoTau with medium working point                                                                          
+PFTau PFTau Tau   -1 2.4   -1 -1 None  0.3   -1 -1 -1 PFTau 100   0  150   30 -2.5  2.5   200   0  5  100   0  10 Tau
+PFTau PFTauIso Tau   -1 2.4   -1 0.15  None  0.3   -1 -1 -1 PFTauIso 100   0  150   30 -2.5  2.5   200   0  5  100   0   10 Tau
+PFTau PFIsoTau Tau   -1 2.4   -1 0.15  UseFlag  0.3   -1 -1 -1 PFIsoTau 100   0  150   30 -2.5  2.5   200   0  5  100 0  10 Tau
+PFTau PFTauLDR Tau   -1 2.4   -1 -1 None  1  -1 -1 -1 PFTauLDR 100   0  150   30 -2.5  2.5   200   0  5  100   0  10 Tau
+# CaloTau                                                                           
+CaloTau  CaloTau  Tau   -1 2.4   -1 -1 None  0.3   -1 -1 -1 CaloTau  100   0  150   30 -2.5  2.5   200   0  5  100   0   10 Tau
+CaloTau  CaloTauIso  Tau   -1 2.4   -1 0.15  None  0.3   -1 -1 -1 CaloTauIso  100   0  150   30 -2.5  2.5   200   0  5   100   0  10 Tau
+CaloTau  CaloTauLDR  Tau   -1 2.4   -1 -1 None  1  -1 -1 -1 CaloTauLDR  100   0  150   30 -2.5  2.5   200   0  5  100 0  10 Tau
+# CaloJets                                                                          
+CaloJet  CaloJet  GenJet   -1 2.4   -1 -1 None  0.3   -1 -1 -1 CaloJet  150   0  700   50 -3 3  200   0  5  100   0  10  Jet
+CaloJet  CaloJetWide GenJet   -1 5.2   -1 -1 None  0.3   -1 -1 -1 CaloJetWide 150   0  700   50 -5.2  5.2   200   0  5   100   0  10 Jet
+CaloJet  CaloJetBarrel  GenJet   -1 1.5   -1 -1 None  0.3   -1 -1 -1 CaloJetBarrel  150   0  700   50 -3 3  200   0  5   100   0  10 Jet
+CaloJet  CaloJetEndcap  GenJet   1.5   2.4   -1 -1 None  0.3   -1 -1 -1 CaloJetEndcap  150   0  700   50 -3 3  200   0   5  100   0  10 Jet
+CaloJet  CaloJetFoward  GenJet   2.4   5.2   -1 -1 None  0.3   -1 -1 -1 CaloJetFoward  150   0  700   50 -5.2  5.2   200   0  5  100   0  10 Jet
+CaloJet  CaloJetLDR  GenJet   -1 2.4   -1 -1 None  1.5   -1 -1 -1 CaloJetLDR  150   0  700   50 -3 3  200   0  5  100 0  10 Jet
+CaloJet  CaloJetWideLDR GenJet   -1 5.2   -1 -1 None  1.5   -1 -1 -1 CaloJetWideLDR 150   0  700   50 -5.2  5.2   200 0  5  100   0  10 Jet

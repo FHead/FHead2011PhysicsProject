@@ -192,10 +192,10 @@ int main(int argc, char *argv[])
    Legend.Draw();
    P2.cd();
    HWorldR.Draw("axis");
+   Line.Draw("l");
    GRatioIan.Draw("2");
    GRatio.Draw("p"); 
    GRatioSys.Draw("2");
-   Line.Draw("l");
 
    string OutputBase = "SpectraSinglePanelR04";
 

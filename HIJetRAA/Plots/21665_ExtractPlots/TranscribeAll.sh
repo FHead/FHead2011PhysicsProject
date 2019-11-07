@@ -1,3 +1,4 @@
+mkdir -p root
 for i in `ls 20190928 | grep C$`
 do
    echo Processing $i

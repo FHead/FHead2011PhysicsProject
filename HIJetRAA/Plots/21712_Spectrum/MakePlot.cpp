@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
    GPbPbC2R02.Draw("p");
    GPbPbC3R02.Draw("p");
    Latex.SetTextAlign(13);
-   Latex.DrawLatex(0.08, 0.95, "R = 0.2");
+   Latex.DrawLatex(0.08, 0.95, "#font[62]{R = 0.2}");
    Latex.SetTextAlign(33);
    Latex.DrawLatex(0.92, 0.95, "|#eta_{jet}| < 2.0");
    P2.cd();
@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
    GPbPbC2R10.Draw("p");
    GPbPbC3R10.Draw("p");
    Latex.SetTextAlign(13);
-   Latex.DrawLatex(0.08, 0.95, "R = 1.0");
+   Latex.DrawLatex(0.08, 0.95, "#font[62]{R = 1.0}");
    Legend.Draw();
 
    string OutputBase = "Spectra";

@@ -192,7 +192,6 @@ string GetFormula(string FileName)
    string Header = FindHeader(FileName);
    stringstream str(Header);
 
-   // Assume the two text files have the same dependencies for now
    int NBin = 0, NPar = 0;
    string Dummy = "";
 
@@ -596,11 +595,8 @@ void SplitUp(vector<Record> &R1, vector<Record> &R2)
          }
          
          bool NoneInR1 = false;
-
          if(R1[I].BinMin[B] < NONE + Tolerance && R1[I].BinMax[B] < NONE + Tolerance)
             NoneInR1 = true;
-         else
-            NoneInR1 = false;
 
          Record R;
          if(NoneInR1 == true)
@@ -689,13 +685,8 @@ void SplitUp(vector<Record> &R1, vector<Record> &R2)
          }
 
          bool NoneInR1 = false;
-
          if(R1[I].BinMin[B] < NONE + Tolerance && R1[I].BinMax[B] < NONE + Tolerance)
             NoneInR1 = true;
-         else
-            NoneInR1 = false;
-
-         // cout << NoneInR1 << " " << IX << " " << IY << endl;
 
          Record R;
          if(NoneInR1 == true)

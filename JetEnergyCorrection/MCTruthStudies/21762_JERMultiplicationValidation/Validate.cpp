@@ -5,16 +5,25 @@ using namespace std;
 #include "TFile.h"
 
 #include "Code/DrawRandom.h"
+#include "CommandLine.h"
 
 #include "JetCorrector.h"
 
 int main(int argc, char *argv[])
 {
-   JetCorrector JMCJER("Autumn18_V7_MC_PtResolution_AK4PFchs.txt");
-   JetCorrector JJERSF("Autumn18_V7_MC_SF_AK4PFchs_Test.txt");
-   JetCorrector JDataJER("Autumn18_V7_Data_PtResolution_AK4PFchs.txt");
+   CommandLine CL(argc, argv);
 
-   TFile File("Result.root", "RECREATE");
+   string MCJERFileName   = CL.Get("MCJER");
+   string JERSFFileName   = CL.Get("JERSF");
+   string DataJERFileName = CL.Get("DataJER");
+   string OutputFileName  = CL.Get("Output");
+   int N                  = CL.GetInt("N", 10000);
+
+   JetCorrector JMCJER(MCJERFileName);
+   JetCorrector JJERSF(JERSFFileName);
+   JetCorrector JDataJER(DataJERFileName);
+
+   TFile File(OutputFileName.c_str(), "RECREATE");
 
    TTree Tree("Tree", "Tree");
 
@@ -28,7 +37,7 @@ int main(int argc, char *argv[])
    Tree.Branch("JERSF", &JERSF, "JERSF/D");
    Tree.Branch("DataJER", &DataJER, "DataJER/D");
 
-   for(int i = 0; i < 100000; i++)
+   for(int i = 0; i < N; i++)
    {
       PT = DrawRandom(0, 1000);
       Eta = DrawRandom(-4, 4);

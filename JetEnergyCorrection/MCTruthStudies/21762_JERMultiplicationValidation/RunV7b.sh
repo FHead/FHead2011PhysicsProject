@@ -7,6 +7,6 @@ do
       DataJER=JRDatabase/Autumn18${i}V7b_DATA/Autumn18${i}V7b_DATA_PtResolution_${j}.txt
       Output=Result${i}${j}.root
 
-      ./Execute --MCJER $MCJER --JERSF $JERSF --DataJER $DataJER --Output $Output
+      ./Execute --MCJER $MCJER --JERSF $JERSF --DataJER $DataJER --Output $Output --N 50000
    done
 done

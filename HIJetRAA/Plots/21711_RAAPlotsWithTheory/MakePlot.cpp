@@ -255,9 +255,9 @@ int main(int argc, char *argv[])
    LegendT3.SetTextSize(0.07);
    LegendT3.SetFillStyle(0);
    LegendT3.SetBorderSize(0);
-   LegendT3.AddEntry(&Felix[0], "Factorization", "pl");
+   LegendT3.AddEntry(&Felix[0], "Factorization", "f");
    LegendT3.AddEntry(&Daniel[0], "Hybrid", "f");
-   LegendT3.AddEntry(&Korinna[0], "Jewel", "pl");
+   LegendT3.AddEntry(&Korinna[0], "Jewel", "f");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.07);
@@ -267,8 +267,8 @@ int main(int argc, char *argv[])
    P1.cd();
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[0].Draw("3");
-   if(DoTheory == true)   Felix[0].Draw("p");
-   if(DoTheory == true)   Korinna[0].Draw("p");
+   if(DoTheory == true)   Felix[0].Draw("5");
+   if(DoTheory == true)   Korinna[0].Draw("5");
    HR02C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR02C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR02C02RAASys.Draw("same e2");
@@ -286,8 +286,8 @@ int main(int argc, char *argv[])
    P2.cd();
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[1].Draw("3");
-   if(DoTheory == true)   Felix[1].Draw("p");
-   if(DoTheory == true)   Korinna[1].Draw("p");
+   if(DoTheory == true)   Felix[1].Draw("5");
+   if(DoTheory == true)   Korinna[1].Draw("5");
    HR03C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR03C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR03C02RAASys.Draw("same e2");
@@ -303,8 +303,8 @@ int main(int argc, char *argv[])
    P3.cd();
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[2].Draw("3");
-   if(DoTheory == true)   Felix[2].Draw("p");
-   if(DoTheory == true)   Korinna[2].Draw("p");
+   if(DoTheory == true)   Felix[2].Draw("5");
+   if(DoTheory == true)   Korinna[2].Draw("5");
    HR04C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR04C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR04C02RAASys.Draw("same e2");
@@ -322,8 +322,8 @@ int main(int argc, char *argv[])
    P4.cd();
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[3].Draw("3");
-   if(DoTheory == true)   Felix[3].Draw("p");
-   if(DoTheory == true)   Korinna[3].Draw("p");
+   if(DoTheory == true)   Felix[3].Draw("5");
+   if(DoTheory == true)   Korinna[3].Draw("5");
    HR06C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR06C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR06C02RAASys.Draw("same e2");
@@ -342,8 +342,8 @@ int main(int argc, char *argv[])
    P5.cd();
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[4].Draw("3");
-   if(DoTheory == true)   Felix[4].Draw("p");
-   if(DoTheory == true)   Korinna[4].Draw("p");
+   if(DoTheory == true)   Felix[4].Draw("5");
+   if(DoTheory == true)   Korinna[4].Draw("5");
    HR08C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR08C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR08C02RAASys.Draw("same e2");
@@ -361,8 +361,8 @@ int main(int argc, char *argv[])
    P6.cd();
    HWorld.Draw("axis");
    if(DoTheory == true)   Daniel[5].Draw("3");
-   if(DoTheory == true)   Felix[5].Draw("p");
-   if(DoTheory == true)   Korinna[5].Draw("p");
+   if(DoTheory == true)   Felix[5].Draw("5");
+   if(DoTheory == true)   Korinna[5].Draw("5");
    HR10C00RAASys.Draw("same e2");
    if(DoTheory == false)  HR10C01RAASys.Draw("same e2");
    if(DoTheory == false)  HR10C02RAASys.Draw("same e2");

@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.040);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.30, "Jet p_{T} (GeV)");
+   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.30, "p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.050);
    Latex.SetTextAlign(11);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0, PadY0 + PadDY * 1 + PadY0 * 0.15, "CMS");
+   Latex.DrawLatex(PadX0, PadY0 + PadDY * 1 + PadY0 * 0.15, "CMS #font[52]{#scale[0.8]{Preliminary}}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);

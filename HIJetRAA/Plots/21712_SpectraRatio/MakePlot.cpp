@@ -114,13 +114,13 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.040);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 0.5, PadY0 * 0.30, "Jet p_{T} (GeV)");
+   Latex.DrawLatex(PadX0 + PadDX * 0.5, PadY0 * 0.30, "p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(90);
-   Latex.DrawLatex(PadX0 * 0.15, PadY0 + PadDY1 + PadDY2 * 0.5, "#frac{d^{2}N^{R}}{dp_{T}d#eta} #lower[0.45]{#scale[2.5]{/}} #frac{d^{2}N^{R=1.0}}{dp_{T}d#eta}");
+   Latex.DrawLatex(PadX0 * 0.175, PadY0 + PadDY1 + PadDY2 * 0.5, "#frac{dN^{R}}{dp_{T}} #lower[0.45]{#font[82]{#scale[2.5]{/}}} #frac{dN^{R=1.0}}{dp_{T}}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.050);
    Latex.SetTextAlign(11);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0, PadY0 + PadDY1 + PadDY2 + PadY0 * 0.15, "CMS");
+   Latex.DrawLatex(PadX0, PadY0 + PadDY1 + PadDY2 + PadY0 * 0.15, "CMS #scale[0.8]{#font[52]{Preliminary}}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);
@@ -206,8 +206,8 @@ int main(int argc, char *argv[])
    Legend2.SetFillStyle(0);
    Legend2.SetBorderSize(0);
    Legend2.AddEntry(&HPP, "Data", "plf");
-   Legend2.AddEntry(&HP6, "Pythia6", "l");
-   Legend2.AddEntry(&HP8, "Pythia8", "l");
+   Legend2.AddEntry(&HP6, "P#scale[0.7]{YTHIA}6 (tune Z2)", "l");
+   Legend2.AddEntry(&HP8, "P#scale[0.7]{YTHIA}8 (tune CUETP8M1)", "l");
    Legend2.AddEntry("", "", "");
    Legend2.AddEntry("", "", "");
 

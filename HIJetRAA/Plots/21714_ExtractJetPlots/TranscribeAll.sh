@@ -1,4 +1,4 @@
-DIR=jecPlotsFromJetDP_20191008
+DIR=Input20191030
 mkdir -p root
 
 for i in `ls $DIR | grep C$`

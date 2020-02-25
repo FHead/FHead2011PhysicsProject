@@ -1,0 +1,27 @@
+#: table_doi: 10.17182/hepdata.84819.v1/t8
+#: name: Table 8
+#: description: No description provided.
+#: data_file: ppCrossX_y4.yaml
+#: keyword reactions: P P --> JETS X
+#: keyword observables: D2SIG/DPT/DYRAP
+#: keyword cmenergies: 5020.0
+#: keyword phrases: Inclusive | Double Differential Cross Section | Transverse Momentum Dependence | Rapidity Dependence | Proton-Proton Scattering | Jet Production
+#: R(JETS),,,0.4
+#: RE,,,P P --> JET(S) X
+#: ABS(YRAP),,,1.2 < |y| < 1.6
+#: SQRT(S) [GeV],,,5020.0
+PT [GEV] [GeV],PT [GEV] [GeV] LOW,PT [GEV] [GeV] HIGH,D2(SIG)/DPT/DYRAP [NB/GEV],sys +,sys -,stat +,stat -,sys luminosity uncertainty +,sys luminosity uncertainty -
+45.0,40,50,134.7,24.1,-22.5,0.5,-0.5,2.5,-2.5
+56.5,50,63,43.92,6.09,-5.88,0.16,-0.16,0.82,-0.82
+71.0,63,79,14.16,1.71,-1.62,0.05,-0.05,0.27,-0.27
+89.5,79,100,4.314,0.485,-0.469,0.015,-0.015,0.081,-0.081
+113.0,100,126,1.212,0.126,-0.125,0.004,-0.004,0.023,-0.023
+142.0,126,158,0.3305,0.0316,-0.0307,0.0012,-0.0012,0.0062,-0.0062
+179.0,158,200,0.089,0.0088,-0.0087,0.0004,-0.0004,0.0017,-0.0017
+225.5,200,251,0.02175,0.00196,-0.00195,0.00015,-0.00015,0.00041,-0.00041
+283.5,251,316,0.00477,0.00046,-0.00045,6e-05,-6e-05,9e-05,-9e-05
+357.0,316,398,0.000865,8.7e-05,-8.5e-05,2.3e-05,-2.3e-05,1.6e-05,-1.6e-05
+449.5,398,501,0.000135,1.6e-05,-1.6e-05,8e-06,-8e-06,3e-06,-3e-06
+566.0,501,631,1.74e-05,2.5e-06,-2.4e-06,2.7e-06,-2.7e-06,3e-07,-3e-07
+715.5,631,800,9e-07,2e-07,-1e-07,5e-07,-5e-07,0.0,-0.0
+

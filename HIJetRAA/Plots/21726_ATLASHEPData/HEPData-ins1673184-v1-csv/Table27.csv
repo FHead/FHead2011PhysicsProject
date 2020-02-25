@@ -1,0 +1,56 @@
+#: table_doi: 10.17182/hepdata.84819.v1/t27
+#: name: Table 27
+#: description: No description provided.
+#: data_file: raa_doubleRatio_c0_y0.yaml
+#: keyword reactions: PB PB --> JETS X
+#: keyword observables: RAA
+#: keyword cmenergies: 5020.0
+#: keyword phrases: Inclusive | Jet Production
+#: pT [GeV],,,158 < pT < 200
+#: R(JETS),,,0.4
+#: CENTRALITY,,,0-10 ptc
+#: SQRT(S)/NUCLEON [GeV],,,5020.0
+#: RE,,,PB PB --> JET(S) X
+ABS(YRAP),ABS(YRAP) LOW,ABS(YRAP) HIGH,(RAA(|y|)/RAA(|y|<0.3),sys +,sys -,stat +,stat -
+0.55,0.8,0.3,1.014,0.006,-0.006,0.013,-0.013
+1.0,1.2,0.8,0.999,0.006,-0.005,0.014,-0.014
+1.4,1.6,1.2,1.042,0.009,-0.008,0.015,-0.015
+1.85,2.1,1.6,0.999,0.009,-0.01,0.016,-0.016
+2.45,2.8,2.1,1.015,0.015,-0.02,0.023,-0.023
+
+#: pT [GeV],,,200 < pT < 251
+#: R(JETS),,,0.4
+#: CENTRALITY,,,0-10 ptc
+#: SQRT(S)/NUCLEON [GeV],,,5020.0
+#: RE,,,PB PB --> JET(S) X
+ABS(YRAP),ABS(YRAP) LOW,ABS(YRAP) HIGH,(RAA(|y|)/RAA(|y|<0.3),sys +,sys -,stat +,stat -
+0.55,0.8,0.3,1.029,0.005,-0.005,0.02,-0.02
+1.0,1.2,0.8,1.016,0.004,-0.004,0.021,-0.021
+1.4,1.6,1.2,1.024,0.008,-0.01,0.023,-0.023
+1.85,2.1,1.6,0.968,0.008,-0.009,0.026,-0.026
+2.45,2.8,2.1,1.036,0.015,-0.022,0.049,-0.049
+
+#: pT [GeV],,,251 < pT < 316
+#: R(JETS),,,0.4
+#: CENTRALITY,,,0-10 ptc
+#: SQRT(S)/NUCLEON [GeV],,,5020.0
+#: RE,,,PB PB --> JET(S) X
+ABS(YRAP),ABS(YRAP) LOW,ABS(YRAP) HIGH,(RAA(|y|)/RAA(|y|<0.3),sys +,sys -,stat +,stat -
+0.55,0.8,0.3,1.044,0.006,-0.006,0.036,-0.036
+1.0,1.2,0.8,0.96,0.006,-0.007,0.037,-0.037
+1.4,1.6,1.2,0.971,0.01,-0.01,0.041,-0.041
+1.85,2.1,1.6,0.93,0.011,-0.01,0.051,-0.051
+2.45,2.8,2.1,0.944,0.018,-0.023,0.135,-0.135
+
+#: pT [GeV],,,316 < pT < 562
+#: R(JETS),,,0.4
+#: CENTRALITY,,,0-10 ptc
+#: SQRT(S)/NUCLEON [GeV],,,5020.0
+#: RE,,,PB PB --> JET(S) X
+ABS(YRAP),ABS(YRAP) LOW,ABS(YRAP) HIGH,(RAA(|y|)/RAA(|y|<0.3),sys +,sys -,stat +,stat -
+0.55,0.8,0.3,1.05,0.007,-0.007,0.06,-0.06
+1.0,1.2,0.8,1.035,0.007,-0.01,0.067,-0.067
+1.4,1.6,1.2,0.874,0.008,-0.01,0.07,-0.07
+1.85,2.1,1.6,0.683,0.009,-0.006,0.094,-0.094
+2.45,2.8,2.1,0.636,0.008,-0.007,0.459,-0.459
+

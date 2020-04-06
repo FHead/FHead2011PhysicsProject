@@ -1,0 +1,25 @@
+#: table_doi: 10.17182/hepdata.84819.v1/t14
+#: name: Table 14
+#: description: No description provided.
+#: data_file: jetYields_c3_y0.yaml
+#: keyword reactions: PB PB --> JETS X
+#: keyword observables: D2N/DPT/DYRAP
+#: keyword cmenergies: 5020.0
+#: keyword phrases: Inclusive | Double Differential Distribution | Transverse Momentum Dependence | Rapidity Dependence | Jet Production
+#: R(JETS),,,0.4
+#: RE,,,PB PB --> JET(S) X
+#: ABS(YRAP),,,|y| < 2.8
+#: SQRT(S)/NUCLEON [GeV],,,5020.0
+#: CENTRALITY,,,30-40 ptc
+PT [GEV] [GeV],PT [GEV] [GeV] LOW,PT [GEV] [GeV] HIGH,(1/TAA)(1/NEVT)*D2(NJET)/DPT/DYRAP [nb/GEV],sys +,sys -,stat +,stat -
+89.5,79,100,2.475,0.243,-0.228,0.018,-0.018
+113.0,100,126,0.757,0.066,-0.066,0.004,-0.004
+142.0,126,158,0.2186,0.0185,-0.0179,0.0011,-0.0011
+179.0,158,200,0.0603,0.0051,-0.0051,0.0004,-0.0004
+225.5,200,251,0.01541,0.00124,-0.00122,0.00019,-0.00019
+283.5,251,316,0.00361,0.0003,-0.00028,8e-05,-8e-05
+357.0,316,398,0.000726,5.9e-05,-6.3e-05,3.3e-05,-3.3e-05
+449.5,398,501,0.000137,1.1e-05,-1e-05,1.3e-05,-1.3e-05
+566.0,501,631,2.8e-05,3e-06,-3e-06,5e-06,-5e-06
+715.5,631,800,4.3e-06,2e-07,-2e-07,1.9e-06,-1.9e-06
+

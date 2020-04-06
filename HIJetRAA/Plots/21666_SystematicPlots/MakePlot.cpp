@@ -68,11 +68,11 @@ int main(int argc, char *argv[])
    
    int Grouping = 2;
 
-   vector<string> Sys = {"JECMC", "JECData", "JECUE", "JERMC", "JERData", "Fake", "Prior1PowerPthat", "MatrixStat", "SVD", "PriorAdj", "Lumi", "TAA"};
+   vector<string> Sys = {"JECMC", "JECData", "JECUE", "JERMC", "JERData", "Misrec.", "Prior1PowerPthat", "MatrixStat", "SVD", "PriorAdj", "Lumi", "TAA"};
    if(Grouping == 1)
-      Sys = {"JEC", "Fake", "Unfolding", "Lumi/T_{AA}"};
+      Sys = {"JEC", "Misrec.", "Unfolding", "Lumi/T_{AA}"};
    if(Grouping == 2)
-      Sys = {"JEC", "JER", "Fake", "Unfolding", "Lumi/T_{AA}"};
+      Sys = {"JEC", "JER", "Misrec.", "Unfolding", "Lumi/T_{AA}"};
 
    // Start declaring canvas, pad, axis, and axis title (as TLatex)
    TCanvas Canvas("Canvas", "", CanvasWidth, CanvasHeight);
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.040);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 2.5, PadY0 * 0.25, "Jet p_{T} (GeV)");
+   Latex.DrawLatex(PadX0 + PadDX * 2.5, PadY0 * 0.25, "p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);
@@ -139,13 +139,13 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.050);
    Latex.SetTextAlign(11);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS");
+   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #scale[0.8]{#font[52]{Preliminary}}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);
    Latex.SetTextAlign(31);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 5, PadY0 + PadDY * 2 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp 27.4 pb^{-1}");
+   Latex.DrawLatex(PadX0 + PadDX * 5, PadY0 + PadDY * 2 + PadY0 * 0.20, "#sqrt{s_{NN}} = 5.02 TeV, PbPb 404 #mub^{-1}, pp 27.4 pb^{-1}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.040);

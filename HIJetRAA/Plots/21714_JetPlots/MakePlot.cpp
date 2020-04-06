@@ -62,12 +62,12 @@ int main(int argc, char *argv[])
    double PadDX = (double)PanelSize / CanvasWidth;
    double PadDY = (double)PanelSize / CanvasHeight;
 
-   double XMin = 100;
+   double XMin = 97;
    double XMax = 700;
-   double YMin1 = 0.901;
-   double YMax1 = 1.099;
+   double YMin1 = 0.851;
+   double YMax1 = 1.149;
    double YMin2 = 0.00;
-   double YMax2 = 0.39;
+   double YMax2 = 0.49;
 
    string File = "RAA_Smooth.root";
 
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.030);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.20, "Generated Jet p_{T} (GeV)");
+   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.25, "Generated p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.030);
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.035);
    Latex.SetTextAlign(11);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #font[52]{Simulation}");
+   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #scale[0.8]{#font[52]{Simulation Preliminary}}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.030);
@@ -137,8 +137,8 @@ int main(int argc, char *argv[])
    TPaveText PT4(PadX0 + PadDX * 0.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 0.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
    TPaveText PT8(PadX0 + PadDX * 1.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 1.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
 
-   PT4.AddText("R = 0.4");
-   PT8.AddText("R = 0.8");
+   PT4.AddText("R = 0.2");
+   PT8.AddText("R = 1.0");
 
    PT4.SetFillColor(kWhite);
    PT4.SetBorderSize(1);
@@ -149,8 +149,8 @@ int main(int argc, char *argv[])
    PT8.SetTextFont(42);
    PT8.SetTextSize(0.035);
 
-   TFile F4("AK4.root");
-   TFile F8("AK8.root");
+   TFile F4("AK2.root");
+   TFile F8("AK10.root");
 
    TH1F *HMuR4C0 = (TH1F *)F4.Get("Mu_Cent0to10");
    TH1F *HMuR4C1 = (TH1F *)F4.Get("Mu_Cent10to30");
@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
    HMuR4C4->Draw("same");
    Latex.SetTextAlign(11);
    Latex.DrawLatex(0.08, 0.8, "anti-k_{T}, |#eta_{jet}| < 2");
-   Latex.DrawLatex(0.08, 0.9, "Pythia+Hydjet");
+   Latex.DrawLatex(0.08, 0.9, "Pythia8+Hydjet");
    // Latex.SetTextAlign(31);
    // Latex.DrawLatex(0.92, 0.9, "R = 0.4");
    P2.cd();
@@ -249,6 +249,8 @@ int main(int argc, char *argv[])
    HSigmaMuR4C4->Draw("same");
    // Latex.SetTextAlign(31);
    // Latex.DrawLatex(0.92, 0.9, "R = 0.4");
+   Latex.SetTextAlign(11);
+   Latex.DrawLatex(0.55, 0.83, "Centrality");
    Legend.Draw();
    P4.cd();
    HWorld2.Draw("axis");

@@ -16,5 +16,5 @@ do
    ./Tidy --Input Root/$i --Output TidyRoot/$i --IsSigmaMu true
 done
 
-hadd -f AK4.root TidyRoot/*akCs4*root
-hadd -f AK8.root TidyRoot/*akCs8*root
+hadd -f AK2.root TidyRoot/*akCs2*root
+hadd -f AK10.root TidyRoot/*akCs10*root

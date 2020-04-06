@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
       Latex.SetTextSize(0.045);
       Latex.SetTextAlign(11);
       Latex.SetTextAngle(0);
-      Latex.DrawLatex(PadX0, PadY0 + PadDY * 1 + PadY0 * 0.15, "CMS");
+      Latex.DrawLatex(PadX0, PadY0 + PadDY * 1 + PadY0 * 0.15, "CMS #scale[0.8]{#font[52]{Preliminary}}");
 
       Latex.SetTextFont(42);
       Latex.SetTextSize(0.040);
@@ -205,7 +205,7 @@ int main(int argc, char *argv[])
       Latex.SetTextAlign(11);
       Latex.DrawLatex(0.08, 0.90, "#font[62]{|#eta| < 1}");
       Latex.DrawLatex(0.08, 0.78, "0.3 < p_{T} < 3.0 GeV");
-      Latex.DrawLatex(0.08, 0.70, Form("Event centrality: %.1f%%", hiBin * 0.5));
+      Latex.DrawLatex(0.08, 0.70, Form("Event centrality: %.1f%%-%.1f%%", hiBin * 0.5, (hiBin + 1) * 0.5));
       Latex.SetTextAlign(31);
       P2.cd();
       HWorld.Draw("axis");

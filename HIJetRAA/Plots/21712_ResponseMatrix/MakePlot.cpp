@@ -22,7 +22,13 @@ int main(int argc, char *argv[])
 {
    SetThesisStyle();
 
+   gStyle->SetPalette(103);
+
    CommandLine CL(argc, argv);
+
+   int R1 = CL.GetInt("R1", 2);
+   int R2 = CL.GetInt("R2", 10);
+   bool Standard = (R1 == 2) && (R2 == 10);
 
    bool PythiaAbove = CL.GetBool("PythiaAbove", false);
 
@@ -47,13 +53,15 @@ int main(int argc, char *argv[])
 
    double XMin = 200;
    double XMax = 1000;
-   double YMin = 100;
+   double YMin = 150;
    double YMax = 1000;
 
-   int XBin = 6;
-   int YBin = 7;
-   double XBins[] = {200, 300, 400, 500, 630, 800, 1000};
-   double YBins[] = {100, 200, 300, 400, 500, 630, 800, 1000};
+   int XBin = 8;
+   int YBin = 9;
+   // double XBins[] = {200, 300, 400, 500, 630, 800, 1000};
+   // double YBins[] = {100, 200, 300, 400, 500, 630, 800, 1000};
+   double XBins[] = {200, 250, 300, 350, 400, 500, 630, 800, 1000};
+   double YBins[] = {150, 200, 250, 300, 350, 400, 500, 630, 800, 1000};
 
    string OutputBase = "Response";
 
@@ -63,10 +71,10 @@ int main(int argc, char *argv[])
    TH2D HPbPbR10("HPbPbR10", "", XBin, XBins, YBin, YBins);
 
    string Suffix = "General";
-   GetHistogram(HPbPbR02, false, 2,  Suffix);
-   GetHistogram(HPbPbR10, false, 10, Suffix);
-   GetHistogram(HPPR02,   true,  2,  Suffix);
-   GetHistogram(HPPR10,   true,  10, Suffix);
+   GetHistogram(HPbPbR02, false, R1, Suffix);
+   GetHistogram(HPbPbR10, false, R2, Suffix);
+   GetHistogram(HPPR02,   true,  R1, Suffix);
+   GetHistogram(HPPR10,   true,  R2, Suffix);
 
    TCanvas Canvas;
 
@@ -102,20 +110,20 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.030);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.30, "Generated Jet p_{T} (GeV)");
+   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.33, "Generated p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(42);
-   Latex.SetTextSize(0.030);
+   Latex.SetTextSize(0.026);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(90);
-   Latex.DrawLatex(PadX0 * 0.20, PadY0 + PadDY * 1.0, "Reconstructed Jet p_{T} (GeV)");
+   Latex.DrawLatex(PadX0 * 0.20, PadY0 + PadDY * 1.0, "Reconstructed p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(62);
    Latex.SetTextSize(0.035);
    Latex.SetTextAlign(11);
    Latex.SetTextAngle(0);
-   if(PythiaAbove == false)   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #font[52]{Simulation}");
-   if(PythiaAbove == true)    Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.60, "CMS #font[52]{Simulation}");
+   if(PythiaAbove == false)   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #scale[0.8]{#font[52]{Simulation Preliminary}}");
+   if(PythiaAbove == true)    Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.60, "CMS #scale[0.8]{#font[52]{Simulation Preliminary}}");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.030);
@@ -131,7 +139,7 @@ int main(int argc, char *argv[])
       Latex.SetTextAlign(22);
       Latex.SetTextAngle(0);
       Latex.DrawLatex(PadX0 + PadDX * 0.5, PadY0 + PadDY * 2.0 + PadY0 * 0.20, "Pythia");
-      Latex.DrawLatex(PadX0 + PadDX * 1.5, PadY0 + PadDY * 2.0 + PadY0 * 0.20, "Pythia+Hydjet");
+      Latex.DrawLatex(PadX0 + PadDX * 1.5, PadY0 + PadDY * 2.0 + PadY0 * 0.20, "Pythia8+Hydjet Centrality 0-10%");
    }
 
    double Max = 0.01;
@@ -172,8 +180,8 @@ int main(int argc, char *argv[])
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
    if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia");
-   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 0.2");
-   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 0.2");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, Form("R = %.1f", R1 * 0.1));
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, Form("R = %.1f", R1 * 0.1));
    Latex.SetTextAlign(31);
    Latex.DrawLatex(0.95, 0.06, "|#eta_{jet}| < 2.0");
    P1.Update();
@@ -182,27 +190,30 @@ int main(int argc, char *argv[])
    HPbPbR02.Draw("col same");
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
-   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet");
-   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 0.2");
-   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 0.2");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet 0-10%");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, Form("R = %.1f", R1 * 0.1));
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, Form("R = %.1f", R1 * 0.1));
    P3.cd();
    HWorld.Draw("axis");
    HPPR10.Draw("col same");
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
    if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia");
-   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 1.0");
-   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 1.0");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, Form("R = %.1f", R2 * 0.1));
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, Form("R = %.1f", R2 * 0.1));
    P4.cd();
    HWorld.Draw("axis");
    HPbPbR10.Draw("col same");
    HWorld.Draw("axis same");
    Latex.SetTextAlign(13);
-   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet");
-   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, "R = 1.0");
-   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, "R = 1.0");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.95, "Pythia+Hydjet 0-10%");
+   if(PythiaAbove == false)   Latex.DrawLatex(0.05, 0.86, Form("R = %.1f", R2 * 0.1));
+   if(PythiaAbove == true)    Latex.DrawLatex(0.05, 0.95, Form("R = %.1f", R2 * 0.1));
    
    Canvas.cd();
+
+   if(R1 != 2 || R2 != 10)
+      OutputBase = OutputBase + Form("_R%dR%d", R1, R2);
 
    if(PythiaAbove == true)
       OutputBase = OutputBase + "PythiaAbove";
@@ -328,7 +339,7 @@ void SetPad(TPad &P)
 void SetAxis(TGaxis &A)
 {
    A.SetLabelFont(42);
-   A.SetLabelSize(0.030);
+   A.SetLabelSize(0.027);
    A.SetMaxDigits(6);
    A.SetMoreLogLabels();
    A.SetNoExponent();

@@ -736,9 +736,9 @@ void PTClipping(vector<Record> &Records, double PTClip)
 
    for(int i = 0; i < (int)Records.size(); i++)
    {
-      if(Records[i].BinMin[1] < 0.002)   // game on!
+      if(Records[i].BinMin.size() == 1 || Records[i].BinMin[1] < 0.002)   // game on!
       {
-         if(Records[i].BinMax[1] < PTClip)
+         if(Records[i].BinMin.size() > 1 && Records[i].BinMax[1] < PTClip)
          {
             Assert(i != Records.size() - 1, "final bin problem!");
 

@@ -65,10 +65,10 @@ class Emulator:
 
     """
 
-    def __init__(self, system, npc=10, nrestarts=0, nu=2.5):
+    def __init__(self, system, npc=10, nrestarts=0, nu=2.5, alpha=0.6, kernelchoice="Matern"):
         logging.info(
-            'training emulator for system %s (%d PC, %d restarts)',
-            system, npc, nrestarts
+            'training emulator for system %s (%d PC, %d restarts, alpha=%.2f, kernel=%s)',
+            system, npc, nrestarts, alpha, kernelchoice
         )
 
         Y = []
@@ -108,31 +108,50 @@ class Emulator:
 
         ptp = design.max - design.min
         print(ptp)
-        kernel = (
-            kernels.ConstantKernel(1.0, (1e-3, 1e3))
-            * kernels.Matern(
+
+        if kernelchoice == "Matern":
+            kernel = (kernels.Matern(
                 length_scale = ptp,
                 length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
-                nu = nu
+                nu = nu))
+        elif kernelchoice == "MaternNoise":
+            kernel = (kernels.Matern(
+                length_scale = ptp,
+                length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
+                nu = nu)
+                + 1 * kernels.WhiteKernel(
+                noise_level = 0.001**2,
+                noise_level_bounds = (0.00001**2, 0.1**2)))
+        elif kernelchoice == "RBF":
+            kernel = (kernels.RBF(
+                length_scale = ptp,
+                length_scale_bounds = np.outer(ptp, (1e-3, 1e3))))
+        else:
+            kernel = (
+                # kernels.ConstantKernel(1.0, (1e-3, 1e3))
+                kernels.Matern(
+                    length_scale = ptp,
+                    length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
+                    nu = nu
+                )
+                # 1 * kernels.RBF(
+                #     length_scale = ptp,
+                #     length_scale_bounds = np.outer(ptp, (1e-3, 1e3))
+                # )
+                # 1. * kernels.RationalQuadratic(
+                #     length_scale = ptp,
+                #     length_scale_bounds = np.outer(ptp, (1e-3, 1e3))
+                # )
+                # + kernels.WhiteKernel(
+                #     noise_level = 0.001**2,
+                #     noise_level_bounds = (0.00001**2, 0.1**2)
+                # )
             )
-            # * kernels.RBF(
-            #     length_scale = ptp,
-            #     length_scale_bounds = np.outer(ptp, (1e-3, 1e3))
-            # )
-            # 1. * kernels.RationalQuadratic(
-            #     length_scale = ptp,
-            #     length_scale_bounds = np.outer(ptp, (1e-3, 1e3))
-            # )
-            # + kernels.WhiteKernel(
-            #     noise_level = .1**2,
-            #     noise_level_bounds = (0.0001**2, 1)
-            # )
-        )
 
         # Fit a GP (optimize the kernel hyperparameters) to each PC.
         self.gps = [
             GPR(
-                kernel=kernel, alpha=0,
+                kernel=kernel, alpha=alpha,
                 n_restarts_optimizer=nrestarts,
                 copy_X_train=False
             ).fit(design, z)
@@ -220,7 +239,7 @@ class Emulator:
             } for obs, slices in self._slices.items()
         }
 
-    def predict(self, X, return_cov=False, extra_std=0):
+    def predict(self, X, return_cov=False, extra_std=0.0):
         """
         Predict model output at `X`.
 
@@ -347,6 +366,11 @@ if __name__ == '__main__':
         '--nu', type=float,
         help='nu parameter'
     )
+
+    parser.add_argument('--alpha', type = float, help = "alpha parameter", default = 0.6)
+
+    parser.add_argument('--kernelchoice', help = "what kernel to use", default = "Matern",
+        choices = ["Matern", "MaternNoise", "RBF"])
 
     parser.add_argument(
         'systems', nargs='*', type=arg_to_system,

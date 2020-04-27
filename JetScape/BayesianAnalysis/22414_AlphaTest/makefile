@@ -2,7 +2,7 @@
 default:
 	echo Hello world
 
-all: RunDataReproduce RunDataKernelScan RunDataFluctuationTest RunHoldout RunClosureExample
+all: RunDataReproduce RunDataAlphaScan RunDataKernelScan RunDataFluctuationTest RunHoldout RunClosureExample
 
 RunDataReproduce:
 	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.3
@@ -16,6 +16,18 @@ RunDataKernelScan:
 	python3 RunOne.py --N -1 --Model LBT        --Nu 1.5 --KernelChoice Matern --Alpha 0.3
 	python3 RunOne.py --N -1 --Model LBT        --Nu 0.0 --KernelChoice RBF    --Alpha 0.3
 	fin
+	
+RunDataAlphaScan:
+	python3 RunOne.py --N -1 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.10
+	python3 RunOne.py --N -1 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.20
+	python3 RunOne.py --N -1 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.25
+	python3 RunOne.py --N -1 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.30
+	python3 RunOne.py --N -1 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.40
+	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.10
+	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.20
+	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.25
+	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.30
+	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.40
 
 RunDataFlucutationTest:
 	python3 RunOne.py --N -1 --Model LBT        --Nu 0.5 --KernelChoice Matern --Alpha 0.3 --DoBigEarthquake

@@ -28,6 +28,7 @@ RunDataAlphaScan:
 	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.25
 	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.30
 	python3 RunOne.py --N -1 --Model Matter     --Nu 2.5 --KernelChoice Matern --Alpha 0.40
+	fin
 
 RunDataFlucutationTest:
 	python3 RunOne.py --N -1 --Model LBT        --Nu 0.5 --KernelChoice Matern --Alpha 0.3 --DoBigEarthquake
@@ -56,6 +57,12 @@ RunClosureExample:
 	python3 RunOne.py --N 63 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.3
 	python3 RunOne.py --N 78 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.3
 	python3 RunOne.py --N 96 --Model LBT        --Nu 2.5 --KernelChoice Matern --Alpha 0.3
+	fin
+
+RunHoldoutAlphaScan:
+	python3 RunAllOnlyGP.py --Model LBT         --Nu 2.5 --KernelChoice Matern --Alpha 0.10
+	python3 RunAllOnlyGP.py --Model LBT         --Nu 2.5 --KernelChoice Matern --Alpha 0.20
+	python3 RunAllOnlyGP.py --Model LBT         --Nu 2.5 --KernelChoice Matern --Alpha 0.30
 	fin
 
 RunHoldout:

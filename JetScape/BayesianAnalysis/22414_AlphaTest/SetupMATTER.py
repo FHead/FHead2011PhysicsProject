@@ -97,26 +97,26 @@ if args.DoSmoothing == True:
         RawPrediction6L['Prediction'][i, :] = savgol_filter(RawPrediction6LOG['Prediction'][i, :], Window, Order)
 if args.DoEarthquake == True:
     for i in range(DesignCount):
-        RawPrediction1L['Prediction'][i, :] = RawPrediction1LOG['Prediction'][i, :] + np.random.uniform(-0.025, 0.025)
-        RawPrediction2L['Prediction'][i, :] = RawPrediction2LOG['Prediction'][i, :] + np.random.uniform(-0.025, 0.025)
-        RawPrediction3L['Prediction'][i, :] = RawPrediction3LOG['Prediction'][i, :] + np.random.uniform(-0.025, 0.025)
-        RawPrediction4L['Prediction'][i, :] = RawPrediction4LOG['Prediction'][i, :] + np.random.uniform(-0.025, 0.025)
-        RawPrediction5L['Prediction'][i, :] = RawPrediction5LOG['Prediction'][i, :] + np.random.uniform(-0.025, 0.025)
-        RawPrediction6L['Prediction'][i, :] = RawPrediction6LOG['Prediction'][i, :] + np.random.uniform(-0.025, 0.025)
+        RawPrediction1L['Prediction'][i, :] = RawPrediction1LOG['Prediction'][i, :] + np.random.uniform(-0.015, 0.015)
+        RawPrediction2L['Prediction'][i, :] = RawPrediction2LOG['Prediction'][i, :] + np.random.uniform(-0.015, 0.015)
+        RawPrediction3L['Prediction'][i, :] = RawPrediction3LOG['Prediction'][i, :] + np.random.uniform(-0.015, 0.015)
+        RawPrediction4L['Prediction'][i, :] = RawPrediction4LOG['Prediction'][i, :] + np.random.uniform(-0.015, 0.015)
+        RawPrediction5L['Prediction'][i, :] = RawPrediction5LOG['Prediction'][i, :] + np.random.uniform(-0.015, 0.015)
+        RawPrediction6L['Prediction'][i, :] = RawPrediction6LOG['Prediction'][i, :] + np.random.uniform(-0.015, 0.015)
 if args.DoBigEarthquake == True:
     for i in range(DesignCount):
         N = RawPrediction1L['Prediction'].shape[1]
-        RawPrediction1L['Prediction'][i, :] += np.random.uniform(-0.025, 0.025, N)
+        RawPrediction1L['Prediction'][i, :] += np.random.uniform(-0.015, 0.015, N)
         N = RawPrediction2L['Prediction'].shape[1]
-        RawPrediction2L['Prediction'][i, :] += np.random.uniform(-0.025, 0.025, N)
+        RawPrediction2L['Prediction'][i, :] += np.random.uniform(-0.015, 0.015, N)
         N = RawPrediction3L['Prediction'].shape[1]
-        RawPrediction3L['Prediction'][i, :] += np.random.uniform(-0.025, 0.025, N)
+        RawPrediction3L['Prediction'][i, :] += np.random.uniform(-0.015, 0.015, N)
         N = RawPrediction4L['Prediction'].shape[1]
-        RawPrediction4L['Prediction'][i, :] += np.random.uniform(-0.025, 0.025, N)
+        RawPrediction4L['Prediction'][i, :] += np.random.uniform(-0.015, 0.015, N)
         N = RawPrediction5L['Prediction'].shape[1]
-        RawPrediction5L['Prediction'][i, :] += np.random.uniform(-0.025, 0.025, N)
+        RawPrediction5L['Prediction'][i, :] += np.random.uniform(-0.015, 0.015, N)
         N = RawPrediction6L['Prediction'].shape[1]
-        RawPrediction6L['Prediction'][i, :] += np.random.uniform(-0.025, 0.025, N)
+        RawPrediction6L['Prediction'][i, :] += np.random.uniform(-0.015, 0.015, N)
 
 if args.BeforeAfterCheck == True:
     with PdfPages('plots/BeforeAfterPlots.pdf') as pdf:

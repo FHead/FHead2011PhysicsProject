@@ -1,0 +1,201 @@
+/* Global resets */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video
+{
+   margin: 0;
+   padding: 0;
+   border: 0;
+   font-size: 100%;
+   font: inherit;
+   vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+   display: block;
+}
+body {
+   line-height: 1;
+}
+ol, ul {
+   list-style: none;
+}
+blockquote, q {
+   quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+   content: '';
+   content: none;
+}
+table {
+   border-collapse: collapse;
+   border-spacing: 0;
+}
+
+/* border of the div to see things better during development */
+
+div
+{
+   // border: 1px solid #000;
+}
+
+/* Real styles below */
+
+body
+{
+   font-family: Arial, sans-serif;
+   font-size: 13.5px;
+}
+
+div
+{
+   box-sizing: border-box;
+}
+
+div#Page
+{
+   width: 1200px;
+   margin-left: auto;
+   margin-right: auto;
+   min-height: 99%;
+   position: relative;
+}
+
+div#Title
+{
+   text-align: center;
+   width: 100%;
+   font-size: 2em;
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+}
+
+div#ChartDivContainer
+{
+   height: 600px;
+   width: 100%;
+   padding: 5px;
+   position: relative;
+}
+
+div#ChartDiv
+{
+   width: 100%;
+   height: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   border: 2px solid #000000;
+   border-radius: 10px;
+   padding: 5px;
+}
+
+div.Selector
+{
+   width: 100%;
+   margin-top: 5px;
+   padding: 5px;
+   display: block;
+   font-size: 1em;
+}
+
+div#SelectorN
+{
+   display: block;
+}
+
+div.SelectorRight
+{
+   display: inline-block;
+   right: 1em;
+   position: absolute;
+}
+
+div.color
+{
+   display: inline-block;
+   width: 1em;
+   height: 1em;
+   border: none;
+   margin-right: 0.5em;
+}
+
+div.AlignRightButton
+{
+   display: inline-block;
+   margin-right: 0.5em;
+   width: 1.5em;
+   height: 1.5em;
+   line-height: 1.5em;
+   position: absolute;
+   top: 0em;
+   cursor: pointer;
+   margin-top: -0.25em;
+   transition: 0.3s;
+}
+
+div.AlignRightButton:hover, div.AlignRightButton:focus
+{
+   background-color: #EEF;
+}
+
+div#DownloadButton
+{
+   right: 0em;
+   background: url(icons/download.svg);
+   background-size: contain;
+}
+
+div#ZoomOutButton
+{
+   right: 2em;
+   // background: url(icons/crosshair.svg);
+   background: url(icons/globe.svg);
+   // background: url(icons/rotate-ccw.svg);
+   background-size: contain;
+}
+
+select
+{
+   font-size: 1em;
+   padding: 3px;
+   margin: 0;
+   color: #000;
+   border-radius: 0px;
+   border: none;
+   border-bottom: 1px solid #000000;
+   outline: none;
+   display: inline-block;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   cursor: pointer;
+   margin-right: 1.0em;
+   transition: 0.3s;
+   background-color: #FFF;
+   min-width: 20px;
+}
+
+select:hover, select:focus
+{
+   background-color: #EEF;
+}
+
+.tickLabel{ font-size: 2.5em; }
+.axisLabels { font-size: 2em; }
+.xaxisLabel { font-size: 2em; margin-top: 0.25em; }
+.yaxisLabel {}

@@ -65,10 +65,10 @@ class Emulator:
 
     """
 
-    def __init__(self, system, npc=10, nrestarts=0, nu=2.5, alpha=0.6, kernelchoice="Matern"):
+    def __init__(self, system, npc=10, nrestarts=0, nu=2.5, alpha=0.6, noise=-1, kernelchoice="Matern"):
         logging.info(
-            'training emulator for system %s (%d PC, %d restarts, alpha=%.2f, kernel=%s)',
-            system, npc, nrestarts, alpha, kernelchoice
+            'training emulator for system %s (%d PC, %d restarts, alpha=%.2f, kernel=%s, noise=%f)',
+            system, npc, nrestarts, alpha, kernelchoice, noise
         )
 
         Y = []
@@ -109,6 +109,14 @@ class Emulator:
         ptp = design.max - design.min
         print(ptp)
 
+        noise0 = 0.49**2
+        noisemin = 0.00001**2
+        noisemax = 0.5**2
+        if noise >= 0:
+            noise0 = noise**2
+            noisemin = noise**2 * 0.999
+            noisemax = noise**2 * 1.001
+
         if kernelchoice == "Matern":
             kernel = (kernels.Matern(
                 length_scale = ptp,
@@ -119,9 +127,17 @@ class Emulator:
                 length_scale = ptp,
                 length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
                 nu = nu)
-                + 1 * kernels.WhiteKernel(
-                noise_level = 0.001**2,
-                noise_level_bounds = (0.00001**2, 0.1**2)))
+                + kernels.WhiteKernel(
+                noise_level = noise0,
+                noise_level_bounds = (noisemin, noisemax)))
+        elif kernelchoice == "MaternNoise1":
+            kernel = (1. * kernels.Matern(
+                length_scale = ptp,
+                length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
+                nu = nu)
+                + kernels.WhiteKernel(
+                noise_level = noise0,
+                noise_level_bounds = (noisemin, noisemax)))
         elif kernelchoice == "RBF":
             kernel = (kernels.RBF(
                 length_scale = ptp,
@@ -367,10 +383,12 @@ if __name__ == '__main__':
         help='nu parameter'
     )
 
-    parser.add_argument('--alpha', type = float, help = "alpha parameter", default = 0.6)
+    parser.add_argument('--alpha', type = float, help = "alpha parameter", default = 0.0)
+
+    parser.add_argument('--noise', type = float, help = "noiselevel fix", default = -1)
 
     parser.add_argument('--kernelchoice', help = "what kernel to use", default = "Matern",
-        choices = ["Matern", "MaternNoise", "RBF"])
+        choices = ["Matern", "MaternNoise", "MaternNoise1", "RBF"])
 
     parser.add_argument(
         'systems', nargs='*', type=arg_to_system,

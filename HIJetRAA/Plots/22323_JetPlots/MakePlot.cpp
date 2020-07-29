@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
    int PaddingWidthL = 100;
    int PaddingWidthR = 50;
    int PaddingHeight = 100;
-   int CanvasWidth = PanelSize * 2 + PaddingWidthL + PaddingWidthR;
+   int CanvasWidth = PanelSize * 4 + PaddingWidthL + PaddingWidthR;
    int CanvasHeight = PanelSize * 2 + PaddingHeight * 2;
 
    double PadX0 = (double)PaddingWidthL / CanvasWidth;
@@ -84,23 +84,35 @@ int main(int argc, char *argv[])
 
    TPad P1("P1", "", PadX0 + PadDX * 0, PadY0 + PadDY * 1, PadX0 + PadDX * 1, PadY0 + PadDY * 2, 0);
    TPad P2("P2", "", PadX0 + PadDX * 1, PadY0 + PadDY * 1, PadX0 + PadDX * 2, PadY0 + PadDY * 2, 0);
-   TPad P3("P3", "", PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 1, PadY0 + PadDY * 1, 0);
-   TPad P4("P4", "", PadX0 + PadDX * 1, PadY0 + PadDY * 0, PadX0 + PadDX * 2, PadY0 + PadDY * 1, 0);
+   TPad P3("P3", "", PadX0 + PadDX * 2, PadY0 + PadDY * 1, PadX0 + PadDX * 3, PadY0 + PadDY * 2, 0);
+   TPad P4("P4", "", PadX0 + PadDX * 3, PadY0 + PadDY * 1, PadX0 + PadDX * 4, PadY0 + PadDY * 2, 0);
+   TPad P5("P5", "", PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 1, PadY0 + PadDY * 1, 0);
+   TPad P6("P6", "", PadX0 + PadDX * 1, PadY0 + PadDY * 0, PadX0 + PadDX * 2, PadY0 + PadDY * 1, 0);
+   TPad P7("P7", "", PadX0 + PadDX * 2, PadY0 + PadDY * 0, PadX0 + PadDX * 3, PadY0 + PadDY * 1, 0);
+   TPad P8("P8", "", PadX0 + PadDX * 3, PadY0 + PadDY * 0, PadX0 + PadDX * 4, PadY0 + PadDY * 1, 0);
    
    SetPad(P1);
    SetPad(P2);
    SetPad(P3);
    SetPad(P4);
+   SetPad(P5);
+   SetPad(P6);
+   SetPad(P7);
+   SetPad(P8);
   
    Canvas.cd();
 
    TGaxis AxisX1(PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 1, PadY0 + PadDY * 0, XMin, XMax, 510, "G");
    TGaxis AxisX2(PadX0 + PadDX * 1, PadY0 + PadDY * 0, PadX0 + PadDX * 2, PadY0 + PadDY * 0, XMin, XMax, 510, "G");
+   TGaxis AxisX3(PadX0 + PadDX * 2, PadY0 + PadDY * 0, PadX0 + PadDX * 3, PadY0 + PadDY * 0, XMin, XMax, 510, "G");
+   TGaxis AxisX4(PadX0 + PadDX * 3, PadY0 + PadDY * 0, PadX0 + PadDX * 4, PadY0 + PadDY * 0, XMin, XMax, 510, "G");
    TGaxis AxisY1(PadX0 + PadDX * 0, PadY0 + PadDY * 0, PadX0 + PadDX * 0, PadY0 + PadDY * 1, YMin2, YMax2, 505, "");
    TGaxis AxisY2(PadX0 + PadDX * 0, PadY0 + PadDY * 1, PadX0 + PadDX * 0, PadY0 + PadDY * 2, YMin1, YMax1, 505, "");
 
    SetAxis(AxisX1);
    SetAxis(AxisX2);
+   SetAxis(AxisX3);
+   SetAxis(AxisX4);
    SetAxis(AxisY1);
    SetAxis(AxisY2);
 
@@ -111,7 +123,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.030);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.25, "Generated p_{T}^{jet} (GeV)");
+   Latex.DrawLatex(PadX0 + PadDX * 2.0, PadY0 * 0.25, "Generated p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.030);
@@ -130,16 +142,24 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.030);
    Latex.SetTextAlign(31);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 2, PadY0 + PadDY * 2 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV");
+   Latex.DrawLatex(PadX0 + PadDX * 4, PadY0 + PadDY * 2 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV");
 
    double PTX = 0.120;
    double PTY = 0.045;
-   TPaveText PT4(PadX0 + PadDX * 0.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 0.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
-   TPaveText PT8(PadX0 + PadDX * 1.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 1.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
+   TPaveText PT2(PadX0 + PadDX * 0.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 0.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
+   TPaveText PT4(PadX0 + PadDX * 1.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 1.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
+   TPaveText PT8(PadX0 + PadDX * 2.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 2.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
+   TPaveText PT10(PadX0 + PadDX * 3.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 3.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
 
+   PT2.AddText("R = 0.2");
    PT4.AddText("R = 0.4");
    PT8.AddText("R = 0.8");
+   PT10.AddText("R = 1.0");
 
+   PT2.SetFillColor(kWhite);
+   PT2.SetBorderSize(1);
+   PT2.SetTextFont(42);
+   PT2.SetTextSize(0.035);
    PT4.SetFillColor(kWhite);
    PT4.SetBorderSize(1);
    PT4.SetTextFont(42);
@@ -148,10 +168,21 @@ int main(int argc, char *argv[])
    PT8.SetBorderSize(1);
    PT8.SetTextFont(42);
    PT8.SetTextSize(0.035);
+   PT10.SetFillColor(kWhite);
+   PT10.SetBorderSize(1);
+   PT10.SetTextFont(42);
+   PT10.SetTextSize(0.035);
 
+   TFile F2("AK2.root");
    TFile F4("AK4.root");
    TFile F8("AK8.root");
+   TFile F10("AK10.root");
 
+   TH1F *HMuR2C0 = (TH1F *)F2.Get("Mu_Cent0to10");
+   TH1F *HMuR2C1 = (TH1F *)F2.Get("Mu_Cent10to30");
+   TH1F *HMuR2C2 = (TH1F *)F2.Get("Mu_Cent30to50");
+   TH1F *HMuR2C3 = (TH1F *)F2.Get("Mu_Cent50to70");
+   TH1F *HMuR2C4 = (TH1F *)F2.Get("Mu_Cent70to100");
    TH1F *HMuR4C0 = (TH1F *)F4.Get("Mu_Cent0to10");
    TH1F *HMuR4C1 = (TH1F *)F4.Get("Mu_Cent10to30");
    TH1F *HMuR4C2 = (TH1F *)F4.Get("Mu_Cent30to50");
@@ -162,6 +193,16 @@ int main(int argc, char *argv[])
    TH1F *HMuR8C2 = (TH1F *)F8.Get("Mu_Cent30to50");
    TH1F *HMuR8C3 = (TH1F *)F8.Get("Mu_Cent50to70");
    TH1F *HMuR8C4 = (TH1F *)F8.Get("Mu_Cent70to100");
+   TH1F *HMuR10C0 = (TH1F *)F10.Get("Mu_Cent0to10");
+   TH1F *HMuR10C1 = (TH1F *)F10.Get("Mu_Cent10to30");
+   TH1F *HMuR10C2 = (TH1F *)F10.Get("Mu_Cent30to50");
+   TH1F *HMuR10C3 = (TH1F *)F10.Get("Mu_Cent50to70");
+   TH1F *HMuR10C4 = (TH1F *)F10.Get("Mu_Cent70to100");
+   TH1F *HSigmaMuR2C0 = (TH1F *)F2.Get("SigmaMu_Cent0to10");
+   TH1F *HSigmaMuR2C1 = (TH1F *)F2.Get("SigmaMu_Cent10to30");
+   TH1F *HSigmaMuR2C2 = (TH1F *)F2.Get("SigmaMu_Cent30to50");
+   TH1F *HSigmaMuR2C3 = (TH1F *)F2.Get("SigmaMu_Cent50to70");
+   TH1F *HSigmaMuR2C4 = (TH1F *)F2.Get("SigmaMu_Cent70to100");
    TH1F *HSigmaMuR4C0 = (TH1F *)F4.Get("SigmaMu_Cent0to10");
    TH1F *HSigmaMuR4C1 = (TH1F *)F4.Get("SigmaMu_Cent10to30");
    TH1F *HSigmaMuR4C2 = (TH1F *)F4.Get("SigmaMu_Cent30to50");
@@ -172,7 +213,17 @@ int main(int argc, char *argv[])
    TH1F *HSigmaMuR8C2 = (TH1F *)F8.Get("SigmaMu_Cent30to50");
    TH1F *HSigmaMuR8C3 = (TH1F *)F8.Get("SigmaMu_Cent50to70");
    TH1F *HSigmaMuR8C4 = (TH1F *)F8.Get("SigmaMu_Cent70to100");
+   TH1F *HSigmaMuR10C0 = (TH1F *)F10.Get("SigmaMu_Cent0to10");
+   TH1F *HSigmaMuR10C1 = (TH1F *)F10.Get("SigmaMu_Cent10to30");
+   TH1F *HSigmaMuR10C2 = (TH1F *)F10.Get("SigmaMu_Cent30to50");
+   TH1F *HSigmaMuR10C3 = (TH1F *)F10.Get("SigmaMu_Cent50to70");
+   TH1F *HSigmaMuR10C4 = (TH1F *)F10.Get("SigmaMu_Cent70to100");
 
+   SetHistogram(HMuR2C0, Color[0]);
+   SetHistogram(HMuR2C1, Color[1]);
+   SetHistogram(HMuR2C2, Color[2]);
+   SetHistogram(HMuR2C3, Color[3]);
+   SetHistogram(HMuR2C4, Color[4]);
    SetHistogram(HMuR4C0, Color[0]);
    SetHistogram(HMuR4C1, Color[1]);
    SetHistogram(HMuR4C2, Color[2]);
@@ -183,6 +234,16 @@ int main(int argc, char *argv[])
    SetHistogram(HMuR8C2, Color[2]);
    SetHistogram(HMuR8C3, Color[3]);
    SetHistogram(HMuR8C4, Color[4]);
+   SetHistogram(HMuR10C0, Color[0]);
+   SetHistogram(HMuR10C1, Color[1]);
+   SetHistogram(HMuR10C2, Color[2]);
+   SetHistogram(HMuR10C3, Color[3]);
+   SetHistogram(HMuR10C4, Color[4]);
+   SetHistogram(HSigmaMuR2C0, Color[0]);
+   SetHistogram(HSigmaMuR2C1, Color[1]);
+   SetHistogram(HSigmaMuR2C2, Color[2]);
+   SetHistogram(HSigmaMuR2C3, Color[3]);
+   SetHistogram(HSigmaMuR2C4, Color[4]);
    SetHistogram(HSigmaMuR4C0, Color[0]);
    SetHistogram(HSigmaMuR4C1, Color[1]);
    SetHistogram(HSigmaMuR4C2, Color[2]);
@@ -193,6 +254,11 @@ int main(int argc, char *argv[])
    SetHistogram(HSigmaMuR8C2, Color[2]);
    SetHistogram(HSigmaMuR8C3, Color[3]);
    SetHistogram(HSigmaMuR8C4, Color[4]);
+   SetHistogram(HSigmaMuR10C0, Color[0]);
+   SetHistogram(HSigmaMuR10C1, Color[1]);
+   SetHistogram(HSigmaMuR10C2, Color[2]);
+   SetHistogram(HSigmaMuR10C3, Color[3]);
+   SetHistogram(HSigmaMuR10C4, Color[4]);
 
    TGraph GLine;
    GLine.SetPoint(0, XMin, 1 + 0.02);
@@ -220,17 +286,23 @@ int main(int argc, char *argv[])
    P1.cd();
    HWorld1.Draw("axis");
    GLine.Draw("l");
+   HMuR2C0->Draw("same");
+   HMuR2C1->Draw("same");
+   HMuR2C2->Draw("same");
+   HMuR2C3->Draw("same");
+   HMuR2C4->Draw("same");
+   Latex.SetTextAlign(11);
+   Latex.DrawLatex(0.08, 0.8, "anti-k_{T}, |#eta_{jet}| < 2");
+   Latex.DrawLatex(0.08, 0.9, "Pythia8+Hydjet");
+   P2.cd();
+   HWorld1.Draw("axis");
+   GLine.Draw("l");
    HMuR4C0->Draw("same");
    HMuR4C1->Draw("same");
    HMuR4C2->Draw("same");
    HMuR4C3->Draw("same");
    HMuR4C4->Draw("same");
-   Latex.SetTextAlign(11);
-   Latex.DrawLatex(0.08, 0.8, "anti-k_{T}, |#eta_{jet}| < 2");
-   Latex.DrawLatex(0.08, 0.9, "Pythia8+Hydjet");
-   // Latex.SetTextAlign(31);
-   // Latex.DrawLatex(0.92, 0.9, "R = 0.4");
-   P2.cd();
+   P3.cd();
    HWorld1.Draw("axis");
    GLine.Draw("l");
    HMuR8C0->Draw("same");
@@ -238,34 +310,52 @@ int main(int argc, char *argv[])
    HMuR8C2->Draw("same");
    HMuR8C3->Draw("same");
    HMuR8C4->Draw("same");
-   // Latex.SetTextAlign(31);
-   // Latex.DrawLatex(0.92, 0.9, "R = 0.8");
-   P3.cd();
+   P4.cd();
+   HWorld1.Draw("axis");
+   GLine.Draw("l");
+   HMuR10C0->Draw("same");
+   HMuR10C1->Draw("same");
+   HMuR10C2->Draw("same");
+   HMuR10C3->Draw("same");
+   HMuR10C4->Draw("same");
+   P5.cd();
+   HWorld2.Draw("axis");
+   HSigmaMuR2C0->Draw("same");
+   HSigmaMuR2C1->Draw("same");
+   HSigmaMuR2C2->Draw("same");
+   HSigmaMuR2C3->Draw("same");
+   HSigmaMuR2C4->Draw("same");
+   Latex.SetTextAlign(11);
+   Latex.DrawLatex(0.55, 0.83, "Centrality");
+   Legend.Draw();
+   P6.cd();
    HWorld2.Draw("axis");
    HSigmaMuR4C0->Draw("same");
    HSigmaMuR4C1->Draw("same");
    HSigmaMuR4C2->Draw("same");
    HSigmaMuR4C3->Draw("same");
    HSigmaMuR4C4->Draw("same");
-   // Latex.SetTextAlign(31);
-   // Latex.DrawLatex(0.92, 0.9, "R = 0.4");
-   Latex.SetTextAlign(11);
-   Latex.DrawLatex(0.55, 0.83, "Centrality");
-   Legend.Draw();
-   P4.cd();
+   P7.cd();
    HWorld2.Draw("axis");
    HSigmaMuR8C0->Draw("same");
    HSigmaMuR8C1->Draw("same");
    HSigmaMuR8C2->Draw("same");
    HSigmaMuR8C3->Draw("same");
    HSigmaMuR8C4->Draw("same");
-   // Latex.SetTextAlign(31);
-   // Latex.DrawLatex(0.92, 0.9, "R = 0.8");
+   P8.cd();
+   HWorld2.Draw("axis");
+   HSigmaMuR10C0->Draw("same");
+   HSigmaMuR10C1->Draw("same");
+   HSigmaMuR10C2->Draw("same");
+   HSigmaMuR10C3->Draw("same");
+   HSigmaMuR10C4->Draw("same");
 
    Canvas.cd();
 
+   PT2.Draw();
    PT4.Draw();
    PT8.Draw();
+   PT10.Draw();
 
    string OutputBase = "PlotJet";
 
@@ -273,8 +363,10 @@ int main(int argc, char *argv[])
    Canvas.SaveAs((OutputBase + ".png").c_str());
    Canvas.SaveAs((OutputBase + ".C").c_str());
 
+   F2.Close();
    F4.Close();
    F8.Close();
+   F10.Close();
 
    return 0;
 }

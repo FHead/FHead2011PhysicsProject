@@ -320,8 +320,8 @@ int main(int argc, char *argv[])
    if(DoTheory == false)  HR02C03RAA.Draw("same");
    DrawLumiTAA(Lumi, TAA, XMin, XMax);
    GLine.Draw("l");
-   Latex.SetTextAlign(11);
-   Latex.DrawLatex(0.08, 0.1, "anti-k_{T}, |#eta_{jet}| < 2");
+   // Latex.SetTextAlign(11);
+   // Latex.DrawLatex(0.08, 0.1, "anti-k_{T}, |#eta_{jet}| < 2");
    Latex.SetTextAlign(31);
    Latex.DrawLatex(0.92, 0.9, "R = 0.2");
    P2.cd();

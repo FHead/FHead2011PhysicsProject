@@ -173,8 +173,6 @@ int main(int argc, char *argv[])
    TH1F *HSigmaMuR8C3 = (TH1F *)F8.Get("SigmaMu_Cent50to70");
    TH1F *HSigmaMuR8C4 = (TH1F *)F8.Get("SigmaMu_Cent70to100");
 
-   HMuR4C0->Print();
-
    SetHistogram(HMuR4C0, Color[0]);
    SetHistogram(HMuR4C1, Color[1]);
    SetHistogram(HMuR4C2, Color[2]);

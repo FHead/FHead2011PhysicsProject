@@ -1,0 +1,191 @@
+body
+{
+   font-family: Arial, sans-serif;
+   font-size: 13.5px;
+}
+
+div
+{
+   box-sizing: border-box;
+}
+
+div#Page
+{
+   width: 1000px;
+   margin-left: auto;
+   margin-right: auto;
+   min-height: 99%;
+   position: relative;
+}
+
+div#Title
+{
+   text-align: center;
+   width: 100%;
+   font-size: 2em;
+   font-weight: bold;
+}
+
+div#Save
+{
+   width: 1em;
+   height: 1em;
+   position: absolute;
+   right: 0.5em;
+   background-image: url('download.svg');
+   background-size: contain;
+   display: inline-block;
+   cursor: pointer;
+}
+
+div#Share
+{
+   width: 1em;
+   height: 1em;
+   position: absolute;
+   right: 2.0em;
+   // background-image: url('share-2.svg');
+   background-size: contain;
+   display: inline-block;
+   // cursor: pointer;
+}
+
+div#ChartDivContainer
+{
+   transform: scale(1.0);
+   transform-origin: 0% 0%;
+   height: 600px;
+   width: 100%;
+}
+
+div#ChartDiv
+{
+   width: 100%;
+   height: 600px;
+   margin-left: auto;
+   margin-right: auto;
+   border: 2px solid #000000;
+   border-radius: 10px;
+   padding: 5px;
+}
+
+div.Selector
+{
+   width: 100%;
+   margin-top: 5px;
+   padding: 5px;
+   display: none;
+   font-size: 1em;
+}
+
+div.Filler
+{
+   width: 100%;
+   height: 1.5em;
+}
+
+div#Selector0
+{
+   display: block;
+}
+
+div.color
+{
+   display: inline-block;
+   width: 1em;
+   height: 1em;
+   border: none;
+   margin-right: 0.5em;
+}
+
+div#color1 {background-color: #a52714;}
+div#color2 {background-color: #097138;}
+div#color3 {background-color: #00ff00;}
+div#color4 {background-color: #ff0000;}
+div#color5 {background-color: #0000ff;}
+div#color6 {background-color: #00ffff;}
+
+select
+{
+   font-size: 1em;
+   padding: 3px;
+   margin: 0;
+   color: #000;
+   border-radius: 0px;
+   border: none;
+   border-bottom: 2px solid #000000;
+   outline: none;
+   display: inline-block;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   cursor: pointer;
+   margin-right: 0.5em;
+   transition: 0.3s;
+   background-color: #FFF;
+}
+
+select:hover, select:focus
+{
+   background-color: #EEF;
+}
+
+div#Tip
+{
+   color: #BBB;
+   font-size: 0.8em;
+   margin-top: 0.8em;
+}
+
+div#Footer
+{
+   width: 100%;
+   text-align: center;
+   font-size: 0.8em;
+   position: relative;
+   margin-top: -0.5em;
+}
+
+div.AlignRight
+{
+   position: absolute;
+   right: 0em;
+   display: inline-block;
+}
+
+input
+{
+   font-size: 1em;
+   text-align: center;
+   border-width: 0px;
+   border-bottom: 2px solid #000;
+   transition: 0.3s;
+}
+
+input[type="checkbox"]
+{
+   margin-left: 0.5em;
+   margin-right: 0.5em;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   width: 1.2em;
+   height: 1.2em;
+   border: 1px solid #000;
+   vertical-align: middle;
+   background-color: #FCC;
+   background-image: url(x.svg);
+   background-size: contain;
+   cursor: pointer;
+}
+
+input[type="checkbox"]:hover
+{
+   background-color: #FCC;
+}
+
+input[type="checkbox"]:checked
+{
+   background-color: #CFC;
+   background-image: url(check.svg);
+}

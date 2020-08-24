@@ -1,0 +1,93 @@
+<html>
+   <head>
+      <title>CMS JEC+JER Viewer (v1.4)</title>
+      <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+      <script type="text/javascript" src="Defaults.js"></script>
+      <script type="text/javascript" src="JECData.js"></script>
+      <script type="text/javascript" src="JEC.js"></script>
+      <script type="text/javascript" src="Selection.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css" />
+   </head>
+   <body>
+      <!-- Icons from https://feathericons.com/, not sure if we need to add a text or not -->
+      <div id="Page">
+         <div class="Filler"></div>
+         <div id="Title">CMS JEC+JER Viewer<div id="Share"></div><div id="Save" title="Save plot as PDF"></div></div>
+         <div class="Filler"></div>
+         <div id="ChartDivContainer"><div id="ChartDiv"></div></div>
+         <div id="Tip">Instructions: Drag-select to zoom, right click to reset.
+            Select curves to display from the drop-down boxes below.
+            All the underlined fields can be clicked.
+            Some curves have uncertainty band, which can be toggled with the check box on the right.
+            Copy address to share with others.
+            Log scales can't be zoomed - use the "force linear scale" if you want to look closer.
+            Ask Yi if you want new curves or other versions.</div>
+         <div class="Filler"></div>
+         <div class="Selector" id="Selector0">
+            Number of curves:
+            <select id="CurveCount">
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3" selected>3</option>
+               <option value="4">4</option>
+               <option value="5">5</option>
+               <option value="6">6</option>
+            </select>
+            <div class="AlignRight"><input type="checkbox" id="ForceLinear" />Force linear scale</div>
+         </div>
+         <div class="Selector" id="Selector1">
+            <div class="color" id="color1"></div>
+            Version <select id="Version1"></select>
+            Algorithm <select id="Algorithm1"></select>
+            Level <select id="Level1"></select>
+            Curve <select id="Curve1"></select>
+            <input type="checkbox" id="HideBand1" checked />Hide band
+         </div>
+         <div class="Selector" id="Selector2">
+            <div class="color" id="color2"></div>
+            Version <select id="Version2"></select>
+            Algorithm <select id="Algorithm2"></select>
+            Level <select id="Level2"></select>
+            Curve <select id="Curve2"></select>
+            <input type="checkbox" id="HideBand2" checked />Hide band
+         </div>
+         <div class="Selector" id="Selector3">
+            <div class="color" id="color3"></div>
+            Version <select id="Version3"></select>
+            Algorithm <select id="Algorithm3"></select>
+            Level <select id="Level3"></select>
+            Curve <select id="Curve3"></select>
+            <input type="checkbox" id="HideBand3" checked />Hide band
+         </div>
+         <div class="Selector" id="Selector4">
+            <div class="color" id="color4"></div>
+            Version <select id="Version4"></select>
+            Algorithm <select id="Algorithm4"></select>
+            Level <select id="Level4"></select>
+            Curve <select id="Curve4"></select>
+            <input type="checkbox" id="HideBand4" checked />Hide band
+         </div>
+         <div class="Selector" id="Selector5">
+            <div class="color" id="color5"></div>
+            Version <select id="Version5"></select>
+            Algorithm <select id="Algorithm5"></select>
+            Level <select id="Level5"></select>
+            Curve <select id="Curve5"></select>
+            <input type="checkbox" id="HideBand5" checked />Hide band
+         </div>
+         <div class="Selector" id="Selector6">
+            <div class="color" id="color6"></div>
+            Version <select id="Version6"></select>
+            Algorithm <select id="Algorithm6"></select>
+            Level <select id="Level6"></select>
+            Curve <select id="Curve6"></select>
+            <input type="checkbox" id="HideBand6" checked />Hide band
+         </div>
+         <div class="Filler"></div>
+         <div class="Filler"></div>
+      </div>
+      <div id="Footer">CMS JEC+JER Viewer (v1.4). Developed and maintained by <a href="http://yichen.me">Yi Chen</a>.  Last update: 2020 Mar 31, with all major 2016-2018 JEC+JER versions (+some PF Hadron Calibration)</div>
+   </body>
+</html>

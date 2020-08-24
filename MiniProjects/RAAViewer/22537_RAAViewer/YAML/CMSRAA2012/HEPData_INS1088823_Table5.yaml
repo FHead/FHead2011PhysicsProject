@@ -1,0 +1,376 @@
+dependent_variables:
+- header: {name: RAA}
+  qualifiers:
+  - {name: ABS(ETARAP), value: < 1.0}
+  - {name: CENTRALITY, units: pct, value: 0.0-5.0}
+  - {name: RE, value: P P --> CHARGED X}
+  - {name: SQRT(S), units: GeV, value: '2760.0'}
+  values:
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0262}
+    value: 0.3591
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.027}
+    value: 0.3701
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0284}
+    value: 0.3887
+  - errors:
+    - {label: stat, symerror: 0.0004}
+    - {label: sys, symerror: 0.0296}
+    value: 0.4059
+  - errors:
+    - {label: stat, symerror: 0.0004}
+    - {label: sys, symerror: 0.0305}
+    value: 0.4181
+  - errors:
+    - {label: stat, symerror: 0.0005}
+    - {label: sys, symerror: 0.0307}
+    value: 0.4204
+  - errors:
+    - {label: stat, symerror: 0.0006}
+    - {label: sys, symerror: 0.0307}
+    value: 0.4202
+  - errors:
+    - {label: stat, symerror: 0.0007}
+    - {label: sys, symerror: 0.03}
+    value: 0.4104
+  - errors:
+    - {label: stat, symerror: 0.0005}
+    - {label: sys, symerror: 0.0265}
+    value: 0.3622
+  - errors:
+    - {label: stat, symerror: 0.0007}
+    - {label: sys, symerror: 0.0193}
+    value: 0.264
+  - errors:
+    - {label: stat, symerror: 0.0008}
+    - {label: sys, symerror: 0.0138}
+    value: 0.1882
+  - errors:
+    - {label: stat, symerror: 0.001}
+    - {label: sys, symerror: 0.0109}
+    value: 0.1487
+  - errors:
+    - {label: stat, symerror: 0.0014}
+    - {label: sys, symerror: 0.01}
+    value: 0.136
+  - errors:
+    - {label: stat, symerror: 0.0019}
+    - {label: sys, symerror: 0.0102}
+    value: 0.138
+  - errors:
+    - {label: stat, symerror: 0.002}
+    - {label: sys, symerror: 0.0112}
+    value: 0.1519
+  - errors:
+    - {label: stat, symerror: 0.0043}
+    - {label: sys, symerror: 0.0137}
+    value: 0.182
+  - errors:
+    - {label: stat, symerror: 0.0085}
+    - {label: sys, symerror: 0.017}
+    value: 0.2226
+  - errors:
+    - {label: stat, symerror: 0.0123}
+    - {label: sys, symerror: 0.0222}
+    value: 0.2768
+  - errors:
+    - {label: stat, symerror: 0.027}
+    - {label: sys, symerror: 0.0312}
+    value: 0.3678
+  - errors:
+    - {label: stat, symerror: 0.0423}
+    - {label: sys, symerror: 0.0353}
+    value: 0.4003
+  - errors:
+    - {label: stat, symerror: 0.0559}
+    - {label: sys, symerror: 0.0406}
+    value: 0.4395
+  - errors:
+    - {label: stat, symerror: 0.0733}
+    - {label: sys, symerror: 0.0535}
+    value: 0.527
+  - errors:
+    - {label: stat, symerror: 0.0878}
+    - {label: sys, symerror: 0.0572}
+    value: 0.5161
+  - errors:
+    - {label: stat, symerror: 0.029}
+    - {label: sys, symerror: 0.061}
+    value: 0.5303
+  - errors:
+    - {label: stat, symerror: 0.0541}
+    - {label: sys, symerror: 0.0773}
+    value: 0.64
+  - errors:
+    - {label: stat, symerror: 0.0598}
+    - {label: sys, symerror: 0.0647}
+    value: 0.5331
+  - errors:
+    - {label: stat, symerror: 0.0906}
+    - {label: sys, symerror: 0.0636}
+    value: 0.5202
+- header: {name: RAA}
+  qualifiers:
+  - {name: ABS(ETARAP), value: < 1.0}
+  - {name: CENTRALITY, units: pct, value: 5.0-10.0}
+  - {name: RE, value: P P --> CHARGED X}
+  - {name: SQRT(S), units: GeV, value: '2760.0'}
+  values:
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0269}
+    value: 0.3683
+  - errors:
+    - {label: stat, symerror: 0.0004}
+    - {label: sys, symerror: 0.0277}
+    value: 0.3796
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0292}
+    value: 0.4004
+  - errors:
+    - {label: stat, symerror: 0.0004}
+    - {label: sys, symerror: 0.0305}
+    value: 0.4182
+  - errors:
+    - {label: stat, symerror: 0.0005}
+    - {label: sys, symerror: 0.0314}
+    value: 0.4305
+  - errors:
+    - {label: stat, symerror: 0.0006}
+    - {label: sys, symerror: 0.0319}
+    value: 0.4362
+  - errors:
+    - {label: stat, symerror: 0.0007}
+    - {label: sys, symerror: 0.0318}
+    value: 0.435
+  - errors:
+    - {label: stat, symerror: 0.0009}
+    - {label: sys, symerror: 0.0314}
+    value: 0.4292
+  - errors:
+    - {label: stat, symerror: 0.0006}
+    - {label: sys, symerror: 0.0281}
+    value: 0.3844
+  - errors:
+    - {label: stat, symerror: 0.0008}
+    - {label: sys, symerror: 0.0207}
+    value: 0.283
+  - errors:
+    - {label: stat, symerror: 0.001}
+    - {label: sys, symerror: 0.0155}
+    value: 0.2109
+  - errors:
+    - {label: stat, symerror: 0.0012}
+    - {label: sys, symerror: 0.0126}
+    value: 0.1717
+  - errors:
+    - {label: stat, symerror: 0.0017}
+    - {label: sys, symerror: 0.0119}
+    value: 0.1616
+  - errors:
+    - {label: stat, symerror: 0.0024}
+    - {label: sys, symerror: 0.012}
+    value: 0.1628
+  - errors:
+    - {label: stat, symerror: 0.0024}
+    - {label: sys, symerror: 0.0133}
+    value: 0.1791
+  - errors:
+    - {label: stat, symerror: 0.0051}
+    - {label: sys, symerror: 0.0158}
+    value: 0.2103
+  - errors:
+    - {label: stat, symerror: 0.0096}
+    - {label: sys, symerror: 0.0188}
+    value: 0.2458
+  - errors:
+    - {label: stat, symerror: 0.0137}
+    - {label: sys, symerror: 0.0237}
+    value: 0.2958
+  - errors:
+    - {label: stat, symerror: 0.0312}
+    - {label: sys, symerror: 0.0345}
+    value: 0.4071
+  - errors:
+    - {label: stat, symerror: 0.0419}
+    - {label: sys, symerror: 0.0326}
+    value: 0.3688
+  - errors:
+    - {label: stat, symerror: 0.0562}
+    - {label: sys, symerror: 0.0377}
+    value: 0.4087
+  - errors:
+    - {label: stat, symerror: 0.0732}
+    - {label: sys, symerror: 0.0496}
+    value: 0.4884
+  - errors:
+    - {label: stat, symerror: 0.168}
+    - {label: sys, symerror: 0.086}
+    value: 0.78
+  - errors:
+    - {label: stat, symerror: 0.0345}
+    - {label: sys, symerror: 0.0642}
+    value: 0.5579
+  - errors:
+    - {label: stat, symerror: 0.069}
+    - {label: sys, symerror: 0.0751}
+    value: 0.6219
+  - errors:
+    - {label: stat, symerror: 0.073}
+    - {label: sys, symerror: 0.0738}
+    value: 0.6075
+  - errors:
+    - {label: stat, symerror: 0.0976}
+    - {label: sys, symerror: 0.0679}
+    value: 0.5558
+- header: {name: RAA}
+  qualifiers:
+  - {name: ABS(ETARAP), value: < 1.0}
+  - {name: CENTRALITY, units: pct, value: 10.0-30.0}
+  - {name: RE, value: P P --> CHARGED X}
+  - {name: SQRT(S), units: GeV, value: '2760.0'}
+  values:
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0284}
+    value: 0.3999
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0293}
+    value: 0.4134
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0308}
+    value: 0.4344
+  - errors:
+    - {label: stat, symerror: 0.0003}
+    - {label: sys, symerror: 0.0322}
+    value: 0.4539
+  - errors:
+    - {label: stat, symerror: 0.0004}
+    - {label: sys, symerror: 0.0332}
+    value: 0.4673
+  - errors:
+    - {label: stat, symerror: 0.0005}
+    - {label: sys, symerror: 0.0336}
+    value: 0.4731
+  - errors:
+    - {label: stat, symerror: 0.0006}
+    - {label: sys, symerror: 0.0337}
+    value: 0.4748
+  - errors:
+    - {label: stat, symerror: 0.0007}
+    - {label: sys, symerror: 0.0333}
+    value: 0.4693
+  - errors:
+    - {label: stat, symerror: 0.0005}
+    - {label: sys, symerror: 0.0305}
+    value: 0.429
+  - errors:
+    - {label: stat, symerror: 0.0007}
+    - {label: sys, symerror: 0.0238}
+    value: 0.3348
+  - errors:
+    - {label: stat, symerror: 0.0009}
+    - {label: sys, symerror: 0.0188}
+    value: 0.2647
+  - errors:
+    - {label: stat, symerror: 0.0012}
+    - {label: sys, symerror: 0.016}
+    value: 0.2252
+  - errors:
+    - {label: stat, symerror: 0.0016}
+    - {label: sys, symerror: 0.0153}
+    value: 0.2148
+  - errors:
+    - {label: stat, symerror: 0.0023}
+    - {label: sys, symerror: 0.0154}
+    value: 0.2153
+  - errors:
+    - {label: stat, symerror: 0.0024}
+    - {label: sys, symerror: 0.0169}
+    value: 0.2358
+  - errors:
+    - {label: stat, symerror: 0.005}
+    - {label: sys, symerror: 0.0193}
+    value: 0.2682
+  - errors:
+    - {label: stat, symerror: 0.0098}
+    - {label: sys, symerror: 0.023}
+    value: 0.3176
+  - errors:
+    - {label: stat, symerror: 0.0142}
+    - {label: sys, symerror: 0.0293}
+    value: 0.395
+  - errors:
+    - {label: stat, symerror: 0.0304}
+    - {label: sys, symerror: 0.038}
+    value: 0.497
+  - errors:
+    - {label: stat, symerror: 0.0428}
+    - {label: sys, symerror: 0.0387}
+    value: 0.4893
+  - errors:
+    - {label: stat, symerror: 0.0497}
+    - {label: sys, symerror: 0.0386}
+    value: 0.4702
+  - errors:
+    - {label: stat, symerror: 0.0611}
+    - {label: sys, symerror: 0.0554}
+    value: 0.6024
+  - errors:
+    - {label: stat, symerror: 0.11}
+    - {label: sys, symerror: 0.082}
+    value: 0.808
+  - errors:
+    - {label: stat, symerror: 0.0808}
+    - {label: sys, symerror: 0.0768}
+    value: 0.7215
+  - errors:
+    - {label: stat, symerror: 0.0543}
+    - {label: sys, symerror: 0.0815}
+    value: 0.7242
+  - errors:
+    - {label: stat, symerror: 0.057}
+    - {label: sys, symerror: 0.0623}
+    value: 0.5498
+  - errors:
+    - {label: stat, symerror: 0.109}
+    - {label: sys, symerror: 0.078}
+    value: 0.687
+independent_variables:
+- header: {name: PT, units: GEV}
+  values:
+  - {high: 1.1, low: 1.0}
+  - {high: 1.2, low: 1.1}
+  - {high: 1.4, low: 1.2}
+  - {high: 1.6, low: 1.4}
+  - {high: 1.8, low: 1.6}
+  - {high: 2.0, low: 1.8}
+  - {high: 2.2, low: 2.0}
+  - {high: 2.4, low: 2.2}
+  - {high: 3.2, low: 2.4}
+  - {high: 4.0, low: 3.2}
+  - {high: 4.8, low: 4.0}
+  - {high: 5.6, low: 4.8}
+  - {high: 6.4, low: 5.6}
+  - {high: 7.2, low: 6.4}
+  - {high: 9.6, low: 7.2}
+  - {high: 12.0, low: 9.6}
+  - {high: 14.4, low: 12.0}
+  - {high: 19.2, low: 14.4}
+  - {high: 24.0, low: 19.2}
+  - {high: 28.8, low: 24.0}
+  - {high: 35.2, low: 28.8}
+  - {high: 41.6, low: 35.2}
+  - {high: 48.0, low: 41.6}
+  - {high: 60.8, low: 48.0}
+  - {high: 73.6, low: 60.8}
+  - {high: 86.4, low: 73.6}
+  - {high: 103.6, low: 86.4}

@@ -1,0 +1,48 @@
+<html>
+   <head>
+      <title>Heavy ion RAA & vn viewer</title>
+      <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+      <script type="text/javascript" src="html2canvas.min.js"></script>
+      <script type="text/javascript" src="flot/jquery.flot.js"></script>
+      <script type="text/javascript" src="flot/jquery.flot.navigate.js"></script>
+      <script type="text/javascript" src="flot/jquery.flot.errorbars.js"></script>
+      <script type="text/javascript" src="flot/jquery.flot.selection.js"></script>
+      <script type="text/javascript" src="flot/jquery.flot.axislabels.js"></script>
+      <script type="text/javascript" src="flot/jquery.flot.log.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css" />
+      <script type="text/javascript" src="Data.json"></script>
+      <script type="text/javascript" src="defaults.js"></script>
+      <script type="text/javascript" src="RAA.js"></script>
+   </head>
+   <body>
+      <!-- Icons are from https://feathericons.com/  Not sure if we need to credit somehow -->
+      <!-- OK as long as this is personal use -->
+      <div id="Page">
+         <div id="Title">
+            Heavy Ion R<sub>AA</sub> and Flow Viewer
+            <div class="AlignRightButton" id="ZoomOutButton" title="Reset zooming"></div>
+            <div class="AlignRightButton" id="DownloadButton" title="Download image"></div>
+         </div>
+         <div id="ChartDivContainer"><div id="ChartDiv"></div></div>
+         <div class="Selector" id="SelectorN">
+            Number of curves:
+            <select id="CurveCount">
+               <option value="1" selected>1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
+               <option value="4">4</option>
+               <option value="5">5</option>
+               <option value="6">6</option>
+               <option value="7">7</option>
+               <option value="8">8</option>
+               <option value="9">9</option>
+            </select>
+            <div class="SelectorRight">Log: <input type="checkbox" id="LogX">x</input> <input type="checkbox" id="LogY">y</input></div>
+         </div>
+      </div>
+   </body>
+</html>
+
+
+

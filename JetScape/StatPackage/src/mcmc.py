@@ -367,7 +367,7 @@ class Chain:
                 # print(sys)
                 # print("Y", dY[:])
                 # print("Exp", self._expt_y[sys])
-                dY[:] -= self._expt_y[sys]
+                dY[:] = self._expt_y[sys] - dY[:]
                 # print("DY", dY[:])
 
                 # add expt cov to model cov
@@ -574,7 +574,7 @@ def main():
         help='number of steps between logging status'
     )
     parser.add_argument(
-        '--model_cov_modifier', type=float, default=0.25,
+        '--model_cov_modifier', type=float, default=1.00,
         help='model cov modifier'
     )
     parser.add_argument(

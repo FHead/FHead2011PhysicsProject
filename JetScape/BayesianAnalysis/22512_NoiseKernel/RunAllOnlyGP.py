@@ -7,7 +7,7 @@ parser.add_argument("--DoEarthquake", help = "earthquake?", action = "store_true
 parser.add_argument("--DoBigEarthquake", help = "big earthquake?", action = "store_true")
 parser.add_argument("--DoSmoothing", help = "smoohting?", action = "store_true")
 parser.add_argument("--Model", choices = ["Matter", "LBT", "MatterLBT1", "MatterLBT2"])
-parser.add_argument("--KernelChoice", choices = ["Matern", "MaternNoise", "RBF"], default = "Matern")
+parser.add_argument("--KernelChoice", choices = ["Matern", "MaternNoise", "MaternNoise1", "RBF"], default = "Matern")
 parser.add_argument("--Alpha", type = float, default = 0.6)
 parser.add_argument("--Noise", type = float, default = -1)
 parser.add_argument("--CovType", help = "what kind of error treatment", default = "Length0.2", choices = ["Length0.1", "Length0.2", "Length10", "Separated"])

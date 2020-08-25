@@ -42,6 +42,7 @@ parser.add_argument("--DoBigEarthquake", help = "Whether to shake up the model c
 parser.add_argument("--BeforeAfterCheck", help = "Do we export plots for before vs after check", action = 'store_true')
 parser.add_argument("--CovType", help = "what kind of error treatment", default = "Length0.2", choices = ["Length0.1", "Length0.2", "Length10", "Separated"])
 parser.add_argument("--Model", choices = ["Matter", "LBT", "MatterLBT1", "MatterLBT2"])
+parser.add_argument("--Data", choices = ["All", "LHC", "RHIC"], default = "All")
 args = parser.parse_args()
 
 print("Earthquake = " + str(args.DoEarthquake))
@@ -199,10 +200,24 @@ HoldoutPrediction = \
                           "C1": {"Y": HoldoutPrediction4L, "x": RawData4L["Data"]['x']}}},
     "PbPb5020": {"R_AA": {"C0": {"Y": HoldoutPrediction5L, "x": RawData5L["Data"]['x']},
                           "C1": {"Y": HoldoutPrediction6L, "x": RawData6L["Data"]['x']}}}}
+if args.Data == "LHC":
+    HoldoutPrediction = \
+        {"PbPb2760": {"R_AA": {"C0": {"Y": HoldoutPrediction3L, "x": RawData3L["Data"]['x']},
+                               "C1": {"Y": HoldoutPrediction4L, "x": RawData4L["Data"]['x']}}},
+        "PbPb5020": {"R_AA": {"C0": {"Y": HoldoutPrediction5L, "x": RawData5L["Data"]['x']},
+                              "C1": {"Y": HoldoutPrediction6L, "x": RawData6L["Data"]['x']}}}}
+if args.Data == "RHIC":
+    HoldoutPrediction = \
+        {"AuAu200": {"R_AA": {"C0": {"Y": HoldoutPrediction1L, "x": RawData1L["Data"]['x']},
+                              "C1": {"Y": HoldoutPrediction2L, "x": RawData2L["Data"]['x']}}}}
 AllData["holdoutmodel"] = HoldoutPrediction
 
 # Basic information
 AllData["systems"] = ["AuAu200", "PbPb2760", "PbPb5020"]
+if args.Data == "LHC":
+    AllData["systems"] = ["PbPb2760", "PbPb5020"]
+if args.Data == "RHIC":
+    AllData["systems"] = ["AuAu200"]
 AllData["keys"] = RawDesignL["Parameter"]
 AllData["labels"] = RawDesignL["Parameter"]
 AllData["observables"] = [('R_AA', ['C0', 'C1'])]
@@ -215,13 +230,18 @@ elif args.Model == "LBT":
 elif args.Model == "MatterLBT1":
     AllData["ranges"] = [(0, 1.5), (0, 1), (0, 20), (0, 20), (1, 4)]
 elif args.Model == "MatterLBT2":
-    AllData["ranges"] = [(0, 1.5), (0, 1), (0, 20), (1, 4)]
+    AllData["ranges"] = [(0, 2.0), (0, 1), (0, 20), (1, 4)]
 
 
 # Data points
 Data = {"AuAu200": {"R_AA": {"C0": RawData1L["Data"], "C1": RawData2L["Data"]}},
        "PbPb2760": {"R_AA": {"C0": RawData3L["Data"], "C1": RawData4L["Data"]}},
        "PbPb5020": {"R_AA": {"C0": RawData5L["Data"], "C1": RawData6L["Data"]}}}
+if args.Data == "LHC":
+    Data = {"PbPb2760": {"R_AA": {"C0": RawData3L["Data"], "C1": RawData4L["Data"]}},
+           "PbPb5020": {"R_AA": {"C0": RawData5L["Data"], "C1": RawData6L["Data"]}}}
+if args.Data == "RHIC":
+    Data = {"AuAu200": {"R_AA": {"C0": RawData1L["Data"], "C1": RawData2L["Data"]}}}
 
 # Model predictions
 Prediction = {"AuAu200": {"R_AA": {"C0": {"Y": RawPrediction1L["Prediction"], "x": RawData1L["Data"]['x']},
@@ -230,6 +250,14 @@ Prediction = {"AuAu200": {"R_AA": {"C0": {"Y": RawPrediction1L["Prediction"], "x
                                    "C1": {"Y": RawPrediction4L["Prediction"], "x": RawData4L["Data"]['x']}}},
              "PbPb5020": {"R_AA": {"C0": {"Y": RawPrediction5L["Prediction"], "x": RawData5L["Data"]['x']},
                                    "C1": {"Y": RawPrediction6L["Prediction"], "x": RawData6L["Data"]['x']}}}}
+if args.Data == "LHC":
+    Prediction = {"PbPb2760": {"R_AA": {"C0": {"Y": RawPrediction3L["Prediction"], "x": RawData3L["Data"]['x']},
+                                       "C1": {"Y": RawPrediction4L["Prediction"], "x": RawData4L["Data"]['x']}}},
+                 "PbPb5020": {"R_AA": {"C0": {"Y": RawPrediction5L["Prediction"], "x": RawData5L["Data"]['x']},
+                                       "C1": {"Y": RawPrediction6L["Prediction"], "x": RawData6L["Data"]['x']}}}}
+if args.Data == "RHIC":
+    Prediction = {"AuAu200": {"R_AA": {"C0": {"Y": RawPrediction1L["Prediction"], "x": RawData1L["Data"]['x']},
+                                       "C1": {"Y": RawPrediction2L["Prediction"], "x": RawData2L["Data"]['x']}}}}
 
 # Covariance matrices - the indices are [system][measurement1][measurement2], each one is a block of matrix
 print("Covariance type = " + args.CovType)
@@ -245,23 +273,24 @@ elif args.CovType == "Separated":
     SysLength = {"sys,lumi,high": 9999, "sys,TAA,high": 9999, "default": 0.2}
 
 Covariance = Reader.InitializeCovariance(Data)
-Covariance["AuAu200"][("R_AA", "C0")][("R_AA", "C0")]  = Reader.EstimateCovariance(RawData1L, RawData1L, SysLength = SysLength)
-Covariance["AuAu200"][("R_AA", "C1")][("R_AA", "C1")]  = Reader.EstimateCovariance(RawData2L, RawData2L, SysLength = SysLength)
-Covariance["PbPb2760"][("R_AA", "C0")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData3L, RawData3L, SysLength = SysLength)
-Covariance["PbPb2760"][("R_AA", "C1")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData4L, RawData4L, SysLength = SysLength)
-Covariance["PbPb5020"][("R_AA", "C0")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData5L, RawData5L, SysLength = SysLength)
-Covariance["PbPb5020"][("R_AA", "C1")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData6L, RawData6L, SysLength = SysLength)
+if args.Data == "RHIC" or args.Data == "All":
+    Covariance["AuAu200"][("R_AA", "C0")][("R_AA", "C0")]  = Reader.EstimateCovariance(RawData1L, RawData1L, SysLength = SysLength)
+    Covariance["AuAu200"][("R_AA", "C1")][("R_AA", "C1")]  = Reader.EstimateCovariance(RawData2L, RawData2L, SysLength = SysLength)
+if args.Data == "LHC" or args.Data == "All":
+    Covariance["PbPb2760"][("R_AA", "C0")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData3L, RawData3L, SysLength = SysLength)
+    Covariance["PbPb2760"][("R_AA", "C1")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData4L, RawData4L, SysLength = SysLength)
+    Covariance["PbPb5020"][("R_AA", "C0")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData5L, RawData5L, SysLength = SysLength)
+    Covariance["PbPb5020"][("R_AA", "C1")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData6L, RawData6L, SysLength = SysLength)
 
 if args.CovType == "Separated":
-    Covariance["AuAu200"][("R_AA", "C0")][("R_AA", "C1")]  = Reader.EstimateCovariance(RawData1L, RawData2L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
-    Covariance["AuAu200"][("R_AA", "C1")][("R_AA", "C0")]  = Reader.EstimateCovariance(RawData2L, RawData1L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
-    Covariance["PbPb2760"][("R_AA", "C0")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData3L, RawData4L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
-    Covariance["PbPb2760"][("R_AA", "C1")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData4L, RawData3L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
-    Covariance["PbPb5020"][("R_AA", "C0")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData5L, RawData6L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
-    Covariance["PbPb5020"][("R_AA", "C1")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData6L, RawData5L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
-
-print(Covariance["AuAu200"][("R_AA","C0")][("R_AA","C1")])
-
+    if args.Data == "RHIC" or args.Data == "All":
+        Covariance["AuAu200"][("R_AA", "C0")][("R_AA", "C1")]  = Reader.EstimateCovariance(RawData1L, RawData2L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
+        Covariance["AuAu200"][("R_AA", "C1")][("R_AA", "C0")]  = Reader.EstimateCovariance(RawData2L, RawData1L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
+    if args.Data == "LHC" or args.Data == "All":
+        Covariance["PbPb2760"][("R_AA", "C0")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData3L, RawData4L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
+        Covariance["PbPb2760"][("R_AA", "C1")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData4L, RawData3L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
+        Covariance["PbPb5020"][("R_AA", "C0")][("R_AA", "C1")] = Reader.EstimateCovariance(RawData5L, RawData6L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
+        Covariance["PbPb5020"][("R_AA", "C1")][("R_AA", "C0")] = Reader.EstimateCovariance(RawData6L, RawData5L, SysLength = {"sys,lumi,high": 9999, "default": -1}, SysStrength = {"sys,lumi,high": 1, "default": 0})
 
 # Assign data to the dictionary
 AllData["design"] = RawDesignL["Design"]

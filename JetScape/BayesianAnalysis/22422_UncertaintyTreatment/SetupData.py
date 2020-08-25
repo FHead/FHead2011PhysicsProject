@@ -206,7 +206,8 @@ AllData["systems"] = ["AuAu200", "PbPb2760", "PbPb5020"]
 AllData["keys"] = RawDesignL["Parameter"]
 AllData["labels"] = RawDesignL["Parameter"]
 AllData["ranges"] = [(0.01, 2), (0.01, 20), (0.01, 2), (0.01, 20)]
-# AllData["ranges"] = [(0.01, 2), (3.51, 3.52), (0.01, 2), (4.55, 4.56)]
+if args.Model == "MatterLBT1":
+    AllData["ranges"] = [(0, 1.5), (0, 1), (0, 20), (0, 20), (1, 4)]
 AllData["observables"] = [('R_AA', ['C0', 'C1'])]
 
 # Data points

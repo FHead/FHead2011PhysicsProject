@@ -109,9 +109,9 @@ class Emulator:
         ptp = design.max - design.min
         print(ptp)
 
-        noise0 = 0.49**2
-        noisemin = 0.00001**2
-        noisemax = 0.5**2
+        noise0 = 0.5**2
+        noisemin = 0.01**2
+        noisemax = 1**2
         if noise >= 0:
             noise0 = noise**2
             noisemin = noise**2 * 0.999
@@ -120,12 +120,12 @@ class Emulator:
         if kernelchoice == "Matern":
             kernel = (kernels.Matern(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
+                length_scale_bounds = np.outer(ptp, (0.1, 10)),
                 nu = nu))
         elif kernelchoice == "MaternNoise":
             kernel = (kernels.Matern(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
+                length_scale_bounds = np.outer(ptp, (0.1, 10)),
                 nu = nu)
                 + kernels.WhiteKernel(
                 noise_level = noise0,
@@ -133,7 +133,7 @@ class Emulator:
         elif kernelchoice == "MaternNoise1":
             kernel = (1. * kernels.Matern(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (1e-3, 1e3)),
+                length_scale_bounds = np.outer(ptp, (0.1, 10)),
                 nu = nu)
                 + kernels.WhiteKernel(
                 noise_level = noise0,
@@ -141,7 +141,7 @@ class Emulator:
         elif kernelchoice == "RBF":
             kernel = (kernels.RBF(
                 length_scale = ptp,
-                length_scale_bounds = np.outer(ptp, (1e-3, 1e3))))
+                length_scale_bounds = np.outer(ptp, (0.1, 10))))
         else:
             kernel = (
                 # kernels.ConstantKernel(1.0, (1e-3, 1e3))

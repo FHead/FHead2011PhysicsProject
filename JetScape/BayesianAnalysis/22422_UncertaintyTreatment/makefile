@@ -94,5 +94,6 @@ RunHoldout:
 	python3 RunAllOnlyGP.py --Model MatterLBT2  --Nu 2.5 --KernelChoice Matern --Alpha $(Alpha)
 
 
-
+CopyAway:
+	cp plots/*pdf ~/WindowsHome/Downloads/
 

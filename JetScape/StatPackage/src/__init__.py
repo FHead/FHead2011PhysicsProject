@@ -14,7 +14,7 @@ logging.basicConfig(
     level=os.getenv('LOGLEVEL', 'info').upper()
 )
 
-AllData = None
+AllData = {}
 workdir = None
 cachedir = None
 systems = None

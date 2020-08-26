@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
    double TAA[] = {0.100719, 0.051233, 0.025341, 0.018646};
    double Lumi = 0.023;
 
-   string Cs[] = {"0-10", "10-30", "30-50", "50-80"};
+   string Cs[] = {"0-10", "10-30", "30-50", "50-90"};
    string Rs[] = {"0.2", "0.3", "0.4", "0.6", "0.8", "1.0"};
 
    for(int iR = 0; iR < 6; iR++)
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
          out << "- header: {name: RAA}" << endl;
          out << "  qualifiers:" << endl;
          out << "  - {name: ABS(ETA), value: 0.0-2.0}" << endl;
-         out << "  - {name: RE, value: PB PB --> JET X, P P --> JET X}" << endl;
+         out << "  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}" << endl;
          out << "  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}" << endl;
          out << "  - {name: CENTRALITY, units: pct, value: " << Cs[iC] << "}" << endl;
          out << "  - {name: R, value: " << Rs[iR] << "}" << endl;

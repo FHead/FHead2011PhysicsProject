@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
    double LumiTAA[] = {0.100719, 0.051233, 0.025341, 0.018646, 0.023};
 
-   string Cs[] = {"0-10", "10-30", "30-50", "50-80", "Inclusive"};
+   string Cs[] = {"0-10", "10-30", "30-50", "50-90", "Inclusive"};
    string Rs[] = {"0.2", "0.3", "0.4", "0.6", "0.8", "1.0"};
 
    for(int iR = 0; iR < 6; iR++)
@@ -173,12 +173,18 @@ void GetGraph(string FileName, TGraphAsymmErrors &G, int R, int Cent, bool Sys)
    if(H == nullptr)
       cout << HistName << endl;
 
+   double Prefactor = 1;
+   if(Cent == C0)   Prefactor = 0.1;
+   if(Cent == C1)   Prefactor = 0.01;
+   if(Cent == C2)   Prefactor = 0.001;
+   if(Cent == C3)   Prefactor = 0.0001;
+
    for(int i = 1; i <= H->GetNbinsX(); i++)
    {
       double X = H->GetXaxis()->GetBinCenter(i);
-      double Y = H->GetBinContent(i);
+      double Y = H->GetBinContent(i) * Prefactor;
       double EX = (H->GetXaxis()->GetBinUpEdge(i) - H->GetXaxis()->GetBinLowEdge(i)) / 2;
-      double EY = H->GetBinError(i);
+      double EY = H->GetBinError(i) * Prefactor;
 
       G.SetPoint(i - 1, X, Y);
       G.SetPointError(i - 1, EX, EX, EY, EY);

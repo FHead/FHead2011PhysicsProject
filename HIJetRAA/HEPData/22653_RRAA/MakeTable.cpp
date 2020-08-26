@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
       }
    }
 
-   string Cs[] = {"0-10", "10-30", "30-50", "50-80"};
+   string Cs[] = {"0-10", "10-30", "30-50", "50-90"};
    string PTs[] = {"200-250", "250-300", "300-400", "400-500", "500-1000"};
 
    for(int iPT = 0; iPT < 5; iPT++)
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
          out << "- header: {name: RAA(R) / RAA(R=0.2)}" << endl;
          out << "  qualifiers:" << endl;
          out << "  - {name: ABS(ETA), value: 0.0-2.0}" << endl;
-         out << "  - {name: RE, value: PB PB --> JET X, P P --> JET X}" << endl;
+         out << "  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}" << endl;
          out << "  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}" << endl;
          out << "  - {name: CENTRALITY, units: pct, value: " << Cs[iC] << "}" << endl;
          out << "  - {name: PT, units: GEV, value: " << PTs[iPT] << "}" << endl;

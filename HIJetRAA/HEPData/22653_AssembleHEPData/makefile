@@ -10,5 +10,6 @@ CheckSubmission:
 	python3 check.py
 
 Packup:
+	rm Submission.tar.gz
 	tar zcvf Submission.tar.gz *yaml
 	cp Submission.tar.gz ~/public/html/

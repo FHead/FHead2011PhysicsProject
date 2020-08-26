@@ -36,10 +36,11 @@ parser.add_argument("--DoEarthquake", help = "earthquake?", action = "store_true
 parser.add_argument("--DoBigEarthquake", help = "big earthquake?", action = "store_true")
 parser.add_argument("--DoSmoothing", help = "smoohting?", action = "store_true")
 parser.add_argument("--Model", choices = ["Matter", "LBT", "MatterLBT1", "MatterLBT2"])
-parser.add_argument("--KernelChoice", choices = ["Matern", "MaternNoise", "RBF"], default = "Matern")
+parser.add_argument("--KernelChoice", choices = ["Matern", "MaternNoise", "MaternNoise1", "RBF"], default = "Matern")
 parser.add_argument("--Alpha", type = float, default = 0.6)
 parser.add_argument("--Noise", type = float, default = -1)
 parser.add_argument("--CovType", help = "what kind of error treatment", default = "Length0.2", choices = ["Length0.1", "Length0.2", "Length10", "Separated"])
+parser.add_argument("--Data", choices = ["All", "RHIC", "LHC"], default = "All")
 args = parser.parse_args()
 
 import src
@@ -48,9 +49,11 @@ from src import mcmc
 chain = mcmc.Chain()
 MCMCSamples = chain.load()
 
-EmulatorAuAu200 = src.emulator.Emulator.from_cache('AuAu200')
-EmulatorPbPb2760 = src.emulator.Emulator.from_cache('PbPb2760')
-EmulatorPbPb5020 = src.emulator.Emulator.from_cache('PbPb5020')
+if args.Data == "All" or args.Data == "RHIC":
+    EmulatorAuAu200 = src.emulator.Emulator.from_cache('AuAu200')
+if args.Data == "All" or args.Data == "LHC":
+    EmulatorPbPb2760 = src.emulator.Emulator.from_cache('PbPb2760')
+    EmulatorPbPb5020 = src.emulator.Emulator.from_cache('PbPb5020')
 
 if not os.path.exists('plots/'):
     os.mkdir('plots')
@@ -60,6 +63,7 @@ now = datetime.now()
 
 FileName = "plots/ResultPlots" + "_" + args.Model
 FileName = FileName + "_" + str(args.N)
+FileName = FileName + "_Data" + args.Data
 FileName = FileName + "_" + args.KernelChoice + "_" + "Nu" + str(args.Nu)
 FileName = FileName + "_Alpha" + str(args.Alpha)
 FileName = FileName + "_Noise" + str(args.Noise)
@@ -72,19 +76,19 @@ FileName = FileName + ".pdf"
 
 with PdfPages(FileName) as pdf:
     # MCMC Samples Plot
-    with chain.dataset() as d:
-        W = d.shape[0]     # number of walkers
-        S = d.shape[1]     # number of steps
-        N = d.shape[2]     # number of paramters
-        T = int(S / 200)   # "thinning"
-        A = 20 / W
-        figure, axes = plt.subplots(figsize = (15, 2 * N), ncols = 1, nrows = N)
-        for i, ax in enumerate(axes):
-            for j in range(0, W):
-                ax.plot(range(0, S, T), d[j, ::T, i], alpha = A)
-        plt.tight_layout(True)
-        pdf.savefig()
-        plt.close()
+    # with chain.dataset() as d:
+    #     W = d.shape[0]     # number of walkers
+    #     S = d.shape[1]     # number of steps
+    #     N = d.shape[2]     # number of paramters
+    #     T = int(S / 200)   # "thinning"
+    #     A = 20 / W
+    #     figure, axes = plt.subplots(figsize = (15, 2 * N), ncols = 1, nrows = N)
+    #     for i, ax in enumerate(axes):
+    #         for j in range(0, W):
+    #             ax.plot(range(0, S, T), d[j, ::T, i], alpha = A)
+    #     plt.tight_layout(True)
+    #     pdf.savefig()
+    #     plt.close()
 
 
     # Correlation Plot
@@ -153,13 +157,22 @@ with PdfPages(FileName) as pdf:
     # Posterior Plot
     Examples = MCMCSamples[ np.random.choice(range(len(MCMCSamples)), 2500), :]
 
-    TempPrediction = {"AuAu200": EmulatorAuAu200.predict(Examples),
-                     "PbPb2760": EmulatorPbPb2760.predict(Examples),
-                     "PbPb5020": EmulatorPbPb5020.predict(Examples)}
+    if args.Data == "All":
+        TempPrediction = {"AuAu200": EmulatorAuAu200.predict(Examples),
+                         "PbPb2760": EmulatorPbPb2760.predict(Examples),
+                         "PbPb5020": EmulatorPbPb5020.predict(Examples)}
+    if args.Data == "LHC":
+        TempPrediction = {"PbPb2760": EmulatorPbPb2760.predict(Examples),
+                         "PbPb5020": EmulatorPbPb5020.predict(Examples)}
+    if args.Data == "RHIC":
+        TempPrediction = {"AuAu200": EmulatorAuAu200.predict(Examples)}
 
     SystemCount = len(AllData["systems"])
+    RowCount = SystemCount
+    if RowCount == 1:
+        RowCount = 2
 
-    figure, axes = plt.subplots(figsize = (15, 5 * SystemCount), ncols = 2, nrows = SystemCount)
+    figure, axes = plt.subplots(figsize = (15, 5 * RowCount), ncols = 2, nrows = RowCount)
 
     for s1 in range(0, SystemCount):
         for s2 in range(0, 2):

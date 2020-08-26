@@ -19,8 +19,8 @@ location: "Data from Table 5 in the paper"
 description: "Spectra of jets with |eta jet| < 2.0 for R = 0.2, for pp collisions and different centrality classes of PbPb collisions."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["d^2 sigma / d eta d PT"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["d^2 sigma / d eta d PT"]}
 data_file: Table5-1.yaml
 
 ---
@@ -30,8 +30,8 @@ location: "Data from Table 5 in the paper"
 description: "Spectra of jets with |eta jet| < 2.0 for R = 0.3, for pp collisions and different centrality classes of PbPb collisions."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["d^2 sigma / d eta d PT"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["d^2 sigma / d eta d PT"]}
 data_file: Table5-2.yaml
 
 ---
@@ -41,8 +41,8 @@ location: "Data from Table 5 in the paper"
 description: "Spectra of jets with |eta jet| < 2.0 for R = 0.4, for pp collisions and different centrality classes of PbPb collisions."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["d^2 sigma / d eta d PT"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["d^2 sigma / d eta d PT"]}
 data_file: Table5-3.yaml
 
 ---
@@ -52,8 +52,8 @@ location: "Data from Table 5 in the paper"
 description: "Spectra of jets with |eta jet| < 2.0 for R = 0.6, for pp collisions and different centrality classes of PbPb collisions."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["d^2 sigma / d eta d PT"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["d^2 sigma / d eta d PT"]}
 data_file: Table5-4.yaml
 
 ---
@@ -63,8 +63,8 @@ location: "Data from Table 5 in the paper"
 description: "Spectra of jets with |eta jet| < 2.0 for R = 0.8, for pp collisions and different centrality classes of PbPb collisions."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["d^2 sigma / d eta d PT"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["d^2 sigma / d eta d PT"]}
 data_file: Table5-5.yaml
 
 ---
@@ -74,8 +74,8 @@ location: "Data from Table 5 in the paper"
 description: "Spectra of jets with |eta jet| < 2.0 for R = 1.0, for pp collisions and different centrality classes of PbPb collisions."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["d^2 sigma / d eta d PT"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["d^2 sigma / d eta d PT"]}
 data_file: Table5-6.yaml
 
 ---
@@ -85,8 +85,8 @@ location: "Data from Table 6 in the paper"
 description: "The spectra ratio for jets from pp collisions with |eta jet| < 2.0 for R = 0.2–0.8 with respect to R = 1.0."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X"]}
-   - {name: Observables, values: ["(d N(R) / d PT) / (d N(R=1.0) / d PT)"]}
+   - {name: reactions, values: ["P P --> JET X"]}
+   - {name: observables, values: ["(d N(R) / d PT) / (d N(R=1.0) / d PT)"]}
 data_file: Table6.yaml
 
 ---
@@ -96,8 +96,8 @@ location: "Data from Table 7 in the paper"
 description: "The RAA for jets with |eta jet| < 2.0 as a function of jet PT for R = 0.2 and various centrality classes."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA"]}
 data_file: Table7-1.yaml
 
 ---
@@ -107,8 +107,8 @@ location: "Data from Table 7 in the paper"
 description: "The RAA for jets with |eta jet| < 2.0 as a function of jet PT for R = 0.3 and various centrality classes."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA"]}
 data_file: Table7-2.yaml
 
 ---
@@ -118,8 +118,8 @@ location: "Data from Table 7 in the paper"
 description: "The RAA for jets with |eta jet| < 2.0 as a function of jet PT for R = 0.4 and various centrality classes."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA"]}
 data_file: Table7-3.yaml
 
 ---
@@ -129,8 +129,8 @@ location: "Data from Table 7 in the paper"
 description: "The RAA for jets with |eta jet| < 2.0 as a function of jet PT for R = 0.6 and various centrality classes."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA"]}
 data_file: Table7-4.yaml
 
 ---
@@ -140,8 +140,8 @@ location: "Data from Table 7 in the paper"
 description: "The RAA for jets with |eta jet| < 2.0 as a function of jet PT for R = 0.8 and various centrality classes."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA"]}
 data_file: Table7-5.yaml
 
 ---
@@ -151,8 +151,8 @@ location: "Data from Table 7 in the paper"
 description: "The RAA for jets with |eta jet| < 2.0 as a function of jet PT for R = 1.0 and various centrality classes."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA"]}
 data_file: Table7-6.yaml
 
 ---
@@ -163,8 +163,8 @@ description: "The RAA-ratio for jets with |eta jet| < 2.0 as a function of R for
    to R = 0.2, in various event centrality classes and jet PT = 200-250 GeV."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA(R) / RAA(R = 0.2)"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA(R) / RAA(R = 0.2)"]}
 data_file: Table8-1.yaml
 
 ---
@@ -175,8 +175,8 @@ description: "The RAA-ratio for jets with |eta jet| < 2.0 as a function of R for
    to R = 0.2, in various event centrality classes and jet PT = 250-300 GeV."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA(R) / RAA(R = 0.2)"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA(R) / RAA(R = 0.2)"]}
 data_file: Table8-2.yaml
 
 ---
@@ -187,8 +187,8 @@ description: "The RAA-ratio for jets with |eta jet| < 2.0 as a function of R for
    to R = 0.2, in various event centrality classes and jet PT = 300-400 GeV."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA(R) / RAA(R = 0.2)"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA(R) / RAA(R = 0.2)"]}
 data_file: Table8-3.yaml
 
 ---
@@ -199,8 +199,8 @@ description: "The RAA-ratio for jets with |eta jet| < 2.0 as a function of R for
    to R = 0.2, in various event centrality classes and jet PT = 400-500 GeV."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA(R) / RAA(R = 0.2)"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA(R) / RAA(R = 0.2)"]}
 data_file: Table8-4.yaml
 
 ---
@@ -211,7 +211,7 @@ description: "The RAA-ratio for jets with |eta jet| < 2.0 as a function of R for
    to R = 0.2, in various event centrality classes and jet PT = 500-1000 GeV."
 keywords:
    - {name: cmenergies, values: [5020]}
-   - {name: Reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
-   - {name: Observables, values: ["RAA(R) / RAA(R = 0.2)"]}
+   - {name: reactions, values: ["P P --> JET X", "Pb Pb --> JET X"]}
+   - {name: observables, values: ["RAA(R) / RAA(R = 0.2)"]}
 data_file: Table8-5.yaml
 

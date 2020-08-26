@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
          {
             bool Found = false;
 
-            for(int iR = 0; iR < G[iC][iR].GetN(); iR++)
+            for(int iR = 0; iR < G[iC][iR].GetN() && Found == false; iR++)
             {
                double X, Y;
                G[iC][iPT].GetPoint(iR, X, Y);

@@ -13,9 +13,9 @@ from src import AllData
 
 import numpy as np
 Design = np.array([AllData['holdoutdesign']])
-PredictionAuAu200, CovarianceAuAu200 = EmulatorAuAu200.predict(Design, return_cov = True)
-PredictionPbPb2760, CovariancePbPb2760 = EmulatorPbPb2760.predict(Design, return_cov = True)
-PredictionPbPb5020, CovariancePbPb5020 = EmulatorPbPb5020.predict(Design, return_cov = True)
+PredictionAuAu200,  CovarianceAuAu200  = EmulatorAuAu200.predict(Design,  return_cov = True, extra_std = 0.0)
+PredictionPbPb2760, CovariancePbPb2760 = EmulatorPbPb2760.predict(Design, return_cov = True, extra_std = 0.0)
+PredictionPbPb5020, CovariancePbPb5020 = EmulatorPbPb5020.predict(Design, return_cov = True, extra_std = 0.0)
 
 TempPrediction = {"AuAu200": PredictionAuAu200,
                  "PbPb2760": PredictionPbPb2760,

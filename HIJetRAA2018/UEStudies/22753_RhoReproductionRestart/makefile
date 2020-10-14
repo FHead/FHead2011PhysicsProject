@@ -5,7 +5,7 @@ default: TestRun
 TestRun: Execute
 	./Execute --input HiForestAOD.root
 
-Execute: RunRhoReproduction.cpp
+Execute: RunRhoReproduction.cpp RhoCalculator.h
 	rm -f Execute
 	CompileRootMacro RunRhoReproduction.cpp Execute \
 		-I../../CommonCode/include ../../CommonCode/library/*.o \

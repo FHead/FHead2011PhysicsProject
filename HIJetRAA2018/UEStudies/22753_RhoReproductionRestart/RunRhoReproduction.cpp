@@ -48,10 +48,8 @@ int main(int argc, char *argv[])
 
       cout << "Event: " << iE << "/" << EntryCount << endl;
       for(int i = 0; i < (int)Rho.size(); i++)
-         cout << "   " << i << " " << Rho[i] << endl;
+         cout << " " << i << "=" << Rho[i];
       cout << endl;
-
-      break;
    }
 
    InputFile.Close();
@@ -71,6 +69,7 @@ vector<double> CalculateRho(PFTreeMessenger &MPF)
    }
 
    RhoCalculator Calculator;
+   Calculator.SetCMSPreset();
    return Calculator.CalculateRho(PF);
 }
 

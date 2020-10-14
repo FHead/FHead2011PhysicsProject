@@ -29,6 +29,8 @@ public:
    void SetJetR(double JetR = 0.3)                 { JetR = JetR; }
    void SetRadiusPU(double RadiusPU = 0.5)         { RadiusPU = RadiusPU; }
    void SetSigmaCut(double SigmaCut = 5.0)         { SigmaCut = SigmaCut; }
+public:
+   void SetCMSPreset();
 };
 
 
@@ -140,11 +142,13 @@ vector<double> RhoCalculator::CalculateRho(vector<FourVector> &PF)
    ClusterSequence Sequence(TowerToPseudoJet(PFTowers), Definition);
    vector<PseudoJet> FastJetJets = sorted_by_pt(Sequence.inclusive_jets(PUPTMin));
 
+   /*
    cout << FastJetJets.size() << endl;
    for(int i = 0; i < (int)FastJetJets.size(); i++)
    {
       cout << "J" << i << " " << FastJetJets[i].perp() << " " << FastJetJets[i].eta() << " " << FastJetJets[i].phi() << endl;
    }
+   */
 
    // Find excluded towers overall
    vector<pair<int, int>> ExcludedTowers;
@@ -185,6 +189,7 @@ vector<double> RhoCalculator::CalculateRho(vector<FourVector> &PF)
       OrphanTowers.insert(iter);
    }
 
+   /*
    for(auto iter : OrphanTowers)
    {
       int IEta = iter.first.first;
@@ -196,6 +201,7 @@ vector<double> RhoCalculator::CalculateRho(vector<FourVector> &PF)
          cout << "I " << ET << " " << EtaPhi.first << " " << EtaPhi.second << " " << Mean[IEta] << " " << RMS[IEta] << endl;
       }
    }
+   */
 
    // Let's calculate pedestal again
    int NOrphanTowers[EtaBinCount] = {0};
@@ -329,3 +335,12 @@ double RhoCalculator::GetDR2(double Eta1, double Phi1, double Eta2, double Phi2)
    return DEta * DEta + DPhi * DPhi;
 }
 
+void RhoCalculator::SetCMSPreset()
+{
+   MinTowerFraction = 0.7;
+   NSigmaPU = 1;
+   PUPTMin = 15;
+   JetR = 0.3;
+   RadiusPU = 0.5;
+   SigmaCut = 5.0;
+}

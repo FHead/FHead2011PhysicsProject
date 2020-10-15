@@ -1,17 +1,10 @@
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 #include <functional>
-using namespace std;
+// using namespace std;
 
 #include "TFile.h"
 #include "TTree.h"
-
-#include "fastjet/ClusterSequence.hh"
-#include "fastjet/ClusterSequenceArea.hh"
-#include "fastjet/GhostedAreaSpec.hh"
-#include "fastjet/PseudoJet.hh"
-#include "fastjet/JetDefinition.hh"
-using namespace fastjet;
 
 #include "Code/TauHelperFunctions3.h"
 #include "CustomAssert.h"
@@ -22,13 +15,13 @@ using namespace fastjet;
 #include "RhoCalculator.h"
 
 int main(int argc, char *argv[]);
-vector<double> CalculateRho(PFTreeMessenger &MPF);
+std::vector<double> CalculateRho(PFTreeMessenger &MPF);
 
 int main(int argc, char *argv[])
 {
    CommandLine CL(argc, argv);
 
-   string InputFileName = CL.Get("input");
+   std::string InputFileName = CL.Get("input");
 
    TFile InputFile(InputFileName.c_str());
 
@@ -44,12 +37,12 @@ int main(int argc, char *argv[])
       MHiEvent.GetEntry(iE);
       MPF.GetEntry(iE);
 
-      vector<double> Rho = CalculateRho(MPF);
+      std::vector<double> Rho = CalculateRho(MPF);
 
-      cout << "Event: " << iE << "/" << EntryCount << endl;
+      std::cout << "Event: " << iE << "/" << EntryCount << std::endl;
       for(int i = 0; i < (int)Rho.size(); i++)
-         cout << " " << i << "=" << Rho[i];
-      cout << endl;
+         std::cout << " " << i << "=" << Rho[i];
+      std::cout << std::endl;
    }
 
    InputFile.Close();
@@ -57,10 +50,10 @@ int main(int argc, char *argv[])
    return 0;
 }
 
-vector<double> CalculateRho(PFTreeMessenger &MPF)
+std::vector<double> CalculateRho(PFTreeMessenger &MPF)
 {
    int N = MPF.ID->size();
-   vector<FourVector> PF(N);
+   std::vector<FourVector> PF(N);
 
    for(int i = 0; i < N; i++)
    {

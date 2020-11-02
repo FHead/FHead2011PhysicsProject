@@ -181,7 +181,7 @@ void L1ExtraUpgradeTreeMessenger::FillObject(vector<GenericObject> &V, int N,
       V.push_back(O);
    }
 }
-L1PhaseIITreeV11p1Messenger::L1PhaseIITreeV11p1Messenger(TFile &File, string TreeName)
+L1PhaseIITreeV11Messenger::L1PhaseIITreeV11Messenger(TFile &File, string TreeName)
 {
    Tree = (TTree *)File.Get(TreeName.c_str());
 
@@ -190,11 +190,11 @@ L1PhaseIITreeV11p1Messenger::L1PhaseIITreeV11p1Messenger(TFile &File, string Tre
    SetBranchAddress();
 }
 
-L1PhaseIITreeV11p1Messenger::~L1PhaseIITreeV11p1Messenger()
+L1PhaseIITreeV11Messenger::~L1PhaseIITreeV11Messenger()
 {
 }
    
-void L1PhaseIITreeV11p1Messenger::SetBranchAddress()
+void L1PhaseIITreeV11Messenger::SetBranchAddress()
 {
    if(Tree == NULL)
       return;
@@ -202,7 +202,7 @@ void L1PhaseIITreeV11p1Messenger::SetBranchAddress()
    Tree->SetBranchAddress("L1PhaseII", &L1PhaseII);
 }
 
-bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
+bool L1PhaseIITreeV11Messenger::GetEntry(int Entry)
 {
    if(Tree == NULL)
       return false;
@@ -282,26 +282,11 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &P->tkPhotonHwQual, &P->tkPhotonHGC, &P->tkPhotonPassesLooseTrackID, &D0,
       &D0);
 
-   // StandaloneMuon: Pt2
-   vector<unsigned short int> StandaloneMuonNewQual = P->standaloneMuonQual;
-   for(int i = 0; i < P->nStandaloneMuons; i++)
-      if(P->standaloneMuonRegion[i] == 3)
-         StandaloneMuonNewQual[i] = P->standaloneMuonEMTFQual[i];
-   FillObject(StandaloneMuon, P->nStandaloneMuons,
-      &P->standaloneMuonPt, &P->standaloneMuonEta, &P->standaloneMuonPhi,
-      &P->standaloneMuonBx, &D0, &D0, &D0,
-      &StandaloneMuonNewQual, &P->standaloneMuonRegion, &D0, &P->standaloneMuonChg,
-      &D0);
-
-   // TkMuon: MuRefPt, TrkRefPt, MuRefPhi, MuRefEta, DRMuTrack, NMatchedTracks, MuRefChg
-   vector<unsigned int> TkMuonNewQual = P->tkMuonQual;
-   for(int i = 0; i < P->nTkMuons; i++)
-      if(P->tkMuonRegion[i] == 3)
-         TkMuonNewQual[i] = P->tkMuonEMTFQual[i];
+   // TkMuon: MuRefPt, TrkRefPt, MuRefPhi, MuRefEta, DRMuTrack, NMatchedTracks, MuRefChg, Iso, Fwd, Mip, RPC
    FillObject(TkMuon, P->nTkMuons,
       &P->tkMuonPt, &P->tkMuonEta, &P->tkMuonPhi,
       &P->tkMuonBx, &P->tkMuonTrkIso, &P->tkMuonzVtx, &D0,
-      &TkMuonNewQual, &P->tkMuonRegion, &D0, &P->tkMuonChg,
+      &P->tkMuonQual, &P->tkMuonRegion, &D0, &P->tkMuonChg,
       &D0);
 
    // PuppiMET
@@ -339,7 +324,7 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
    return true;
 }
    
-vector<double> L1PhaseIITreeV11p1Messenger::GetRegionFromEta(vector<double> &Eta)
+vector<double> L1PhaseIITreeV11Messenger::GetRegionFromEta(vector<double> &Eta)
 {
    vector<double> Result(Eta.size());
 

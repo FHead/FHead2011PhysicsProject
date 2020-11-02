@@ -17,7 +17,7 @@
 #include "include/L1AnalysisRecoVertexDataFormat.h"
 #include "include/L1AnalysisSimulationDataFormat.h"
 #include "include/L1AnalysisL1ExtraUpgradeDataFormat.h"
-#include "include/L1AnalysisPhaseIIDataFormatV10.h"
+#include "include/L1AnalysisPhaseIIDataFormatV11p1.h"
 
 namespace
 {
@@ -42,6 +42,7 @@ namespace
       L1Analysis::L1AnalysisRecoVertexDataFormat     DICT19;
       L1Analysis::L1AnalysisSimulationDataFormat     DICT20;
       L1Analysis::L1AnalysisL1ExtraUpgradeDataFormat DICT21;
-      L1Analysis::L1AnalysisPhaseIIDataFormat        DICT22;
+      // L1Analysis::L1AnalysisPhaseIIDataFormat        DICT22;
+      L1Analysis::L1AnalysisPhaseIIStep1DataFormat   DICT23;
    };
 };

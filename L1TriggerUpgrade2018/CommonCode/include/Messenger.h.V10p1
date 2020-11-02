@@ -1,5 +1,5 @@
-#ifndef MESSENGER_V11p1_22721
-#define MESSENGER_V11p1_22721
+#ifndef MESSENGER_V10p1_21232
+#define MESSENGER_V10p1_21232
 
 #include <iostream>
 #include <vector>
@@ -29,7 +29,7 @@ using namespace std;
 #include "L1AnalysisL1ExtraDataFormat.h"
 #include "L1AnalysisSimulationDataFormat.h"
 #include "L1AnalysisL1ExtraUpgradeDataFormat.h"
-#include "L1AnalysisPhaseIIDataFormatV11p1.h"
+#include "L1AnalysisPhaseIIDataFormatV10p1.h"
 
 class GenericObject;
 class L1NTupleMessenger;
@@ -38,7 +38,7 @@ class L1ExtraTreeMessenger;
 class L1EmulatorMessenger;
 class L1EmulatorExtraMessenger;
 class L1ExtraUpgradeTreeMessenger;
-class L1PhaseIITreeV11p1Messenger;
+class L1PhaseIITreeV10p1Messenger;
 class L1GenMessenger;
 
 class GenericObject
@@ -146,39 +146,63 @@ public:
       vector<double> *Iso, vector<double> *VZ, vector<double> *PET);
 };
 
-class L1PhaseIITreeV11p1Messenger
+class L1PhaseIITreeV10p1Messenger
 {
 public:
    TTree *Tree;
 public:
-   // L1Analysis::L1AnalysisPhaseIIDataFormat *L1PhaseII;
-   L1Analysis::L1AnalysisPhaseIIStep1DataFormat *L1PhaseII;
+   L1Analysis::L1AnalysisPhaseIIDataFormat *L1PhaseII;
 public:   // Collections from the trees
    vector<GenericObject> CaloTau;
+   vector<GenericObject> CaloJet;
    vector<GenericObject> PFPhase1Jet;
    vector<GenericObject> PFPhase1HT;
    vector<GenericObject> PFPhase1MHT;
+   vector<GenericObject> CaloJetHTDefault;
+   vector<GenericObject> CaloJetHT;
+   vector<GenericObject> CaloJetMHT;
+   vector<GenericObject> GlobalMuon;
+   vector<GenericObject> StandaloneMuon;
+   vector<GenericObject> StandaloneDisplacedMuon;
    vector<GenericObject> EG;
    vector<GenericObject> EGTrackID;
    vector<GenericObject> TkElectron;
    vector<GenericObject> TkElectronTrackID;
+   vector<GenericObject> TkElectronV2;
+   vector<GenericObject> TkElectronV2TrackID;
    vector<GenericObject> TkPhoton;
    vector<GenericObject> TkPhotonTrackID;
    vector<GenericObject> TkPhotonPVTrackID;
-   vector<GenericObject> StandaloneMuon;
+   vector<GenericObject> TkTau;
+   vector<GenericObject> CaloTkTau;
+   vector<GenericObject> TkEGTau;
+   vector<GenericObject> TrackerJet;
+   vector<GenericObject> TkCaloJet;
+   vector<GenericObject> TkGlbMuon;
    vector<GenericObject> TkMuon;
+   vector<GenericObject> TkMuonStub;
+   vector<GenericObject> TkHSCP;
+   vector<GenericObject> TrackerMET;
+   vector<GenericObject> TrackerMHT;
+   vector<GenericObject> TrackerHT;
+   vector<GenericObject> PuppiJet;
    vector<GenericObject> PuppiMET;
+   vector<GenericObject> PuppiMHT;
+   vector<GenericObject> PuppiHT;
+   vector<GenericObject> PFMuon;
+   vector<GenericObject> PFCand;
+   vector<GenericObject> PFTau;
    vector<GenericObject> NNTau;
    vector<GenericObject> NNTauLoose;
-   vector<GenericObject> NNTauPF;
-   vector<GenericObject> NNTauLoosePF;
+   vector<GenericObject> HPSTau;
+   vector<GenericObject> TkBsCand;
 public:
-   L1PhaseIITreeV11p1Messenger(TFile &File, string TreeName = "l1PhaseIITree/L1PhaseIITree");
-   ~L1PhaseIITreeV11p1Messenger();
+   L1PhaseIITreeV10p1Messenger(TFile &File, string TreeName = "l1PhaseIITree/L1PhaseIITree");
+   ~L1PhaseIITreeV10p1Messenger();
    void SetBranchAddress();
    bool GetEntry(int Entry);
    vector<double> GetRegionFromEta(vector<double> &Eta);
-   string Version() { return "V11p1"; }
+   string Version() { return "V10p1"; }
    template<class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9, class T10, class T11, class T12>
       void FillObject(vector<GenericObject> &V, int N,
       vector<T1> *ET, vector<T2> *Eta, vector<T3> *Phi,
@@ -192,20 +216,20 @@ public:
       {
          GenericObject O;
 
-         double TempET  = (ET != nullptr  && ET->size() > i)  ? (*ET)[i]  : -1;
-         double TempEta = (Eta != nullptr && Eta->size() > i) ? (*Eta)[i] : -1;
-         double TempPhi = (Phi != nullptr && Phi->size() > i) ? (*Phi)[i] : -1;
+         double TempET  = (ET != NULL  && ET->size() > i)  ? (*ET)[i]  : -1;
+         double TempEta = (Eta != NULL && Eta->size() > i) ? (*Eta)[i] : -1;
+         double TempPhi = (Phi != NULL && Phi->size() > i) ? (*Phi)[i] : -1;
 
          O.P.SetPtEtaPhi(TempET, TempEta, TempPhi);
-         O.Bx     = (Bx != nullptr     && Bx->size() > i)     ? (*Bx)[i]     : -1;
-         O.Iso    = (Iso != nullptr    && Iso->size() > i)    ? (*Iso)[i]    : -1;
-         O.VZ     = (VZ != nullptr     && VZ->size() > i)     ? (*VZ)[i]     : -1;
-         O.PET    = (PET != nullptr    && PET->size() > i)    ? (*PET)[i]    : -1;
-         O.Qual   = (Qual != nullptr   && Qual->size() > i)   ? (*Qual)[i]   : -1;
-         O.Type   = (Type != nullptr   && Type->size() > i)   ? (*Type)[i]   : -1;
-         O.Flag   = (Flag != nullptr   && Flag->size() > i)   ? (*Flag)[i]   : 1;
-         O.Charge = (Charge != nullptr && Charge->size() > i) ? (*Charge)[i] : 0;
-         O.DXY    = (DXY != nullptr    && DXY->size() > i)    ? (*DXY)[i]    : -1;
+         O.Bx     = (Bx != NULL     && Bx->size() > i)     ? (*Bx)[i]     : -1;
+         O.Iso    = (Iso != NULL    && Iso->size() > i)    ? (*Iso)[i]    : -1;
+         O.VZ     = (VZ != NULL     && VZ->size() > i)     ? (*VZ)[i]     : -1;
+         O.PET    = (PET != NULL    && PET->size() > i)    ? (*PET)[i]    : -1;
+         O.Qual   = (Qual != NULL   && Qual->size() > i)   ? (*Qual)[i]   : -1;
+         O.Type   = (Type != NULL   && Type->size() > i)   ? (*Type)[i]   : -1;
+         O.Flag   = (Flag != NULL   && Flag->size() > i)   ? (*Flag)[i]   : 1;
+         O.Charge = (Charge != NULL && Charge->size() > i) ? (*Charge)[i] : 0;
+         O.DXY    = (DXY != NULL    && DXY->size() > i)    ? (*DXY)[i]    : -1;
 
          V.push_back(O);
       }
@@ -228,7 +252,6 @@ public:
    vector<vector<int>> GenDaughter;
    vector<FourVector> GenJet;
    vector<double> GenDxy;
-   vector<double> GenLxy;
    FourVector GenMETTrue;
    FourVector GenMETCalo;
 public:

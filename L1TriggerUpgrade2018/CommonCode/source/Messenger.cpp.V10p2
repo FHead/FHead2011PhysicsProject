@@ -181,7 +181,7 @@ void L1ExtraUpgradeTreeMessenger::FillObject(vector<GenericObject> &V, int N,
       V.push_back(O);
    }
 }
-L1PhaseIITreeV11p1Messenger::L1PhaseIITreeV11p1Messenger(TFile &File, string TreeName)
+L1PhaseIITreeV10p2Messenger::L1PhaseIITreeV10p2Messenger(TFile &File, string TreeName)
 {
    Tree = (TTree *)File.Get(TreeName.c_str());
 
@@ -190,11 +190,11 @@ L1PhaseIITreeV11p1Messenger::L1PhaseIITreeV11p1Messenger(TFile &File, string Tre
    SetBranchAddress();
 }
 
-L1PhaseIITreeV11p1Messenger::~L1PhaseIITreeV11p1Messenger()
+L1PhaseIITreeV10p2Messenger::~L1PhaseIITreeV10p2Messenger()
 {
 }
    
-void L1PhaseIITreeV11p1Messenger::SetBranchAddress()
+void L1PhaseIITreeV10p2Messenger::SetBranchAddress()
 {
    if(Tree == NULL)
       return;
@@ -202,14 +202,14 @@ void L1PhaseIITreeV11p1Messenger::SetBranchAddress()
    Tree->SetBranchAddress("L1PhaseII", &L1PhaseII);
 }
 
-bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
+bool L1PhaseIITreeV10p2Messenger::GetEntry(int Entry)
 {
    if(Tree == NULL)
       return false;
 
    Tree->GetEntry(Entry);
 
-   L1Analysis::L1AnalysisPhaseIIStep1DataFormat *P = L1PhaseII;
+   L1Analysis::L1AnalysisPhaseIIDataFormat *P = L1PhaseII;
 
    vector<double> D0;
       
@@ -219,6 +219,14 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &P->caloTauEt, &P->caloTauEta, &P->caloTauPhi,
       &P->caloTauBx, &P->caloTauIso, &D0, &D0,
       &P->caloTauHwQual, &CaloTauRegion, &D0, &D0,
+      &D0);
+
+   // CaloJet
+   vector<double> CaloJetRegion = GetRegionFromEta(P->caloJetEta);
+   FillObject(CaloJet, P->nCaloJets,
+      &P->caloJetEt, &P->caloJetEta, &P->caloJetPhi,
+      &P->caloJetBx, &D0, &D0, &D0,
+      &D0, &CaloJetRegion, &D0, &D0,
       &D0);
 
    // PFPhase1Jets
@@ -241,6 +249,44 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &D0, &D0, &D0, &D0,
       &D0);
 
+   // CaloJetHT, CaloJetMHT
+   vector<double> CaloHTDefaultEt = {P->caloJetHTDefault};
+   FillObject(CaloJetHTDefault, 1,
+      &CaloHTDefaultEt, &D0, &D0,
+      &D0, &D0, &D0, &D0,
+      &D0, &D0, &D0, &D0,
+      &D0);
+   FillObject(CaloJetHT, P->nCaloJetMHT,
+      &P->caloJetHT, &D0, &D0,
+      &D0, &D0, &D0, &D0,
+      &D0, &D0, &D0, &D0,
+      &D0);
+   FillObject(CaloJetMHT, P->nCaloJetMHT,
+      &P->caloJetMHTEt, &D0, &P->caloJetMHTPhi,
+      &D0, &D0, &D0, &P->caloJetHT,
+      &D0, &D0, &D0, &D0,
+      &D0);
+
+   // GlobalMuon: EtaAtVtx, PhiAtVtx, IEt, IEta, IPhi, IEtaAtVtx, IPhiAtVtx, DEta, DPhi, TfMuonIdx
+   vector<double> GlobalMuonRegion = GetRegionFromEta(P->globalMuonEta);
+   FillObject(GlobalMuon, P->nGlobalMuons,
+      &P->globalMuonPt, &P->globalMuonEta, &P->globalMuonPhi,
+      &P->globalMuonBx, &P->globalMuonIso, &D0, &D0,
+      &P->globalMuonQual, &GlobalMuonRegion, &D0, &P->globalMuonChg,
+      &D0);
+
+   // StandaloneMuon
+   FillObject(StandaloneMuon, P->nStandaloneMuons,
+      &P->standaloneMuonPt, &P->standaloneMuonEta, &P->standaloneMuonPhi,
+      &P->standaloneMuonBx, &D0, &D0, &D0,
+      &P->standaloneMuonQual, &P->standaloneMuonRegion, &D0, &P->standaloneMuonChg,
+      &P->standaloneMuonDXY);
+   FillObject(StandaloneDisplacedMuon, P->nStandaloneMuons,
+      &P->standaloneMuonPt2, &P->standaloneMuonEta, &P->standaloneMuonPhi,
+      &P->standaloneMuonBx, &D0, &D0, &D0,
+      &P->standaloneMuonQual, &P->standaloneMuonRegion, &D0, &P->standaloneMuonChg,
+      &P->standaloneMuonDXY);
+
    // EG
    FillObject(EG, P->nEG,
       &P->EGEt, &P->EGEta, &P->EGPhi,
@@ -253,7 +299,7 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &P->EGHwQual, &P->EGHGC, &P->EGPassesLooseTrackID, &D0,
       &D0);
 
-   // TkElectron: EGRefPt, EGRefEta, EGRefPhi
+   // TkElectron, TkElectronV2: EGRefPt, EGRefEta, EGRefPhi
    FillObject(TkElectron, P->nTkElectrons,
       &P->tkElectronEt, &P->tkElectronEta, &P->tkElectronPhi,
       &P->tkElectronBx, &P->tkElectronTrkIso, &P->tkElectronzVtx, &D0,
@@ -263,6 +309,16 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &P->tkElectronEt, &P->tkElectronEta, &P->tkElectronPhi,
       &P->tkElectronBx, &P->tkElectronTrkIso, &P->tkElectronzVtx, &D0,
       &P->tkElectronHwQual, &P->tkElectronHGC, &P->tkElectronPassesLooseTrackID, &P->tkElectronChg,
+      &D0);
+   FillObject(TkElectronV2, P->nTkElectronsV2,
+      &P->tkElectronV2Et, &P->tkElectronV2Eta, &P->tkElectronV2Phi,
+      &P->tkElectronV2Bx, &P->tkElectronV2TrkIso, &P->tkElectronV2zVtx, &D0,
+      &P->tkElectronV2HwQual, &P->tkElectronV2HGC, &P->tkElectronV2PassesPhotonID, &P->tkElectronV2Chg,
+      &D0);
+   FillObject(TkElectronV2TrackID, P->nTkElectronsV2,
+      &P->tkElectronV2Et, &P->tkElectronV2Eta, &P->tkElectronV2Phi,
+      &P->tkElectronV2Bx, &P->tkElectronV2TrkIso, &P->tkElectronV2zVtx, &D0,
+      &P->tkElectronV2HwQual, &P->tkElectronV2HGC, &P->tkElectronV2PassesLooseTrackID, &P->tkElectronV2Chg,
       &D0);
 
    // TkPhoton: EGRefPt, EGRefEta, EGRefPhi
@@ -282,26 +338,102 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &P->tkPhotonHwQual, &P->tkPhotonHGC, &P->tkPhotonPassesLooseTrackID, &D0,
       &D0);
 
-   // StandaloneMuon: Pt2
-   vector<unsigned short int> StandaloneMuonNewQual = P->standaloneMuonQual;
-   for(int i = 0; i < P->nStandaloneMuons; i++)
-      if(P->standaloneMuonRegion[i] == 3)
-         StandaloneMuonNewQual[i] = P->standaloneMuonEMTFQual[i];
-   FillObject(StandaloneMuon, P->nStandaloneMuons,
-      &P->standaloneMuonPt, &P->standaloneMuonEta, &P->standaloneMuonPhi,
-      &P->standaloneMuonBx, &D0, &D0, &D0,
-      &StandaloneMuonNewQual, &P->standaloneMuonRegion, &D0, &P->standaloneMuonChg,
+   // TkTau
+   vector<double> TkTauRegion = GetRegionFromEta(P->tkTauEta);
+   FillObject(TkTau, P->nTkTau,
+      &P->tkTauEt, &P->tkTauEta, &P->tkTauPhi,
+      &P->tkTauBx, &P->tkTauTrkIso, &D0, &D0,
+      &D0, &TkTauRegion, &D0, &D0,
+      &D0);
+   
+   // CaloTkTau
+   vector<double> CaloTkTauRegion = GetRegionFromEta(P->caloTkTauEta);
+   FillObject(CaloTkTau, P->nCaloTkTau,
+      &P->caloTkTauEt, &P->caloTkTauEta, &P->caloTkTauPhi,
+      &P->caloTkTauBx, &P->caloTkTauTrkIso, &D0, &D0,
+      &D0, &CaloTkTauRegion, &D0, &D0,
+      &D0);
+   
+   // TkEGTau
+   vector<double> TkEGTauRegion = GetRegionFromEta(P->tkEGTauEta);
+   FillObject(TkEGTau, P->nTkEGTau,
+      &P->tkEGTauEt, &P->tkEGTauEta, &P->tkEGTauPhi,
+      &P->tkEGTauBx, &P->tkEGTauTrkIso, &D0, &D0,
+      &D0, &TkEGTauRegion, &D0, &D0,
+      &D0);
+   
+   // TrackerJet
+   vector<double> TrackerJetRegion = GetRegionFromEta(P->trackerJetEta);
+   FillObject(TrackerJet, P->nTrackerJets,
+      &P->trackerJetEt, &P->trackerJetEta, &P->trackerJetPhi,
+      &P->trackerJetBx, &D0, &P->trackerJetzVtx, &D0,
+      &D0, &TrackerJetRegion, &D0, &D0,
       &D0);
 
-   // TkMuon: MuRefPt, TrkRefPt, MuRefPhi, MuRefEta, DRMuTrack, NMatchedTracks, MuRefChg
-   vector<unsigned int> TkMuonNewQual = P->tkMuonQual;
-   for(int i = 0; i < P->nTkMuons; i++)
-      if(P->tkMuonRegion[i] == 3)
-         TkMuonNewQual[i] = P->tkMuonEMTFQual[i];
+   // TkCaloJet
+   vector<double> TkCaloJetRegion = GetRegionFromEta(P->tkCaloJetEta);
+   FillObject(TkCaloJet, P->nTkCaloJets,
+      &P->tkCaloJetEt, &P->tkCaloJetEta, &P->tkCaloJetPhi,
+      &P->tkCaloJetBx, &D0, &P->tkCaloJetzVtx, &D0,
+      &D0, &TkCaloJetRegion, &D0, &D0,
+      &D0);
+   
+   // TkGlbMuon: MuRefPt, TrkRefPt, MuRefPhi, MuRefEa, DRMuTrack, NMatchedTracks, Iso
+   vector<double> TkGlbMuonRegion = GetRegionFromEta(P->tkGlbMuonEta);
+   FillObject(TkGlbMuon, P->nTkGlbMuons,
+      &P->tkGlbMuonPt, &P->tkGlbMuonEta, &P->tkGlbMuonPhi,
+      &P->tkGlbMuonBx, &P->tkGlbMuonTrkIso, &P->tkGlbMuonzVtx, &D0,
+      &P->tkGlbMuonQual, &TkGlbMuonRegion, &D0, &P->tkGlbMuonChg,
+      &D0);
+
+   // TkMuon: MuRefPt, TrkRefPt, MuRefPhi, MuRefEta, DRMuTrack, NMatchedTracks, MuRefChg, Iso, Fwd, Mip, RPC, RefChg
    FillObject(TkMuon, P->nTkMuons,
       &P->tkMuonPt, &P->tkMuonEta, &P->tkMuonPhi,
       &P->tkMuonBx, &P->tkMuonTrkIso, &P->tkMuonzVtx, &D0,
-      &TkMuonNewQual, &P->tkMuonRegion, &D0, &P->tkMuonChg,
+      &P->tkMuonQual, &P->tkMuonRegion, &D0, &P->tkMuonChg,
+      &D0);
+
+   // TkMuonStub: BarrelStubs
+   FillObject(TkMuonStub, P->nTkMuonStubs,
+      &P->tkMuonStubsPt, &P->tkMuonStubsEta, &P->tkMuonStubsPhi,
+      &P->tkMuonStubsBx, &P->tkMuonStubsTrkIso, &P->tkMuonStubszVtx, &D0,
+      &P->tkMuonStubsQual, &P->tkMuonStubsRegion, &D0, &P->tkMuonStubsChg,
+      &D0);
+
+   // TkHSCP
+   FillObject(TkHSCP, P->nTkHSCPs,
+      &P->tkHSCPsPt, &P->tkHSCPsEta, &P->tkHSCPsPhi,
+      &P->tkHSCPsBx, &D0, &P->tkHSCPszVtx, &D0,
+      &D0, &D0, &D0, &P->tkHSCPsChg,
+      &D0);
+
+   // TrackerMET
+   FillObject(TrackerMET, P->nTrackerMet,
+      &P->trackerMetEt, &D0, &P->trackerMetPhi,
+      &P->trackerMetBx, &D0, &D0, &P->trackerMetSumEt,
+      &D0, &D0, &D0, &D0,
+      &D0);
+
+   // TrackerMHT
+   FillObject(TrackerMHT, P->nTrackerMHT,
+      &P->trackerMHT, &D0, &P->trackerMHTPhi,
+      &D0, &D0, &D0, &P->trackerHT,
+      &D0, &D0, &D0, &D0,
+      &D0);
+   
+   // TrackerHT
+   FillObject(TrackerHT, P->nTrackerMHT,
+      &P->trackerHT, &D0, &D0,
+      &D0, &D0, &D0, &P->trackerHT,
+      &D0, &D0, &D0, &D0,
+      &D0);
+   
+   // PuppiJet: EtUnCorr
+   vector<double> PuppiJetRegion = GetRegionFromEta(P->puppiJetEta);
+   FillObject(PuppiJet, P->nPuppiJets,
+      &P->puppiJetEt, &P->puppiJetEta, &P->puppiJetPhi,
+      &P->puppiJetBx, &D0, &P->puppiJetzVtx, &D0,
+      &D0, &PuppiJetRegion, &D0, &D0,
       &D0);
 
    // PuppiMET
@@ -311,6 +443,43 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &PuppiMETEt, &D0, &PuppiMETPhi,
       &D0, &D0, &D0, &D0,
       &D0, &D0, &D0, &D0,
+      &D0);
+
+   // PuppiMHT
+   FillObject(PuppiMHT, P->nPuppiMHT,
+      &P->puppiMHTEt, &D0, &P->puppiMHTPhi,
+      &D0, &D0, &D0, &P->puppiHT,
+      &D0, &D0, &D0, &D0,
+      &D0);
+
+   // PuppiHT
+   FillObject(PuppiHT, P->nPuppiMHT,
+      &P->puppiHT, &D0, &D0,
+      &D0, &D0, &D0, &P->puppiHT,
+      &D0, &D0, &D0, &D0,
+      &D0);
+
+   // PFMuon
+   vector<double> PFMuonRegion = GetRegionFromEta(P->pfMuonEta);
+   FillObject(PFMuon, P->nPFMuons,
+      &P->pfMuonPt, &P->pfMuonEta, &P->pfMuonPhi,
+      &D0, &D0, &P->pfMuonzVtx, &D0,
+      &D0, &PFMuonRegion, &D0, &P->pfMuonChg,
+      &D0);
+   
+   // PFCand
+   FillObject(PFCand, P->nPFCands,
+      &P->pfCandEt, &P->pfCandEta, &P->pfCandPhi,
+      &D0, &D0, &P->pfCandzVtx, &D0,
+      &D0, &P->pfCandId, &D0, &P->pfCandChg,
+      &D0);
+   
+   // PFTau: RelIsoFlag, IsoFlag, Region
+   vector<double> PFTauRegion = GetRegionFromEta(P->pfTauEta);
+   FillObject(PFTau, P->nPFTaus,
+      &P->pfTauEt, &P->pfTauEta, &P->pfTauPhi,
+      &D0, &P->pfTauChargedIso, &P->pfTauZ0, &D0,
+      &D0, &PFTauRegion, &P->pfTauPassesMediumIso, &P->pfTauChg,
       &D0);
 
    // NNTau: ChargedIso, PassLoosePF, PassTightPF, ID
@@ -325,21 +494,26 @@ bool L1PhaseIITreeV11p1Messenger::GetEntry(int Entry)
       &D0, &P->nnTauFullIso, &D0, &D0,
       &D0, &NNTauRegion, &P->nnTauPassLooseNN, &P->nnTauChg,
       &D0);
-   FillObject(NNTauPF, P->nNNTaus,
-      &P->nnTauEt, &P->nnTauEta, &P->nnTauPhi,
-      &D0, &P->nnTauFullIso, &D0, &D0,
-      &D0, &NNTauRegion, &P->nnTauPassTightPF, &P->nnTauChg,
+
+   // HPSTau: Type
+   vector<double> HPSTauRegion = GetRegionFromEta(P->hpsTauEta);
+   FillObject(HPSTau, P->nHPSTaus,
+      &P->hpsTauEt, &P->hpsTauEta, &P->hpsTauPhi,
+      &D0, &D0, &P->hpsTauZ0, &D0,
+      &D0, &HPSTauRegion, &P->hpsTauPassTightRelIso, &P->hpsTauChg,
       &D0);
-   FillObject(NNTauLoosePF, P->nNNTaus,
-      &P->nnTauEt, &P->nnTauEta, &P->nnTauPhi,
-      &D0, &P->nnTauFullIso, &D0, &D0,
-      &D0, &NNTauRegion, &P->nnTauPassLoosePF, &P->nnTauChg,
+
+   // TkBsCand: mass, phi1(pt,eta,phi,mass), phi2(pt,eta,phi,mass), phi pair(dr, dxy, dz)
+   FillObject(TkBsCand, P->nTkBsCands,
+      &P->tkBsCandPt, &P->tkBsCandEta, &P->tkBsCandPhi,
+      &D0, &D0, &D0, &D0,
+      &D0, &P->tkBsCandKind, &D0, &D0,
       &D0);
 
    return true;
 }
    
-vector<double> L1PhaseIITreeV11p1Messenger::GetRegionFromEta(vector<double> &Eta)
+vector<double> L1PhaseIITreeV10p2Messenger::GetRegionFromEta(vector<double> &Eta)
 {
    vector<double> Result(Eta.size());
 
@@ -389,7 +563,6 @@ bool L1GenMessenger::GetEntry(int Entry)
    GenParent.clear();
    GenDaughter.clear();
    GenDxy.clear();
-   GenLxy.clear();
    GenJet.clear();
    GenMETTrue = FourVector(0, 0, 0, 0);
    GenMETCalo = FourVector(0, 0, 0, 0);
@@ -407,10 +580,7 @@ bool L1GenMessenger::GetEntry(int Entry)
          GenStatus.push_back(Generator->partStat[i]);
          GenCharge.push_back(Generator->partCh[i]);
          GenParent.push_back(Generator->partParent[i]);
-         // GenDxy.push_back(Generator->partDxy[i]);
-         // GenLxy.push_back(Generator->partLxy[i]);
-         GenDxy.push_back(-1);
-         GenLxy.push_back(-1);
+         GenDxy.push_back(Generator->partDxy[i]);
          GenDaughter.push_back(vector<int>());
       }
 

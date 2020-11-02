@@ -19,6 +19,6 @@
 #pragma link C++ class L1Analysis::L1AnalysisRecoVertexDataFormat+;
 #pragma link C++ class L1Analysis::L1AnalysisSimulationDataFormat+;
 #pragma link C++ class L1Analysis::L1AnalysisL1ExtraUpgradeDataFormat+;
-#pragma link C++ class L1Analysis::L1AnalysisPhaseIIDataFormat+;
+#pragma link C++ class L1Analysis::L1AnalysisPhaseIIStep1DataFormat+;
 
 #endif

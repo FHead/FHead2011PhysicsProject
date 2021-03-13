@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
    pythia.readString("HardQCD:all = on");
    // pythia.readString("PromptPhoton:all = on");
 
-   pythia.readString("Tune:pp = 15");                      // CMS CUETP8S1-CTEQ6L1 tune
+   // pythia.readString("Tune:pp = 15");                      // CMS CUETP8S1-CTEQ6L1 tune
 
    pythia.init();
 

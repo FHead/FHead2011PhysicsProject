@@ -19,7 +19,7 @@ using namespace std;
 
 int main(int argc, char *argv[]);
 void ProcessPosterior(TFile &F, string Tag, vector<string> &Name, vector<double> &Min, vector<double> &Max, bool DoTransform);
-void ProcessQHat(TFile &F, string Tag, int N, string Setting);
+void ProcessQHat(TFile &F, string Tag, int N, string Setting, string Type = "QHat", string Suffix = "");
 vector<vector<double>> ProcessData(TFile &F, string Tag);
 void ProcessRAAPosterior(TFile &F, string Tag, vector<vector<double>> Xs,
    vector<double> XMin, vector<double> XMax, vector<double> YMin, vector<double> YMax, bool IsPrior = false);
@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
 
    ProcessPosterior(OutputFile, FileTag, Name, Min, Max, DoTransform);
    ProcessQHat(OutputFile, FileTag, Name.size(), Setting);
+   ProcessQHat(OutputFile, FileTag, Name.size(), Setting, "Prior", "Prior");
    vector<vector<double>> Xs = ProcessData(OutputFile, FileTag);
    ProcessRAAPosterior(OutputFile, FileTag, Xs, XMin, XMax, YMin, YMax, true);
    ProcessRAAPosterior(OutputFile, FileTag, Xs, XMin, XMax, YMin, YMax, false);
@@ -148,11 +149,14 @@ void ProcessPosterior(TFile &F, string Tag, vector<string> &Name, vector<double>
             HScatter[i][j]->Write();
 }
 
-void ProcessQHat(TFile &F, string Tag, int N, string Setting)
+void ProcessQHat(TFile &F, string Tag, int N, string Setting, string Type, string Suffix)
 {
    vector<vector<double>> Samples;
 
-   ifstream in("txt/" + Tag + "_MCMCSamples.txt");
+   string FileName = "txt/" + Tag + "_MCMCSamples.txt";
+   if(Type == "Prior")
+      FileName = "txt/" + Tag + "_QHatPrior.txt";
+   ifstream in(FileName);
 
    while(in)
    {
@@ -189,9 +193,10 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
          double MaxT = 0.78;
          double E = 100;
 
-         vector<double> TH90, TL90, TH68, TL68, TM;
+         vector<double> TH99, TL99, TH90, TL90, TH68, TL68, TM, TA;
 
          vector<double> QHat(Samples.size());
+         double QHatSum = 0;
 
          for(int i = 0; i < Bin; i++)
          {
@@ -216,35 +221,46 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
                }
 
                QHat[j] = Formula1(A, B, C, D, E, T);
+               QHatSum = QHatSum + QHat[j];
             }
 
             sort(QHat.begin(), QHat.end());
 
+            TH99.push_back(QHat[QHat.size()*0.0050]);
+            TL99.push_back(QHat[QHat.size()*0.9950]);
             TH90.push_back(QHat[QHat.size()*0.0500]);
             TL90.push_back(QHat[QHat.size()*0.9500]);
             TH68.push_back(QHat[QHat.size()*0.8415]);
             TL68.push_back(QHat[QHat.size()*0.1585]);
             TM.push_back(QHat[QHat.size()*0.5]);
+            TA.push_back(QHatSum / Samples.size());
          }
 
-         TGraph QHatT90, QHatT68, QHatTM;
-         QHatT90.SetName("QHatT90");
-         QHatT68.SetName("QHatT68");
-         QHatTM.SetName("QHatTMedian");
+         TGraph QHatT99, QHatT90, QHatT68, QHatTM, QHatTA;
+         QHatT99.SetName(("QHatT" + Suffix + "99").c_str());
+         QHatT90.SetName(("QHatT" + Suffix + "90").c_str());
+         QHatT68.SetName(("QHatT" + Suffix + "68").c_str());
+         QHatTM.SetName(("QHatT" + Suffix + "Median").c_str());
+         QHatTA.SetName(("QHatT" + Suffix + "Average").c_str());
 
          for(int i = 0; i < Bin; i++)
          {
             double T = MinT + (MaxT - MinT) / Bin * (i + 0.5);
+            QHatT99.SetPoint(i, T, TL99[i]);
+            QHatT99.SetPoint(2 * Bin - i - 1, T, TH99[i]);
             QHatT90.SetPoint(i, T, TL90[i]);
             QHatT90.SetPoint(2 * Bin - i - 1, T, TH90[i]);
             QHatT68.SetPoint(i, T, TL68[i]);
             QHatT68.SetPoint(2 * Bin - i - 1, T, TH68[i]);
             QHatTM.SetPoint(i, T, TM[i]);
+            QHatTA.SetPoint(i, T, TA[i]);
          }
 
+         QHatT99.Write();
          QHatT90.Write();
          QHatT68.Write();
          QHatTM.Write();
+         QHatTA.Write();
       }
 
       // p dependence at fixed T
@@ -254,9 +270,10 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
          double MaxP = 200;
          double T = 0.3;
 
-         vector<double> PH90, PL90, PH68, PL68, PM;
+         vector<double> PH99, PL99, PH90, PL90, PH68, PL68, PM, PA;
 
          vector<double> QHat(Samples.size());
+         double QHatSum = 0;
 
          for(int i = 0; i < Bin; i++)
          {
@@ -281,35 +298,46 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
                }
 
                QHat[j] = Formula1(A, B, C, D, P, T);
+               QHatSum = QHatSum + QHat[j];
             }
 
             sort(QHat.begin(), QHat.end());
 
+            PH99.push_back(QHat[QHat.size()*0.0050]);
+            PL99.push_back(QHat[QHat.size()*0.9950]);
             PH90.push_back(QHat[QHat.size()*0.0500]);
             PL90.push_back(QHat[QHat.size()*0.9500]);
             PH68.push_back(QHat[QHat.size()*0.8415]);
             PL68.push_back(QHat[QHat.size()*0.1585]);
             PM.push_back(QHat[QHat.size()*0.5]);
+            PA.push_back(QHatSum / Samples.size());
          }
 
-         TGraph QHatP90, QHatP68, QHatPM;
-         QHatP90.SetName("QHatP90");
-         QHatP68.SetName("QHatP68");
-         QHatPM.SetName("QHatPMedian");
+         TGraph QHatP99, QHatP90, QHatP68, QHatPM, QHatPA;
+         QHatP99.SetName(("QHatP" + Suffix + "99").c_str());
+         QHatP90.SetName(("QHatP" + Suffix + "90").c_str());
+         QHatP68.SetName(("QHatP" + Suffix + "68").c_str());
+         QHatPM.SetName(("QHatP" + Suffix + "Median").c_str());
+         QHatPA.SetName(("QHatP" + Suffix + "Average").c_str());
 
          for(int i = 0; i < Bin; i++)
          {
             double P = MinP + (MaxP - MinP) / Bin * (i + 0.5);
+            QHatP99.SetPoint(i, P, PL99[i]);
+            QHatP99.SetPoint(2 * Bin - i - 1, P, PH99[i]);
             QHatP90.SetPoint(i, P, PL90[i]);
             QHatP90.SetPoint(2 * Bin - i - 1, P, PH90[i]);
             QHatP68.SetPoint(i, P, PL68[i]);
             QHatP68.SetPoint(2 * Bin - i - 1, P, PH68[i]);
             QHatPM.SetPoint(i, P, PM[i]);
+            QHatPA.SetPoint(i, P, PA[i]);
          }
 
+         QHatP99.Write();
          QHatP90.Write();
          QHatP68.Write();
          QHatPM.Write();
+         QHatPA.Write();
       }
    }
    else
@@ -321,11 +349,13 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
          double MaxT = 0.78;
          double E = 100;
 
-         vector<double> TMH90, TML90, TMH68, TML68, TMM;
-         vector<double> TLH90, TLL90, TLH68, TLL68, TLM;
+         vector<double> TMH99, TML99, TMH90, TML90, TMH68, TML68, TMM, TMA;
+         vector<double> TLH99, TLL99, TLH90, TLL90, TLH68, TLL68, TLM, TLA;
 
          vector<double> QHatM(Samples.size());
          vector<double> QHatL(Samples.size());
+         double QHatMSum = 0;
+         double QHatLSum = 0;
 
          for(int i = 0; i < Bin; i++)
          {
@@ -341,53 +371,76 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
 
                QHatM[j] = Formula2(A, C, D, Q, E, T, false);
                QHatL[j] = Formula2(A, C, D, Q, E, T, true);
+
+               QHatMSum = QHatMSum + QHatM[j];
+               QHatLSum = QHatLSum + QHatL[j];
             }
 
             sort(QHatM.begin(), QHatM.end());
             sort(QHatL.begin(), QHatL.end());
 
+            TMH99.push_back(QHatM[QHatM.size()*0.0050]);
+            TML99.push_back(QHatM[QHatM.size()*0.9950]);
             TMH90.push_back(QHatM[QHatM.size()*0.0500]);
             TML90.push_back(QHatM[QHatM.size()*0.9500]);
             TMH68.push_back(QHatM[QHatM.size()*0.8415]);
             TML68.push_back(QHatM[QHatM.size()*0.1585]);
             TMM.push_back(  QHatM[QHatM.size()*0.5000]);
+            TMA.push_back(QHatMSum / Samples.size());
+            TLH99.push_back(QHatL[QHatL.size()*0.0050]);
+            TLL99.push_back(QHatL[QHatL.size()*0.9950]);
             TLH90.push_back(QHatL[QHatL.size()*0.0500]);
             TLL90.push_back(QHatL[QHatL.size()*0.9500]);
             TLH68.push_back(QHatL[QHatL.size()*0.8415]);
             TLL68.push_back(QHatL[QHatL.size()*0.1585]);
             TLM.push_back(  QHatL[QHatL.size()*0.5000]);
+            TLA.push_back(QHatLSum / Samples.size());
          }
 
-         TGraph QHatTM90, QHatTM68, QHatTMM;
-         TGraph QHatTL90, QHatTL68, QHatTLM;
-         QHatTM90.SetName("QHatTM90");
-         QHatTM68.SetName("QHatTM68");
-         QHatTMM.SetName("QHatTMMedian");
-         QHatTL90.SetName("QHatTL90");
-         QHatTL68.SetName("QHatTL68");
-         QHatTLM.SetName("QHatTLMedian");
+         TGraph QHatTM99, QHatTM90, QHatTM68, QHatTMM, QHatTMA;
+         TGraph QHatTL99, QHatTL90, QHatTL68, QHatTLM, QHatTLA;
+         QHatTM99.SetName(("QHatTM" + Suffix + "99").c_str());
+         QHatTM90.SetName(("QHatTM" + Suffix + "90").c_str());
+         QHatTM68.SetName(("QHatTM" + Suffix + "68").c_str());
+         QHatTMM .SetName(("QHatTM" + Suffix + "Median").c_str());
+         QHatTMA .SetName(("QHatTM" + Suffix + "Average").c_str());
+         QHatTL99.SetName(("QHatTL" + Suffix + "99").c_str());
+         QHatTL90.SetName(("QHatTL" + Suffix + "90").c_str());
+         QHatTL68.SetName(("QHatTL" + Suffix + "68").c_str());
+         QHatTLM .SetName(("QHatTL" + Suffix + "Median").c_str());
+         QHatTLA .SetName(("QHatTL" + Suffix + "Average").c_str());
 
          for(int i = 0; i < Bin; i++)
          {
             double T = MinT + (MaxT - MinT) / Bin * (i + 0.5);
+            QHatTM99.SetPoint(i, T, TML99[i]);
+            QHatTM99.SetPoint(2 * Bin - i - 1, T, TMH99[i]);
             QHatTM90.SetPoint(i, T, TML90[i]);
             QHatTM90.SetPoint(2 * Bin - i - 1, T, TMH90[i]);
             QHatTM68.SetPoint(i, T, TML68[i]);
             QHatTM68.SetPoint(2 * Bin - i - 1, T, TMH68[i]);
             QHatTMM.SetPoint(i, T, TMM[i]);
+            QHatTMA.SetPoint(i, T, TMA[i]);
+            QHatTL99.SetPoint(i, T, TLL99[i]);
+            QHatTL99.SetPoint(2 * Bin - i - 1, T, TLH99[i]);
             QHatTL90.SetPoint(i, T, TLL90[i]);
             QHatTL90.SetPoint(2 * Bin - i - 1, T, TLH90[i]);
             QHatTL68.SetPoint(i, T, TLL68[i]);
             QHatTL68.SetPoint(2 * Bin - i - 1, T, TLH68[i]);
             QHatTLM.SetPoint(i, T, TLM[i]);
+            QHatTLA.SetPoint(i, T, TLA[i]);
          }
 
+         QHatTM99.Write();
          QHatTM90.Write();
          QHatTM68.Write();
          QHatTMM.Write();
+         QHatTMA.Write();
+         QHatTL99.Write();
          QHatTL90.Write();
          QHatTL68.Write();
          QHatTLM.Write();
+         QHatTLA.Write();
       }
 
       // P dependence at T = 0.3 GeV
@@ -397,11 +450,13 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
          double MaxP = 200;
          double T = 0.3;
 
-         vector<double> PMH90, PML90, PMH68, PML68, PMM;
-         vector<double> PLH90, PLL90, PLH68, PLL68, PLM;
+         vector<double> PMH99, PML99, PMH90, PML90, PMH68, PML68, PMM, PMA;
+         vector<double> PLH99, PLL99, PLH90, PLL90, PLH68, PLL68, PLM, PLA;
 
          vector<double> QHatM(Samples.size());
          vector<double> QHatL(Samples.size());
+         double QHatMSum = 0;
+         double QHatLSum = 0;
 
          for(int i = 0; i < Bin; i++)
          {
@@ -417,53 +472,76 @@ void ProcessQHat(TFile &F, string Tag, int N, string Setting)
 
                QHatM[j] = Formula2(A, C, D, Q, P, T, false);
                QHatL[j] = Formula2(A, C, D, Q, P, T, true);
+
+               QHatMSum = QHatMSum + QHatM[j];
+               QHatLSum = QHatLSum + QHatL[j];
             }
 
             sort(QHatM.begin(), QHatM.end());
             sort(QHatL.begin(), QHatL.end());
 
+            PMH99.push_back(QHatM[QHatM.size()*0.0050]);
+            PML99.push_back(QHatM[QHatM.size()*0.9950]);
             PMH90.push_back(QHatM[QHatM.size()*0.0500]);
             PML90.push_back(QHatM[QHatM.size()*0.9500]);
             PMH68.push_back(QHatM[QHatM.size()*0.8415]);
             PML68.push_back(QHatM[QHatM.size()*0.1585]);
             PMM.push_back(  QHatM[QHatM.size()*0.5000]);
+            PMA.push_back(QHatMSum / Samples.size());
+            PLH99.push_back(QHatL[QHatL.size()*0.0050]);
+            PLL99.push_back(QHatL[QHatL.size()*0.9950]);
             PLH90.push_back(QHatL[QHatL.size()*0.0500]);
             PLL90.push_back(QHatL[QHatL.size()*0.9500]);
             PLH68.push_back(QHatL[QHatL.size()*0.8415]);
             PLL68.push_back(QHatL[QHatL.size()*0.1585]);
             PLM.push_back(  QHatL[QHatL.size()*0.5000]);
+            PLA.push_back(QHatMSum / Samples.size());
          }
 
-         TGraph QHatPM90, QHatPM68, QHatPMM;
-         TGraph QHatPL90, QHatPL68, QHatPLM;
-         QHatPM90.SetName("QHatPM90");
-         QHatPM68.SetName("QHatPM68");
-         QHatPMM.SetName("QHatPMMedian");
-         QHatPL90.SetName("QHatPL90");
-         QHatPL68.SetName("QHatPL68");
-         QHatPLM.SetName("QHatPLMedian");
+         TGraph QHatPM99, QHatPM90, QHatPM68, QHatPMM, QHatPMA;
+         TGraph QHatPL99, QHatPL90, QHatPL68, QHatPLM, QHatPLA;
+         QHatPM99.SetName(("QHatPM" + Suffix + "99").c_str());
+         QHatPM90.SetName(("QHatPM" + Suffix + "90").c_str());
+         QHatPM68.SetName(("QHatPM" + Suffix + "68").c_str());
+         QHatPMM .SetName(("QHatPM" + Suffix + "Median").c_str());
+         QHatPMA .SetName(("QHatPM" + Suffix + "Average").c_str());
+         QHatPL99.SetName(("QHatPL" + Suffix + "99").c_str());
+         QHatPL90.SetName(("QHatPL" + Suffix + "90").c_str());
+         QHatPL68.SetName(("QHatPL" + Suffix + "68").c_str());
+         QHatPLM .SetName(("QHatPL" + Suffix + "Median").c_str());
+         QHatPLA .SetName(("QHatPL" + Suffix + "Average").c_str());
 
          for(int i = 0; i < Bin; i++)
          {
             double P = MinP + (MaxP - MinP) / Bin * (i + 0.5);
+            QHatPM99.SetPoint(i, P, PML99[i]);
+            QHatPM99.SetPoint(2 * Bin - i - 1, P, PMH99[i]);
             QHatPM90.SetPoint(i, P, PML90[i]);
             QHatPM90.SetPoint(2 * Bin - i - 1, P, PMH90[i]);
             QHatPM68.SetPoint(i, P, PML68[i]);
             QHatPM68.SetPoint(2 * Bin - i - 1, P, PMH68[i]);
             QHatPMM.SetPoint(i, P, PMM[i]);
+            QHatPMA.SetPoint(i, P, PMA[i]);
+            QHatPL99.SetPoint(i, P, PLL99[i]);
+            QHatPL99.SetPoint(2 * Bin - i - 1, P, PLH99[i]);
             QHatPL90.SetPoint(i, P, PLL90[i]);
             QHatPL90.SetPoint(2 * Bin - i - 1, P, PLH90[i]);
             QHatPL68.SetPoint(i, P, PLL68[i]);
             QHatPL68.SetPoint(2 * Bin - i - 1, P, PLH68[i]);
             QHatPLM.SetPoint(i, P, PLM[i]);
+            QHatPLA.SetPoint(i, P, PLA[i]);
          }
 
+         QHatPM99.Write();
          QHatPM90.Write();
          QHatPM68.Write();
          QHatPMM.Write();
+         QHatPMA.Write();
+         QHatPL99.Write();
          QHatPL90.Write();
          QHatPL68.Write();
          QHatPLM.Write();
+         QHatPLA.Write();
       }
    }
 }

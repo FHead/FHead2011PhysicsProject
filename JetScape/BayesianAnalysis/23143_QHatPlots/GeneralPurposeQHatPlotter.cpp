@@ -9,6 +9,7 @@ using namespace std;
 #include "TH2D.h"
 #include "TLegend.h"
 #include "TLatex.h"
+#include "TImage.h"
 
 #include "SetStyle.h"
 #include "CustomAssert.h"
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
    vector<string> FileNames = CL.GetStringVector("files", vector<string>());
    vector<string> Graphs    = CL.GetStringVector("graphs", vector<string>());
    vector<string> Labels    = CL.GetStringVector("labels", vector<string>());
+   vector<string> Ranges    = CL.GetStringVector("ranges", vector<string>());
    vector<int> Colors       = CL.GetIntVector("colors", vector<int>({kBlue, kRed, kGreen + 3}));
    vector<int> Styles       = CL.GetIntVector("styles", vector<int>({kSolid, kDashed, kDotted}));
    vector<string> Texts     = CL.GetStringVector("texts", vector<string>());
@@ -37,6 +39,8 @@ int main(int argc, char *argv[])
 
    Assert(FileNames.size() == Graphs.size(), "Different number of files vs graphs");
 
+   if(Ranges.size() < FileNames.size())
+      Ranges.insert(Ranges.end(), FileNames.size() - Ranges.size(), "90");
    if(Colors.size() < FileNames.size())
       Colors.insert(Colors.end(), FileNames.size() - Colors.size(), 1);
    if(Styles.size() < FileNames.size())
@@ -46,7 +50,9 @@ int main(int argc, char *argv[])
 
    int N = FileNames.size();
 
-   TCanvas Canvas("Canvas", "", 600, 500);
+   double CanvasWidth = 600;
+   double CanvasHeight = 500;
+   TCanvas Canvas("Canvas", "", CanvasWidth, CanvasHeight);
    Canvas.SetTopMargin(0.1);
    Canvas.SetRightMargin(0.05);
    Canvas.SetBottomMargin(0.1);
@@ -72,8 +78,8 @@ int main(int argc, char *argv[])
    {
       TFile File(FileNames[i].c_str());
 
-      if(File.Get(Form("%s90", Graphs[i].c_str())) != nullptr)
-         G90[i] = *((TGraph *)File.Get(Form("%s90", Graphs[i].c_str())));
+      if(File.Get(Form("%s%s", Graphs[i].c_str(), Ranges[i].c_str())) != nullptr)
+         G90[i] = *((TGraph *)File.Get(Form("%s%s", Graphs[i].c_str(), Ranges[i].c_str())));
       if(File.Get(Form("%sMedian", Graphs[i].c_str())) != nullptr)
          GMedian[i] = *((TGraph *)File.Get(Form("%sMedian", Graphs[i].c_str())));
 
@@ -152,7 +158,7 @@ int main(int argc, char *argv[])
    Latex.SetTextSize(0.05);
    Latex.SetTextFont(42);
    Latex.SetTextAlign(31);
-   Latex.DrawLatex(0.95, 0.91, "#font[62]{JETSCAPE}");
+   Latex.DrawLatex(0.95, 0.91, "#font[62]{ }");
 
    Latex.SetTextAlign(22);
    for(int i = 0; i + 3 <= Texts.size(); i = i + 3)
@@ -163,6 +169,21 @@ int main(int argc, char *argv[])
 
       Latex.DrawLatex(X, Y, T.c_str());
    }
+
+   double PadLX1 = 90 / CanvasWidth;
+   double PadLX2 = 210 / CanvasWidth;
+   double PadLY1 = 350 / CanvasHeight;
+   double PadLY2 = 430 / CanvasHeight;
+
+   // TPad PadL("PadL", "", PadLX1, PadLY1, PadLX2, PadLY2);
+   // PadL.SetLeftMargin(0);
+   // PadL.SetTopMargin(0);
+   // PadL.SetRightMargin(0);
+   // PadL.SetBottomMargin(0);
+   // PadL.Draw();
+   // PadL.cd();
+   // TImage *Logo = (TImage *)TImage::Open("JetscapeLogo.jpg");
+   // Logo->Draw("");
 
    Canvas.SaveAs(OutputFileName.c_str());
 

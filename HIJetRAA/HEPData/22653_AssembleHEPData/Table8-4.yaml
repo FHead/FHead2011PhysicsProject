@@ -1,0 +1,88 @@
+independent_variables:
+- header: {name: R}
+  values:
+  - value: 0.3
+  - value: 0.4
+  - value: 0.6
+  - value: 0.8
+  - value: 1.0
+dependent_variables:
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 0-10}
+  - {name: PT, units: GEV, value: 400-500}
+  values:
+  - value: 1.038
+    errors:
+    - {label: stat, asymerror: {minus: -0.034, plus: 0.034}}
+    - {label: sys, asymerror: {minus: -0.039, plus: 0.039}}
+  - value: 1.091
+    errors:
+    - {label: stat, asymerror: {minus: -0.030, plus: 0.030}}
+    - {label: sys, asymerror: {minus: -0.042, plus: 0.042}}
+  - value: 1.148
+    errors:
+    - {label: stat, asymerror: {minus: -0.037, plus: 0.037}}
+    - {label: sys, asymerror: {minus: -0.085, plus: 0.085}}
+  - value: 1.17
+    errors:
+    - {label: stat, asymerror: {minus: -0.04, plus: 0.04}}
+    - {label: sys, asymerror: {minus: -0.15, plus: 0.15}}
+  - value: '-'
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 10-30}
+  - {name: PT, units: GEV, value: 400-500}
+  values:
+  - value: 1.003
+    errors:
+    - {label: stat, asymerror: {minus: -0.033, plus: 0.033}}
+    - {label: sys, asymerror: {minus: -0.030, plus: 0.030}}
+  - value: 0.975
+    errors:
+    - {label: stat, asymerror: {minus: -0.026, plus: 0.026}}
+    - {label: sys, asymerror: {minus: -0.046, plus: 0.046}}
+  - value: 0.992
+    errors:
+    - {label: stat, asymerror: {minus: -0.030, plus: 0.030}}
+    - {label: sys, asymerror: {minus: -0.062, plus: 0.062}}
+  - value: 1.137
+    errors:
+    - {label: stat, asymerror: {minus: -0.033, plus: 0.033}}
+    - {label: sys, asymerror: {minus: -0.096, plus: 0.096}}
+  - value: 1.10
+    errors:
+    - {label: stat, asymerror: {minus: -0.03, plus: 0.03}}
+    - {label: sys, asymerror: {minus: -0.15, plus: 0.15}}
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 30-50}
+  - {name: PT, units: GEV, value: 400-500}
+  values:
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 50-90}
+  - {name: PT, units: GEV, value: 400-500}
+  values:
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'

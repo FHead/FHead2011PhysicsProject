@@ -1,0 +1,76 @@
+independent_variables:
+- header: {name: R}
+  values:
+  - value: 0.3
+  - value: 0.4
+  - value: 0.6
+  - value: 0.8
+  - value: 1.0
+dependent_variables:
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 0-10}
+  - {name: PT, units: GEV, value: 200-250}
+  values:
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 10-30}
+  - {name: PT, units: GEV, value: 200-250}
+  values:
+  - value: 1.006
+    errors:
+    - {label: stat, asymerror: {minus: -0.004, plus: 0.004}}
+    - {label: sys, asymerror: {minus: -0.047, plus: 0.047}}
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 30-50}
+  - {name: PT, units: GEV, value: 200-250}
+  values:
+  - value: 1.003
+    errors:
+    - {label: stat, asymerror: {minus: -0.007, plus: 0.007}}
+    - {label: sys, asymerror: {minus: -0.034, plus: 0.034}}
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: '-'
+- header: {name: RAA(R) / RAA(R=0.2)}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 50-90}
+  - {name: PT, units: GEV, value: 200-250}
+  values:
+  - value: 1.009
+    errors:
+    - {label: stat, asymerror: {minus: -0.012, plus: 0.012}}
+    - {label: sys, asymerror: {minus: -0.044, plus: 0.044}}
+  - value: 0.943
+    errors:
+    - {label: stat, asymerror: {minus: -0.014, plus: 0.014}}
+    - {label: sys, asymerror: {minus: -0.039, plus: 0.039}}
+  - value: 1.022
+    errors:
+    - {label: stat, asymerror: {minus: -0.018, plus: 0.018}}
+    - {label: sys, asymerror: {minus: -0.028, plus: 0.028}}
+  - value: '-'
+  - value: '-'

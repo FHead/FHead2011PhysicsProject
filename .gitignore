@@ -1,9 +1,12 @@
 *root
 a.out
-a.out.dSYM
 *.condor
 *.o
 *.dh
 *.png
 *.pdf
 DummyFile
+Execute
+ExecutePlot
+*.dSYM/
+.DS_Store

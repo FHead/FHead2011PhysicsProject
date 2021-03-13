@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
    double GrassMean = CL.GetDouble("grassmean", 1.2);
    bool UniformGrass = CL.GetBool("uniformgrass", true);
    double Fraction = CL.GetDouble("fraction", 1.00);
+   bool ByPass = CL.GetBool("bypass", false);
 
    TFile File(Input.c_str());
    TTree *Tree = (TTree *)File.Get("tgen");
@@ -73,6 +74,11 @@ int main(int argc, char *argv[])
    double Phi[MAX];
    int PID[MAX];
    int Status[MAX];
+   int NJ;
+   double JE[MAX];
+   double JPX[MAX];
+   double JPY[MAX];
+   double JPZ[MAX];
 
    OutputTree.Branch("N", &N, "N/I");
    OutputTree.Branch("E", &E, "E[N]/D");
@@ -84,6 +90,11 @@ int main(int argc, char *argv[])
    OutputTree.Branch("Phi", &Phi, "Phi[N]/D");
    OutputTree.Branch("PID", &PID, "PID[N]/I");
    OutputTree.Branch("Status", &Status, "Status[N]/I");
+   OutputTree.Branch("NJ", &NJ, "NJ/I");
+   OutputTree.Branch("JE", &JE, "JE[NJ]/D");
+   OutputTree.Branch("JPX", &JPX, "JPX[NJ]/D");
+   OutputTree.Branch("JPY", &JPY, "JPY[NJ]/D");
+   OutputTree.Branch("JPZ", &JPZ, "JPZ[NJ]/D");
 
    int EntryCount = Tree->GetEntries() * Fraction;
    for(int iE = 0; iE < EntryCount; iE++)
@@ -114,105 +125,117 @@ int main(int argc, char *argv[])
       for(int iJ = 0; iJ < NJet; iJ++)
          Jets.emplace_back(FastJets[iJ].e(), FastJets[iJ].px(), FastJets[iJ].py(), FastJets[iJ].pz());
 
-      vector<FourVector> EnergyLostInJet(NJet);
-      for(int iP = 0; iP < nParticle; iP++)
-      {
-         if(status[iP] != 1)
-            continue;
-
-         int BestIndex = -1;
-         double BestDR = -1;
-         for(int iJ = 0; iJ < NJet; iJ++)
-         {
-            double DR = GetDR(Jets[iJ], P[iP]);
-            if(BestDR < 0 || DR < BestDR)
-            {
-               BestIndex = iJ;
-               BestDR = DR;
-            }
-         }
-
-         if(BestDR > JetR)
-            continue;
-         if(BestDR < 0)
-            continue;
-         if(Jets[BestIndex].GetPT() < MinJetPT)
-            continue;
-
-         FourVector OriginalP = P[iP];
-         double NewPT = P[iP].GetPT();
-         if(MultiplicativeSigma > 0)
-            NewPT = NewPT * min(1.0, DrawGaussian(MultiplicativeMean, MultiplicativeSigma));
-         if(SubtractiveSigma > 0)
-            NewPT = NewPT - max(0.0, DrawGaussian(SubtractiveMean, SubtractiveSigma));
-         if(NewPT <= 0)
-            NewPT = 1e-10;
-         P[iP].SetPtEtaPhi(NewPT, P[iP].GetEta(), P[iP].GetPhi());
-
-         EnergyLostInJet[BestIndex] = EnergyLostInJet[BestIndex] + (OriginalP - P[iP]);
-      }
-
+      NJ = NJet;
       for(int iJ = 0; iJ < NJet; iJ++)
       {
-         vector<FourVector> Grass;
+         JE[iJ] = Jets[iJ][0];
+         JPX[iJ] = Jets[iJ][1];
+         JPY[iJ] = Jets[iJ][2];
+         JPZ[iJ] = Jets[iJ][3];
+      }
 
-         // cout << iJ << " " << EnergyLostInJet[iJ].GetPT() << " " << Jets[iJ].GetPT() << endl;
-         // cout << " " << EnergyLostInJet[iJ].GetEta() << " " << EnergyLostInJet[iJ].GetPhi() << endl;
-         // cout << " " << Jets[iJ].GetEta() << " " << Jets[iJ].GetPhi() << endl;
-
-         double DR = GetDR(EnergyLostInJet[iJ], Jets[iJ]);
-         if(DR > M_PI / 2)   // huh?
-            continue;
-
-         FourVector CurrentJet = Jets[iJ] - EnergyLostInJet[iJ];
-
-         while(CurrentJet.GetPT() < Jets[iJ].GetPT())
+      vector<FourVector> EnergyLostInJet(NJet);
+      if(ByPass == false)
+      {
+         for(int iP = 0; iP < nParticle; iP++)
          {
-            double GrassPT = DrawMomentum(GrassMean);
-            double Eta, Phi;
-            if(UniformGrass == true)
+            if(status[iP] != 1)
+               continue;
+
+            int BestIndex = -1;
+            double BestDR = -1;
+            for(int iJ = 0; iJ < NJet; iJ++)
             {
-               double DR = sqrt(DrawRandom(0, 1)) * JetR;
-               double Angle = DrawRandom(0, 2 * M_PI);
-               double Eta = DR * cos(Angle) + Jets[iJ].GetEta();
-               double Phi = DR * sin(Angle) + Jets[iJ].GetPhi();
-            }
-            else
-            {
-               do
+               double DR = GetDR(Jets[iJ], P[iP]);
+               if(BestDR < 0 || DR < BestDR)
                {
-                  Eta = DrawGaussian(JetR * 0.5);
-                  Phi = DrawGaussian(JetR * 0.5);
-               } while(Eta * Eta + Phi * Phi > JetR * JetR);
-               Eta = Eta + Jets[iJ].GetEta();
-               Phi = Phi + Jets[iJ].GetPhi();
+                  BestIndex = iJ;
+                  BestDR = DR;
+               }
             }
 
-            FourVector NewGrass;
-            NewGrass.SetPtEtaPhiMass(GrassPT, Eta, Phi, 0.135);
+            if(BestDR > JetR)
+               continue;
+            if(BestDR < 0)
+               continue;
+            if(Jets[BestIndex].GetPT() < MinJetPT)
+               continue;
 
-            double TotalPT = (CurrentJet + NewGrass).GetPT();
+            FourVector OriginalP = P[iP];
+            double NewPT = P[iP].GetPT();
+            if(MultiplicativeSigma > 0)
+               NewPT = NewPT * min(1.0, DrawGaussian(MultiplicativeMean, MultiplicativeSigma));
+            if(SubtractiveSigma > 0)
+               NewPT = NewPT - max(0.0, DrawGaussian(SubtractiveMean, SubtractiveSigma));
+            if(NewPT <= 0)
+               NewPT = 1e-10;
+            P[iP].SetPtEtaPhi(NewPT, P[iP].GetEta(), P[iP].GetPhi());
 
-            if(TotalPT < Jets[iJ].GetPT())
-            {
-               CurrentJet = CurrentJet + NewGrass;
-               Grass.push_back(NewGrass);
-            }
-            else
-            {
-               NewGrass = NewGrass * (TotalPT - Jets[iJ].GetPT()) / (TotalPT - CurrentJet.GetPT());
-               CurrentJet = CurrentJet + NewGrass;
-               Grass.push_back(NewGrass);
-               break;
-            }
+            EnergyLostInJet[BestIndex] = EnergyLostInJet[BestIndex] + (OriginalP - P[iP]);
          }
 
-         if(iE == 0 && Jets[iJ].GetPT() > 50)
-            cout << CurrentJet << " " << Jets[iJ] << " " << Jets[iJ] - EnergyLostInJet[iJ] << endl;
+         for(int iJ = 0; iJ < NJet; iJ++)
+         {
+            vector<FourVector> Grass;
 
-         P.insert(P.end(), Grass.begin(), Grass.end());
+            // cout << iJ << " " << EnergyLostInJet[iJ].GetPT() << " " << Jets[iJ].GetPT() << endl;
+            // cout << " " << EnergyLostInJet[iJ].GetEta() << " " << EnergyLostInJet[iJ].GetPhi() << endl;
+            // cout << " " << Jets[iJ].GetEta() << " " << Jets[iJ].GetPhi() << endl;
+
+            double DR = GetDR(EnergyLostInJet[iJ], Jets[iJ]);
+            if(DR > M_PI / 2)   // huh?
+               continue;
+
+            FourVector CurrentJet = Jets[iJ] - EnergyLostInJet[iJ];
+
+            while(CurrentJet.GetPT() < Jets[iJ].GetPT())
+            {
+               double GrassPT = DrawMomentum(GrassMean);
+               double Eta, Phi;
+               if(UniformGrass == true)
+               {
+                  double DR = sqrt(DrawRandom(0, 1)) * JetR;
+                  double Angle = DrawRandom(0, 2 * M_PI);
+                  double Eta = DR * cos(Angle) + Jets[iJ].GetEta();
+                  double Phi = DR * sin(Angle) + Jets[iJ].GetPhi();
+               }
+               else
+               {
+                  do
+                  {
+                     Eta = DrawGaussian(JetR * 0.5);
+                     Phi = DrawGaussian(JetR * 0.5);
+                  } while(Eta * Eta + Phi * Phi > JetR * JetR);
+                  Eta = Eta + Jets[iJ].GetEta();
+                  Phi = Phi + Jets[iJ].GetPhi();
+               }
+
+               FourVector NewGrass;
+               NewGrass.SetPtEtaPhiMass(GrassPT, Eta, Phi, 0.135);
+
+               double TotalPT = (CurrentJet + NewGrass).GetPT();
+
+               if(TotalPT < Jets[iJ].GetPT())
+               {
+                  CurrentJet = CurrentJet + NewGrass;
+                  Grass.push_back(NewGrass);
+               }
+               else
+               {
+                  NewGrass = NewGrass * (TotalPT - Jets[iJ].GetPT()) / (TotalPT - CurrentJet.GetPT());
+                  CurrentJet = CurrentJet + NewGrass;
+                  Grass.push_back(NewGrass);
+                  break;
+               }
+            }
+
+            if(iE == 0 && Jets[iJ].GetPT() > 50)
+               cout << CurrentJet << " " << Jets[iJ] << " " << Jets[iJ] - EnergyLostInJet[iJ] << endl;
+
+            P.insert(P.end(), Grass.begin(), Grass.end());
+         }
       }
-      
+         
       N = P.size();
       for(int i = 0; i < N; i++)
       {

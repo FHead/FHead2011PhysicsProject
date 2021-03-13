@@ -2,7 +2,7 @@ default: TestRun
 
 TestRun: Execute
 	./Execute
-	cp PlotJet.pdf ~/public/html/
+	cp PlotSystematics.pdf ~/public/html/
 
 Execute: MakePlot.cpp
 	CompileRootMacro MakePlot.cpp Execute

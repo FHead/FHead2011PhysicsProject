@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
       Latex.SetTextSize(0.040);
       Latex.SetTextAlign(22);
       Latex.SetTextAngle(0);
-      Latex.DrawLatex(PadX0 + PadDX * 1.0 + PadSX * 0.5, PadY0 * 0.20, "PF Candidate #phi");
+      Latex.DrawLatex(PadX0 + PadDX * 1.0 + PadSX * 0.5, PadY0 * 0.20, "PF Candidate #phi (radian)");
 
       Latex.SetTextFont(42);
       Latex.SetTextSize(0.040);

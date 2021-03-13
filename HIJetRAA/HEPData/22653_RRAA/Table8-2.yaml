@@ -31,7 +31,7 @@ dependent_variables:
   - value: 1.021
     errors:
     - {label: stat, asymerror: {minus: -0.008, plus: 0.008}}
-    - {label: sys, asymerror: {minus: -0.044, plus: 0.044}}
+    - {label: sys, asymerror: {minus: -0.062, plus: 0.062}}
   - value: '-'
   - value: '-'
   - value: '-'
@@ -47,23 +47,23 @@ dependent_variables:
   - value: 1.003
     errors:
     - {label: stat, asymerror: {minus: -0.013, plus: 0.013}}
-    - {label: sys, asymerror: {minus: -0.031, plus: 0.031}}
-  - value: 0.976
-    errors:
-    - {label: stat, asymerror: {minus: -0.012, plus: 0.012}}
     - {label: sys, asymerror: {minus: -0.044, plus: 0.044}}
-  - value: 1.071
+  - value: 0.955
     errors:
     - {label: stat, asymerror: {minus: -0.015, plus: 0.015}}
-    - {label: sys, asymerror: {minus: -0.053, plus: 0.053}}
-  - value: 1.067
+    - {label: sys, asymerror: {minus: -0.060, plus: 0.060}}
+  - value: 1.048
     errors:
-    - {label: stat, asymerror: {minus: -0.015, plus: 0.015}}
-    - {label: sys, asymerror: {minus: -0.066, plus: 0.066}}
-  - value: 1.120
+    - {label: stat, asymerror: {minus: -0.020, plus: 0.020}}
+    - {label: sys, asymerror: {minus: -0.076, plus: 0.076}}
+  - value: 1.044
     errors:
-    - {label: stat, asymerror: {minus: -0.017, plus: 0.017}}
-    - {label: sys, asymerror: {minus: -0.063, plus: 0.063}}
+    - {label: stat, asymerror: {minus: -0.021, plus: 0.021}}
+    - {label: sys, asymerror: {minus: -0.093, plus: 0.093}}
+  - value: 1.096
+    errors:
+    - {label: stat, asymerror: {minus: -0.023, plus: 0.023}}
+    - {label: sys, asymerror: {minus: -0.082, plus: 0.082}}
 - header: {name: RAA(R) / RAA(R=0.2)}
   qualifiers:
   - {name: ABS(ETA), value: 0.0-2.0}
@@ -75,20 +75,20 @@ dependent_variables:
   - value: 0.986
     errors:
     - {label: stat, asymerror: {minus: -0.023, plus: 0.023}}
-    - {label: sys, asymerror: {minus: -0.042, plus: 0.042}}
+    - {label: sys, asymerror: {minus: -0.060, plus: 0.060}}
   - value: 0.962
     errors:
     - {label: stat, asymerror: {minus: -0.027, plus: 0.027}}
-    - {label: sys, asymerror: {minus: -0.037, plus: 0.037}}
+    - {label: sys, asymerror: {minus: -0.053, plus: 0.053}}
   - value: 1.023
     errors:
     - {label: stat, asymerror: {minus: -0.035, plus: 0.035}}
-    - {label: sys, asymerror: {minus: -0.029, plus: 0.029}}
-  - value: 1.003
+    - {label: sys, asymerror: {minus: -0.040, plus: 0.040}}
+  - value: 1.010
     errors:
-    - {label: stat, asymerror: {minus: -0.026, plus: 0.026}}
-    - {label: sys, asymerror: {minus: -0.044, plus: 0.044}}
-  - value: 1.008
+    - {label: stat, asymerror: {minus: -0.036, plus: 0.036}}
+    - {label: sys, asymerror: {minus: -0.063, plus: 0.063}}
+  - value: 1.016
     errors:
-    - {label: stat, asymerror: {minus: -0.027, plus: 0.027}}
-    - {label: sys, asymerror: {minus: -0.049, plus: 0.049}}
+    - {label: stat, asymerror: {minus: -0.039, plus: 0.039}}
+    - {label: sys, asymerror: {minus: -0.070, plus: 0.070}}

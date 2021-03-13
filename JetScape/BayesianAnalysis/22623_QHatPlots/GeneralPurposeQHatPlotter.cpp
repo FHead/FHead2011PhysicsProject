@@ -72,8 +72,10 @@ int main(int argc, char *argv[])
    {
       TFile File(FileNames[i].c_str());
 
-      G90[i] = *((TGraph *)File.Get(Form("%s90", Graphs[i].c_str())));
-      GMedian[i] = *((TGraph *)File.Get(Form("%sMedian", Graphs[i].c_str())));
+      if(File.Get(Form("%s90", Graphs[i].c_str())) != nullptr)
+         G90[i] = *((TGraph *)File.Get(Form("%s90", Graphs[i].c_str())));
+      if(File.Get(Form("%sMedian", Graphs[i].c_str())) != nullptr)
+         GMedian[i] = *((TGraph *)File.Get(Form("%sMedian", Graphs[i].c_str())));
 
       File.Close();
 
@@ -122,7 +124,12 @@ int main(int argc, char *argv[])
    Legend.SetBorderSize(0);
    Legend.SetFillStyle(0);
    for(int i = 0; i < N; i++)
-      Legend.AddEntry(&G90[i], Form("%s", Labels[i].c_str()), "fl");
+   {
+      if(G90[i].GetN() > 0)
+         Legend.AddEntry(&G90[i], Form("%s", Labels[i].c_str()), "fl");
+      else
+         Legend.AddEntry(&GMedian[i], Form("%s", Labels[i].c_str()), "l");
+   }
    if(DoJet == true)
       Legend.AddEntry(&JetPoint, "JET Collaboration", "pl");
 

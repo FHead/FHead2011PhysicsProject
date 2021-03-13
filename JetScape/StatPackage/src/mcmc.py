@@ -158,17 +158,58 @@ def mvn_loglike(y, cov):
     return -.5*np.dot(y, alpha) - np.log(L.diagonal()).sum()
 
 def mvd_loglike(y, cov):
+    """
+    Just Distance^2
+    """
     return -0.5 * np.dot(y, y)
 
 def mvc_loglike(y, cov):
+    """
+    Chi^2 without correlations
+    """
     dy = y / np.sqrt(cov.diagonal())
     return -0.5 * np.dot(dy, dy)
+
+def mcc_loglike(y, cov):
+    """
+    Chi^2 with correlations taken into account
+    Evaluates y^T C^-1 y
+    See mvn_loglike for explanation on method
+    """
+    # Compute the Cholesky decomposition of the covariance.
+    # Use bare LAPACK function to avoid scipy.linalg wrapper overhead.
+    L, info = lapack.dpotrf(cov, clean=False)
+
+    if info < 0:
+        raise ValueError(
+            'lapack dpotrf error: '
+            'the {}-th argument had an illegal value'.format(-info)
+        )
+    elif info < 0:
+        raise np.linalg.LinAlgError(
+            'lapack dpotrf error: '
+            'the leading minor of order {} is not positive definite'
+            .format(info)
+        )
+
+    # Solve for alpha = cov^-1.y using the Cholesky decomp.
+    alpha, info = lapack.dpotrs(L, y)
+
+    if info != 0:
+        raise ValueError(
+            'lapack dpotrs error: '
+            'the {}-th argument had an illegal value'.format(-info)
+        )
+
+    return np.dot(y, alpha)
 
 def loglike(y, cov, t):
     if t == 1:
         return mvd_loglike(y, cov)
     elif t == 2:
         return mvc_loglike(y, cov)
+    elif t == 3:
+        return mcc_loglike(y, cov)
     return mvn_loglike(y, cov)
 
 class LoggingEnsembleSampler(emcee.EnsembleSampler):
@@ -583,7 +624,7 @@ def main():
     )
     parser.add_argument(
         '--likelihood_type', type=int, default=0,
-        help='type of likelihood.  0 = mvn, 1 = d^2, 2 = chi^2'
+        help='type of likelihood.  0 = mvn, 1 = d^2, 2 = chi^2, 3 = chi^2 with correlated error'
     )
 
     Chain().run_mcmc(**vars(parser.parse_args()))

@@ -1,0 +1,111 @@
+independent_variables:
+- header: {name: PT, units: GEV}
+  values:
+  - {low: 200, high: 250}
+  - {low: 250, high: 300}
+  - {low: 300, high: 400}
+  - {low: 400, high: 500}
+  - {low: 500, high: 1000}
+dependent_variables:
+- header: {name: RAA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 0-10}
+  - {name: R, value: 0.6}
+  values:
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: 0.740
+    errors:
+    - {label: stat, asymerror: {minus: -0.035, plus: 0.035}}
+    - {label: sys, asymerror: {minus: -0.059, plus: 0.059}}
+    - {label: TAA, asymerror: {minus: -0.075, plus: 0.075}}
+    - {label: lumi, asymerror: {minus: -0.017, plus: 0.017}}
+  - value: 0.754
+    errors:
+    - {label: stat, asymerror: {minus: -0.069, plus: 0.069}}
+    - {label: sys, asymerror: {minus: -0.044, plus: 0.044}}
+    - {label: TAA, asymerror: {minus: -0.076, plus: 0.076}}
+    - {label: lumi, asymerror: {minus: -0.017, plus: 0.017}}
+- header: {name: RAA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 10-30}
+  - {name: R, value: 0.6}
+  values:
+  - value: '-'
+  - value: '-'
+  - value: 0.758
+    errors:
+    - {label: stat, asymerror: {minus: -0.014, plus: 0.014}}
+    - {label: sys, asymerror: {minus: -0.051, plus: 0.051}}
+    - {label: TAA, asymerror: {minus: -0.039, plus: 0.039}}
+    - {label: lumi, asymerror: {minus: -0.017, plus: 0.017}}
+  - value: 0.708
+    errors:
+    - {label: stat, asymerror: {minus: -0.035, plus: 0.035}}
+    - {label: sys, asymerror: {minus: -0.045, plus: 0.045}}
+    - {label: TAA, asymerror: {minus: -0.036, plus: 0.036}}
+    - {label: lumi, asymerror: {minus: -0.016, plus: 0.016}}
+  - value: 0.804
+    errors:
+    - {label: stat, asymerror: {minus: -0.072, plus: 0.072}}
+    - {label: sys, asymerror: {minus: -0.049, plus: 0.049}}
+    - {label: TAA, asymerror: {minus: -0.041, plus: 0.041}}
+    - {label: lumi, asymerror: {minus: -0.018, plus: 0.018}}
+- header: {name: RAA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 30-50}
+  - {name: R, value: 0.6}
+  values:
+  - value: '-'
+  - value: 0.851
+    errors:
+    - {label: stat, asymerror: {minus: -0.016, plus: 0.016}}
+    - {label: sys, asymerror: {minus: -0.045, plus: 0.045}}
+    - {label: TAA, asymerror: {minus: -0.022, plus: 0.022}}
+    - {label: lumi, asymerror: {minus: -0.020, plus: 0.020}}
+  - value: 0.854
+    errors:
+    - {label: stat, asymerror: {minus: -0.024, plus: 0.024}}
+    - {label: sys, asymerror: {minus: -0.022, plus: 0.022}}
+    - {label: TAA, asymerror: {minus: -0.022, plus: 0.022}}
+    - {label: lumi, asymerror: {minus: -0.020, plus: 0.020}}
+  - value: '-'
+  - value: '-'
+- header: {name: RAA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 50-80}
+  - {name: R, value: 0.6}
+  values:
+  - value: 0.869
+    errors:
+    - {label: stat, asymerror: {minus: -0.016, plus: 0.016}}
+    - {label: sys, asymerror: {minus: -0.025, plus: 0.025}}
+    - {label: TAA, asymerror: {minus: -0.016, plus: 0.016}}
+    - {label: lumi, asymerror: {minus: -0.020, plus: 0.020}}
+  - value: 0.863
+    errors:
+    - {label: stat, asymerror: {minus: -0.030, plus: 0.030}}
+    - {label: sys, asymerror: {minus: -0.024, plus: 0.024}}
+    - {label: TAA, asymerror: {minus: -0.016, plus: 0.016}}
+    - {label: lumi, asymerror: {minus: -0.020, plus: 0.020}}
+  - value: 0.864
+    errors:
+    - {label: stat, asymerror: {minus: -0.045, plus: 0.045}}
+    - {label: sys, asymerror: {minus: -0.024, plus: 0.024}}
+    - {label: TAA, asymerror: {minus: -0.016, plus: 0.016}}
+    - {label: lumi, asymerror: {minus: -0.020, plus: 0.020}}
+  - value: '-'
+  - value: '-'

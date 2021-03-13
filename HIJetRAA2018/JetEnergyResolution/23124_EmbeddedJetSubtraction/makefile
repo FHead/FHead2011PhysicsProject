@@ -9,6 +9,7 @@ Run: Execute
 	./Execute --input HiForestAOD.root
 
 Execute: DoJetSubtraction.cpp
-	CompileRootMacro DoJetSubtraction.cpp Execute -I../../CommonCode/include ../../CommonCode/library/* \
+	CompileRootMacro DoJetSubtraction.cpp Execute \
+		-I../../CommonCode/include -I../../CommonCode ../../CommonCode/library/* \
 		`$(FastJetConfig) --cxxflags --libs` -L$(FJCONTRIB)/lib -I$(FJCONTRIB)/include -lConstituentSubtractor
 

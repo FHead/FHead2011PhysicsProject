@@ -12,6 +12,7 @@ using namespace fastjet;
 #include "CommandLine.h"
 #include "Code/TauHelperFunctions3.h"
 
+#include "JetProducer.h"
 #include "RhoCalculator.h"
 #include "Messenger.h"
 
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
    double CSR = CL.GetDouble("CSR", -1.0);
    double CSAlpha = CL.GetDouble("CSAlpha", 2.0);
    double MinProbability = CL.GetDouble("MinProbability", 0);
-   double MaxProbability = CL.GetDouble("MaxProbability", 1);
+   double MaxProbability = CL.GetDouble("MaxProbability", 0);
 
    TFile File(InputFileName.c_str());
 
@@ -39,6 +40,14 @@ int main(int argc, char *argv[])
 
    if(MHiEvent.Tree == nullptr)
       return -1;
+
+   JetProducer Producer;
+   Producer.SetJetR(R);
+   Producer.SetMinJetPT(JetMinPT);
+   Producer.SetCSR(CSR);
+   Producer.SetCSAlpha(CSAlpha);
+   Producer.SetMinProbability(MinProbability);
+   Producer.SetMaxProbability(MaxProbability);
 
    int EntryCount = MHiEvent.Tree->GetEntries();
    for(int iE = 0; iE < EntryCount; iE++)
@@ -55,7 +64,6 @@ int main(int argc, char *argv[])
             cout << " " << GenJets[iJ].GetPT() << " " << GenJets[iJ].GetEta() << " " << GenJets[iJ].GetPhi() << endl;
       cout << endl;
 
-      vector<PseudoJet> FJPF;
       vector<FourVector> PF;
       vector<FourVector> PFID1;
       for(int iPF = 0; iPF < (int)MPF.ID->size(); iPF++)
@@ -63,61 +71,13 @@ int main(int argc, char *argv[])
          FourVector P;
          P.SetPtEtaPhi((*MPF.PT)[iPF], (*MPF.Eta)[iPF], (*MPF.Phi)[iPF]);
          P[0] = (*MPF.E)[iPF];
-         FJPF.emplace_back(P[1], P[2], P[3], P[0]);
 
          PF.emplace_back(P);
          if((*MPF.ID)[iPF] == 1)
             PFID1.emplace_back(P);
       }
-      JetDefinition Definition(antikt_algorithm, R);
-      GhostedAreaSpec GhostArea(6.5, 1, 0.005);
-      AreaDefinition AreaDefinition(active_area_explicit_ghosts, GhostArea);
-      ClusterSequenceArea Sequence(FJPF, Definition, AreaDefinition);
-      vector<PseudoJet> TempJets = Sequence.inclusive_jets(JetMinPT);
 
-      RhoCalculator CRho;
-      RhoModulationCalculator CPhi;
-
-      CRho.CalculateRho(PF);
-      vector<double> PPhi = CPhi.DoRhoModulationFit(PFID1);
-
-      vector<FourVector> Jets;
-
-      for(int iJ = 0; iJ < TempJets.size(); iJ++)
-      {
-         vector<PseudoJet> Particle, Ghost;
-         SelectorIsPureGhost().sift(TempJets[iJ].constituents(), Ghost, Particle);
-         if(Particle.size() == 0)
-            continue;
-
-         double FitProbability = ROOT::Math::chisquared_cdf_c(PPhi[5], PPhi[6]);
-         // cout << FitProbability << endl;
-         
-         for(PseudoJet &G : Ghost)
-         {
-            double Modulation = 1;
-            if(FitProbability > MinProbability && FitProbability < MaxProbability)
-               Modulation = CPhi.GetModulation(G.phi());
-
-            double PT = CRho.GetRho(G.eta()) * G.area() * Modulation;
-            G.reset_momentum_PtYPhiM(PT, G.rap(), G.phi(), 0);
-         }
-
-         contrib::ConstituentSubtractor Subtractor;
-         Subtractor.set_distance_type(contrib::ConstituentSubtractor::deltaR);
-         Subtractor.set_max_distance(CSR);
-         Subtractor.set_alpha(CSAlpha);
-         Subtractor.set_do_mass_subtraction(true);
-         Subtractor.set_remove_all_zero_pt_particles(true);
-
-         PseudoJet Subtracted = join(Subtractor.do_subtraction(Particle, Ghost));
-         if(Subtracted.perp() > 0)
-         {
-            FourVector J;
-            J.SetPtEtaPhiMass(Subtracted.perp(), Subtracted.eta(), Subtracted.phi(), Subtracted.m());
-            Jets.emplace_back(J);
-         }
-      }
+      vector<FourVector> Jets = Producer.ClusterJets(PF, PFID1);
 
       cout << iE << " RecoJet " << Jets.size() << endl;
       for(int iJ = 0; iJ < (int)Jets.size(); iJ++)

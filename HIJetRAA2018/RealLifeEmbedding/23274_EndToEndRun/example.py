@@ -1,0 +1,1 @@
+/cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_3_5/src/GeneratorInterface/Pythia6Interface/test/Py6HadFilter_cfg.py

@@ -1,0 +1,134 @@
+independent_variables:
+- header: {name: PT, units: GEV}
+  values:
+  - {low: 200, high: 250}
+  - {low: 250, high: 300}
+  - {low: 300, high: 400}
+  - {low: 400, high: 500}
+  - {low: 500, high: 1000}
+dependent_variables:
+- header: {name: d^2 sigma / d PT d ETA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: PB PB --> JET X}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 0-10}
+  - {name: R, value: 0.4}
+  values:
+  - value: '-'
+  - value: '-'
+  - value: '-'
+  - value: 0.000325
+    errors:
+    - {label: stat, asymerror: {minus: -0.000011, plus: 0.000011}}
+    - {label: sys, asymerror: {minus: -0.000026, plus: 0.000026}}
+    - {label: global, asymerror: {minus: -0.000033, plus: 0.000033}}
+  - value: 0.0000184
+    errors:
+    - {label: stat, asymerror: {minus: -0.0000012, plus: 0.0000012}}
+    - {label: sys, asymerror: {minus: -0.0000019, plus: 0.0000019}}
+    - {label: global, asymerror: {minus: -0.0000019, plus: 0.0000019}}
+- header: {name: d^2 sigma / d PT d ETA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: PB PB --> JET X}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 10-30}
+  - {name: R, value: 0.4}
+  values:
+  - value: '-'
+  - value: '-'
+  - value: 0.00221
+    errors:
+    - {label: stat, asymerror: {minus: -0.00003, plus: 0.00003}}
+    - {label: sys, asymerror: {minus: -0.00026, plus: 0.00026}}
+    - {label: global, asymerror: {minus: -0.00011, plus: 0.00011}}
+  - value: 0.000321
+    errors:
+    - {label: stat, asymerror: {minus: -0.000011, plus: 0.000011}}
+    - {label: sys, asymerror: {minus: -0.000037, plus: 0.000037}}
+    - {label: global, asymerror: {minus: -0.000016, plus: 0.000016}}
+  - value: 0.0000205
+    errors:
+    - {label: stat, asymerror: {minus: -0.0000013, plus: 0.0000013}}
+    - {label: sys, asymerror: {minus: -0.0000023, plus: 0.0000023}}
+    - {label: global, asymerror: {minus: -0.0000010, plus: 0.0000010}}
+- header: {name: d^2 sigma / d PT d ETA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: PB PB --> JET X}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 30-50}
+  - {name: R, value: 0.4}
+  values:
+  - value: '-'
+  - value: 0.0111
+    errors:
+    - {label: stat, asymerror: {minus: -0.0002, plus: 0.0002}}
+    - {label: sys, asymerror: {minus: -0.0012, plus: 0.0012}}
+    - {label: global, asymerror: {minus: -0.0003, plus: 0.0003}}
+  - value: 0.00264
+    errors:
+    - {label: stat, asymerror: {minus: -0.00006, plus: 0.00006}}
+    - {label: sys, asymerror: {minus: -0.00032, plus: 0.00032}}
+    - {label: global, asymerror: {minus: -0.00007, plus: 0.00007}}
+  - value: '-'
+  - value: '-'
+- header: {name: d^2 sigma / d PT d ETA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: PB PB --> JET X}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: 50-90}
+  - {name: R, value: 0.4}
+  values:
+  - value: 0.0424
+    errors:
+    - {label: stat, asymerror: {minus: -0.0006, plus: 0.0006}}
+    - {label: sys, asymerror: {minus: -0.0052, plus: 0.0052}}
+    - {label: global, asymerror: {minus: -0.0008, plus: 0.0008}}
+  - value: 0.0116
+    errors:
+    - {label: stat, asymerror: {minus: -0.0003, plus: 0.0003}}
+    - {label: sys, asymerror: {minus: -0.0015, plus: 0.0015}}
+    - {label: global, asymerror: {minus: -0.0002, plus: 0.0002}}
+  - value: 0.00258
+    errors:
+    - {label: stat, asymerror: {minus: -0.00010, plus: 0.00010}}
+    - {label: sys, asymerror: {minus: -0.00036, plus: 0.00036}}
+    - {label: global, asymerror: {minus: -0.00005, plus: 0.00005}}
+  - value: '-'
+  - value: '-'
+- header: {name: d^2 sigma / d PT d ETA}
+  qualifiers:
+  - {name: ABS(ETA), value: 0.0-2.0}
+  - {name: RE, value: P P --> JET X}
+  - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
+  - {name: CENTRALITY, units: pct, value: Inclusive}
+  - {name: R, value: 0.4}
+  values:
+  - value: 0.0529
+    errors:
+    - {label: stat, asymerror: {minus: -0.0001, plus: 0.0001}}
+    - {label: sys, asymerror: {minus: -0.0053, plus: 0.0053}}
+    - {label: global, asymerror: {minus: -0.0012, plus: 0.0012}}
+  - value: 0.0143
+    errors:
+    - {label: stat, asymerror: {minus: -0.0001, plus: 0.0001}}
+    - {label: sys, asymerror: {minus: -0.0015, plus: 0.0015}}
+    - {label: global, asymerror: {minus: -0.0003, plus: 0.0003}}
+  - value: 0.00313
+    errors:
+    - {label: stat, asymerror: {minus: -0.00002, plus: 0.00002}}
+    - {label: sys, asymerror: {minus: -0.00036, plus: 0.00036}}
+    - {label: global, asymerror: {minus: -0.00007, plus: 0.00007}}
+  - value: 0.000461
+    errors:
+    - {label: stat, asymerror: {minus: -0.000006, plus: 0.000006}}
+    - {label: sys, asymerror: {minus: -0.000059, plus: 0.000059}}
+    - {label: global, asymerror: {minus: -0.000011, plus: 0.000011}}
+  - value: 0.0000248
+    errors:
+    - {label: stat, asymerror: {minus: -0.0000007, plus: 0.0000007}}
+    - {label: sys, asymerror: {minus: -0.0000033, plus: 0.0000033}}
+    - {label: global, asymerror: {minus: -0.0000006, plus: 0.0000006}}

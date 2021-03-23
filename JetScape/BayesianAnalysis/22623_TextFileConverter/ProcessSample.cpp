@@ -554,10 +554,15 @@ void ProcessRAAPosterior(TFile &F, string Tag, vector<vector<double>> Xs,
    F.cd();
 
    int N = Xs.size();
+   vector<double> XBinSize(N);
+   vector<double> YBinSize(N);
    for(int i = 0; i < N; i++)
    {
+      int NBin = 300;
       string Name = Form("HRAA%s%d", (IsPrior ? "Prior" : "Posterior"), i);
-      H.push_back(new TH2D(Name.c_str(), ";p_{T};R_{AA}", 500, XMin[i], XMax[i], 500, YMin[i], YMax[i]));
+      H.push_back(new TH2D(Name.c_str(), ";p_{T};R_{AA}", NBin, XMin[i], XMax[i], NBin, YMin[i], YMax[i]));
+      XBinSize[i] = (XMax[i] - XMin[i]) / NBin;
+      YBinSize[i] = (YMax[i] - YMin[i]) / NBin;
    }
 
    string FileName = "txt/" + Tag + (IsPrior ? "_Prior" : "_Posterior");
@@ -606,7 +611,15 @@ void ProcessRAAPosterior(TFile &F, string Tag, vector<vector<double>> Xs,
          {
             double X = H[i]->GetXaxis()->GetBinCenter(j);
             double Y = L.Eval(X);
-            H[i]->Fill(X, Y);
+            H[i]->Fill(X,               Y,               0.90 * 0.90);
+            H[i]->Fill(X,               Y - YBinSize[i], 0.05 * 0.90);
+            H[i]->Fill(X,               Y + YBinSize[i], 0.05 * 0.90);
+            H[i]->Fill(X - XBinSize[i], Y,               0.90 * 0.05);
+            H[i]->Fill(X - XBinSize[i], Y - YBinSize[i], 0.05 * 0.05);
+            H[i]->Fill(X - XBinSize[i], Y + YBinSize[i], 0.05 * 0.05);
+            H[i]->Fill(X + XBinSize[i], Y,               0.90 * 0.05);
+            H[i]->Fill(X + XBinSize[i], Y - YBinSize[i], 0.05 * 0.05);
+            H[i]->Fill(X + XBinSize[i], Y + YBinSize[i], 0.05 * 0.05);
          }
 
          Count = Count + 1;

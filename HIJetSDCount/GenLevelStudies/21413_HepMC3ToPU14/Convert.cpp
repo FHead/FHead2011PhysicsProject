@@ -85,15 +85,19 @@ int main(int argc, char *argv[])
 
    if(argc != 3)
    {
-      cerr << "Usage: " << argv[0] << " InputFile.hepmc OutputFile.pu14" << endl;
+      cerr << "Usage: " << argv[0] << " InputFile.hepmc OutputBase" << endl;
       return -1;
    }
 
    InputFile = argv[1];
    OutputFile = argv[2];
 
+   int Split = 2000;
+   int Index = 0;
+   int CurrentCount = 0;
+
    ifstream in(InputFile.c_str());
-   ofstream out(OutputFile.c_str());
+   ofstream out(Form("%s_%d.pu14", OutputFile.c_str(), Index));
    
    bool BeforeFirstEvent = true;
    Event E;
@@ -119,7 +123,18 @@ int main(int argc, char *argv[])
       if(Type == "E")
       {
          if(BeforeFirstEvent == false)
+         {
             E.WriteEvent(out);
+            CurrentCount = CurrentCount + 1;
+
+            if(CurrentCount >= Split)
+            {
+               CurrentCount = 0;
+               Index = Index + 1;
+               out.close();
+               out.open(Form("%s_%d.pu14", OutputFile.c_str(), Index));
+            }
+         }
          BeforeFirstEvent = false;
          E.Clean();
          PCount = 0;

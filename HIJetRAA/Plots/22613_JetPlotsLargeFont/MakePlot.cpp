@@ -42,15 +42,17 @@ int main(int argc, char *argv[])
    int Color[6] = {-1, -1, -1, -1, -1, -1};
    Color[0] = TColor::GetColor("#E74C3C");
    Color[1] = TColor::GetColor("#3498DB");
-   Color[2] = TColor::GetColor("#F1C40F");
-   Color[3] = TColor::GetColor("#2ECC71");
+   // Color[2] = TColor::GetColor("#F1C40F");
+   // Color[3] = TColor::GetColor("#2ECC71");
+   Color[2] = TColor::GetColor("#D1A40A");
+   Color[3] = TColor::GetColor("#1EAC61");
    Color[4] = TColor::GetColor("#7F7F7F");
    Color[5] = kMagenta;
 
    CommandLine CL(argc, argv);
 
    // Preamble: sizing
-   int PanelSize = 500;
+   int PanelSize = 400;
    int PaddingWidthL = 100;
    int PaddingWidthR = 50;
    int PaddingHeight = 100;
@@ -67,7 +69,7 @@ int main(int argc, char *argv[])
    double YMin1 = 0.851;
    double YMax1 = 1.149;
    double YMin2 = 0.00;
-   double YMax2 = 0.49;
+   double YMax2 = 0.59;
 
    string File = "RAA_Smooth.root";
 
@@ -108,49 +110,49 @@ int main(int argc, char *argv[])
    Latex.SetNDC();
 
    Latex.SetTextFont(42);
-   Latex.SetTextSize(0.030);
+   Latex.SetTextSize(0.045);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.25, "Generated p_{T}^{jet} (GeV)");
+   Latex.DrawLatex(PadX0 + PadDX * 1.0, PadY0 * 0.30, "Generated p_{T}^{jet} (GeV)");
 
    Latex.SetTextFont(42);
-   Latex.SetTextSize(0.030);
+   Latex.SetTextSize(0.045);
    Latex.SetTextAlign(22);
    Latex.SetTextAngle(90);
    Latex.DrawLatex(PadX0 * 0.20, PadY0 + PadDY * 0.5, "#sigma/#mu");
    Latex.DrawLatex(PadX0 * 0.20, PadY0 + PadDY * 1.5, "#mu");
 
    Latex.SetTextFont(62);
-   Latex.SetTextSize(0.035);
+   Latex.SetTextSize(0.050);
    Latex.SetTextAlign(11);
    Latex.SetTextAngle(0);
-   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #scale[0.8]{#font[52]{Simulation Preliminary}}");
+   Latex.DrawLatex(PadX0, PadY0 + PadDY * 2 + PadY0 * 0.15, "CMS #scale[0.8]{#font[52]{Simulation}}");
 
    Latex.SetTextFont(42);
-   Latex.SetTextSize(0.030);
+   Latex.SetTextSize(0.045);
    Latex.SetTextAlign(31);
    Latex.SetTextAngle(0);
    Latex.DrawLatex(PadX0 + PadDX * 2, PadY0 + PadDY * 2 + PadY0 * 0.15, "#sqrt{s_{NN}} = 5.02 TeV");
 
-   double PTX = 0.120;
-   double PTY = 0.045;
+   double PTX = 0.160;
+   double PTY = 0.050;
    TPaveText PT4(PadX0 + PadDX * 0.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 0.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
    TPaveText PT8(PadX0 + PadDX * 1.5 - PTX * 0.5, PadY0 + PadDY * 1 - PTY * 0.5, PadX0 + PadDX * 1.5 + PTX * 0.5, PadY0 + PadDY * 1 + PTY * 0.5);
 
-   PT4.AddText("R = 0.4");
-   PT8.AddText("R = 0.8");
+   PT4.AddText("R = 0.2");
+   PT8.AddText("R = 1.0");
 
    PT4.SetFillColor(kWhite);
    PT4.SetBorderSize(1);
    PT4.SetTextFont(42);
-   PT4.SetTextSize(0.035);
+   PT4.SetTextSize(0.045);
    PT8.SetFillColor(kWhite);
    PT8.SetBorderSize(1);
    PT8.SetTextFont(42);
-   PT8.SetTextSize(0.035);
+   PT8.SetTextSize(0.045);
 
-   TFile F4("AK4.root");
-   TFile F8("AK8.root");
+   TFile F4("AK2.root");
+   TFile F8("AK10.root");
 
    TH1F *HMuR4C0 = (TH1F *)F4.Get("Mu_Cent0to10");
    TH1F *HMuR4C1 = (TH1F *)F4.Get("Mu_Cent10to30");
@@ -201,9 +203,9 @@ int main(int argc, char *argv[])
    GLine.SetPoint(3, XMin, 1 - 0.02);
    GLine.SetLineStyle(kDashed);
 
-   TLegend Legend(0.5, 0.35, 0.9, 0.8);
+   TLegend Legend(0.40, 0.25, 0.9, 0.77);
    Legend.SetTextFont(42);
-   Legend.SetTextSize(0.07);
+   Legend.SetTextSize(0.09);
    Legend.SetFillStyle(0);
    Legend.SetBorderSize(0);
    Legend.AddEntry(HMuR4C0, "0-10%", "pl");
@@ -212,11 +214,18 @@ int main(int argc, char *argv[])
    Legend.AddEntry(HMuR4C3, "50-70%", "pl");
    Legend.AddEntry(HMuR4C4, "70-100%", "pl");
 
-   Latex.SetTextFont(42);
-   Latex.SetTextSize(0.07);
-   Latex.SetTextAlign(31);
-   Latex.SetTextAngle(0);
+   Latex.SetTextSize(0.04);
+   Latex.SetTextAlign(22);
+
+   double X500 = (log(500) - log(XMin)) / (log(XMax) - log(XMin)) * PadDX + PadX0;
+   double Y500 = PadY0 - 0.024;
+   Latex.DrawLatex(X500, Y500, "500");
+   Latex.DrawLatex(X500 + PadDX, Y500, "500");
    
+   Latex.SetTextFont(42);
+   Latex.SetTextSize(0.10);
+   Latex.SetTextAngle(0);
+
    P1.cd();
    HWorld1.Draw("axis");
    GLine.Draw("l");
@@ -226,8 +235,8 @@ int main(int argc, char *argv[])
    HMuR4C3->Draw("same");
    HMuR4C4->Draw("same");
    Latex.SetTextAlign(11);
-   Latex.DrawLatex(0.08, 0.8, "anti-k_{T}, |#eta_{jet}| < 2");
-   Latex.DrawLatex(0.08, 0.9, "Pythia8+Hydjet");
+   Latex.DrawLatex(0.08, 0.76, "anti-k_{T}, |#eta_{jet}| < 2");
+   Latex.DrawLatex(0.08, 0.88, "Pythia8+Hydjet");
    P2.cd();
    HWorld1.Draw("axis");
    GLine.Draw("l");
@@ -244,7 +253,7 @@ int main(int argc, char *argv[])
    HSigmaMuR4C3->Draw("same");
    HSigmaMuR4C4->Draw("same");
    Latex.SetTextAlign(11);
-   Latex.DrawLatex(0.55, 0.83, "Centrality");
+   Latex.DrawLatex(0.50, 0.81, "Centrality");
    Legend.Draw();
    P4.cd();
    HWorld2.Draw("axis");
@@ -286,7 +295,7 @@ void SetPad(TPad &P)
 void SetAxis(TGaxis &A)
 {
    A.SetLabelFont(42);
-   A.SetLabelSize(0.030);
+   A.SetLabelSize(0.040);
    A.SetMaxDigits(6);
    A.SetMoreLogLabels();
    A.SetNoExponent();

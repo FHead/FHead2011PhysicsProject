@@ -86,7 +86,7 @@ dependent_variables:
   - {name: ABS(ETA), value: 0.0-2.0}
   - {name: RE, value: 'PB PB --> JET X, P P --> JET X'}
   - {name: SQRT(S)/NUCLEON, units: GeV, value: '5020'}
-  - {name: CENTRALITY, units: pct, value: 50-80}
+  - {name: CENTRALITY, units: pct, value: 50-90}
   - {name: R, value: 0.6}
   values:
   - value: 0.869

@@ -19,7 +19,8 @@ using namespace fastjet;
 #define MAX 100000
 
 int main(int argc, char *argv[]);
-void LoopFile(string FileName, map<string, TH1D *> &H);
+void LoopFile(string FileName, map<string, TH1D *> &H,
+   bool OriginalJet = false, bool WTA = false, bool NoGrass = false);
 void ComparePlot(PdfFileHelper &PdfFile, map<string, TH1D *> &H1, map<string, TH1D *> &H2, string Label);
 double GetBinWidth(TH1D *H);
 
@@ -32,12 +33,15 @@ int main(int argc, char *argv[])
    string InputPythia = CL.Get("pythia");
    string InputMorphed = CL.Get("morphed");
    string Output = CL.Get("output");
+   bool OriginalJet = CL.GetBool("originaljet", false);
+   bool WTA = CL.GetBool("wta", false);
+   bool NoGrass = CL.GetBool("nograss", false);
 
    map<string, TH1D *> HPythia;
    map<string, TH1D *> HMorphed;
 
-   LoopFile(InputPythia, HPythia);
-   LoopFile(InputMorphed, HMorphed);
+   LoopFile(InputPythia, HPythia, OriginalJet, WTA, NoGrass);
+   LoopFile(InputMorphed, HMorphed, OriginalJet, WTA, NoGrass);
 
    PdfFileHelper PdfFile(Output);
    PdfFile.AddTextPage("Validation");
@@ -46,6 +50,8 @@ int main(int argc, char *argv[])
    ComparePlot(PdfFile, HPythia, HMorphed, "JetXi");
    ComparePlot(PdfFile, HPythia, HMorphed, "JetRho07");
    ComparePlot(PdfFile, HPythia, HMorphed, "JetRho10");
+   ComparePlot(PdfFile, HPythia, HMorphed, "JetRho10Grass");
+   ComparePlot(PdfFile, HPythia, HMorphed, "JetRho10NoGrass");
    ComparePlot(PdfFile, HPythia, HMorphed, "JetRho20");
    ComparePlot(PdfFile, HPythia, HMorphed, "JetRho40");
 
@@ -55,7 +61,7 @@ int main(int argc, char *argv[])
    return 0;
 }
 
-void LoopFile(string FileName, map<string, TH1D *> &H)
+void LoopFile(string FileName, map<string, TH1D *> &H, bool OriginalJet, bool WTA, bool NoGrass)
 {
    static int index = 0;
    index = index + 1;
@@ -71,6 +77,8 @@ void LoopFile(string FileName, map<string, TH1D *> &H)
    H["JetXi"] = new TH1D(Form("HJetXi_%d", index), ";#xi;", 20, 0, 5);
    H["JetRho07"] = new TH1D(Form("HJetRho07_%d", index), ";r;#rho(r)_{p_{T} > 0.7}", 20, 0, 0.4);
    H["JetRho10"] = new TH1D(Form("HJetRho10_%d", index), ";r;#rho(r)_{p_{T} > 1.0}", 20, 0, 0.4);
+   H["JetRho10Grass"] = new TH1D(Form("HJetRho10Grass_%d", index), ";r;#rho(r)_{p_{T} > 1.0}", 20, 0, 0.4);
+   H["JetRho10NoGrass"] = new TH1D(Form("HJetRho10NoGrass_%d", index), ";r;#rho(r)_{p_{T} > 1.0}", 20, 0, 0.4);
    H["JetRho20"] = new TH1D(Form("HJetRho20_%d", index), ";r;#rho(r)_{p_{T} > 2.0}", 20, 0, 0.4);
    H["JetRho40"] = new TH1D(Form("HJetRho40_%d", index), ";r;#rho(r)_{p_{T} > 4.0}", 20, 0, 0.4);
 
@@ -83,6 +91,8 @@ void LoopFile(string FileName, map<string, TH1D *> &H)
    int N;
    double E[MAX], PX[MAX], PY[MAX], PZ[MAX];
    int PID[MAX], Status[MAX];
+   int NJ;
+   double JE[MAX], JPX[MAX], JPY[MAX], JPZ[MAX];
 
    Tree->SetBranchAddress("N", &N);
    Tree->SetBranchAddress("E", &E);
@@ -91,6 +101,11 @@ void LoopFile(string FileName, map<string, TH1D *> &H)
    Tree->SetBranchAddress("PZ", &PZ);
    Tree->SetBranchAddress("PID", &PID);
    Tree->SetBranchAddress("Status", &Status);
+   Tree->SetBranchAddress("NJ", &NJ);
+   Tree->SetBranchAddress("JE", &JE);
+   Tree->SetBranchAddress("JPX", &JPX);
+   Tree->SetBranchAddress("JPY", &JPY);
+   Tree->SetBranchAddress("JPZ", &JPZ);
 
    int EntryCount = Tree->GetEntries();
  
@@ -102,6 +117,7 @@ void LoopFile(string FileName, map<string, TH1D *> &H)
       
       vector<FourVector> Particles;
       vector<PseudoJet> FastJetParticles;
+      vector<bool> IsGrass;
       for(int i = 0; i < N; i++)
       {
          if(Status[i] != 1)                  continue;
@@ -109,17 +125,40 @@ void LoopFile(string FileName, map<string, TH1D *> &H)
          if(PID[i] == 14 || PID[i] == -14)   continue;
          if(PID[i] == 16 || PID[i] == -16)   continue;
 
+         bool Grass = false;
+         if(PID[i] == 299 || PID[i] == -299)
+            Grass = true;
+
+         if(NoGrass == true && Grass == true)
+            continue;
+
          FastJetParticles.push_back(PseudoJet(PX[i], PY[i], PZ[i], E[i]));
          Particles.emplace_back(FourVector(E[i], PX[i], PY[i], PZ[i]));
+         IsGrass.push_back(Grass);
       }
-      JetDefinition Definition(antikt_algorithm, JetR);
-      ClusterSequence Sequence(FastJetParticles, Definition);
-      vector<PseudoJet> FastJets = Sequence.inclusive_jets();
-
-      int NJet = FastJets.size();
+      
+      int NJet;
       vector<FourVector> Jets;
-      for(int iJ = 0; iJ < NJet; iJ++)
-         Jets.emplace_back(FastJets[iJ].e(), FastJets[iJ].px(), FastJets[iJ].py(), FastJets[iJ].pz());
+      
+      if(OriginalJet == true)
+      {
+         NJet = NJ;
+         for(int iJ = 0; iJ < NJet; iJ++)
+            Jets.emplace_back(JE[iJ], JPX[iJ], JPY[iJ], JPZ[iJ]);
+
+         cout << NJ << " " << Jets.size() << endl;
+      }
+      else
+      {
+         RecombinationScheme Scheme = WTA ? WTA_pt_scheme : E_scheme;
+         JetDefinition Definition(antikt_algorithm, JetR, Scheme);
+         ClusterSequence Sequence(FastJetParticles, Definition);
+         vector<PseudoJet> FastJets = Sequence.inclusive_jets();
+
+         NJet = FastJets.size();
+         for(int iJ = 0; iJ < NJet; iJ++)
+            Jets.emplace_back(FastJets[iJ].e(), FastJets[iJ].px(), FastJets[iJ].py(), FastJets[iJ].pz());
+      }
 
       if(iE == 0)
       {
@@ -159,6 +198,10 @@ void LoopFile(string FileName, map<string, TH1D *> &H)
                   H["JetRho07"]->Fill(DR, Particles[iP].GetPT() / Jets[iJ].GetPT());
                if(Particles[iP].GetPT() > 1.0)
                   H["JetRho10"]->Fill(DR, Particles[iP].GetPT() / Jets[iJ].GetPT());
+               if(Particles[iP].GetPT() > 1.0 && IsGrass[iP] == true)
+                  H["JetRho10Grass"]->Fill(DR, Particles[iP].GetPT() / Jets[iJ].GetPT());
+               if(Particles[iP].GetPT() > 1.0 && IsGrass[iP] == false)
+                  H["JetRho10NoGrass"]->Fill(DR, Particles[iP].GetPT() / Jets[iJ].GetPT());
                if(Particles[iP].GetPT() > 2.0)
                   H["JetRho20"]->Fill(DR, Particles[iP].GetPT() / Jets[iJ].GetPT());
                if(Particles[iP].GetPT() > 4.0)
@@ -171,6 +214,8 @@ void LoopFile(string FileName, map<string, TH1D *> &H)
    H["JetXi"]->Scale(1.0 / TotalJet / GetBinWidth(H["JetXi"]));
    H["JetRho07"]->Scale(1.0 / TotalJet / GetBinWidth(H["JetRho07"]));
    H["JetRho10"]->Scale(1.0 / TotalJet / GetBinWidth(H["JetRho10"]));
+   H["JetRho10Grass"]->Scale(1.0 / TotalJet / GetBinWidth(H["JetRho10Grass"]));
+   H["JetRho10NoGrass"]->Scale(1.0 / TotalJet / GetBinWidth(H["JetRho10NoGrass"]));
    H["JetRho20"]->Scale(1.0 / TotalJet / GetBinWidth(H["JetRho20"]));
    H["JetRho40"]->Scale(1.0 / TotalJet / GetBinWidth(H["JetRho40"]));
 

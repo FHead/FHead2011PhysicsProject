@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
    CommandLine CL(argc, argv);
 
    string Input = CL.Get("input");
-   string Output = CL.Get("output");
+   string OutputBase = CL.Get("output");
    double Fraction = CL.GetDouble("fraction", 0.01);
 
    TFile File(Input.c_str());
@@ -27,14 +27,14 @@ int main(int argc, char *argv[])
    double E[MAX], PX[MAX], PY[MAX], PZ[MAX];
    int PID[MAX], Status[MAX];
    Tree->SetBranchAddress("N", &N);
+   Tree->SetBranchAddress("E", &E);
    Tree->SetBranchAddress("PX", &PX);
    Tree->SetBranchAddress("PY", &PY);
    Tree->SetBranchAddress("PZ", &PZ);
    Tree->SetBranchAddress("PID", &PID);
    Tree->SetBranchAddress("Status", &Status);
 
-   ofstream out(Output);
-
+   ofstream out(OutputBase + "_1.hepmc");
    out << "HepMC::Version 2.06.05" << endl;
    out << "HepMC::IO_GenEvent-START_EVENT_LISTING" << endl;
 
@@ -71,6 +71,16 @@ int main(int argc, char *argv[])
       for(int i = 0; i < N; i++)
          if(Status[i] == 1)
             NParticle = NParticle + 1;
+
+      if((iE + 1) % 100 == 0)
+      {
+         out << "HepMC::IO_GenEvent-END_EVENT_LISTING" << endl;
+         out.close();
+         int Index = iE / 100 + 2;
+         out.open(Form("%s_%d.hepmc", OutputBase.c_str(), Index));
+         out << "HepMC::Version 2.06.05" << endl;
+         out << "HepMC::IO_GenEvent-START_EVENT_LISTING" << endl;
+      }
 
       out << "E " << iE + 1 << " -1  0 0 0  0 0 1  1 2  0 1 1" << endl;
       out << "N 1 \"0\"" << endl;
@@ -112,6 +122,7 @@ int main(int argc, char *argv[])
    }
 
    out << "HepMC::IO_GenEvent-END_EVENT_LISTING" << endl;
+   out.close();
 
    File.Close();
 

@@ -1,4 +1,4 @@
-Config     = 20201023Mu.config
+Config     = 20201210.config
 EGConfig   = 20200930EG.config
 MuEGConfig = 20191212MuEG.config
 MuConfig   = 20191212Mu.config
@@ -30,10 +30,20 @@ RunLDR: Execute
 RunDYLL: Execute
 	./Execute --input `ls SamplesDYLL/* | head -n 10000 | tr '\n' ',' | sed "s/,$$//g"` --output /tmp/chenyi/DYLL.root --StoredGen true --config $(Config)
 
+RunDYLLNoClean: Execute
+	./Execute --input `ls SamplesNoCleanDYLL/* | head -n 10000 | tr '\n' ',' | sed "s/,$$//g"` --output /tmp/chenyi/DYLLNoClean.root --StoredGen true --config $(Config) --tree "l1PhaseIITreeNoClean/L1PhaseIITree"
+
 RunDYLLPartial: Execute
-	mkdir -p Backup
-	cp -f DYLL.root Backup/ || :
-	./Execute --input `ls SamplesDYLL/* | head -n 10 | tr '\n' ',' | sed "s/,$$//g"` --output DYLL.root --StoredGen true --config $(Config)
+	./Execute --input `ls SamplesDYLL/* | head -n 10 | tr '\n' ',' | sed "s/,$$//g"` --output /tmp/chenyi/DYLL.root --StoredGen true --config $(Config)
 
+RunHGG: Execute
+	./Execute --input `ls SamplesHGG/* | head -n 10000 | tr '\n' ',' | sed "s/,$$//g"` --output /tmp/chenyi/HGG.root --StoredGen true --config $(Config)
 
+RunHHBBGG: Execute
+	./Execute --input `ls SamplesHHBBGG/* | head -n 10000 | tr '\n' ',' | sed "s/,$$//g"` --output /tmp/chenyi/HHBBGG.root --StoredGen true --config $(Config)
 
+RunPhotonV11: Execute
+	./Execute --input `ls SamplesPhoton[12]V11/* | head -n 10000 | tr '\n' ',' | sed "s/,$$//g"` --output /tmp/chenyi/HGG.root --StoredGen true --config $(Config)
+
+RunHGGIsolationComparison: Execute
+	./Execute --input `ls SamplesHGG/* | head -n 10000 | tr '\n' ',' | sed "s/,$$//g"` --output /tmp/chenyi/HGGIsolationComparison.root --StoredGen true --config V11V11p1IsoComparison.config

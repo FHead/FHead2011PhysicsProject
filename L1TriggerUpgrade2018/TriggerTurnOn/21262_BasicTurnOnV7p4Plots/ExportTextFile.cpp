@@ -31,16 +31,8 @@ int main(int argc, char *argv[])
       pair<string, string>("PFIsoTau", "PFIsoTau"),
       pair<string, string>("TrackerJetFit", "TrackerJet"),
       pair<string, string>("TrackerJetChargedFit", "TrackerJetCharged"),
-      pair<string, string>("TrackerHT5", "TrackerHT5"),
-      pair<string, string>("TrackerHT10", "TrackerHT10"),
-      pair<string, string>("TrackerHT15", "TrackerHT15"),
-      pair<string, string>("TrackerHT20", "TrackerHT20"),
-      pair<string, string>("TrackerHT30", "TrackerHT30"),
-      pair<string, string>("TrackerHTCharged5", "TrackerHTCharged5"),
-      pair<string, string>("TrackerHTCharged10", "TrackerHTCharged10"),
-      pair<string, string>("TrackerHTCharged15", "TrackerHTCharged15"),
-      pair<string, string>("TrackerHTCharged20", "TrackerHTCharged20"),
-      pair<string, string>("TrackerHTCharged30", "TrackerHTCharged30"),
+      pair<string, string>("TrackerHT5", "TrackerHT"),
+      pair<string, string>("TrackerHTCharged5", "TrackerHTCharged"),
       pair<string, string>("TrackerMET", "TrackerMET")
    };
    vector<pair<string, string>> TwoPartName =

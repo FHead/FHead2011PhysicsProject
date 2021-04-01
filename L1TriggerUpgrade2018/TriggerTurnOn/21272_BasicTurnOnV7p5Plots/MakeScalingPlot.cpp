@@ -19,10 +19,14 @@ using namespace std;
 
 #include "HelperFunctions.h"
 
+#define LINEAR 1
+#define QUADRATIC 2
+
 int main(int argc, char *argv[]);
 void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
    string Prefix, vector<double> Thresholds,
-   double Target, string Tag, string Name = "PT", int Type = TYPE_SMOOTH_SUPERTIGHT);
+   double Target, string Tag, string Name = "PT", int Type = TYPE_SMOOTH_SUPERTIGHT,
+   int Scaling = LINEAR);
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +36,7 @@ int main(int argc, char *argv[])
    string OutputFileName = CL.Get("output");
    string CurvesFileName = CL.Get("curves");
    double Reference      = CL.GetDouble("reference");
+   string Prefix         = CL.Get("prefix", "");
 
    bool DoSTAMuon          = CL.GetBool("DoSTAMuon", false);
    bool DoSTADisplacedMuon = CL.GetBool("DoSTADisplacedMuon", false);
@@ -54,6 +59,7 @@ int main(int argc, char *argv[])
    bool DoCaloHT           = CL.GetBool("DoCaloHT", false);
    bool DoTrackerJet       = CL.GetBool("DoTrackerJet", false);
    bool DoTrackerHT        = CL.GetBool("DoTrackerHT", false);
+   bool DoTrackerMHT       = CL.GetBool("DoTrackerMHT", false);
    bool DoTrackerMET       = CL.GetBool("DoTrackerMET", false);
    bool DoTkTau            = CL.GetBool("DoTkTau", false);
    bool DoCaloTkTau        = CL.GetBool("DoCaloTkTau", false);
@@ -76,6 +82,7 @@ int main(int argc, char *argv[])
    vector<double> HTThresholds = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500};
    vector<double> TkHTThresholds = {50, 100, 150, 200, 250, 300, 350};
    vector<double> LowMHTThresholds = {20, 30, 40, 50, 60, 70};
+   vector<double> TkMHTThresholds = {20, 30, 40, 50, 60, 70, 100, 150};
    vector<double> MHTThresholds = {70, 80, 90, 100, 125, 150, 175};
    vector<double> LowMETThresholds = {20, 30, 40, 50, 60, 70};
    vector<double> METThresholds = {70, 80, 90, 100, 125, 150, 175};
@@ -83,146 +90,146 @@ int main(int argc, char *argv[])
    if(DoSTAMuon == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "StandaloneMuonIso", MuonThresholds, Reference,
-         "StandaloneMuonIsoSmooth", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "StandaloneMuonIsoSmooth", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "StandaloneMuonIso", MuonThresholds, Reference,
-         "StandaloneMuonIso", "PT", TYPE_FITFLOAT);
+         Prefix + "StandaloneMuonIso", "PT", TYPE_FITFLOAT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "StandaloneMuonIso", MuonThresholds, Reference,
-         "StandaloneMuonIsoTanh", "PT", TYPE_FITTANH);
+         Prefix + "StandaloneMuonIsoTanh", "PT", TYPE_FITTANH);
    }
    if(DoSTADisplacedMuon == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "StandaloneDisplacedMuonIso", MuonThresholds, Reference,
-         "StandaloneDisplacedMuonIsoSmooth", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "StandaloneDisplacedMuonIsoSmooth", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "StandaloneDisplacedMuonIso", MuonThresholds, Reference,
-         "StandaloneDisplacedMuonIso", "PT", TYPE_FITFLOAT);
+         Prefix + "StandaloneDisplacedMuonIso", "PT", TYPE_FITFLOAT);
    }
    if(DoTkMuon == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkMuonIso", MuonThresholds, Reference,
-         "TkMuon", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkMuon", "PT", TYPE_SMOOTH_TIGHT);
    if(DoTkMuonStub == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkMuonStubIso", MuonThresholds, Reference,
-         "TkMuonStubIso", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkMuonStubIso", "PT", TYPE_SMOOTH_TIGHT);
    if(DoEG == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "EG", EGThresholds, Reference,
-         "EG", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "EG", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "EG", EGThresholds, Reference,
-         "EGBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
+         Prefix + "EGBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "EG", EGThresholds, Reference,
-         "EGEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+         Prefix + "EGEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
    }
    if(DoEGTrack == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "EGTrackID", EGThresholds, Reference,
-         "EGTrackID", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "EGTrackID", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "EGTrackID", EGThresholds, Reference,
-         "EGTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
+         Prefix + "EGTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "EGTrackID", EGThresholds, Reference,
-         "EGTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+         Prefix + "EGTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
    }
    if(DoElectron == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkElectronTrackID", EGThresholds, Reference,
-         "TkElectronTrackID", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkElectronTrackID", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkElectronTrackID", EGThresholds, Reference,
-         "TkElectronTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkElectronTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkElectronTrackID", EGThresholds, Reference,
-         "TkElectronTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkElectronTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
    }
    if(DoIsoElectron == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoElectron", EGThresholds, Reference,
-         "TkIsoElectron", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoElectron", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoElectron", EGThresholds, Reference,
-         "TkIsoElectronBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoElectronBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoElectron", EGThresholds, Reference,
-         "TkIsoElectronEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoElectronEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
    }
    if(DoPhoton == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoPhotonTrackID", EGThresholds, Reference,
-         "TkIsoPhotonTrackID", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoPhotonTrackID", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoPhotonTrackID", EGThresholds, Reference,
-         "TkIsoPhotonTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoPhotonTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoPhotonTrackID", EGThresholds, Reference,
-         "TkIsoPhotonTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoPhotonTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
    }
    if(DoPhotonPV == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoPhotonPVTrackID", EGThresholds, Reference,
-         "TkIsoPhotonPVTrackID", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoPhotonPVTrackID", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoPhotonPVTrackID", EGThresholds, Reference,
-         "TkIsoPhotonPVTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoPhotonPVTrackIDBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoPhotonPVTrackID", EGThresholds, Reference,
-         "TkIsoPhotonPVTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoPhotonPVTrackIDEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
    }
    if(DoElectronPV == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoElectronPV", EGThresholds, Reference,
-         "TkIsoElectronPV", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoElectronPV", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoElectronPV", EGThresholds, Reference,
-         "TkIsoElectronPVBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoElectronPVBarrel", "PTEta15", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkIsoElectronPV", EGThresholds, Reference,
-         "TkIsoElectronPVEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkIsoElectronPVEndcap", "PTEtaLarge", TYPE_SMOOTH_TIGHT);
    }
    if(DoPuppiJet == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJet", PuppiJetThresholds, Reference,
-         "PuppiJetFitFix2", "PT", TYPE_FITFIX2);
+         Prefix + "PuppiJetFitFix2", "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJet", PuppiJetThresholds, Reference,
-         "PuppiJetFitFix", "PT", TYPE_FITFIX);
+         Prefix + "PuppiJetFitFix", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJet", PuppiJetThresholds, Reference,
-         "PuppiJet", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "PuppiJet", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJetForward", PuppiJetThresholds, Reference,
-         "PuppiJetForward", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "PuppiJetForward", "PT", TYPE_SMOOTH_TIGHT);
    }
    if(DoPuppiJetForMET == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJetForMET", PuppiJetThresholds, Reference,
-         "PuppiJetForMETFitFix", "PT", TYPE_FITFIX);
+         Prefix + "PuppiJetForMETFitFix", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJet", PuppiJetThresholds, Reference,
-         "PuppiJetForMET", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "PuppiJetForMET", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJetForMETForward", PuppiJetThresholds, Reference,
-         "PuppiJetForMETForwardFitFix", "PT", TYPE_FITFIX);
+         Prefix + "PuppiJetForMETForwardFitFix", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJetForMETForward", PuppiJetThresholds, Reference,
-         "PuppiJetForMETForwardFitFix2", "PT", TYPE_FITFIX2);
+         Prefix + "PuppiJetForMETForwardFitFix2", "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJetForMETForward", PuppiJetThresholds, Reference,
-         "PuppiJetForMETForwardFitFloat", "PT", TYPE_FITFLOAT);
+         Prefix + "PuppiJetForMETForwardFitFloat", "PT", TYPE_FITFLOAT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiJetForMETForward", PuppiJetThresholds, Reference,
-         "PuppiJetForMETForward", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "PuppiJetForMETForward", "PT", TYPE_SMOOTH_TIGHT);
    }
    if(DoPuppiHT == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiHT30", HTThresholds, Reference,
-         "PuppiHT30", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "PuppiHT30", "PT", TYPE_SMOOTH_TIGHT);
    if(DoPuppiMET == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiMET", METThresholds, Reference,
-         "PuppiMETFloat", "PT", TYPE_FITFLOAT);
+         Prefix + "PuppiMETFloat", "PT", TYPE_FITFLOAT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiMET", METThresholds, Reference,
-         "PuppiMETFit", "PT", TYPE_FIT);
+         Prefix + "PuppiMETFit", "PT", TYPE_FIT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiMET", METThresholds, Reference,
-         "PuppiMETFitFix", "PT", TYPE_FITFIX);
+         Prefix + "PuppiMETFitFix", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PuppiMET", METThresholds, Reference,
-         "PuppiMET", "PT", TYPE_FITFIX2);
+         Prefix + "PuppiMET", "PT", TYPE_FITFIX2);
    }
    if(DoPFTau == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PFTau", TauThresholds, Reference,
-         "PFTau", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "PFTau", "PT", TYPE_SMOOTH_TIGHT);
    if(DoPFIsoTau == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "PFIsoTau", TauThresholds, Reference,
-         "PFIsoTau", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "PFIsoTau", "PT", TYPE_SMOOTH_TIGHT);
    if(DoCaloJet == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "CaloJet", CaloJetThresholds, Reference,
-         "CaloJet", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "CaloJet", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "CaloJetBarrel", CaloJetThresholds, Reference,
-         "CaloJetBarrel", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "CaloJetBarrel", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "CaloJetEndcap", CaloJetThresholds, Reference,
-         "CaloJetEndcap", "PT", TYPE_FITFIX2);
+         Prefix + "CaloJetEndcap", "PT", TYPE_FITFIX2);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "CaloJetEndcap", CaloJetThresholds, Reference,
-         "CaloJetEndcapStringterpolate", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "CaloJetEndcapStringterpolate", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "CaloJetFoward", CaloJetThresholds, Reference,
-         "CaloJetFoward", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "CaloJetFoward", "PT", TYPE_SMOOTH_TIGHT);
    }
    // if(DoCaloHT == true)
    //    ProcessFile(PdfFile, InputFileName, CurvesFileName, "", Thresholds, Reference,
@@ -230,37 +237,50 @@ int main(int argc, char *argv[])
    if(DoTrackerJet == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJet", TkJetThresholds, Reference,
-         "TrackerJet", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TrackerJet", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJet", TkJetThresholds, Reference,
-         "TrackerJetFit", "PT", TYPE_FITFIX);
+         Prefix + "TrackerJetFit", "PT", TYPE_FITFIX);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJetCharged", TkJetThresholds, Reference,
-         "TrackerJetCharged", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TrackerJetCharged", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerJetCharged", TkJetThresholds, Reference,
-         "TrackerJetChargedFit", "PT", TYPE_FITFIX);
+         Prefix + "TrackerJetChargedFit", "PT", TYPE_FITFIX);
    }
    if(DoTrackerHT == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHT5", TkHTThresholds, Reference,
-         "TrackerHT5", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TrackerHT5", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTCharged5", TkHTThresholds, Reference,
-         "TrackerHTCharged5", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TrackerHTCharged5", "PT", TYPE_SMOOTH_TIGHT);
+   }
+   if(DoTrackerMHT == true)
+   {
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerMHT5", TkMHTThresholds, Reference,
+         Prefix + "TrackerMHT5", "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerMHTCharged5", TkMHTThresholds, Reference,
+         Prefix + "TrackerMHTCharged5", "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerMHT5MET", TkMHTThresholds, Reference,
+         Prefix + "TrackerMHT5MET", "PT", TYPE_SMOOTH_TIGHT);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerMHT5MET", TkMHTThresholds, Reference,
+         Prefix + "TrackerMHT5METFit", "PT", TYPE_FITFIX, QUADRATIC);
+      ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerHTChargedMET5", TkMHTThresholds, Reference,
+         Prefix + "TrackerMHTCharged5MET", "PT", TYPE_SMOOTH_TIGHT);
    }
    if(DoTrackerMET == true)
    {
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerMET", METThresholds, Reference,
-         "TrackerMET", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TrackerMET", "PT", TYPE_SMOOTH_TIGHT);
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TrackerMETCharged", METThresholds, Reference,
-         "TrackerMETCharged", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TrackerMETCharged", "PT", TYPE_SMOOTH_TIGHT);
    }
    if(DoTkTau == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkTau", TauThresholds, Reference,
-         "TkTau", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkTau", "PT", TYPE_SMOOTH_TIGHT);
    if(DoCaloTkTau == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "CaloTkTau", TauThresholds, Reference,
-         "CaloTkTau", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "CaloTkTau", "PT", TYPE_SMOOTH_TIGHT);
    if(DoTkEGTau == true)
       ProcessFile(PdfFile, InputFileName, CurvesFileName, "TkEGTau", TauThresholds, Reference,
-         "TkEGTau", "PT", TYPE_SMOOTH_TIGHT);
+         Prefix + "TkEGTau", "PT", TYPE_SMOOTH_TIGHT);
    // if(Do == true)
    //    ProcessFile(PdfFile, InputFileName, CurvesFileName, "", Thresholds, Reference,
    //       "", "PT", TYPE_SMOOTH_TIGHT);
@@ -273,7 +293,7 @@ int main(int argc, char *argv[])
 
 void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
    string Prefix, vector<double> Thresholds,
-   double Target, string Tag, string Name, int Type)
+   double Target, string Tag, string Name, int Type, int Scaling)
 {
    string TypeString = "UNKNOWN";
    if(Type == TYPE_FIT)
@@ -353,6 +373,10 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
    G.SetNameTitle(Tag.c_str(), "");
    G.GetXaxis()->SetTitle("Threshold");
    G.GetYaxis()->SetTitle("95\% location");
+   TGraph G2;
+   G2.SetNameTitle(Tag.c_str(), "");
+   G2.GetXaxis()->SetTitle("95\% location");
+   G2.GetYaxis()->SetTitle("Threshold");
 
    double Min = 0;
    double Max = Thresholds[Thresholds.size()-1];
@@ -371,6 +395,7 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
       if(i == Thresholds.size() - 1 || CrossOver[i+1] > CrossOver[i])
       {
          G.SetPoint(G.GetN(), Thresholds[i], CrossOver[i]);
+         G2.SetPoint(G2.GetN(), CrossOver[i], Thresholds[i]);
          if(YMin > CrossOver[i])
             YMin = CrossOver[i];
          if(YMax < CrossOver[i])
@@ -380,8 +405,17 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
    Difference = YMax - YMin;
    YMax = YMax + Difference * 0.2;
 
-   TF1 Function("Function", "pol1", Min, Max);
-   G.Fit(&Function, "N");
+   string FunctionString = "pol1";
+   if(Scaling == QUADRATIC)
+      FunctionString = "pol2";
+
+   TF1 Function("Function", FunctionString.c_str(), Min, Max);
+   TF1 Function2("Function2", "(-[1]+sqrt(max([1]*[1]-4*[0]*([2]-x),0.0)))/(2*[0])", Min, Max);
+
+   if(Scaling == LINEAR)
+      G.Fit(&Function, "N");
+   else if(Scaling == QUADRATIC)
+      G2.Fit(&Function, "N");
 
    TH2D HWorld("HWorld", Form(";Thresholds;%d%% location", int(Target * 100)), 100, Min, Max, 100, YMin, YMax);
    HWorld.SetStats(0);
@@ -389,15 +423,33 @@ void ProcessFile(PdfFileHelper &PdfFile, string FileName, string OutputFileName,
    TCanvas Canvas;
    HWorld.Draw("axis");
    G.Draw("pl");
-   Function.Draw("same");
+   if(Scaling == LINEAR)
+      Function.Draw("same");
+   else
+   {
+      Function2.SetParameter(0, Function.GetParameter(2));
+      Function2.SetParameter(1, Function.GetParameter(1));
+      Function2.SetParameter(2, Function.GetParameter(0));
+      Function2.Draw("same");
+   }
 
    TLatex Latex;
    Latex.SetNDC();
    Latex.SetTextFont(42);
    Latex.SetTextSize(0.035);
    Latex.SetTextColor(kMagenta);
-   Latex.DrawLatex(0.15, 0.80, Form("p0 = %.03f #pm %.03f", Function.GetParameter(0), Function.GetParError(0)));
-   Latex.DrawLatex(0.15, 0.75, Form("p1 = %.03f #pm %.03f", Function.GetParameter(1), Function.GetParError(1)));
+   if(Scaling == LINEAR)
+   {
+      Latex.DrawLatex(0.15, 0.80, Form("p0 = %.03f #pm %.03f", Function.GetParameter(0), Function.GetParError(0)));
+      Latex.DrawLatex(0.15, 0.75, Form("p1 = %.03f #pm %.03f", Function.GetParameter(1), Function.GetParError(1)));
+   }
+   else
+   {
+      Latex.DrawLatex(0.15, 0.80, "x = p0 y^{2} + p1 y + p2");
+      Latex.DrawLatex(0.15, 0.75, Form("p0 = %.05f #pm %.05f", Function.GetParameter(2), Function.GetParError(2)));
+      Latex.DrawLatex(0.15, 0.70, Form("p1 = %.05f #pm %.05f", Function.GetParameter(1), Function.GetParError(1)));
+      Latex.DrawLatex(0.15, 0.65, Form("p2 = %.05f #pm %.05f", Function.GetParameter(0), Function.GetParError(0)));
+   }
 
    PdfFile.AddCanvas(Canvas);
    

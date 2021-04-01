@@ -12,8 +12,8 @@ Export: ExportTextFile.cpp
 	CompileRootMacro ExportTextFile.cpp Export
 
 RunV10: Execute
-	./Execute --input DYLL_V10p7.root    --output V10_Fits_STAMuon.pdf           --curves CurvesV10.dh \
-		--reference 0.95 --DoSTAMuon true
+	# ./Execute --input DYLL_V10p7.root    --output V10_Fits_STAMuon.pdf           --curves CurvesV10.dh \
+	# 	--reference 0.95 --DoSTAMuon true
 	# ./Execute --input DYLL_V10p7.root    --output V10_Fits_TkMuon.pdf            --curves CurvesV10.dh \
 	# 	--reference 0.95 --DoTkMuon true
 	# ./Execute --input DYLL_V10p7.root    --output V10_Fits_TkMuonStub.pdf        --curves CurvesV10.dh \
@@ -36,10 +36,14 @@ RunV10: Execute
 	# 	--reference 0.50 --DoHPSTau true
 	# ./Execute --input HHbbTauTau_Tau_V10p5.root --output V10_Fits_HPSIsoTau.pdf         --curves CurvesV10.dh \
 	# 	--reference 0.50 --DoHPSIsoTau true
-	# ./Execute --input HHbbTauTau_Tau_V10p5.root --output V10_Fits_NNTau.pdf             --curves CurvesV10.dh \
-	# 	--reference 0.50 --DoNNTauTight true
-	# ./Execute --input HHbbTauTau_Tau_V10p5.root --output V10_Fits_NNTauLoose.pdf        --curves CurvesV10.dh \
-	# 	--reference 0.50 --DoNNTauLoose true
+	./Execute --input HHbbTauTau_Tau_V10p5.root --output V10_Fits_NNTau.pdf             --curves CurvesV10.dh \
+		--reference 0.50 --DoNNTauTight true
+	./Execute --input HHbbTauTau_Tau_V10p5.root --output V10_Fits_NNTauLoose.pdf        --curves CurvesV10.dh \
+		--reference 0.50 --DoNNTauLoose true
+	./Execute --input HTauTau_V10p5.root --output V10_Fits_NNTauH.pdf            --curves CurvesV10.dh \
+		--prefix H --reference 0.50 --DoNNTauTight true
+	./Execute --input HTauTau_V10p5.root --output V10_Fits_NNTauLooseH.pdf       --curves CurvesV10.dh \
+		--prefix H --reference 0.50 --DoNNTauLoose true
 	# ./Execute --input HHbbTauTau_Tau_V10p5.root --output V10_Fits_NNPFTau.pdf           --curves CurvesV10.dh \
 	# 	--reference 0.50 --DoNNPFTauTight true
 	# ./Execute --input HHbbTauTau_Tau_V10p5.root --output V10_Fits_NNPFTauLoose.pdf      --curves CurvesV10.dh \
@@ -207,10 +211,20 @@ RunV10Scaling: ExecutePlot
 		--MaxX 80 --MaxY 150 --Threshold "50%" \
 		--Davignon $(Davignon) --OutputBase V10_Tau
 	./ExecutePlot \
+		--States "NNTauTightBarrel","NNTauLooseBarrel","HNNTauTightBarrel","HNNTauLooseBarrel" \
+		--Labels "HHbbTauTau (Tight)","HHbbTauTau (Loose)","HTauTau (Tight)","HTauTau (Loose)" \
+		--MaxX 80 --MaxY 150 --Threshold "50%" \
+		--Davignon $(Davignon) --OutputBase V10_TauBarrelSamples
+	./ExecutePlot \
 		--States "NNTauTightBarrel","NNTauLooseBarrel","TkEGTauBarrel","CaloTauBarrel" \
 		--Labels "NNPuppiTau (Tight)","NNPuppiTau (Loose)","tkEGTau","CaloTau" \
 		--MaxX 80 --MaxY 150 --Threshold "50%" \
 		--Davignon $(Davignon) --OutputBase V10_TauBarrel
+	./ExecutePlot \
+		--States "NNTauTightEndcap","NNTauLooseEndcap","HNNTauTightEndcap","HNNTauLooseEndcap" \
+		--Labels "HHbbTauTau (Tight)","HHbbTauTau (Loose)","HTauTau (Tight)","HTauTau (Loose)" \
+		--MaxX 80 --MaxY 150 --Threshold "50%" \
+		--Davignon $(Davignon) --OutputBase V10_TauEndcapSamples
 	./ExecutePlot \
 		--States "NNTauTightEndcap","NNTauLooseEndcap","TkEGTauEndcap","CaloTauEndcap" \
 		--Labels "NNPuppiTau (Tight)","NNPuppiTau (Loose)","tkEGTau","CaloTau" \

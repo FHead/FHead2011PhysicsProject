@@ -137,6 +137,8 @@ int main(int argc, char *argv[])
    bool LDROnly                  = CL.GetBool("LDROnly", false);
    bool RejectLeptonicW          = CL.GetBool("RejectLeptonicW", false);
 
+   string L1PhaseIITreeName      = CL.Get("tree", "l1PhaseIITree/L1PhaseIITree");
+
    vector<Configuration> Configurations = ReadConfigFile(ConfigFileName);
    int N = Configurations.size();
 
@@ -205,7 +207,7 @@ int main(int argc, char *argv[])
 
       // Messengers
       L1GenMessenger MGen(File, "genTree/L1GenTree");
-      L1PhaseIITreeV11p1Messenger MPhaseII(File, "l1PhaseIITree/L1PhaseIITree");
+      L1PhaseIITreeV11p1Messenger MPhaseII(File, L1PhaseIITreeName);
 
       if(MGen.Tree == nullptr || MPhaseII.Tree == nullptr)
          continue;
@@ -410,37 +412,54 @@ int main(int argc, char *argv[])
             Configuration &C = Configurations[i];
             FourVector &Ref = ReferenceObjects[i];
 
-            int Quality = QUAL_NONE;
+            int Quality = QUAL_None;
             if(C.Quality == "None")
-               Quality = QUAL_NONE;
+               Quality = QUAL_None;
+            else if(C.Quality == "OverlapNotRegionThree")
+               Quality = QUAL_OverlapNotRegion3;
+            else if(C.Quality == "CorrectRegion")
+               Quality = QUAL_CorrectRegion;
             else if(C.Quality == "Odd")
-               Quality = QUAL_ODD;
+               Quality = QUAL_Odd;
             else if(C.Quality == "Twelve")
                Quality = QUAL_12;
             else if(C.Quality == "OverlapTwelve")
-               Quality = QUAL_OVERLAP12;
+               Quality = QUAL_Overlap12;
             else if(C.Quality == "OverlapTwelveEndcapOne")
-               Quality = QUAL_OVERLAP12ENDCAP1;
+               Quality = QUAL_Overlap12Endcap1;
+            else if(C.Quality == "OverlapTwelveEndcapOneOverlapNotRegionThree")
+               Quality = QUAL_Overlap12Endcap1OverlapNotRegion3;
+            else if(C.Quality == "OverlapTwelveEndcapOneCorrectRegion")
+               Quality = QUAL_Overlap12Endcap1CorrectRegion;
             else if(C.Quality == "EndcapOne")
-               Quality = QUAL_ENDCAP1;
+               Quality = QUAL_Endcap1;
+            else if(C.Quality == "EndcapOneOverlapNotRegionThree")
+               Quality = QUAL_Endcap1OverlapNotRegion3;
+            else if(C.Quality == "EndcapOneCorrectRegion")
+               Quality = QUAL_Endcap1CorrectRegion;
             else if(C.Quality == "TwelveDXYOne")
                Quality = QUAL_12_DXY1;
             else if(C.Quality == "DXYOne")
                Quality = QUAL_DXY1;
             else if(C.Quality == "BarrelOddEndcapTwo")
-               Quality = QUAL_BARRELODDENDCAP2;
+               Quality = QUAL_BarrelOddEndcap2;
             else if(C.Quality == "BarrelNoneEndcapTwo")
-               Quality = QUAL_BARRELNONEENDCAP2;
+               Quality = QUAL_BarrelNoneEndcap2;
             else if(C.Quality == "BarrelNoneEndcapThree")
-               Quality = QUAL_BARRELNONEENDCAP3;
+               Quality = QUAL_BarrelNoneEndcap3;
             else if(C.Quality == "BarrelNoneEndcapFive")
-               Quality = QUAL_BARRELNONEENDCAP5;
+               Quality = QUAL_BarrelNoneEndcap5;
             else if(C.Quality == "UseFlag")
-               Quality = QUAL_USEFLAG;
+               Quality = QUAL_UseFlag;
             else if(C.Quality == "RegionNotFour")
-               Quality = QUAL_REGIONNOTFOUR;
+               Quality = QUAL_RegionNotFour;
+            else if(C.Quality == "EndcapJaana1345")
+               Quality = QUAL_EndcapJaana1345;
             else
+            {
+               cerr << "Warning!  Unrecognized quality bit \"" << C.Quality << "\"" << endl;
                Quality = atoi(C.Quality.c_str());
+            }
 
             int Range = atoi(C.Type.c_str());
 

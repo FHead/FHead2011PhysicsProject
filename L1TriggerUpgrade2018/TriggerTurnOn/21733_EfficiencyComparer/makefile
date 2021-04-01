@@ -10,7 +10,7 @@ TTbar   = TTbar_V7p42.root
 QCD     = QCD_V7p42.root
 NewQCD  = QCD_V9.root
 
-DYLLV10       = DYLL_V10p7.root
+DYLLV10       = DYLL_V10p7_20200213.root
 DYLLLDRV10    = DYLL_V10p7.root
 HGGV10        = HGG_V10p2.root
 HGGLDRV10     = HGG_V10p2.root
@@ -34,7 +34,7 @@ DarkSUSYCT10000V10 = DarkSUSYCT10000_V10p7.root
 DisplacedMuonV10 = DisplacedMuon_V10p7.root
 
 # default: V10Plots V10PlotsPart2 V10PlotsPart3 V10PlotsPart4 V10PlotsPart5 V10PlotsPart6 V10PlotsPart7
-default: V10PlotsPart7
+default: V10PlotsPart8
 
 V10Plots: Execute
 	./Execute \
@@ -147,6 +147,18 @@ V10Plots: Execute
 		--line 1.00,0.95 \
 		--text 0.55,0.55,"Barrel |#eta| < 1.5",0.55,0.50,"L1 p_{T} > 15/30/50 GeV" \
 		--Davignon $(Davignon) --output V10_011NewYearV2.pdf
+	./Execute \
+		--label "EG","TkElectron","TkIsoElectron","TkIsoPhoton","NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE" \
+		--file $(DYLLV10),$(DYLLV10),$(DYLLV10),$(HGGV10),$(DYLLV10),$(DYLLV10),$(DYLLV10),$(HGGV10),$(DYLLV10),$(DYLLV10),$(DYLLV10),$(HGGV10) \
+		--numerator "EGTrackIDZIso_PTEta15_001500","TkElectronV2TrackIDZIso_PTEta15_001500","TkIsoElectronV2Z_PTEta15_001500","TkIsoPhotonTrackID_PTEta15_001500","EGTrackIDZIso_PTEta15_003000","TkElectronV2TrackIDZIso_PTEta15_003000","TkIsoElectronV2Z_PTEta15_003000","TkIsoPhotonTrackID_PTEta15_003000","EGTrackIDZIso_PTEta15_005000","TkElectronV2TrackIDZIso_PTEta15_005000","TkIsoElectronV2Z_PTEta15_005000","TkIsoPhotonTrackID_PTEta15_005000" \
+		--denominator "EGTrackIDZIso_PTEta15_000000","TkElectronV2TrackIDZIso_PTEta15_000000","TkIsoElectronV2Z_PTEta15_000000","TkIsoPhotonTrackID_PTEta15_000000","EGTrackIDZIso_PTEta15_000000","TkElectronV2TrackIDZIso_PTEta15_000000","TkIsoElectronV2Z_PTEta15_000000","TkIsoPhotonTrackID_PTEta15_000000","EGTrackIDZIso_PTEta15_000000","TkElectronV2TrackIDZIso_PTEta15_000000","TkIsoElectronV2Z_PTEta15_000000","TkIsoPhotonTrackID_PTEta15_000000" \
+		--title ";Gen. p_{T} (GeV);Trigger efficiency" --xmin 0 --xmax 120 --ymin 0.00 --ymax 1.10 --rebin 2 \
+		--legendx 0.55 --legendy 0.20 \
+		--color -1,-2,-3,-4,-1,-2,-3,-4,-1,-2,-3,-4 \
+		--marker 20,21,22,23,20,21,22,23,20,21,22,23 \
+		--line 1.00,0.95 \
+		--text 0.55,0.55,"Barrel |#eta| < 1.5",0.55,0.50,"L1 p_{T} > 15/30/50 GeV" \
+		--Davignon $(Davignon) --output V10_011NewYearV3.pdf
 	./Execute \
 		--label "EG Electron","EG Photon","TkElectron","TkIsoElectron","TkIsoPhoton" \
 		--file $(DYLLV10),$(HGGV10),$(DYLLV10),$(DYLLV10),$(HGGV10) \
@@ -368,6 +380,13 @@ V10PlotsPart2: Execute
 		--title ";Gen. #eta;Matching efficiency (p_{T} > 40 GeV)" --xmin -2.5 --xmax 2.5 --ymin 0.00 --ymax 1.10 --rebin 1 \
 		--Davignon $(Davignon) --output V10_025a.pdf
 	./Execute \
+		--label "HPSPFTau1","HPSPFTau1 (Medium)","NNPuppiTau (Tight)","NNPuppiTau (Loose)","tkEGTau","CaloTau" \
+		--file $(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10) \
+		--numerator "PFTauIso_EtaPT40_000000","PFIsoTau_EtaPT40_000000","NNTauIso_EtaPT40_000000","NNTauLooseIso_EtaPT40_000000","TkEGTauIso_EtaPT40_000000","CaloTauIso_EtaPT40_000000" \
+		--denominator "auto","PFTauIsoNoMatch_EtaPT40_000000","auto","auto","auto","auto" \
+		--title ";Gen. #eta;Matching efficiency (p_{T} > 40 GeV)" --xmin -2.5 --xmax 2.5 --ymin 0.00 --ymax 1.10 --rebin 1 \
+		--Davignon $(Davignon) --output V10_025aa.pdf
+	./Execute \
 		--label "NNPuppiTau (Tight)","NNPuppiTau (Loose)","CaloTau" \
 		--file $(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10) \
 		--numerator "NNTauIso_EtaPT40_000000","NNTauLooseIso_EtaPT40_000000","CaloTauIso_EtaPT40_000000" \
@@ -396,6 +415,13 @@ V10PlotsPart2: Execute
 		--title ";Gen. p_{T} (GeV);Matching efficiency (barrel)" --xmin 0 --xmax 150 --ymin 0.00 --ymax 1.10 --rebin 2 \
 		--Davignon $(Davignon) --output V10_027a.pdf
 	./Execute \
+		--label "HPSPFTau1","HPSPFTau1 (Medium)","NNPuppiTau (Tight)","NNPuppiTau (Loose)","tkEGTau","CaloTau" \
+		--file $(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10) \
+		--numerator "PFTauIso_PTEta15_000000","PFIsoTau_PTEta15_000000","NNTauIso_PTEta15_000000","NNTauLooseIso_PTEta15_000000","TkEGTauIso_PTEta15_000000","CaloTauIso_PTEta15_000000" \
+		--denominator "auto","PFTauIsoNoMatch_PTEta15_000000","auto","auto","auto","auto" \
+		--title ";Gen. p_{T} (GeV);Matching efficiency (barrel)" --xmin 0 --xmax 150 --ymin 0.00 --ymax 1.10 --rebin 2 \
+		--Davignon $(Davignon) --output V10_027aa.pdf
+	./Execute \
 		--label "NNPuppiTau (Tight)","NNPuppiTau (Loose)","CaloTau" \
 		--file $(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10) \
 		--numerator "NNTauIso_PTEta15_000000","NNTauLooseIso_PTEta15_000000","CaloTauIso_PTEta15_000000" \
@@ -409,6 +435,13 @@ V10PlotsPart2: Execute
 		--denominator "auto","PFTauIsoNoMatch_PTEtaLarge_000000","auto","auto","auto","auto" \
 		--title ";Gen. p_{T} (GeV);Matching efficiency (endcap)" --xmin 0 --xmax 150 --ymin 0.00 --ymax 1.10 --rebin 2 \
 		--Davignon $(Davignon) --output V10_028a.pdf
+	./Execute \
+		--label "HPSPFTau1","HPSPFTau1 (Medium)","NNPuppiTau (Tight)","NNPuppiTau (Loose)","tkEGTau","CaloTau" \
+		--file $(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10) \
+		--numerator "PFTauIso_PTEtaLarge_000000","PFIsoTau_PTEtaLarge_000000","NNTauIso_PTEtaLarge_000000","NNTauLooseIso_PTEtaLarge_000000","TkEGTauIso_PTEtaLarge_000000","CaloTauIso_PTEtaLarge_000000" \
+		--denominator "auto","PFTauIsoNoMatch_PTEtaLarge_000000","auto","auto","auto","auto" \
+		--title ";Gen. p_{T} (GeV);Matching efficiency (endcap)" --xmin 0 --xmax 150 --ymin 0.00 --ymax 1.10 --rebin 2 \
+		--Davignon $(Davignon) --output V10_028aa.pdf
 	./Execute \
 		--label "NNPuppiTau (Tight)","NNPuppiTau (Loose)","CaloTau" \
 		--file $(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10) \
@@ -980,7 +1013,8 @@ V10PlotsPart7: Execute
 		--numerator "PFPhase1HT_PT_037000","TrackerHT_PT_020000","CaloHT_PT_065000" \
 		--denominator "PFPhase1HT_PT_000000","TrackerHT_PT_000000","CaloHT_PT_000000" \
 		--title ";Gen. H_{T} (GeV);Trigger efficiency" --xmin 0 --xmax 1200 --ymin 0.00 --ymax 1.10 --rebin 2 \
-		--legendx 0.50 --legendy 0.20 \
+		--text 0.55,0.45,"Fixed rate: 11 kHz" \
+		--legendx 0.475 --legendy 0.20 \
 		--Davignon $(Davignon) --output V10HadTTbar_103YesPhase1HT.pdf
 	./Execute \
 		--label "PuppiMET (112 GeV)","TrackerMET (82 GeV)" \
@@ -1006,12 +1040,49 @@ V10PlotsPart7: Execute
 		--title ";Gen. p_{T} (GeV);Combined efficiency (barrel)" --xmin 0 --xmax 200 --ymin 0.00 --ymax 1.10 --rebin 2 \
 		--Davignon $(Davignon) --output V10_105.pdf
 	./Execute \
+		--label "HPSPFTau1 (Medium) (46 GeV)","NNPuppiTau (Loose) (36 GeV)","tkEGTau (35 GeV)","CaloTau (58 TeV)" \
+		--file $(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10) \
+		--numerator "PFIsoTau_PTEta15_004600","NNTauLooseIso_PTEta15_003600","TkEGTauIso_PTEta15_003500","CaloTauIso_PTEta15_005800" \
+		--denominator "PFIsoTauNoMatch_PTEta15_000000","NNTauLooseIsoNoMatch_PTEta15_000000","TkEGTauIsoNoMatch_PTEta15_000000","CaloTauIsoNoMatch_PTEta15_000000" \
+		--title ";Gen. p_{T} (GeV);Combined efficiency (barrel)" --xmin 0 --xmax 200 --ymin 0.00 --ymax 1.10 --rebin 2 \
+		--Davignon $(Davignon) --output V10_105HH.pdf
+	./Execute \
 		--label "HPSPFTau1 (Medium) (46 GeV)","NNPuppiTau (Loose) (36 GeV)","tkEGTau (35 GeV)","CaloTau (58 GeV)" \
 		--file $(HTauTauV10),$(HTauTauV10),$(HTauTauV10),$(HTauTauV10) \
 		--numerator "PFIsoTau_PTEtaLarge_004600","NNTauLooseIso_PTEtaLarge_003600","TkEGTauIso_PTEtaLarge_003500","CaloTauIso_PTEtaLarge_005800" \
 		--denominator "PFIsoTauNoMatch_PTEtaLarge_000000","NNTauLooseIsoNoMatch_PTEtaLarge_000000","TkEGTauIsoNoMatch_PTEtaLarge_000000","CaloTauIsoNoMatch_PTEtaLarge_000000" \
 		--title ";Gen. p_{T} (GeV);Combined efficiency (endcap)" --xmin 0 --xmax 200 --ymin 0.00 --ymax 1.10 --rebin 2 \
 		--Davignon $(Davignon) --output V10_106.pdf
+	./Execute \
+		--label "HPSPFTau1 (Medium) (46 GeV)","NNPuppiTau (Loose) (36 GeV)","tkEGTau (35 GeV)","CaloTau (58 GeV)" \
+		--file $(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10) \
+		--numerator "PFIsoTau_PTEtaLarge_004600","NNTauLooseIso_PTEtaLarge_003600","TkEGTauIso_PTEtaLarge_003500","CaloTauIso_PTEtaLarge_005800" \
+		--denominator "PFIsoTauNoMatch_PTEtaLarge_000000","NNTauLooseIsoNoMatch_PTEtaLarge_000000","TkEGTauIsoNoMatch_PTEtaLarge_000000","CaloTauIsoNoMatch_PTEtaLarge_000000" \
+		--title ";Gen. p_{T} (GeV);Combined efficiency (endcap)" --xmin 0 --xmax 200 --ymin 0.00 --ymax 1.10 --rebin 2 \
+		--Davignon $(Davignon) --output V10_106HH.pdf
+	cp V10*pdf ~/public/html
+
+V10PlotsPart8: Execute
+	./Execute \
+		--label "NNPuppiTau (36 GeV)","tkEGTau (33 GeV)","CaloTau (90 GeV)" \
+		--file SpecialDiTau.root,SpecialDiTau.root,SpecialDiTau.root \
+		--numerator "Special_HNNPFDiTau","Special_HTkEGDiTauZ","Special_HCaloDiTau" \
+		--denominator "Special_HAllDiTau","Special_HAllDiTau","Special_HAllDiTau" \
+		--title ";Subleading Gen. p_{T} (GeV);Combined efficiency" --xmin 0 --xmax 250 --ymin 0.00 --ymax 1.10 --rebin 1 \
+		--color -2,-3,-4 \
+		--text 0.50,0.375,"|#eta| < 2.1" \
+		--legendx 0.45 --legendy 0.15 \
+		--Davignon $(Davignon) --output V10_107.pdf
+	./Execute \
+		--label "NNPuppiTau (36 GeV)","tkEGTau (33 GeV)","CaloTau (90 GeV)" \
+		--file $(HHbbTauTauV10),$(HHbbTauTauV10),$(HHbbTauTauV10) \
+		--numerator "NNTauLooseIsoNarrow_PT_003600","TkEGTauIsoNarrow_PT_003300","CaloTauIsoNarrow_PT_009000" \
+		--denominator "NNTauLooseIsoNarrowNoMatch_PT_000000","TkEGTauIsoNarrowNoMatch_PT_000000","CaloTauIsoNarrowNoMatch_PT_000000" \
+		--title ";Gen. p_{T} (GeV);Combined efficiency" --xmin 0 --xmax 200 --ymin 0.00 --ymax 1.10 --rebin 2 \
+		--color -2,-3,-4 \
+		--text 0.525,0.375,"|#eta| < 2.1" \
+		--legendx 0.47 --legendy 0.15 \
+		--Davignon $(Davignon) --output V10_108.pdf
 	cp V10*pdf ~/public/html
 
 V10LDRPlots: Execute

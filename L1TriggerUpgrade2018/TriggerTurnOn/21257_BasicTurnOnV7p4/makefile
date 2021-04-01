@@ -1,4 +1,4 @@
-Config = 20190312.config
+Config = 20190319.config
 
 default: RunTest 
 
@@ -33,6 +33,13 @@ RunHGG: Execute
 	mkdir -p Backup
 	cp -f HGG.root Backup/ || :
 	./Execute --input `ls SamplesHGG/* | tr '\n' ',' | sed "s/,$$//g"` --output HGG.root --StoredGen true --config $(Config)
+
+RunQCD: Execute
+	mkdir -p Backup
+	cp -f QCD.root Backup/ || :
+	./Execute --input `ls SamplesQCD/* | tr '\n' ',' | sed "s/,$$//g"` --output QCD1.root --StoredGen true --config $(Config)
+	./Execute --input `ls SamplesQCDExtra/* | tr '\n' ',' | sed "s/,$$//g"` --output QCD2.root --StoredGen true --config $(Config)
+	hadd -f QCD.root QCD1.root QCD2.root
 
 RunTTbar: Execute
 	mkdir -p Backup

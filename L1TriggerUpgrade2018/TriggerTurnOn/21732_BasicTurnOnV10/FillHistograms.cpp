@@ -134,9 +134,24 @@ int main(int argc, char *argv[])
    string OutputFileName         = CL.Get("output");
    bool UseStoredGen             = CL.GetBool("StoredGen", true);
    string ConfigFileName         = CL.Get("config");
+   bool LDROnly                  = CL.GetBool("LDROnly", false);
+   bool RejectLeptonicW          = CL.GetBool("RejectLeptonicW", false);
 
    vector<Configuration> Configurations = ReadConfigFile(ConfigFileName);
    int N = Configurations.size();
+
+   if(LDROnly == true)
+   {
+      for(int i = 0; i < (int)Configurations.size(); i++)
+      {
+         if(Configurations[i].Directory.find("LDR") == string::npos)
+         {
+            Configurations.erase(Configurations.begin() + i);
+            i = i - 1;
+         }
+      }
+      N = Configurations.size();
+   }
 
    // Output File and directories for better organization
    TFile OutputFile(OutputFileName.c_str(), "RECREATE");
@@ -147,13 +162,13 @@ int main(int argc, char *argv[])
 
    // Create histograms
    vector<double> GenThresholds = {0};
-   vector<double> JetThresholds = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60,
-      75, 80, 85, 90, 100, 120, 125, 150, 175, 200, 225, 250, 275, 300};
+   vector<double> JetThresholds = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70,
+      75, 80, 85, 90, 100, 120, 125, 130, 140, 150, 175, 200, 225, 250, 275, 300};
    vector<double> MuonThresholds = {0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 17, 20, 22, 25, 27, 30};
-   vector<double> TauThresholds = {0, 5, 7, 9, 12, 14, 15, 17, 20, 22, 25, 27, 30, 40, 50, 60, 70, 80, 90, 100};
+   vector<double> TauThresholds = {0, 5, 7, 9, 12, 14, 15, 17, 20, 22, 25, 27, 30, 33, 35, 36, 40, 46, 50, 58, 60, 70, 80, 90, 100};
    vector<double> EGThresholds = {0, 5, 7, 9, 12, 14, 15, 17, 20, 22, 25, 27, 30, 40, 50};
-   vector<double> HTThresholds = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150,
-      175, 200, 225, 250, 300, 325, 350, 375, 400, 425, 450, 475, 500};
+   vector<double> HTThresholds = {0, 10, 20, 30, 40, 50, 60, 70, 80, 82, 90, 100, 112, 125, 150,
+      175, 184, 200, 225, 250, 300, 325, 326, 350, 370, 375, 400, 425, 450, 475, 500, 550, 600, 650};
    
    vector<Histograms *> ObjectHistograms;
    for(int i = 0; i < N; i++)
@@ -190,7 +205,7 @@ int main(int argc, char *argv[])
 
       // Messengers
       L1GenMessenger MGen(File, "genTree/L1GenTree");
-      L1PhaseIITreeV10Messenger MPhaseII(File, "l1PhaseIITree/L1PhaseIITree");
+      L1PhaseIITreeV10p4Messenger MPhaseII(File, "l1PhaseIITree/L1PhaseIITree");
 
       if(MGen.Tree == nullptr || MPhaseII.Tree == nullptr)
          continue;
@@ -207,13 +222,20 @@ int main(int argc, char *argv[])
          MGen.GetEntry(iE);
          MPhaseII.GetEntry(iE);
 
+         bool LeptonicW = CheckLeptonicW(MGen);
+         if(RejectLeptonicW == true && LeptonicW == true)
+            continue;
+
          vector<FourVector> Electrons;
          vector<FourVector> ZElectrons;
          vector<FourVector> Photons;
          vector<FourVector> Muons;
          vector<int> MuonSigns;
          vector<double> MuonDXY;
-         vector<FourVector> Taus;
+         vector<FourVector> MuonLxy1000s;
+         vector<int> MuonSignLxy1000s;
+         vector<double> MuonDXYLxy1000;
+         vector<FourVector> Taus, VisTaus;
          vector<FourVector> ChargedParticles;
          vector<FourVector> Particles;
 
@@ -238,12 +260,19 @@ int main(int argc, char *argv[])
                Muons.push_back(MGen.GenP[i]);
                MuonSigns.push_back((MGen.GenID[i] > 0) ? -1 : 1);
                MuonDXY.push_back(fabs(MGen.GenDxy[i]));
+
+               if(fabs(MGen.GenLxy[i]) < 100)   // 1 meter
+               {
+                  MuonLxy1000s.push_back(MGen.GenP[i]);
+                  MuonSignLxy1000s.push_back((MGen.GenID[i] > 0) ? -1 : 1);
+                  MuonDXYLxy1000.push_back(fabs(MGen.GenDxy[i]));
+               }
             }
             if(AbsID == 15)
             {
-               // FourVector P = GetVisTauAdhoc(MGen, i);
-               // if(P[0] > 0)
-               //    Taus.push_back(P);
+               FourVector P = GetVisTauAdhoc(MGen, i);
+               if(P[0] > 0)
+                  VisTaus.push_back(P);
                Taus.push_back(MGen.GenP[i]);
             }
 
@@ -291,6 +320,17 @@ int main(int argc, char *argv[])
                if(BestIndex < 0)   BestDXY = 0;
                else                BestDXY = MuonDXY[BestIndex];
             }
+            else if(C.ReferenceObject == "MuonLxy1000")
+            {
+               Best = BestInRange(MuonLxy1000s, C.AbsEtaMin, C.AbsEtaMax, -1);
+               int BestIndex = BestIndexInRange(MuonLxy1000s, C.AbsEtaMin, C.AbsEtaMax, -1);
+               if(BestIndex < 0)   BestSign = -999;
+               else                BestSign = MuonSignLxy1000s[BestIndex];
+               if(BestIndex < 0)   BestDXY = 0;
+               else                BestDXY = MuonDXYLxy1000[BestIndex];
+            }
+            else if(C.ReferenceObject == "VisTau")
+               Best = BestInRange(VisTaus, C.AbsEtaMin, C.AbsEtaMax, -1);
             else if(C.ReferenceObject == "Tau")
                Best = BestInRange(Taus, C.AbsEtaMin, C.AbsEtaMax, -1);
             else if(C.ReferenceObject == "HT5")
@@ -377,8 +417,12 @@ int main(int argc, char *argv[])
                Quality = QUAL_ODD;
             else if(C.Quality == "Twelve")
                Quality = QUAL_12;
+            else if(C.Quality == "OverlapTwelve")
+               Quality = QUAL_OVERLAP12;
             else if(C.Quality == "TwelveDXYOne")
                Quality = QUAL_12_DXY1;
+            else if(C.Quality == "DXYOne")
+               Quality = QUAL_DXY1;
             else if(C.Quality == "BarrelOddEndcapTwo")
                Quality = QUAL_BARRELODDENDCAP2;
             else if(C.Quality == "BarrelNoneEndcapTwo")
@@ -389,6 +433,8 @@ int main(int argc, char *argv[])
                Quality = QUAL_BARRELNONEENDCAP5;
             else if(C.Quality == "UseFlag")
                Quality = QUAL_USEFLAG;
+            else if(C.Quality == "RegionNotFour")
+               Quality = QUAL_REGIONNOTFOUR;
             else
                Quality = atoi(C.Quality.c_str());
 
@@ -469,6 +515,12 @@ int main(int argc, char *argv[])
                Best = BestInRange(MPhaseII.NNTau, Ref, C.AbsEtaMin, C.AbsEtaMax, C.PTMin, C.DRCut, Quality, Range, C.IsolationBB, C.IsolationEC);
             else if(C.InputObject == "NNTauLoose")
                Best = BestInRange(MPhaseII.NNTauLoose, Ref, C.AbsEtaMin, C.AbsEtaMax, C.PTMin, C.DRCut, Quality, Range, C.IsolationBB, C.IsolationEC);
+            else if(C.InputObject == "NNPFTau")
+               Best = BestInRange(MPhaseII.NNPFTau, Ref, C.AbsEtaMin, C.AbsEtaMax, C.PTMin, C.DRCut, Quality, Range, C.IsolationBB, C.IsolationEC);
+            else if(C.InputObject == "NNPFTauLoose")
+               Best = BestInRange(MPhaseII.NNPFTauLoose, Ref, C.AbsEtaMin, C.AbsEtaMax, C.PTMin, C.DRCut, Quality, Range, C.IsolationBB, C.IsolationEC);
+            else if(C.InputObject == "HPSTau")
+               Best = BestInRange(MPhaseII.HPSTau, Ref, C.AbsEtaMin, C.AbsEtaMax, C.PTMin, C.DRCut, Quality, Range, C.IsolationBB, C.IsolationEC);
             else if(C.InputObject == "CaloTau")
                Best = BestInRange(MPhaseII.CaloTau, Ref, C.AbsEtaMin, C.AbsEtaMax, C.PTMin, C.DRCut, Quality, Range, C.IsolationBB, C.IsolationEC);
             else if(C.InputObject == "TrackerHT0")

@@ -11,6 +11,7 @@ using namespace std;
 
 int main(int argc, char *argv[]);
 void FillGraph(DataHelper &DHFile, string Tag, TGraph &G);
+void FillReverseGraph(DataHelper &DHFile, string Tag, TGraph &G);
 
 int main(int argc, char *argv[])
 {
@@ -33,7 +34,11 @@ int main(int argc, char *argv[])
       pair<string, string>("TrackerJetChargedFit", "TrackerJetCharged"),
       pair<string, string>("TrackerHT5", "TrackerHT"),
       pair<string, string>("TrackerHTCharged5", "TrackerHTCharged"),
-      pair<string, string>("TrackerMET", "TrackerMET")
+      pair<string, string>("TrackerMET", "TrackerMET"),
+      pair<string, string>("TkTau", "TkTau"),
+      pair<string, string>("CaloTkTau", "CaloTkTau"),
+      pair<string, string>("TkEGTau", "TkEGTau"),
+      pair<string, string>("TrackerMHT5METFit", "TrackerMHT")
    };
    vector<pair<string, string>> TwoPartName =
    {
@@ -44,8 +49,14 @@ int main(int argc, char *argv[])
       pair<string, string>("TkIsoPhotonTrackID", "TkIsoPhoton"),
       pair<string, string>("TkIsoPhotonPVTrackID", "TkIsoPhotonPV"),
       pair<string, string>("TkIsoElectronPV", "TkIsoElectronPV"),
-      pair<string, string>("CaloJet", "CaloJet")
+      pair<string, string>("CaloJet", "CaloJet"),
+      pair<string, string>("QCDCaloJet", "QCDCaloJet")
    };
+   vector<pair<string, string>> QuadraticName =
+   {
+      pair<string, string>("TrackerMHT5METFit", "TrackerMHTQuadratic")
+   };
+
 
    for(pair<string, string> Name : GName)
    {
@@ -62,6 +73,26 @@ int main(int argc, char *argv[])
       else
          OutputFile << "function :: " << Name.second << "OfflineEtCut :: args:=(offline,Et); "
             << "lambda:=Et>(offline+" << -F.GetParameter(0) << ")/" << F.GetParameter(1) << endl;
+   }
+
+   for(pair<string, string> Name : QuadraticName)
+   {
+      TGraph G;
+      
+      FillReverseGraph(DHFile, Name.first, G);
+
+      TF1 F("F1", "[0]+[1]*x+[2]*x*x");
+      G.Fit(&F);
+
+      OutputFile << "function :: " << Name.second << "OfflineEtCut :: args:=(offline,Et); "
+         << "lambda:=Et>";
+      if(F.GetParameter(0) > 0)   OutputFile << F.GetParameter(0);
+      else                        OutputFile << "-" << -F.GetParameter(0);
+      if(F.GetParameter(1) > 0)   OutputFile << "+" << F.GetParameter(1) << "*offline";
+      else                        OutputFile << "-" << -F.GetParameter(1) << "*offline";
+      if(F.GetParameter(2) > 0)   OutputFile << "+" << F.GetParameter(2) << "*offline*offline";
+      else                        OutputFile << "-" << -F.GetParameter(2) << "*offline*offline";
+      OutputFile << endl;
    }
 
    for(pair<string, string> Name : TwoPartName)
@@ -114,5 +145,22 @@ void FillGraph(DataHelper &DHFile, string Tag, TGraph &G)
    }
 }
 
+void FillReverseGraph(DataHelper &DHFile, string Tag, TGraph &G)
+{
+   int N = DHFile[Tag]["N"].GetInteger();
+
+   if(N <= 0)
+      return;
+
+   G.Set(N);
+
+   for(int i = 0; i < N; i++)
+   {
+      double Y = DHFile[Tag][Form("X%d",i)].GetDouble();
+      double X = DHFile[Tag][Form("Y%d",i)].GetDouble();
+
+      G.SetPoint(i, X, Y);
+   }
+}
 
 

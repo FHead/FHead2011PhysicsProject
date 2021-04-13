@@ -1,5 +1,5 @@
 
----+ Quick start
+# Quick start
 
 Example usage:
 
@@ -11,23 +11,23 @@ bash Example.sh charged_dobido10meow.csv charged_dobido10meow_test_GAN.csv
 The first argument is the base file, and the second one is the GAN output.
 
 
----+ Under the hood:
+# Under the hood:
 
 There are four executables
 
----++ ExecuteConversion
+## ExecuteConversion
 
 This one turns csv into root tree, in an ALEPH-like format
 
----++ ExeucteJetClustering
+## ExeucteJetClustering
 
 This one takes the particle tree from the previous step and calculate jets
 
----++ ExecuteBasicPlots
+## ExecuteBasicPlots
 
 This one makes basic plots for particles (and D candidates)
 
----++ ExecuteJetPlost
+## ExecuteJetPlost
 
 This one runs on the jet tree and make jet comparison plots
 

@@ -9,6 +9,7 @@ TestRun: Execute
 	./Execute --Input ALEPH_1994_meow5.csv --Output ALEPH_1994_Meow5.root
 	./Execute --Input ALEPH_1994_meow6.csv --Output ALEPH_1994_Meow6.root
 	# ./Execute --Input ALEPH_1994.csv --Output ALEPH_1994.root
+	./Execute --Input ALEPH_1994_10k_ctgan.csv --Output ALEPH_1994_10k_ctgan.root
 
 Execute: ConvertToTree.cpp
 	CompileRootMacro ConvertToTree.cpp Execute

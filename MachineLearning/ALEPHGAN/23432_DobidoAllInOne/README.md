@@ -1,4 +1,9 @@
 
+# Prerequisite
+
+You need `root-config` and `fastjet-config` in `PATH`.
+
+
 # Quick start
 
 Example usage:

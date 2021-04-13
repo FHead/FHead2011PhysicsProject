@@ -16,17 +16,21 @@ CATree.o: CATree.cpp CATree.h
 BasicUtilities.o: BasicUtilities.cpp BasicUtilities.h
 	g++ BasicUtilities.cpp -c -o BasicUtilities.o
 
-ExecuteConversion: ConvertToTree.cpp TauHelperFunctions3.o DrawRandom2.o
-	g++ `root-config --cflags --libs` ConvertToTree.cpp -o ExecuteConversion TauHelperFunctions3.o DrawRandom2.o
+Dictionary.o: Dictionary.h DictionaryObject.h
+	rootcint -f Dictionary.cxx -c DictionaryObject.h Dictionary.h
+	g++ `root-config --cflags` Dictionary.cxx -o Dictionary.o -I. -c -fpic
 
-ExecuteBasicPlots: MakeBasicPlots.cpp TauHelperFunctions3.o DrawRandom2.o
-	g++ `root-config --cflags --libs` MakeBasicPlots.cpp -o ExecuteBasicPlots TauHelperFunctions3.o DrawRandom2.o
+ExecuteConversion: ConvertToTree.cpp TauHelperFunctions3.o DrawRandom2.o Dictionary.o
+	g++ `root-config --cflags --libs` ConvertToTree.cpp -o ExecuteConversion TauHelperFunctions3.o DrawRandom2.o Dictionary.o
 
-ExecuteJetClustering: CalculateJets.cpp TauHelperFunctions3.o DrawRandom2.o DrawRandom.o CATree.o BasicUtilities.o
+ExecuteBasicPlots: MakeBasicPlots.cpp TauHelperFunctions3.o DrawRandom2.o Dictionary.o
+	g++ `root-config --cflags --libs` MakeBasicPlots.cpp -o ExecuteBasicPlots TauHelperFunctions3.o DrawRandom2.o Dictionary.o
+
+ExecuteJetClustering: CalculateJets.cpp TauHelperFunctions3.o DrawRandom2.o DrawRandom.o CATree.o BasicUtilities.o Dictionary.o
 	g++ `root-config --cflags --libs` CalculateJets.cpp -o ExecuteJetClustering \
-		TauHelperFunctions3.o DrawRandom2.o CATree.o DrawRandom.o BasicUtilities.o \
+		TauHelperFunctions3.o DrawRandom2.o CATree.o DrawRandom.o BasicUtilities.o Dictionary.o \
 		`fastjet-config --cxxflags --libs`
 
-ExecuteJetPlots: MakeJetPlots.cpp
-	g++ `root-config --cflags --libs` MakeJetPlots.cpp -o ExecuteJetPlots
+ExecuteJetPlots: MakeJetPlots.cpp Dictionary.o
+	g++ `root-config --cflags --libs` MakeJetPlots.cpp -o ExecuteJetPlots Dictionary.o
 

@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
    PdfFileHelper PdfFile(OutputName);
    PdfFile.AddTextPage("GAN output comparison");
 
+   PdfFile.AddTextPage({"Input files", BaseName, VariantName});
+
    Add1D(PdfFile, TBase, TVariant, "GanJetE", "", ";Jet E;", 100, 0, 80);
    Add1D(PdfFile, TBase, TVariant, "GanJetTheta", "", ";Jet #theta;", 100, 0, M_PI);
    Add1D(PdfFile, TBase, TVariant, "GanJetPhi", "", ";Jet #phi;", 100, -M_PI, M_PI);

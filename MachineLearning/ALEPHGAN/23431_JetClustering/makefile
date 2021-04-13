@@ -15,5 +15,10 @@ TestRun: Execute
 	time ./Execute --Input Charged_DobidoMeow_test_GAN.root --Output Jet_Charged_DobidoMeow_test_GAN.root --GanTreeName tgan
 	time ./Execute --Input Charged_DobidoMeow10.root --Output Jet_Charged_DobidoMeow10.root --GanTreeName tgan
 	time ./Execute --Input Charged_DobidoMeow10_test_GAN.root --Output Jet_Charged_DobidoMeow10_test_GAN.root --GanTreeName tgan
-	
+	time ./Execute --Input Charged_DobidoMeow10_test_GAN1000.root --Output Jet_Charged_DobidoMeow10_test_GAN1000.root
+	time ./Execute --Input Charged_DobidoMeow10_test_GAN100.root --Output Jet_Charged_DobidoMeow10_test_GAN100.root
+	time ./Execute --Input Charged_DobidoMeow20.root --Output Jet_Charged_DobidoMeow20.root
+	time ./Execute --Input Charged_DobidoMeow20_test_GAN.root --Output Jet_Charged_DobidoMeow20_test_GAN.root
+	time ./Execute --Input Charged_DobidoMeow30.root --Output Jet_Charged_DobidoMeow30.root
+	time ./Execute --Input Charged_DobidoMeow30_test_GAN.root --Output Jet_Charged_DobidoMeow30_test_GAN.root
 		

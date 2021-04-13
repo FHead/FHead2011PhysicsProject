@@ -76,8 +76,6 @@ int main(int argc, char *argv[])
          else
             str >> X >> Y >> Z >> M >> Charge;
 
-         cout << X << " " << Y << " " << Z << " " << M << " " << Charge << endl;
-
          if(M < -99.9)
             continue;
          if(M < 0)
@@ -98,8 +96,6 @@ int main(int argc, char *argv[])
          PMass[NParticle]   = M;
          PCharge[NParticle] = Charge;
          NParticle          = NParticle + 1;
-
-         cout << PCharge[NParticle-1] << endl;
       }
 
       if(NParticle > 0)

@@ -63,7 +63,8 @@ int main(int argc, char *argv[])
 
       stringstream str(ch);
 
-      str >> CurrentEvent;
+      int Multiplicity = -1;
+      str >> CurrentEvent >> Multiplicity;
 
       NParticle = 0;
       while(str)

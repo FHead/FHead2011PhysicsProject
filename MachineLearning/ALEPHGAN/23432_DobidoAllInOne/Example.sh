@@ -25,7 +25,8 @@ VariantInput=$2
 ./ExecuteBasicPlots \
    --Base ${BaseInput/csv/root} \
    --Variant ${VariantInput/csv/root} \
-   --Output Plots_${VariantInput/csv/pdf}
+   --Output Plots_${VariantInput/csv/pdf} \
+   --OutputRoot Root_${VariantInput/csv/root}
 ./ExecuteJetPlots \
    --Base Jet_${BaseInput/csv/root} \
    --Variant Jet_${VariantInput/csv/root} \

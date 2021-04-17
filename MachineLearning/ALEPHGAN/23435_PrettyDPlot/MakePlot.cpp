@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
    double YMin          = CL.GetDouble("YMin");
    double YMax          = CL.GetDouble("YMax");
    string ExtraInfo     = CL.Get("ExtraInfo", "");
+   int Shift            = CL.GetInt("Shift", 0);
 
    TFile File(InputFileName.c_str());
 
@@ -44,7 +45,8 @@ int main(int argc, char *argv[])
    HVariant->SetLineColor(Colors[0]);
    HVariant->SetLineWidth(3);
 
-   HBase->Scale(0.001);
+   for(int i = 0; i < Shift; i++)
+      HBase->Scale(0.1);
    HVariant->Scale(HBase->Integral() / HVariant->Integral());
 
    TCanvas Canvas;
@@ -74,6 +76,8 @@ int main(int argc, char *argv[])
    Latex.SetTextAlign(12);
    Latex.SetNDC();
    Latex.DrawLatex(0.25, 0.25, ExtraInfo.c_str());
+   if(Shift > 0)
+      Latex.DrawLatex(0.12, 0.93, Form("x10^{%d}", Shift));
 
    Canvas.SaveAs(Form("%s.pdf", OutputBase.c_str()));
    Canvas.SaveAs(Form("%s.C", OutputBase.c_str()));

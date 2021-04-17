@@ -87,6 +87,12 @@ int main(int argc, char *argv[])
    TH1D HD2OppositeVariant("HD2OppositeVariant", ";Opposite sign pair mass;", 100, 1.5, 2.0);
    TH1D HD2SameVariant("HD2SameVariant", ";Same sign pair mass;", 100, 1.5, 2.0);
    TH1D HD2AllVariant("HD2AllVariant", ";All pair mass;", 100, 1.5, 2.0);
+   TH1D HD3OppositeBase("HD3OppositeBase", ";Opposite sign pair mass;", 100, 1.5, 2.0);
+   TH1D HD3SameBase("HD3SameBase", ";Same sign pair mass;", 100, 1.5, 2.0);
+   TH1D HD3AllBase("HD3AllBase", ";All pair mass;", 100, 1.5, 2.0);
+   TH1D HD3OppositeVariant("HD3OppositeVariant", ";Opposite sign pair mass;", 100, 1.5, 2.0);
+   TH1D HD3SameVariant("HD3SameVariant", ";Same sign pair mass;", 100, 1.5, 2.0);
+   TH1D HD3AllVariant("HD3AllVariant", ";All pair mass;", 100, 1.5, 2.0);
 
    FillDCandidate(TBase, HDOppositeBase, DMODE_OPPOSITE, 0);
    FillDCandidate(TBase, HDSameBase, DMODE_SAME, 0);
@@ -106,6 +112,12 @@ int main(int argc, char *argv[])
    FillDCandidate(TVariant, HD2OppositeVariant, DMODE_OPPOSITE, 2);
    FillDCandidate(TVariant, HD2SameVariant, DMODE_SAME, 2);
    // FillDCandidate(TVariant, HD2AllVariant, DMODE_ALL, 2);
+   FillDCandidate(TBase, HD3OppositeBase, DMODE_OPPOSITE, 3);
+   FillDCandidate(TBase, HD3SameBase, DMODE_SAME, 3);
+   // FillDCandidate(TBase, HD3AllBase, DMODE_ALL, 3);
+   FillDCandidate(TVariant, HD3OppositeVariant, DMODE_OPPOSITE, 3);
+   FillDCandidate(TVariant, HD3SameVariant, DMODE_SAME, 3);
+   // FillDCandidate(TVariant, HD3AllVariant, DMODE_ALL, 3);
 
    TH1D HDDiffBase("HDDiffBase", ";Pair mass;Opposite - Same", 100, 1.5, 2.0);
    TH1D HDDiffVariant("HDDiffVariant", ";Pair mass;Opposite - Same", 100, 1.5, 2.0);
@@ -138,6 +150,12 @@ int main(int argc, char *argv[])
    HD2OppositeVariant.Write();
    HD2SameVariant.Write();
    HD2AllVariant.Write();
+   HD3OppositeBase.Write();
+   HD3SameBase.Write();
+   HD3AllBase.Write();
+   HD3OppositeVariant.Write();
+   HD3SameVariant.Write();
+   HD3AllVariant.Write();
    
    Add1D(PdfFile, HDAllBase, HDAllVariant);
    Add1D(PdfFile, HDOppositeBase, HDOppositeVariant);

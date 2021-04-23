@@ -45,9 +45,11 @@ def main(argv):
         Max                 = [0.5,      10,       10,         10,          1.5,      100,      100]
         HeaderLine          = "Version 1.0\n- Intial design point for binomial PDF"
 
+    HeaderLine = HeaderLine + "\n- Number of points per dimension: " + str(SamplesPerDimension)
+    HeaderLine = HeaderLine + "\n- Random Seed: " + str(RandomSeed)
     HeaderLine = HeaderLine + "\nParameter " + ' '.join(ParameterName)
     for d in range(0, Dimension):
-        HeaderLine = HeaderLine + '\n- ' + ParameterName[d] + ': [' + str(Min[d]) + ',' + str(Max[d]) + '] ' + Scale[d]
+        HeaderLine = HeaderLine + '\n- Parameter ' + ParameterName[d] + ': ' + Scale[d] + ' [' + str(Min[d]) + ', ' + str(Max[d]) + ']'
 
     lhsmdu.setRandomSeed(RandomSeed)
     UnitCube = np.array(lhsmdu.sample(Dimension, Dimension * SamplesPerDimension))

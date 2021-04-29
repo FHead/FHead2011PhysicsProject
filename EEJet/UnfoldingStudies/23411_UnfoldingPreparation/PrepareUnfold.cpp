@@ -10,7 +10,8 @@ using namespace std;
 #include "CommandLine.h"
 
 enum ObservableType {ObservableNone, ObservableLeadingJetE, ObservableSubleadingJetE,
-   ObservableJetE, ObservableJetP, ObservableZG, ObservableRG, ObservableThrust};
+   ObservableJetE, ObservableJetP, ObservableZG, ObservableRG, ObservableMG, ObservableMGE, ObservableThrust,
+   ObservableLeadingDiJetE, ObservableLeadingDiJetSumE, ObservableJetM, ObservableJetME};
 enum ObservableStep {Gen, Reco, Matched};
 
 class Messenger;
@@ -29,12 +30,14 @@ private:
    vector<float>         *RecoJetJEU;
    vector<vector<float>> *RecoJetZG;
    vector<vector<float>> *RecoJetRG;
+   vector<vector<float>> *RecoJetMG;
    float                  RecoThrust;
    vector<float>         *GenJetE;
    vector<float>         *GenJetP;
    vector<float>         *GenJetTheta;
    vector<vector<float>> *GenJetZG;
    vector<vector<float>> *GenJetRG;
+   vector<vector<float>> *GenJetMG;
    float                  GenThrust;
    vector<float>         *MatchedJetE;
    vector<float>         *MatchedJetP;
@@ -43,6 +46,7 @@ private:
    vector<float>         *MatchedJetJEU;
    vector<vector<float>> *MatchedJetZG;
    vector<vector<float>> *MatchedJetRG;
+   vector<vector<float>> *MatchedJetMG;
    vector<float>         *MatchedJetAngle;
    float                  MatchedThrust;
    double                 MaxMatchedJetAngle;
@@ -64,11 +68,13 @@ public:
       RecoJetJEU = nullptr;
       RecoJetZG = nullptr;
       RecoJetRG = nullptr;
+      RecoJetMG = nullptr;
       GenJetE = nullptr;
       GenJetP = nullptr;
       GenJetTheta = nullptr;
       GenJetZG = nullptr;
       GenJetRG = nullptr;
+      GenJetMG = nullptr;
       MatchedJetE = nullptr;
       MatchedJetP = nullptr;
       MatchedJetTheta = nullptr;
@@ -76,6 +82,7 @@ public:
       MatchedJetJEU = nullptr;
       MatchedJetZG = nullptr;
       MatchedJetRG = nullptr;
+      MatchedJetMG = nullptr;
       MatchedJetAngle = nullptr;
       MaxMatchedJetAngle = -1;
 
@@ -91,12 +98,14 @@ public:
       Tree->SetBranchAddress("RecoJetJEU", &RecoJetJEU);
       Tree->SetBranchAddress("RecoJetZG", &RecoJetZG);
       Tree->SetBranchAddress("RecoJetRG", &RecoJetRG);
+      Tree->SetBranchAddress("RecoJetMG", &RecoJetMG);
       Tree->SetBranchAddress("RecoThrust", &RecoThrust);
       Tree->SetBranchAddress("GenJetE", &GenJetE);
       Tree->SetBranchAddress("GenJetP", &GenJetP);
       Tree->SetBranchAddress("GenJetTheta", &GenJetTheta);
       Tree->SetBranchAddress("GenJetZG", &GenJetZG);
       Tree->SetBranchAddress("GenJetRG", &GenJetRG);
+      Tree->SetBranchAddress("GenJetMG", &GenJetMG);
       Tree->SetBranchAddress("GenThrust", &GenThrust);
       Tree->SetBranchAddress("MatchedJetE", &MatchedJetE);
       Tree->SetBranchAddress("MatchedJetP", &MatchedJetP);
@@ -105,6 +114,7 @@ public:
       Tree->SetBranchAddress("MatchedJetJEU", &MatchedJetJEU);
       Tree->SetBranchAddress("MatchedJetZG", &MatchedJetZG);
       Tree->SetBranchAddress("MatchedJetRG", &MatchedJetRG);
+      Tree->SetBranchAddress("MatchedJetMG", &MatchedJetMG);
       Tree->SetBranchAddress("MatchedJetAngle", &MatchedJetAngle);
       Tree->SetBranchAddress("MatchedThrust", &MatchedThrust);
    }
@@ -145,6 +155,20 @@ public:
       if(Type == ObservableLeadingJetE && Step == Matched)
          return 1;
       
+      if(Type == ObservableLeadingDiJetE && Step == Gen)
+         return (GenJetE->size() >= 2 ? 2 : GenJetE->size());
+      if(Type == ObservableLeadingDiJetE && Step == Reco)
+         return (RecoJetE->size() >= 2 ? 2 : RecoJetE->size());
+      if(Type == ObservableLeadingDiJetE && Step == Matched)
+         return (MatchedJetE->size() >= 2 ? 2 : MatchedJetE->size());
+      
+      if(Type == ObservableLeadingDiJetSumE && Step == Gen)
+         return (GenJetE->size() >= 2 ? 1 : 0);
+      if(Type == ObservableLeadingDiJetSumE && Step == Reco)
+         return (RecoJetE->size() >= 2 ? 1 : 0);
+      if(Type == ObservableLeadingDiJetSumE && Step == Matched)
+         return (MatchedJetE->size() >= 2 ? 1 : 0);
+      
       if(Type == ObservableSubleadingJetE && Step == Gen)
          return 1;
       if(Type == ObservableSubleadingJetE && Step == Reco)
@@ -180,9 +204,45 @@ public:
       if(Type == ObservableRG && Step == Matched)
          return MatchedJetRG->size();
 
+      if(Type == ObservableMG && Step == Gen)
+         return GenJetMG->size();
+      if(Type == ObservableMG && Step == Reco)
+         return RecoJetMG->size();
+      if(Type == ObservableMG && Step == Matched)
+         return MatchedJetMG->size();
+
+      if(Type == ObservableMGE && Step == Gen)
+         return GenJetMG->size();
+      if(Type == ObservableMGE && Step == Reco)
+         return RecoJetMG->size();
+      if(Type == ObservableMGE && Step == Matched)
+         return MatchedJetMG->size();
+
+      if(Type == ObservableJetM && Step == Gen)
+         return GenJetE->size();
+      if(Type == ObservableJetM && Step == Reco)
+         return RecoJetE->size();
+      if(Type == ObservableJetM && Step == Matched)
+         return MatchedJetE->size();
+
+      if(Type == ObservableJetME && Step == Gen)
+         return GenJetE->size();
+      if(Type == ObservableJetME && Step == Reco)
+         return RecoJetE->size();
+      if(Type == ObservableJetME && Step == Matched)
+         return MatchedJetE->size();
+
       return 0;
    }
    double GetValue(ObservableStep Step, ObservableType &Type, int Index, int Item,
+      double Shift = 0, double Smear = 1, double ExtraScale = 1)
+   {
+      double Value = GetValueNoScale(Step, Type, Index, Item, Shift, Smear);
+      if(Value > 0)
+         Value = Value * ExtraScale;
+      return Value;
+   }
+   double GetValueNoScale(ObservableStep Step, ObservableType &Type, int Index, int Item,
       double Shift = 0, double Smear = 1)
    {
       if(Type == ObservableThrust && Step == Gen)
@@ -192,85 +252,77 @@ public:
       if(Type == ObservableThrust && Step == Matched)
          return MatchedThrust;
 
+      // Gen and reco jets are sorted.  Matched is same order as gen
       if(Type == ObservableLeadingJetE && Step == Gen)
-      {
-         double BestE = -1;
-         for(int i = 0; i < GenJetE->size(); i++)
-            if(BestE < (*GenJetE)[i])
-               BestE = (*GenJetE)[i];
-         return BestE;
-      }
+         return ((GenJetE->size() >= 1) ? (*GenJetE)[0] : -1);
       if(Type == ObservableLeadingJetE && Step == Reco)
       {
-         double BestE = -1;
-         for(int i = 0; i < RecoJetE->size(); i++)
-         {
-            double E = (*RecoJetE)[i] * (1 + Shift * (*RecoJetJEU)[i] / (*RecoJetJEC)[i]);
-            if(BestE < E)
-               BestE = E;
-         }
-         return BestE;
+         double Value = ((RecoJetE->size() >= 1) ? (*RecoJetE)[0] : -1);
+         Value = Value * (1 + Shift * (*RecoJetJEU)[0] / (*RecoJetJEC)[0]);
+         return Value;
       }
-      if(Type == ObservableLeadingJetE && Step == Matched)
+      if(Type == ObservableLeadingJetE && Step == Matched)   // returning the jet matched to leading gen jet
       {
-         double BestE = -1;
-         for(int i = 0; i < MatchedJetE->size(); i++)
-         {
-            double E = (*MatchedJetE)[i] * (1 + Shift * (*MatchedJetJEU)[i] / (*MatchedJetJEC)[i]);
-            E = (E - (*GenJetE)[i]) * Smear + (*GenJetE)[i];
-            if(BestE < E)
-               BestE = E;
-         }
-         return BestE;
+         double Value = ((MatchedJetE->size() >= 1) ? (*MatchedJetE)[0] : -1);
+         Value = Value * (1 + Shift * (*MatchedJetJEU)[0] / (*MatchedJetJEC)[0]);
+         Value = (Value - (*GenJetE)[0]) * Smear + (*GenJetE)[0];
+         return Value;
       }
 
-      if(Type == ObservableSubleadingJetE && Step == Gen)
+      // Gen and reco jets are sorted.  Matched is same order as gen
+      if(Type == ObservableLeadingDiJetE && Step == Gen)
+         return ((GenJetE->size() > Item) ? (*GenJetE)[Item] : -1);
+      if(Type == ObservableLeadingDiJetE && Step == Reco)
       {
-         double BestE1 = -1, BestE2 = -1;
-         for(int i = 0; i < GenJetE->size(); i++)
-         {
-            if(BestE1 < (*GenJetE)[i])
-            {
-               BestE2 = BestE1;
-               BestE1 = (*GenJetE)[i];
-            }
-            else if(BestE2 < (*GenJetE)[i])
-               BestE2 = (*GenJetE)[i];
-         }
-         return BestE2;
+         double Value = ((RecoJetE->size() > Item) ? (*RecoJetE)[Item] : -1);
+         Value = Value * (1 + Shift * (*RecoJetJEU)[Item] / (*RecoJetJEC)[Item]);
+         return Value;
       }
+      if(Type == ObservableLeadingDiJetE && Step == Matched)
+      {
+         double Value = ((MatchedJetE->size() > Item) ? (*MatchedJetE)[Item] : -1);
+         Value = Value * (1 + Shift * (*MatchedJetJEU)[Item] / (*MatchedJetJEC)[Item]);
+         Value = (Value - (*GenJetE)[Item]) * Smear + (*GenJetE)[Item];
+         return Value;
+      }
+
+      if(Type == ObservableLeadingDiJetSumE && Step == Gen)
+         return ((GenJetE->size() >= 2) ? (*GenJetE)[0] + (*GenJetE)[1] : -1);
+      if(Type == ObservableLeadingDiJetSumE && Step == Reco)
+      {
+         if(RecoJetE->size() < 2)
+            return -1;
+         double V0 = (*RecoJetE)[0] * (1 + Shift * (*RecoJetJEU)[0] / (*RecoJetJEC)[0]);
+         double V1 = (*RecoJetE)[1] * (1 + Shift * (*RecoJetJEU)[1] / (*RecoJetJEC)[1]);
+         return V0 + V1;
+      }
+      if(Type == ObservableLeadingDiJetSumE && Step == Matched)
+      {
+         if(MatchedJetE->size() < 2)
+            return -1;
+
+         double V0 = (*MatchedJetE)[0] * (1 + Shift * (*MatchedJetJEU)[0] / (*MatchedJetJEC)[0]);
+         double V1 = (*MatchedJetE)[1] * (1 + Shift * (*MatchedJetJEU)[1] / (*MatchedJetJEC)[1]);
+         V0 = (V0 - (*GenJetE)[0]) * Smear + (*GenJetE)[0];
+         V1 = (V1 - (*GenJetE)[1]) * Smear + (*GenJetE)[1];
+         return V0 + V1;
+      }
+
+      // Gen and reco jets are sorted.  Matched is same order as gen
+      if(Type == ObservableSubleadingJetE && Step == Gen)
+         return ((GenJetE->size() >= 2) ? (*GenJetE)[1] : -1);
       if(Type == ObservableSubleadingJetE && Step == Reco)
       {
-         double BestE1 = -1, BestE2 = -1;
-         for(int i = 0; i < RecoJetE->size(); i++)
-         {
-            double E = (*RecoJetE)[i] * (1 + Shift * (*RecoJetJEU)[i] / (*RecoJetJEC)[i]);
-            if(BestE1 < E)
-            {
-               BestE2 = BestE1;
-               BestE1 = E;
-            }
-            else if(BestE2 < E)
-               BestE2 = E;
-         }
-         return BestE2;
+         double Value = ((RecoJetE->size() >= 2) ? (*RecoJetE)[1] : -1);
+         Value = Value * (1 + Shift * (*RecoJetJEU)[1] / (*RecoJetJEC)[1]);
+         return Value;
       }
       if(Type == ObservableSubleadingJetE && Step == Matched)
       {
-         double BestE1 = -1, BestE2 = -1;
-         for(int i = 0; i < MatchedJetE->size(); i++)
-         {
-            double E = (*MatchedJetE)[i] * (1 + Shift * (*MatchedJetJEU)[i] / (*MatchedJetJEC)[i]);
-            E = (E - (*GenJetE)[i]) * Smear + (*GenJetE)[i];
-            if(BestE1 < E)
-            {
-               BestE2 = BestE1;
-               BestE1 = E;
-            }
-            else if(BestE2 < E)
-               BestE2 = E;
-         }
-         return BestE2;
+         double Value = ((RecoJetE->size() >= 2) ? (*RecoJetE)[1] : -1);
+         Value = Value * (1 + Shift * (*MatchedJetJEU)[1] / (*MatchedJetJEC)[1]);
+         Value = (Value - (*GenJetE)[1]) * Smear + (*GenJetE)[1];
+         return Value;
       }
 
       if(Type == ObservableJetE && Step == Gen && Item < GenJetE->size())
@@ -325,15 +377,92 @@ public:
             return (*MatchedJetRG)[Item][Index];
       }
 
+      if(Type == ObservableMG)
+      {
+         if(Step == Gen && Item < GenJetMG->size() && Index >= 0 && Index < (*GenJetMG)[Item].size())
+            return (*GenJetMG)[Item][Index];
+         if(Step == Reco && Item < RecoJetMG->size() && Index >= 0 && Index < (*RecoJetMG)[Item].size())
+         {
+            double Value = (*RecoJetMG)[Item][Index];
+            if(Value < 0)
+               return -1;
+            Value = Value * (1 + Shift * (*RecoJetJEU)[Item] / (*RecoJetJEC)[Item]);
+            return Value;
+         }
+         if(Step == Matched && Item < MatchedJetMG->size() && Index >= 0 && Index < (*MatchedJetMG)[Item].size())
+         {
+            double Value = (*MatchedJetMG)[Item][Index];
+            if(Value < 0)
+               return -1;
+            double E0 = (*MatchedJetE)[Item];
+            double E = E0 * (1 + Shift * (*MatchedJetJEU)[Item] / (*MatchedJetJEC)[Item]);
+            E = (E - (*GenJetE)[Item]) * Smear + (*GenJetE)[Item];
+            return Value * E / E0;
+         }
+      }
+
+      if(Type == ObservableMGE)
+      {
+         ObservableType SubType = ObservableMG;
+         double MG = GetValueNoScale(Step, SubType, Index, Item, Shift, Smear);
+         SubType = ObservableJetE;
+         double E  = GetValueNoScale(Step, SubType, Index, Item, Shift, Smear);
+         return MG / E;
+      }
+
+      if(Type == ObservableJetM)
+      {
+         if(Step == Gen && Item < GenJetE->size())
+         {
+            double E = (*GenJetE)[Item];
+            double P = (*GenJetP)[Item];
+            double M2 = E * E - P * P;
+            if(M2 < 0)   M2 = 0;
+            double M = sqrt(M2);
+            return M;
+         }
+         if(Step == Reco && Item < RecoJetE->size())
+         {
+            double E = (*RecoJetE)[Item] * (1 + Shift * (*RecoJetJEU)[Item] / (*RecoJetJEC)[Item]);
+            double P = (*RecoJetP)[Item] * (1 + Shift * (*RecoJetJEU)[Item] / (*RecoJetJEC)[Item]);
+            double M2 = E * E - P * P;
+            if(M2 < 0)   M2 = 0;
+            double M = sqrt(M2);
+            return M;
+         }
+         if(Step == Matched && Item < MatchedJetE->size())
+         {
+            double E = (*MatchedJetE)[Item] * (1 + Shift * (*MatchedJetJEU)[Item] / (*MatchedJetJEC)[Item]);
+            double P = (*MatchedJetP)[Item] * (1 + Shift * (*MatchedJetJEU)[Item] / (*MatchedJetJEC)[Item]);
+            E = (E - (*GenJetE)[Item]) * Smear + (*GenJetE)[Item];
+            P = (P - (*GenJetP)[Item]) * Smear + (*GenJetP)[Item];
+            double M2 = E * E - P * P;
+            if(M2 < 0)   M2 = 0;
+            double M = sqrt(M2);
+            return M;
+         }
+      }
+
+      if(Type == ObservableJetME)
+      {
+         ObservableType SubType = ObservableJetM;
+         double M = GetValueNoScale(Step, SubType, Index, Item, Shift, Smear);
+         SubType = ObservableJetE;
+         double E = GetValueNoScale(Step, SubType, Index, Item, Shift, Smear);
+         return M / E;
+      }
+
       return -1;
    }
    int GetSimpleBin(ObservableStep Step, ObservableType &Type, int Index, int Item, vector<double> &Bins,
-      double Shift = 0, double Smear = 1)
+      double Shift = 0, double Smear = 1, double ExtraScale = 1, double Min = -99999, double Max = 99999)
    {
       if(Bins.size() == 0)
          return 0;
 
-      double Value = GetValue(Step, Type, Index, Item, Shift, Smear);
+      double Value = GetValue(Step, Type, Index, Item, Shift, Smear, ExtraScale);
+      if(Value < Min || Value > Max)
+         return -1;
       for(int i = 0; i < (int)Bins.size(); i++)
          if(Value < Bins[i])
             return i;
@@ -342,20 +471,33 @@ public:
    }
    int GetCompositeBin(ObservableStep Step,
       ObservableType &Type1, int Index1, int Item1, vector<double> &Bins1, double Shift1, double Smear1,
-      ObservableType &Type2, int Index2, int Item2, vector<double> &Bins2, double Shift2, double Smear2)
+         double ExtraScale1, double Min1, double Max1,
+      ObservableType &Type2, int Index2, int Item2, vector<double> &Bins2, double Shift2, double Smear2,
+         double ExtraScale2, double Min2, double Max2)
    {
       // #1 is the primary binning, and #2 is the additional binning
 
-      int SimpleBin1 = GetSimpleBin(Step, Type1, Index1, Item1, Bins1, Shift1, Smear1);
-      int SimpleBin2 = GetSimpleBin(Step, Type2, Index2, Item2, Bins2, Shift2, Smear2);
+      int SimpleBin1 = GetSimpleBin(Step, Type1, Index1, Item1, Bins1, Shift1, Smear1, ExtraScale1, Min1, Max1);
+      int SimpleBin2 = GetSimpleBin(Step, Type2, Index2, Item2, Bins2, Shift2, Smear2, ExtraScale2, Min2, Max2);
 
       if(Type2 == ObservableNone)
          return SimpleBin1;
 
       return SimpleBin2 * (Bins1.size() + 1) + SimpleBin1;
    }
-   double GetMatchedAngle(int Item)
+   double GetMatchedAngle(ObservableType Type, int Item)
    {
+      // Do we need something here for leading jets?  Maybe not since things are sorted...
+      // But we need something about the leading dijet sum since the index is not matched
+
+      if(Type == ObservableLeadingDiJetSumE)
+      {
+         if(MatchedJetAngle->size() < 2)   return 999;
+         if((*MatchedJetAngle)[0] < 0)     return 999;
+         if((*MatchedJetAngle)[1] < 0)     return 999;
+         return max((*MatchedJetAngle)[0], (*MatchedJetAngle)[1]);
+      }
+
       if(Item < 0)                          return 999;
       if(Item >= MatchedJetAngle->size())   return 999;
       return (*MatchedJetAngle)[Item];
@@ -383,6 +525,20 @@ int main(int argc, char *argv[])
    double BinningUncertaintyShift = CL.GetDouble("BinningUncertaintyShift", 0);
    double BinningUncertaintySmear = CL.GetDouble("BinningUncertaintySmear", 1);
    bool CheckMatchAngle           = CL.GetBool("CheckMatchAngle", true);
+   
+   double PrimaryGenMin           = CL.GetDouble("ObservableGenMin", -99999);
+   double PrimaryGenMax           = CL.GetDouble("ObservableGenMax", +99999);
+   double PrimaryRecoMin          = CL.GetDouble("ObservableRecoMin", -99999);
+   double PrimaryRecoMax          = CL.GetDouble("ObservableRecoMax", +99999);
+   double BinningGenMin           = CL.GetDouble("BinningGenMin", -99999);
+   double BinningGenMax           = CL.GetDouble("BinningGenMax", +99999);
+   double BinningRecoMin          = CL.GetDouble("BinningRecoMin", -99999);
+   double BinningRecoMax          = CL.GetDouble("BinningRecoMax", +99999);
+
+   bool DoJetAugmentation         = CL.GetBool("JetAugmentation", false);
+   double JetAugmentationMin      = CL.GetDouble("JetAugmentationMin", -1);
+   double JetAugmentationMax      = CL.GetDouble("JetAugmentationMax", -1);
+   vector<double> JetAugmentationRanges = CL.GetDoubleVector("JetAugmentationRanges", vector<double>());
 
    sort(PrimaryGenBins.begin(), PrimaryGenBins.end());
    sort(PrimaryRecoBins.begin(), PrimaryRecoBins.end());
@@ -390,25 +546,50 @@ int main(int argc, char *argv[])
    sort(BinningRecoBins.begin(), BinningRecoBins.end());
 
    ObservableType PrimaryType = ObservableNone;
-   if(Primary == "JetE")           PrimaryType = ObservableJetE;
-   if(Primary == "LeadingJetE")    PrimaryType = ObservableLeadingJetE;
-   if(Primary == "SubleadingJetE") PrimaryType = ObservableSubleadingJetE;
-   if(Primary == "JetP")           PrimaryType = ObservableJetP;
-   if(Primary == "JetZG")          PrimaryType = ObservableZG;
-   if(Primary == "ZG")             PrimaryType = ObservableZG;
-   if(Primary == "JetRG")          PrimaryType = ObservableRG;
-   if(Primary == "RG")             PrimaryType = ObservableRG;
-   if(Primary == "Thrust")         PrimaryType = ObservableThrust;
+   if(Primary == "JetE")              PrimaryType = ObservableJetE;
+   if(Primary == "LeadingJetE")       PrimaryType = ObservableLeadingJetE;
+   if(Primary == "SubleadingJetE")    PrimaryType = ObservableSubleadingJetE;
+   if(Primary == "LeadingDiJetE")     PrimaryType = ObservableLeadingDiJetE;
+   if(Primary == "LeadingDiJetSumE")  PrimaryType = ObservableLeadingDiJetSumE;
+   if(Primary == "JetP")              PrimaryType = ObservableJetP;
+   if(Primary == "JetZG")             PrimaryType = ObservableZG;
+   if(Primary == "ZG")                PrimaryType = ObservableZG;
+   if(Primary == "JetRG")             PrimaryType = ObservableRG;
+   if(Primary == "RG")                PrimaryType = ObservableRG;
+   if(Primary == "JetMG")             PrimaryType = ObservableMG;
+   if(Primary == "MG")                PrimaryType = ObservableMG;
+   if(Primary == "JetMGJetE")         PrimaryType = ObservableMGE;
+   if(Primary == "JetMGE")            PrimaryType = ObservableMGE;
+   if(Primary == "MGE")               PrimaryType = ObservableMGE;
+   if(Primary == "JetM")              PrimaryType = ObservableJetM;
+   if(Primary == "M")                 PrimaryType = ObservableJetM;
+   if(Primary == "JetMJetE")          PrimaryType = ObservableJetME;
+   if(Primary == "JetME")             PrimaryType = ObservableJetME;
+   if(Primary == "ME")                PrimaryType = ObservableJetME;
+   if(Primary == "Thrust")            PrimaryType = ObservableThrust;
+
    ObservableType BinningType = ObservableNone;
-   if(Binning == "JetE")           BinningType = ObservableJetE;
-   if(Binning == "LeadingJetE")    BinningType = ObservableLeadingJetE;
-   if(Binning == "SubleadingJetE") BinningType = ObservableSubleadingJetE;
-   if(Binning == "JetP")           BinningType = ObservableJetP;
-   if(Binning == "JetZG")          BinningType = ObservableZG;
-   if(Binning == "ZG")             BinningType = ObservableZG;
-   if(Binning == "JetRG")          BinningType = ObservableRG;
-   if(Binning == "RG")             BinningType = ObservableRG;
-   if(Binning == "Thrust")         BinningType = ObservableThrust;
+   if(Binning == "JetE")              BinningType = ObservableJetE;
+   if(Binning == "LeadingJetE")       BinningType = ObservableLeadingJetE;
+   if(Binning == "SubleadingJetE")    BinningType = ObservableSubleadingJetE;
+   if(Binning == "LeadingDiJetE")     BinningType = ObservableLeadingDiJetE;
+   if(Binning == "LeadingDiJetSumE")  BinningType = ObservableLeadingDiJetSumE;
+   if(Binning == "JetP")              BinningType = ObservableJetP;
+   if(Binning == "JetZG")             BinningType = ObservableZG;
+   if(Binning == "ZG")                BinningType = ObservableZG;
+   if(Binning == "JetRG")             BinningType = ObservableRG;
+   if(Binning == "RG")                BinningType = ObservableRG;
+   if(Binning == "JetMG")             BinningType = ObservableMG;
+   if(Binning == "MG")                BinningType = ObservableMG;
+   if(Binning == "JetMGJetE")         BinningType = ObservableMGE;
+   if(Binning == "JetMGE")            BinningType = ObservableMGE;
+   if(Binning == "MGE")               BinningType = ObservableMGE;
+   if(Binning == "JetM")              BinningType = ObservableJetM;
+   if(Binning == "M")                 BinningType = ObservableJetM;
+   if(Binning == "JetMJetE")          BinningType = ObservableJetME;
+   if(Binning == "JetME")             BinningType = ObservableJetME;
+   if(Binning == "ME")                BinningType = ObservableJetME;
+   if(Binning == "Thrust")            BinningType = ObservableThrust;
 
    if(BinningType == ObservableNone)
    {
@@ -419,8 +600,10 @@ int main(int argc, char *argv[])
    Assert(PrimaryType != ObservableNone, "Primary observable type is none");
    Assert(PrimaryType != ObservableZG || PrimaryIndex >= 0, "ZG chosen but index < 0");
    Assert(PrimaryType != ObservableRG || PrimaryIndex >= 0, "RG chosen but index < 0");
+   Assert(PrimaryType != ObservableMG || PrimaryIndex >= 0, "MG chosen but index < 0");
    Assert(BinningType != ObservableZG || BinningIndex >= 0, "ZG chosen but index < 0");
    Assert(BinningType != ObservableRG || BinningIndex >= 0, "RG chosen but index < 0");
+   Assert(BinningType != ObservableMG || BinningIndex >= 0, "MG chosen but index < 0");
 
    TFile FMC(MCFileName.c_str());
    TFile FData(DataFileName.c_str());
@@ -481,46 +664,81 @@ int main(int argc, char *argv[])
       for(int iJ = 0; iJ < NJet; iJ++)
       {
          int GenBin = MMC.GetCompositeBin(Gen,
-            PrimaryType, PrimaryIndex, iJ, PrimaryGenBins, 0, 1,
-            BinningType, BinningIndex, iJ, BinningGenBins, 0, 1);
+            PrimaryType, PrimaryIndex, iJ, PrimaryGenBins, 0, 1, 1, PrimaryGenMin, PrimaryGenMax,
+            BinningType, BinningIndex, iJ, BinningGenBins, 0, 1, 1, BinningGenMin, BinningGenMax);
          HMCGen.Fill(GenBin);
       }
 
-      NJet = MMC.GetItemCount(Gen, PrimaryType);
+      ObservableType PrimaryMatrixType = PrimaryType;
+      ObservableType BinningMatrixType = BinningType;
+      // if(PrimaryType == ObservableLeadingDiJetE)
+      //    PrimaryMatrixType = ObservableJetE;
+      // if(BinningType == ObservableLeadingDiJetE)
+      //    BinningMatrixType = ObservableJetE;
+
+      NJet = MMC.GetItemCount(Gen, PrimaryMatrixType);
       for(int iJ = 0; iJ < NJet; iJ++)
       {
-         double Angle = MMC.GetMatchedAngle(iJ);
+         double Angle = MMC.GetMatchedAngle(PrimaryMatrixType, iJ);
          if(CheckMatchAngle == true && (Angle > 0.2 || Angle < 0))
             continue;
 
          int GenBin = MMC.GetCompositeBin(Gen,
-            PrimaryType, PrimaryIndex, iJ, PrimaryGenBins, 0, 1,
-            BinningType, BinningIndex, iJ, BinningGenBins, 0, 1);
+            PrimaryMatrixType, PrimaryIndex, iJ, PrimaryGenBins, 0, 1, 1, PrimaryGenMin, PrimaryGenMax,
+            BinningMatrixType, BinningIndex, iJ, BinningGenBins, 0, 1, 1, BinningGenMin, BinningGenMax);
          int MatchedBin = MMC.GetCompositeBin(Matched,
-            PrimaryType, PrimaryIndex, iJ, PrimaryRecoBins, PrimaryUncertaintyShift, PrimaryUncertaintySmear,
-            BinningType, BinningIndex, iJ, BinningRecoBins, BinningUncertaintyShift, BinningUncertaintySmear);
-         
+            PrimaryMatrixType, PrimaryIndex, iJ, PrimaryRecoBins, PrimaryUncertaintyShift, PrimaryUncertaintySmear, 1,
+               PrimaryRecoMin, PrimaryRecoMax,
+            BinningMatrixType, BinningIndex, iJ, BinningRecoBins, BinningUncertaintyShift, BinningUncertaintySmear, 1,
+               BinningRecoMin, BinningRecoMax);
+        
          int MatchedGenBin = MMC.GetCompositeBin(Matched,
-            PrimaryType, PrimaryIndex, iJ, PrimaryGenBins, PrimaryUncertaintyShift, PrimaryUncertaintySmear,
-            BinningType, BinningIndex, iJ, BinningGenBins, BinningUncertaintyShift, BinningUncertaintySmear);
+            PrimaryMatrixType, PrimaryIndex, iJ, PrimaryGenBins, PrimaryUncertaintyShift, PrimaryUncertaintySmear, 1,
+               PrimaryGenMin, PrimaryGenMax,
+            BinningMatrixType, BinningIndex, iJ, BinningGenBins, BinningUncertaintyShift, BinningUncertaintySmear, 1,
+               BinningGenMin, BinningGenMax);
 
          HMCMatched.Fill(MatchedBin);
          HResponse.Fill(MatchedBin, GenBin);
          
          HMCMatchedGenBin.Fill(MatchedGenBin);
+
+         if(DoJetAugmentation == true)
+         {
+            double GenValue = MMC.GetValue(Gen, PrimaryMatrixType, PrimaryIndex, iJ, 0, 1, 1);
+            if(GenValue > JetAugmentationMin && GenValue < JetAugmentationMax)
+            {
+               for(int iA = 0; iA + 1 < (int)JetAugmentationRanges.size(); iA++)
+               {
+                  double Scale = (JetAugmentationRanges[iA+1] + JetAugmentationRanges[iA])
+                     / (JetAugmentationMin + JetAugmentationMax);
+
+                  int NewGenBin = MMC.GetCompositeBin(Gen,
+                     PrimaryMatrixType, PrimaryIndex, iJ, PrimaryGenBins, 0, 1, Scale, PrimaryGenMin, PrimaryGenMax,
+                     BinningMatrixType, BinningIndex, iJ, BinningGenBins, 0, 1, Scale, BinningGenMin, BinningGenMax);
+                  int NewMatchedBin = MMC.GetCompositeBin(Matched,
+                     PrimaryMatrixType, PrimaryIndex, iJ, PrimaryRecoBins, PrimaryUncertaintyShift, PrimaryUncertaintySmear,
+                        Scale, PrimaryRecoMin, PrimaryRecoMax,
+                     BinningMatrixType, BinningIndex, iJ, BinningRecoBins, BinningUncertaintyShift, BinningUncertaintySmear,
+                        Scale, BinningRecoMin, BinningRecoMax);
+         
+                  HResponse.Fill(NewMatchedBin, NewGenBin);
+                }
+            }
+         }
       }
 
       NJet = MMC.GetItemCount(Reco, PrimaryType);
       for(int iJ = 0; iJ < NJet; iJ++)
       {
          int RecoBin = MMC.GetCompositeBin(Reco,
-            PrimaryType, PrimaryIndex, iJ, PrimaryRecoBins, 0, 1,
-            BinningType, BinningIndex, iJ, BinningRecoBins, 0, 1);
+            PrimaryType, PrimaryIndex, iJ, PrimaryRecoBins, 0, 1, 1, PrimaryRecoMin, PrimaryRecoMax,
+            BinningType, BinningIndex, iJ, BinningRecoBins, 0, 1, 1, BinningRecoMin, BinningRecoMax);
          HMCReco.Fill(RecoBin);
          
          int RecoGenBin = MMC.GetCompositeBin(Reco,
-            PrimaryType, PrimaryIndex, iJ, PrimaryGenBins, 0, 1,
-            BinningType, BinningIndex, iJ, BinningGenBins, 0, 1);
+            PrimaryType, PrimaryIndex, iJ, PrimaryGenBins, 0, 1, 1, PrimaryGenMin, PrimaryGenMax,
+            BinningType, BinningIndex, iJ, BinningGenBins, 0, 1, 1, BinningGenMin, BinningGenMax);
          HMCRecoGenBin.Fill(RecoGenBin);
       }
    }
@@ -535,8 +753,8 @@ int main(int argc, char *argv[])
       for(int iJ = 0; iJ < NJet; iJ++)
       {
          int RecoBin = MData.GetCompositeBin(Reco,
-            PrimaryType, PrimaryIndex, iJ, PrimaryRecoBins, 0, 1,
-            BinningType, BinningIndex, iJ, BinningRecoBins, 0, 1);
+            PrimaryType, PrimaryIndex, iJ, PrimaryRecoBins, 0, 1, 1, PrimaryRecoMin, PrimaryRecoMax,
+            BinningType, BinningIndex, iJ, BinningRecoBins, 0, 1, 1, BinningRecoMin, BinningRecoMax);
          HDataReco.Fill(RecoBin);
       }
    }

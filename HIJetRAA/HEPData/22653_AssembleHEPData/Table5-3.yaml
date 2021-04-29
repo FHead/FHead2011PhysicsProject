@@ -18,16 +18,16 @@ dependent_variables:
   - value: '-'
   - value: '-'
   - value: '-'
-  - value: 0.000325
+  - value: 0.000162
     errors:
-    - {label: stat, asymerror: {minus: -0.000011, plus: 0.000011}}
-    - {label: sys, asymerror: {minus: -0.000026, plus: 0.000026}}
-    - {label: global, asymerror: {minus: -0.000033, plus: 0.000033}}
-  - value: 0.0000184
+    - {label: stat, asymerror: {minus: -0.000008, plus: 0.000008}}
+    - {label: sys, asymerror: {minus: -0.000024, plus: 0.000024}}
+    - {label: global, asymerror: {minus: -0.000016, plus: 0.000016}}
+  - value: 0.0000092
     errors:
-    - {label: stat, asymerror: {minus: -0.0000012, plus: 0.0000012}}
-    - {label: sys, asymerror: {minus: -0.0000019, plus: 0.0000019}}
-    - {label: global, asymerror: {minus: -0.0000019, plus: 0.0000019}}
+    - {label: stat, asymerror: {minus: -0.0000008, plus: 0.0000008}}
+    - {label: sys, asymerror: {minus: -0.0000016, plus: 0.0000016}}
+    - {label: global, asymerror: {minus: -0.0000009, plus: 0.0000009}}
 - header: {name: d^2 sigma / d PT d ETA}
   qualifiers:
   - {name: ABS(ETA), value: 0.0-2.0}
@@ -38,21 +38,21 @@ dependent_variables:
   values:
   - value: '-'
   - value: '-'
-  - value: 0.00221
+  - value: 0.00111
     errors:
-    - {label: stat, asymerror: {minus: -0.00003, plus: 0.00003}}
-    - {label: sys, asymerror: {minus: -0.00026, plus: 0.00026}}
-    - {label: global, asymerror: {minus: -0.00011, plus: 0.00011}}
-  - value: 0.000321
+    - {label: stat, asymerror: {minus: -0.00002, plus: 0.00002}}
+    - {label: sys, asymerror: {minus: -0.00019, plus: 0.00019}}
+    - {label: global, asymerror: {minus: -0.00006, plus: 0.00006}}
+  - value: 0.000161
     errors:
-    - {label: stat, asymerror: {minus: -0.000011, plus: 0.000011}}
-    - {label: sys, asymerror: {minus: -0.000037, plus: 0.000037}}
-    - {label: global, asymerror: {minus: -0.000016, plus: 0.000016}}
-  - value: 0.0000205
+    - {label: stat, asymerror: {minus: -0.000008, plus: 0.000008}}
+    - {label: sys, asymerror: {minus: -0.000028, plus: 0.000028}}
+    - {label: global, asymerror: {minus: -0.000008, plus: 0.000008}}
+  - value: 0.0000102
     errors:
-    - {label: stat, asymerror: {minus: -0.0000013, plus: 0.0000013}}
-    - {label: sys, asymerror: {minus: -0.0000023, plus: 0.0000023}}
-    - {label: global, asymerror: {minus: -0.0000010, plus: 0.0000010}}
+    - {label: stat, asymerror: {minus: -0.0000009, plus: 0.0000009}}
+    - {label: sys, asymerror: {minus: -0.0000017, plus: 0.0000017}}
+    - {label: global, asymerror: {minus: -0.0000005, plus: 0.0000005}}
 - header: {name: d^2 sigma / d PT d ETA}
   qualifiers:
   - {name: ABS(ETA), value: 0.0-2.0}
@@ -62,16 +62,16 @@ dependent_variables:
   - {name: R, value: 0.4}
   values:
   - value: '-'
-  - value: 0.0111
+  - value: 0.00553
     errors:
-    - {label: stat, asymerror: {minus: -0.0002, plus: 0.0002}}
-    - {label: sys, asymerror: {minus: -0.0012, plus: 0.0012}}
-    - {label: global, asymerror: {minus: -0.0003, plus: 0.0003}}
-  - value: 0.00264
+    - {label: stat, asymerror: {minus: -0.00011, plus: 0.00011}}
+    - {label: sys, asymerror: {minus: -0.00085, plus: 0.00085}}
+    - {label: global, asymerror: {minus: -0.00014, plus: 0.00014}}
+  - value: 0.00132
     errors:
-    - {label: stat, asymerror: {minus: -0.00006, plus: 0.00006}}
-    - {label: sys, asymerror: {minus: -0.00032, plus: 0.00032}}
-    - {label: global, asymerror: {minus: -0.00007, plus: 0.00007}}
+    - {label: stat, asymerror: {minus: -0.00004, plus: 0.00004}}
+    - {label: sys, asymerror: {minus: -0.00023, plus: 0.00023}}
+    - {label: global, asymerror: {minus: -0.00003, plus: 0.00003}}
   - value: '-'
   - value: '-'
 - header: {name: d^2 sigma / d PT d ETA}
@@ -82,21 +82,21 @@ dependent_variables:
   - {name: CENTRALITY, units: pct, value: 50-90}
   - {name: R, value: 0.4}
   values:
-  - value: 0.0424
+  - value: 0.0212
     errors:
-    - {label: stat, asymerror: {minus: -0.0006, plus: 0.0006}}
-    - {label: sys, asymerror: {minus: -0.0052, plus: 0.0052}}
-    - {label: global, asymerror: {minus: -0.0008, plus: 0.0008}}
-  - value: 0.0116
+    - {label: stat, asymerror: {minus: -0.0004, plus: 0.0004}}
+    - {label: sys, asymerror: {minus: -0.0037, plus: 0.0037}}
+    - {label: global, asymerror: {minus: -0.0004, plus: 0.0004}}
+  - value: 0.0058
     errors:
-    - {label: stat, asymerror: {minus: -0.0003, plus: 0.0003}}
-    - {label: sys, asymerror: {minus: -0.0015, plus: 0.0015}}
-    - {label: global, asymerror: {minus: -0.0002, plus: 0.0002}}
-  - value: 0.00258
+    - {label: stat, asymerror: {minus: -0.0002, plus: 0.0002}}
+    - {label: sys, asymerror: {minus: -0.0011, plus: 0.0011}}
+    - {label: global, asymerror: {minus: -0.0001, plus: 0.0001}}
+  - value: 0.00129
     errors:
-    - {label: stat, asymerror: {minus: -0.00010, plus: 0.00010}}
-    - {label: sys, asymerror: {minus: -0.00036, plus: 0.00036}}
-    - {label: global, asymerror: {minus: -0.00005, plus: 0.00005}}
+    - {label: stat, asymerror: {minus: -0.00007, plus: 0.00007}}
+    - {label: sys, asymerror: {minus: -0.00026, plus: 0.00026}}
+    - {label: global, asymerror: {minus: -0.00002, plus: 0.00002}}
   - value: '-'
   - value: '-'
 - header: {name: d^2 sigma / d PT d ETA}
@@ -107,28 +107,28 @@ dependent_variables:
   - {name: CENTRALITY, units: pct, value: Inclusive}
   - {name: R, value: 0.4}
   values:
-  - value: 0.0529
+  - value: 0.0264
     errors:
     - {label: stat, asymerror: {minus: -0.0001, plus: 0.0001}}
-    - {label: sys, asymerror: {minus: -0.0053, plus: 0.0053}}
-    - {label: global, asymerror: {minus: -0.0012, plus: 0.0012}}
-  - value: 0.0143
+    - {label: sys, asymerror: {minus: -0.0038, plus: 0.0038}}
+    - {label: global, asymerror: {minus: -0.0006, plus: 0.0006}}
+  - value: 0.0071
     errors:
-    - {label: stat, asymerror: {minus: -0.0001, plus: 0.0001}}
-    - {label: sys, asymerror: {minus: -0.0015, plus: 0.0015}}
-    - {label: global, asymerror: {minus: -0.0003, plus: 0.0003}}
-  - value: 0.00313
+    - {label: stat, asymerror: {minus: -0.0000, plus: 0.0000}}
+    - {label: sys, asymerror: {minus: -0.0011, plus: 0.0011}}
+    - {label: global, asymerror: {minus: -0.0002, plus: 0.0002}}
+  - value: 0.00156
     errors:
-    - {label: stat, asymerror: {minus: -0.00002, plus: 0.00002}}
-    - {label: sys, asymerror: {minus: -0.00036, plus: 0.00036}}
-    - {label: global, asymerror: {minus: -0.00007, plus: 0.00007}}
-  - value: 0.000461
+    - {label: stat, asymerror: {minus: -0.00001, plus: 0.00001}}
+    - {label: sys, asymerror: {minus: -0.00026, plus: 0.00026}}
+    - {label: global, asymerror: {minus: -0.00004, plus: 0.00004}}
+  - value: 0.000231
     errors:
-    - {label: stat, asymerror: {minus: -0.000006, plus: 0.000006}}
-    - {label: sys, asymerror: {minus: -0.000059, plus: 0.000059}}
-    - {label: global, asymerror: {minus: -0.000011, plus: 0.000011}}
-  - value: 0.0000248
+    - {label: stat, asymerror: {minus: -0.000005, plus: 0.000005}}
+    - {label: sys, asymerror: {minus: -0.000042, plus: 0.000042}}
+    - {label: global, asymerror: {minus: -0.000005, plus: 0.000005}}
+  - value: 0.0000124
     errors:
-    - {label: stat, asymerror: {minus: -0.0000007, plus: 0.0000007}}
-    - {label: sys, asymerror: {minus: -0.0000033, plus: 0.0000033}}
-    - {label: global, asymerror: {minus: -0.0000006, plus: 0.0000006}}
+    - {label: stat, asymerror: {minus: -0.0000005, plus: 0.0000005}}
+    - {label: sys, asymerror: {minus: -0.0000024, plus: 0.0000024}}
+    - {label: global, asymerror: {minus: -0.0000003, plus: 0.0000003}}

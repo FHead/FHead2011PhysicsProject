@@ -5,12 +5,12 @@ additional_resources:
    - {location: "http://cms-results.web.cern.ch/cms-results/public-results/publications/HIN-18-014/", description: "Web page with auxiliary material"}
 hepdata_doi: https://doi.org/999/999
 record_ids:
-   - {id: 999, type: arxiv}
-   - {id: 999, type: inspire}
-   - {id: 999, type: cds}
+   - {id: 2102.13080, type: arxiv}
+   - {id: 1848440, type: inspire}
+   - {id: 2753048, type: cds}
    - {id: 999, type: durham}
 comment: |
-   High transverse momentum jet production in lead-lead (PbPb) and pp (pp) collisions at a nucleon-nucleon center-of-mass energy of 5.02 TeV is studied with the CMS detector at the LHC, using a PbPb (pp) data sample corresponding to an integrated luminosity of 404 mub^−1 (27.4 pb−1). Jets are reconstructed using the anti-kT algorithm with 6 distance parameters R between 0.2 and 1.0. The measurements are performed using jets with transverse momentum greater than 200 GeV and in a pseudorapidity window of |eta| < 2. To reveal the medium modification of the jet spectra in PbPb collisions, jet nuclear modification factors (RAA) are extracted as functions of the PbPb collision centrality and R. For the most central collisions a strong suppression is observed for high-pT jets reconstructed with all distance parameters. The dependence of jet suppression on R is expected to be sensitive to both the jet energy loss mechanism and the medium response. These results are compared to the predictions from quenched jet event generators, theoretical models, and analytical calculations.
+   Jet production in lead-lead (PbPb) and proton-proton (pp) collisions at a nucleon-nucleon center-of-mass energy of 5.02 TeV is studied with the CMS detector at the LHC, using PbPb and pp data samples corresponding to integrated luminosities of 404/μb and 27.4/pb, respectively. Jets with different areas are reconstructed using the anti-kT algorithm by varying the distance parameter R. The measurements are performed using jets with transverse momenta (pT) greater than 200 GeV and in a pseudorapidity range of |eta|< 2. To reveal the medium modification of the jet spectra in PbPb collisions, the properly normalized ratio of spectra from PbPb and pp data is used to extract jet nuclear modification factors as functions of the PbPb collision centrality, pT and, for the first time, as a function of R up to 1.0. For the most central collisions, a strong suppression is observed for high-pT jets reconstructed with all distance parameters, implying that a significant amount of jet energy is scattered to large angles. The dependence of jet suppression on R is expected to be sensitive to both the jet energy loss mechanism and the medium response, and so the data are compared to several modern event generators and analytic calculations. The models considered do not fully reproduce the data.
 
 ---
 

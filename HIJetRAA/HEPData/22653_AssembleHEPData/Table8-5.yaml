@@ -18,23 +18,23 @@ dependent_variables:
   - value: 0.998
     errors:
     - {label: stat, asymerror: {minus: -0.058, plus: 0.058}}
-    - {label: sys, asymerror: {minus: -0.044, plus: 0.044}}
+    - {label: sys, asymerror: {minus: -0.031, plus: 0.031}}
   - value: 0.933
     errors:
     - {label: stat, asymerror: {minus: -0.066, plus: 0.066}}
-    - {label: sys, asymerror: {minus: -0.064, plus: 0.064}}
+    - {label: sys, asymerror: {minus: -0.041, plus: 0.041}}
   - value: 0.948
     errors:
     - {label: stat, asymerror: {minus: -0.082, plus: 0.082}}
-    - {label: sys, asymerror: {minus: -0.077, plus: 0.077}}
-  - value: 0.99
+    - {label: sys, asymerror: {minus: -0.050, plus: 0.050}}
+  - value: 0.987
     errors:
-    - {label: stat, asymerror: {minus: -0.09, plus: 0.09}}
-    - {label: sys, asymerror: {minus: -0.11, plus: 0.11}}
+    - {label: stat, asymerror: {minus: -0.090, plus: 0.090}}
+    - {label: sys, asymerror: {minus: -0.069, plus: 0.069}}
   - value: 1.02
     errors:
     - {label: stat, asymerror: {minus: -0.10, plus: 0.10}}
-    - {label: sys, asymerror: {minus: -0.18, plus: 0.18}}
+    - {label: sys, asymerror: {minus: -0.11, plus: 0.11}}
 - header: {name: RAA(R) / RAA(R=0.2)}
   qualifiers:
   - {name: ABS(ETA), value: 0.0-2.0}
@@ -46,23 +46,23 @@ dependent_variables:
   - value: 0.915
     errors:
     - {label: stat, asymerror: {minus: -0.051, plus: 0.051}}
-    - {label: sys, asymerror: {minus: -0.035, plus: 0.035}}
+    - {label: sys, asymerror: {minus: -0.025, plus: 0.025}}
   - value: 0.883
     errors:
     - {label: stat, asymerror: {minus: -0.059, plus: 0.059}}
-    - {label: sys, asymerror: {minus: -0.064, plus: 0.064}}
+    - {label: sys, asymerror: {minus: -0.040, plus: 0.040}}
   - value: 0.860
     errors:
     - {label: stat, asymerror: {minus: -0.071, plus: 0.071}}
-    - {label: sys, asymerror: {minus: -0.085, plus: 0.085}}
+    - {label: sys, asymerror: {minus: -0.052, plus: 0.052}}
   - value: 0.818
     errors:
     - {label: stat, asymerror: {minus: -0.072, plus: 0.072}}
-    - {label: sys, asymerror: {minus: -0.071, plus: 0.071}}
-  - value: 0.82
+    - {label: sys, asymerror: {minus: -0.052, plus: 0.052}}
+  - value: 0.824
     errors:
-    - {label: stat, asymerror: {minus: -0.08, plus: 0.08}}
-    - {label: sys, asymerror: {minus: -0.11, plus: 0.11}}
+    - {label: stat, asymerror: {minus: -0.077, plus: 0.077}}
+    - {label: sys, asymerror: {minus: -0.076, plus: 0.076}}
 - header: {name: RAA(R) / RAA(R=0.2)}
   qualifiers:
   - {name: ABS(ETA), value: 0.0-2.0}

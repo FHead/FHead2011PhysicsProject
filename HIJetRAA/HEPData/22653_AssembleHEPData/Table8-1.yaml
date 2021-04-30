@@ -31,7 +31,7 @@ dependent_variables:
   - value: 1.006
     errors:
     - {label: stat, asymerror: {minus: -0.004, plus: 0.004}}
-    - {label: sys, asymerror: {minus: -0.067, plus: 0.067}}
+    - {label: sys, asymerror: {minus: -0.047, plus: 0.047}}
   - value: '-'
   - value: '-'
   - value: '-'
@@ -47,7 +47,7 @@ dependent_variables:
   - value: 1.003
     errors:
     - {label: stat, asymerror: {minus: -0.007, plus: 0.007}}
-    - {label: sys, asymerror: {minus: -0.048, plus: 0.048}}
+    - {label: sys, asymerror: {minus: -0.034, plus: 0.034}}
   - value: '-'
   - value: '-'
   - value: '-'
@@ -63,14 +63,14 @@ dependent_variables:
   - value: 1.009
     errors:
     - {label: stat, asymerror: {minus: -0.012, plus: 0.012}}
-    - {label: sys, asymerror: {minus: -0.062, plus: 0.062}}
+    - {label: sys, asymerror: {minus: -0.044, plus: 0.044}}
   - value: 0.943
     errors:
     - {label: stat, asymerror: {minus: -0.014, plus: 0.014}}
-    - {label: sys, asymerror: {minus: -0.055, plus: 0.055}}
+    - {label: sys, asymerror: {minus: -0.039, plus: 0.039}}
   - value: 1.022
     errors:
     - {label: stat, asymerror: {minus: -0.018, plus: 0.018}}
-    - {label: sys, asymerror: {minus: -0.040, plus: 0.040}}
+    - {label: sys, asymerror: {minus: -0.028, plus: 0.028}}
   - value: '-'
   - value: '-'

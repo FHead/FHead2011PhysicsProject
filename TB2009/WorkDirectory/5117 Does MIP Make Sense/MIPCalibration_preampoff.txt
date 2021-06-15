@@ -1,1 +1,0 @@
-/afs/cern.ch/user/c/chenyi/CMSSW_2_2_13/work/5115 MIP Preamp Off/MIPCalibration_preampoff.txt

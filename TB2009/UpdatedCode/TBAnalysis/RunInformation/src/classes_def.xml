@@ -1,6 +1,0 @@
-<lcgdict>
-   <class name = "RunInformation" />
-   <class name = "edm::Wrapper<RunInformation>" />
-   <class name = "std::vector<std::pair<double,double> >" />
-   <class name = "edm::Wrapper<std::vector<std::pair<double,double> > >" />
-</lcgdict>

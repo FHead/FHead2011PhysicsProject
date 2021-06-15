@@ -1,1 +1,0 @@
-../5226 Preamp off gain/MIP_EarlyRejection_Median_PreampOff.txt

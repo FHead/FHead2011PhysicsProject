@@ -1,1 +1,0 @@
-../5222_Adc_Map_PedestalSubtraction/FinalAdcMapping_All.txt

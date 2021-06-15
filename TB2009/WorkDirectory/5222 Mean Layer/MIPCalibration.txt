@@ -1,1 +1,0 @@
-../5121 MIP File Rerun With AdcMap/MIPCalibration_WithAdcMap.txt

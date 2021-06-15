@@ -1,1 +1,0 @@
-../EssentialFiles/PedestalMean_108535.txt

@@ -1,2 +1,0 @@
-# conditions to be used as a default set
-include "CalibCalorimetry/HcalPlugins/data/default_text_conditions.cfi"

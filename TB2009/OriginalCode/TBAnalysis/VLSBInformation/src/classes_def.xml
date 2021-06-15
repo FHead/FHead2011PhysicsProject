@@ -1,6 +1,0 @@
-<lcgdict>
-   <class name = "VLSBInformation" />
-   <class name = "edm::Wrapper<VLSBInformation>" />
-   <class name = "std::vector<std::pair<double,double> >" />
-   <class name = "edm::Wrapper<std::vector<std::pair<double,double> > >" />
-</lcgdict>

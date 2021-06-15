@@ -1,1 +1,0 @@
-RunPointH5.sh

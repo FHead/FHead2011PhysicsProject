@@ -1,1 +1,0 @@
-../11731_WithDeltaFunctionExtension/HybridCalculator.h

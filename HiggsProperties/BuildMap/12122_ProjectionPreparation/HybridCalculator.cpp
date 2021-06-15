@@ -1,1 +1,0 @@
-../12122_RefineDeltaFunction/HybridCalculator.cpp

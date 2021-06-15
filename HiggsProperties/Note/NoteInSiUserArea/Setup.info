@@ -1,3 +1,0 @@
-export CVSROOT=:gserver:cmscvs.cern.ch:/local/reps/CMSSW
-cvs co -d notes UserCode/sixie/doc/20120810_HLLMatrixElement
-

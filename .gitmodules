@@ -10,3 +10,6 @@
 [submodule "PPPrepration2017"]
 	path = PPPrepration2017
 	url = https://github.com/FHead/PhysicsPPPreparation2017
+[submodule "HiggsProperties"]
+	path = HiggsProperties
+	url = https://github.com/FHead/PhysicsHiggsProperties

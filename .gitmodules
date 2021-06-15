@@ -16,3 +16,6 @@
 [submodule "JECGlobalFit"]
 	path = JECGlobalFit
 	url = https://github.com/FHead/PhysicsJECGlobalFit
+[submodule "LQSearch"]
+	path = LQSearch
+	url = https://github.com/FHead/PhysicsLQSearch

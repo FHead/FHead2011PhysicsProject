@@ -4,3 +4,6 @@
 [submodule "Vecbos"]
 	path = Vecbos
 	url = https://github.com/FHead/PhysicsVecbos
+[submodule "PAPreparation2016"]
+	path = PAPreparation2016
+	url = https://github.com/FHead/PhysicsPAPreparation2016

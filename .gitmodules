@@ -7,3 +7,6 @@
 [submodule "PAPreparation2016"]
 	path = PAPreparation2016
 	url = https://github.com/FHead/PhysicsPAPreparation2016
+[submodule "PPPrepration2017"]
+	path = PPPrepration2017
+	url = https://github.com/FHead/PhysicsPPPreparation2017

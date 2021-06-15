@@ -19,3 +19,6 @@
 [submodule "LQSearch"]
 	path = LQSearch
 	url = https://github.com/FHead/PhysicsLQSearch
+[submodule "EEJet"]
+	path = EEJet
+	url = https://github.com/FHead/PhysicsEEJet

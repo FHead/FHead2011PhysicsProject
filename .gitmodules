@@ -1,3 +1,6 @@
 [submodule "TB2009"]
 	path = TB2009
 	url = https://github.com/FHead/PhysicsTB2009
+[submodule "Vecbos"]
+	path = Vecbos
+	url = https://github.com/FHead/PhysicsVecbos

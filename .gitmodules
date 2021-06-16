@@ -28,3 +28,6 @@
 [submodule "HIJetMass"]
 	path = HIJetMass
 	url = https://github.com/FHead/PhysicsHIJetMass
+[submodule "FCCeeHiggsMass"]
+	path = FCCeeHiggsMass
+	url = https://github.com/FHead/PhysicsFCCeeHiggsMass

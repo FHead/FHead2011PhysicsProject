@@ -86,3 +86,7 @@
 	path = HIJetReco2018
 	url = https://github.com/FHead/PhysicsHIJetReco2018
 	branch = master
+[submodule "MachineLearning"]
+	path = MachineLearning
+	url = https://github.com/FHead/PhysicsMachineLearning
+	branch = master

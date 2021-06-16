@@ -58,3 +58,7 @@
 	path = HIJetML
 	url = https://github.com/FHead/PhysicsHIJetML
 	branch = master
+[submodule "L1TriggerUpgrade"]
+	path = L1TriggerUpgrade
+	url = https://github.com/FHead/PhysicsL1TriggerUpdate
+	branch = master

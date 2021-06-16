@@ -54,3 +54,7 @@
 	path = StatisticalFacts
 	url = https://github.com/FHead/PhysicsStatisticalFacts
    branch = master
+[submodule "HIJetML"]
+	path = HIJetML
+	url = https://github.com/FHead/PhysicsHIJetML
+	branch = master

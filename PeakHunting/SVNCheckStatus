@@ -1,1 +1,0 @@
-svn status | grep -v "a.out" | grep -v root$ | grep -v pdf$ | grep -v "    Samples"

@@ -98,3 +98,7 @@
 	path = PeakHunting
 	url = https://github.com/FHead/PhysicsPeakHunting
 	branch = master
+[submodule "WTauNuCrossSection"]
+	path = WTauNuCrossSection
+	url = https://github.com/FHead/PhysicsWTauNuCrossSection
+	branch = master

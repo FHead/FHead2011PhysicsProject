@@ -1,2 +1,0 @@
-export FASTJET=/cvmfs/cms.cern.ch/slc5_amd64_gcc481/external/fastjet/3.0.3-cms2/bin/
-CompileRootMacro SplittingToys.cpp a.out `$FASTJET/fastjet-config --cxxflags` `$FASTJET/fastjet-config --libs`

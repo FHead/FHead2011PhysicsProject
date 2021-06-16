@@ -27,4 +27,4 @@ git submodule add $2 $1
 git add .gitmodules
 git commit -m "Added $1 as submodule"
 
-
+git remote rm submodule

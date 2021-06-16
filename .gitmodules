@@ -25,3 +25,6 @@
 [submodule "HI2018HLT"]
 	path = HI2018HLT
 	url = https://github.com/FHead/PhysicsHI2018HLT
+[submodule "HIJetMass"]
+	path = HIJetMass
+	url = https://github.com/FHead/PhysicsHIJetMass

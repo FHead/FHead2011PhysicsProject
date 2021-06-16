@@ -34,3 +34,6 @@
 [submodule "JetShapeExploration"]
 	path = JetShapeExploration
 	url = https://github.com/FHead/PhysicsJetShapeExploration
+[submodule "HIJetSDCount"]
+	path = HIJetSDCount
+	url = https://github.com/FHead/PhysicsHIJetSDCount

@@ -70,3 +70,7 @@
 	path = JetEnergyCorrection
 	url = https://github.com/FHead/PhysicsJetEnergyCorrection
 	branch = master
+[submodule "JetScape"]
+	path = JetScape
+	url = https://github.com/FHead/PhysicsJetScape
+	branch = master

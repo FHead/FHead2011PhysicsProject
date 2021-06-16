@@ -1,59 +1,59 @@
 [submodule "TB2009"]
 	path = TB2009
-   url = https://github.com/FHead/PhysicsTB2009
-   branch = master
+	url = https://github.com/FHead/PhysicsTB2009
+	branch = master
 [submodule "Vecbos"]
 	path = Vecbos
 	url = https://github.com/FHead/PhysicsVecbos
-   branch = master
+	branch = master
 [submodule "PAPreparation2016"]
 	path = PAPreparation2016
 	url = https://github.com/FHead/PhysicsPAPreparation2016
-   branch = master
+	branch = master
 [submodule "PPPrepration2017"]
 	path = PPPrepration2017
 	url = https://github.com/FHead/PhysicsPPPreparation2017
-   branch = master
+	branch = master
 [submodule "HiggsProperties"]
 	path = HiggsProperties
 	url = https://github.com/FHead/PhysicsHiggsProperties
-   branch = master
+	branch = master
 [submodule "JECGlobalFit"]
 	path = JECGlobalFit
 	url = https://github.com/FHead/PhysicsJECGlobalFit
-   branch = master
+	branch = master
 [submodule "LQSearch"]
 	path = LQSearch
 	url = https://github.com/FHead/PhysicsLQSearch
-   branch = master
+	branch = master
 [submodule "EEJet"]
 	path = EEJet
 	url = https://github.com/FHead/PhysicsEEJet
-   branch = master
+	branch = master
 [submodule "HI2018HLT"]
 	path = HI2018HLT
 	url = https://github.com/FHead/PhysicsHI2018HLT
-   branch = master
+	branch = master
 [submodule "HIJetMass"]
 	path = HIJetMass
 	url = https://github.com/FHead/PhysicsHIJetMass
-   branch = master
+	branch = master
 [submodule "FCCeeHiggsMass"]
 	path = FCCeeHiggsMass
 	url = https://github.com/FHead/PhysicsFCCeeHiggsMass
-   branch = master
+	branch = master
 [submodule "JetShapeExploration"]
 	path = JetShapeExploration
 	url = https://github.com/FHead/PhysicsJetShapeExploration
-   branch = master
+	branch = master
 [submodule "HIJetSDCount"]
 	path = HIJetSDCount
 	url = https://github.com/FHead/PhysicsHIJetSDCount
-   branch = master
+	branch = master
 [submodule "StatisticalFacts"]
 	path = StatisticalFacts
 	url = https://github.com/FHead/PhysicsStatisticalFacts
-   branch = master
+	branch = master
 [submodule "HIJetML"]
 	path = HIJetML
 	url = https://github.com/FHead/PhysicsHIJetML

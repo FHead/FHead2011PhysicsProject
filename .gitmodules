@@ -102,3 +102,7 @@
 	path = WTauNuCrossSection
 	url = https://github.com/FHead/PhysicsWTauNuCrossSection
 	branch = master
+[submodule "Notes"]
+	path = Notes
+	url = https://github.com/FHead/PhysicsNotes
+	branch = master

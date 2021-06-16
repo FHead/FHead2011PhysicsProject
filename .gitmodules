@@ -66,3 +66,7 @@
 	path = L1TriggerUpgrade2018
 	url = https://github.com/FHead/PhysicsL1TriggerUpdate2018
 	branch = master
+[submodule "JetEnergyCorrection"]
+	path = JetEnergyCorrection
+	url = https://github.com/FHead/PhysicsJetEnergyCorrection
+	branch = master

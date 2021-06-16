@@ -78,3 +78,7 @@
 	path = HIJetRAA
 	url = https://github.com/FHead/PhysicsHIJetRAA
 	branch = master
+[submodule "HIJetRAA2018"]
+	path = HIJetRAA2018
+	url = https://github.com/FHead/PhysicsHIJetRAA2018
+	branch = master

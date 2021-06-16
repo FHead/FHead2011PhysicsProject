@@ -1,1 +1,0 @@
-PrepareSubmissionCopyWithPTHat.sh

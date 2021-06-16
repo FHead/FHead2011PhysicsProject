@@ -2,6 +2,10 @@
 path=$1
 url=$2
 
+
+echo Warning! This script is dangerous and may mess things up! Comment out the '"exit"' in the script if you really want to continue.
+exit
+
 # split the "main repo"
 git subtree split -P $1 -b NewBranch$1
 

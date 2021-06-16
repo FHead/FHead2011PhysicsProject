@@ -22,3 +22,6 @@
 [submodule "EEJet"]
 	path = EEJet
 	url = https://github.com/FHead/PhysicsEEJet
+[submodule "HI2018HLT"]
+	path = HI2018HLT
+	url = https://github.com/FHead/PhysicsHI2018HLT

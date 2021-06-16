@@ -21,7 +21,7 @@ git add -A $1
 git commit -m "Remove $1 for submodule replacement"
 
 # add the submodule
-git submodule add $2 $1
+git submodule add -b master $2 $1
 
 # and once your submodule is added commit the .gitmodules file
 git add .gitmodules

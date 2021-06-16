@@ -37,3 +37,6 @@
 [submodule "HIJetSDCount"]
 	path = HIJetSDCount
 	url = https://github.com/FHead/PhysicsHIJetSDCount
+[submodule "StatisticalFacts"]
+	path = StatisticalFacts
+	url = https://github.com/FHead/PhysicsStatisticalFacts

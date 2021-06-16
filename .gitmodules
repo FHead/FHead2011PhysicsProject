@@ -31,3 +31,6 @@
 [submodule "FCCeeHiggsMass"]
 	path = FCCeeHiggsMass
 	url = https://github.com/FHead/PhysicsFCCeeHiggsMass
+[submodule "JetShapeExploration"]
+	path = JetShapeExploration
+	url = https://github.com/FHead/PhysicsJetShapeExploration

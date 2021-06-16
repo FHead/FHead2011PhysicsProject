@@ -94,3 +94,7 @@
 	path = MiniProjects
 	url = https://github.com/FHead/PhysicsMiniProjects
 	branch = master
+[submodule "PeakHunting"]
+	path = PeakHunting
+	url = https://github.com/FHead/PhysicsPeakHunting
+	branch = master

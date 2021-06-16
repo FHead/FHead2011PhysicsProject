@@ -90,3 +90,7 @@
 	path = MachineLearning
 	url = https://github.com/FHead/PhysicsMachineLearning
 	branch = master
+[submodule "MiniProjects"]
+	path = MiniProjects
+	url = https://github.com/FHead/PhysicsMiniProjects
+	branch = master

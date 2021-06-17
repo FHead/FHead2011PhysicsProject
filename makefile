@@ -6,4 +6,5 @@ InitializeAll:
 	git submodule foreach git checkout master
 
 UpdateAll:
-	git submodule update --recursive --remote
+	# git submodule update --recursive --remote
+	git submodule foreach git pull

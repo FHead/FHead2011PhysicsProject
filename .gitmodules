@@ -106,3 +106,7 @@
 	path = Notes
 	url = git@github.com:FHead/PhysicsNotes.git
 	branch = master
+[submodule "LargeAngleScattering"]
+	path = LargeAngleScattering
+	url = git@github.com:FHead/PhysicsLargeAngleScattering.git
+   branch = master

@@ -1,108 +1,108 @@
 [submodule "TB2009"]
-	path = TB2009
-	url = https://github.com/FHead/PhysicsTB2009
+   path = TB2009
+	url = git@github.com:FHead/PhysicsTB2009.git
 	branch = master
 [submodule "Vecbos"]
 	path = Vecbos
-	url = https://github.com/FHead/PhysicsVecbos
+	url = git@github.com:FHead/PhysicsVecbos.git
 	branch = master
 [submodule "PAPreparation2016"]
 	path = PAPreparation2016
-	url = https://github.com/FHead/PhysicsPAPreparation2016
+	url = git@github.com:FHead/PhysicsPAPreparation2016.git
 	branch = master
 [submodule "PPPrepration2017"]
 	path = PPPrepration2017
-	url = https://github.com/FHead/PhysicsPPPreparation2017
+	url = git@github.com:FHead/PhysicsPPPreparation2017.git
 	branch = master
 [submodule "HiggsProperties"]
 	path = HiggsProperties
-	url = https://github.com/FHead/PhysicsHiggsProperties
+	url = git@github.com:FHead/PhysicsHiggsProperties.git
 	branch = master
 [submodule "JECGlobalFit"]
 	path = JECGlobalFit
-	url = https://github.com/FHead/PhysicsJECGlobalFit
+	url = git@github.com:FHead/PhysicsJECGlobalFit.git
 	branch = master
 [submodule "LQSearch"]
 	path = LQSearch
-	url = https://github.com/FHead/PhysicsLQSearch
+	url = git@github.com:FHead/PhysicsLQSearch.git
 	branch = master
 [submodule "EEJet"]
 	path = EEJet
-	url = https://github.com/FHead/PhysicsEEJet
+	url = git@github.com:FHead/PhysicsEEJet.git
 	branch = master
 [submodule "HI2018HLT"]
 	path = HI2018HLT
-	url = https://github.com/FHead/PhysicsHI2018HLT
+	url = git@github.com:FHead/PhysicsHI2018HLT.git
 	branch = master
 [submodule "HIJetMass"]
 	path = HIJetMass
-	url = https://github.com/FHead/PhysicsHIJetMass
+	url = git@github.com:FHead/PhysicsHIJetMass.git
 	branch = master
 [submodule "FCCeeHiggsMass"]
 	path = FCCeeHiggsMass
-	url = https://github.com/FHead/PhysicsFCCeeHiggsMass
+	url = git@github.com:FHead/PhysicsFCCeeHiggsMass.git
 	branch = master
 [submodule "JetShapeExploration"]
 	path = JetShapeExploration
-	url = https://github.com/FHead/PhysicsJetShapeExploration
+	url = git@github.com:FHead/PhysicsJetShapeExploration.git
 	branch = master
 [submodule "HIJetSDCount"]
 	path = HIJetSDCount
-	url = https://github.com/FHead/PhysicsHIJetSDCount
+	url = git@github.com:FHead/PhysicsHIJetSDCount.git
 	branch = master
 [submodule "StatisticalFacts"]
 	path = StatisticalFacts
-	url = https://github.com/FHead/PhysicsStatisticalFacts
+	url = git@github.com:FHead/PhysicsStatisticalFacts.git
 	branch = master
 [submodule "HIJetML"]
 	path = HIJetML
-	url = https://github.com/FHead/PhysicsHIJetML
+	url = git@github.com:FHead/PhysicsHIJetML.git
 	branch = master
 [submodule "L1TriggerUpgrade"]
 	path = L1TriggerUpgrade
-	url = https://github.com/FHead/PhysicsL1TriggerUpdate
+	url = git@github.com:FHead/PhysicsL1TriggerUpdate.git
 	branch = master
 [submodule "L1TriggerUpgrade2018"]
 	path = L1TriggerUpgrade2018
-	url = https://github.com/FHead/PhysicsL1TriggerUpdate2018
+	url = git@github.com:FHead/PhysicsL1TriggerUpdate2018.git
 	branch = master
 [submodule "JetEnergyCorrection"]
 	path = JetEnergyCorrection
-	url = https://github.com/FHead/PhysicsJetEnergyCorrection
+	url = git@github.com:FHead/PhysicsJetEnergyCorrection.git
 	branch = master
 [submodule "JetScape"]
 	path = JetScape
-	url = https://github.com/FHead/PhysicsJetScape
+	url = git@github.com:FHead/PhysicsJetScape.git
 	branch = master
 [submodule "HIJetRAA"]
 	path = HIJetRAA
-	url = https://github.com/FHead/PhysicsHIJetRAA
+	url = git@github.com:FHead/PhysicsHIJetRAA.git
 	branch = master
 [submodule "HIJetRAA2018"]
 	path = HIJetRAA2018
-	url = https://github.com/FHead/PhysicsHIJetRAA2018
+	url = git@github.com:FHead/PhysicsHIJetRAA2018.git
 	branch = master
 [submodule "HIJetReco2018"]
 	path = HIJetReco2018
-	url = https://github.com/FHead/PhysicsHIJetReco2018
+	url = git@github.com:FHead/PhysicsHIJetReco2018.git
 	branch = master
 [submodule "MachineLearning"]
 	path = MachineLearning
-	url = https://github.com/FHead/PhysicsMachineLearning
+	url = git@github.com:FHead/PhysicsMachineLearning.git
 	branch = master
 [submodule "MiniProjects"]
 	path = MiniProjects
-	url = https://github.com/FHead/PhysicsMiniProjects
+	url = git@github.com:FHead/PhysicsMiniProjects.git
 	branch = master
 [submodule "PeakHunting"]
 	path = PeakHunting
-	url = https://github.com/FHead/PhysicsPeakHunting
+	url = git@github.com:FHead/PhysicsPeakHunting.git
 	branch = master
 [submodule "WTauNuCrossSection"]
 	path = WTauNuCrossSection
-	url = https://github.com/FHead/PhysicsWTauNuCrossSection
+	url = git@github.com:FHead/PhysicsWTauNuCrossSection.git
 	branch = master
 [submodule "Notes"]
 	path = Notes
-	url = https://github.com/FHead/PhysicsNotes
+	url = git@github.com:FHead/PhysicsNotes.git
 	branch = master

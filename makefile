@@ -8,3 +8,8 @@ InitializeAll:
 UpdateAll:
 	# git submodule update --recursive --remote
 	git submodule foreach git pull
+
+UpdateAllRemote:
+	for i in */; do git add $$i; done
+	git commit -m "Update all remote"
+	git push

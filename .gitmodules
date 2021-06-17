@@ -1,5 +1,5 @@
 [submodule "TB2009"]
-   path = TB2009
+	path = TB2009
 	url = git@github.com:FHead/PhysicsTB2009.git
 	branch = master
 [submodule "Vecbos"]
@@ -109,4 +109,4 @@
 [submodule "LargeAngleScattering"]
 	path = LargeAngleScattering
 	url = git@github.com:FHead/PhysicsLargeAngleScattering.git
-   branch = master
+	branch = master

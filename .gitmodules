@@ -110,3 +110,6 @@
 	path = LargeAngleScattering
 	url = git@github.com:FHead/PhysicsLargeAngleScattering.git
 	branch = master
+[submodule "JECViewer"]
+	path = JECViewer
+	url = https://github.com/FHead/JECViewer

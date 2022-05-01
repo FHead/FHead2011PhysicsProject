@@ -112,4 +112,5 @@
 	branch = master
 [submodule "JECViewer"]
 	path = JECViewer
-	url = https://github.com/FHead/JECViewer
+	url = git@github.com:FHead/JECViewer.git
+   branch = main

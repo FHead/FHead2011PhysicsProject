@@ -114,6 +114,3 @@
 	path = JECViewer
 	url = git@github.com:FHead/JECViewer.git
 	branch = main
-[submodule "PhysicsHIZHadron2018"]
-	path = PhysicsHIZHadron2018
-	url = git@github.com:FHead/PhysicsHIZHadron2018.git

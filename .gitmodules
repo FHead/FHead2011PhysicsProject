@@ -118,3 +118,6 @@
 	path = HIZHadron2018
 	url = git@github.com:FHead/PhysicsHIZHadron2018.git
 	branch = main
+[submodule "HIZHadron2022"]
+	path = HIZHadron2022
+	url = git@github.com:FHead/PhysicsHIZHadron2022.git
